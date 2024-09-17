@@ -36,7 +36,7 @@ We maintain code quality using ESLint and Prettier. Please ensure your code foll
 
 ## Important Notes
 
-- **Design Consistency**: Refer to our [Figma](https://www.figma.com/design/ZoW3A9CHTfJfw8qh7iU41b/Optimal-Schedule-Builder?node-id=0-1&node-type=CANVAS&t=7LkURbT26MQR0Pq3-0) file for consistent styling across the website.
+- **Design Consistency**: Refer to our [Figma](https://www.figma.com/design/ZoW3A9CHTfJfw8qh7iU41b/Optimal-Schedule-Builder?m=auto&t=IrMjnD2WYJ5h0tXd-1) file for consistent styling across the website.
 - **Colors**: Use the `color.css` file for color references throughout the website.
 
 ## How to Run Locally
