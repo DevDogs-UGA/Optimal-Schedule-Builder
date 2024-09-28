@@ -32,4 +32,28 @@ public class RESTController {
         //For now just return a static message
         return "List of professors will go here!";
     }
+
+    /**
+     * Handles GET requests for returning whether attendance is mandatory
+     * for a given professor and class.
+     * <p> 
+     * This endpoint currently returns an arbitrary double value. The method
+     * attatched to this endpoint will be implemented in the future, and the
+     * call to it is currently commented.
+     * </p>
+     *
+     * @param professorName The name of the professor who teaches the given class.
+     * @param className The name of the given class.
+     *
+     * @return A double value representing the proportion of classes
+     * from RMP that have mandatory attendance.
+     * 
+     */
+    @GetMapping("/attendance")
+    public double isAttendanceMandatory(@RequestParam(name="professorName", required=true) String professorName, 
+@RequestParam(name="className", required=true) String className) {
+        //This is a commented call to a fictitious method, to be implemented later.
+        //return getAttendance(professorName, className);
+        return 0.0;
+    }
 }
