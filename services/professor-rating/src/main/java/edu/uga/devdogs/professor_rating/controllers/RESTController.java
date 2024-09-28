@@ -32,4 +32,26 @@ public class RESTController {
         //For now just return a static message
         return "List of professors will go here!";
     }
+    /**
+     * Handles GET requests for retrieving the aggregate helpfulness rating of a professor
+     * and the class they teach.
+     * <p>
+     * This method will return the aggregate helpfulness rating of a given professor and
+     * class.
+     * It currently returns an arbitrary double value because the method is not yet
+     * implemented.
+     * </p>
+     *
+     * @param professorName The professor's name the user want to find the aggregete 
+     * rating for.
+     * @param className The class the professor teaches that the user wants to find the 
+     * aggregate rating for.
+     *
+     * @return The aggregate helpfulness rating.
+     */       
+    @GetMapping("/helpfulness-rating")
+    public double getAggregateHelpfulnessRating(String professorName, String className) {
+	// return arbitraryMethodName();
+	return 2.0;
+    }
 }
