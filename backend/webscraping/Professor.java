@@ -56,22 +56,23 @@ public class Professor {
      * @param department The department this professor works in.
      */
     @Override
-    public Professor(String name, double quality, double wouldTakeAgainPercent, double difficulty, 
+    public Professor(String name, double quality, double wouldTakeAgainPercent, double difficultyRating,
                      int numOneStar, int numTwoStar, int numThreeStar, int numFourStar, 
                      int numFiveStar, int numRatings, String[] tags, String department) {
-        name = this.name;
-        quality = this.quality;
-        wouldTakeAgainPercent = this.wouldTakeAgainPercent;
-        difficulty = this.difficultyRating;
-        numOneStar = this.numOneStar;
-        numTwoStar = this.numTwoStar;
-        numThreeStar = this.numThreeStar;
-        numFourStar = this.numFourStar;
-        numFiveStar = this.numFiveStar;
-        ratingDistribution = new int[] {numOneStar, numTwoStar, numThreeStar, numFourStar, numFiveStar};
-        numRatings = this.numRatings;
-        tags = this.tags;
-        department = this.department;
+        this.name = name;
+        this.quality = quality;
+        this.wouldTakeAgainPercent = wouldTakeAgainPercent;
+        this.difficultyRating = difficultyRating;
+        this.numOneStar = numOneStar;
+        this.numTwoStar = numTwoStar;
+        this.numThreeStar = numThreeStar;
+        this.numFourStar = numFourStar;
+        this.numFiveStar = numFiveStar;
+        this.numRatings = numRatings;
+        this.ratingDistribution = new int[] {numOneStar, numTwoStar, numThreeStar, 
+                                             numFourStar, numFiveStar};
+        this.tags = tags;
+        this.department = department;
     } // Professor
 
     /**
@@ -92,23 +93,23 @@ public class Professor {
      * @param department The department this professor works in.
      */
     @Override
-    public Professor(String name, double quality, double wouldTakeAgainPercent, double difficulty,
+    public Professor(String name, double quality, double wouldTakeAgainPercent, double difficultyRating,
                      int numOneStar, int numTwoStar, int numThreeStar, int numFourStar, 
                      int numFiveStar, int[] ratingDistribution, int numRatings, String[] tags, 
                      String department) {
-        name = this.name;
-        quality = this.quality;
-        wouldTakeAgainPercent = this.wouldTakeAgainPercent;
-        difficulty = this.difficultyRating;
-        numOneStar = this.numOneStar;
-        numTwoStar = this.numTwoStar;
-        numThreeStar = this.numThreeStar;
-        numFourStar = this.numFourStar;
-        numFiveStar = this.numFiveStar;
-        ratingDistribution = this.ratingDistribution;
-        numRatings = this.numRatings;
-        tags = this.tags;
-        department = this.department;
+        this.name = name;
+        this.quality = quality;
+        this.wouldTakeAgainPercent = wouldTakeAgainPercent;
+        this.difficultyRating = difficultyRating;
+        this.numOneStar = numOneStar;
+        this.numTwoStar = numTwoStar;
+        this.numThreeStar = numThreeStar;
+        this.numFourStar = numFourStar;
+        this.numFiveStar = numFiveStar;
+        this.ratingDistribution = ratingDistribution;
+        this.numRatings = numRatings;
+        this.tags = tags;
+        this.department = department;
     } // Professor
 
     /**
