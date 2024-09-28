@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/professor-service")
 public class RESTController {
+  
     /**
      * Handles GET requests for retrieving a list of professors.
      * <p>
@@ -32,6 +33,28 @@ public class RESTController {
         //For now just return a static message
         return "List of professors will go here!";
     }
+  
+    /**
+     * Handles GET requests for retrieving the aggregate helpfulness rating of a professor
+     * and the class they teach.
+     * <p>
+     * This method will return the aggregate helpfulness rating of a given professor and
+     * class. (The class parameter is optional.)     
+     * It currently returns an arbitrary double value because the method is not yet
+     * implemented.
+     * </p>
+     *
+     * @param professorName The professor's name the user want to find the aggregete 
+     * rating for.
+     * @param className The class the professor teaches that the user wants to find the 
+     * aggregate rating for. This is an optional parameter.
+     *
+     * @return The aggregate helpfulness rating.
+     */       
+    @GetMapping("/helpfulness-rating")
+    public double getAggregateHelpfulnessRating(@RequestParam(required = true) String professorName, @RequestParam(required = false) String className) {
+	// return arbitraryMethodName();
+	return 2.0;
 
     /**
      * Handles GET requests for returning whether attendance is mandatory
@@ -51,7 +74,7 @@ public class RESTController {
      */
     @GetMapping("/attendance")
     public double isAttendanceMandatory(@RequestParam(name="professorName", required=true) String professorName, 
-@RequestParam(name="className", required=true) String className) {
+                                        @RequestParam(name="className", required=true) String className) {
         //This is a commented call to a fictitious method, to be implemented later.
         //return getAttendance(professorName, className);
         return 0.0;
