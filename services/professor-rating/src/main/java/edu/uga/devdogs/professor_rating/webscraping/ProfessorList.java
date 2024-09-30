@@ -53,6 +53,15 @@ public class ProfessorList {
     public ProfessorList(List<String[]> professorData) {
         this.professorData = professorData;
     } // ProfessorList
+
+    /**
+     * Return the entire list of professors.
+     * 
+     * @return the List that holds all of the professor entries.
+     */
+    public List<String[]> getProfessorList() {
+        return professorData;
+    } // getProfessorList
     
     /**
      * Returns a professor entry with a matching name to the {@code professorName} parameter.
