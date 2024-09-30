@@ -8,6 +8,7 @@ public class Professor {
     private double wouldTakeAgainPercent; // The percentage of students who would take 
                                           // a class with this professor again.
     private double difficultyRating; // The average difficulty of a professor's classes.
+    private int professorID; // The professor's ID on the RateMyProfessors website.
     private int numOneStar; // The number of one-star ratings the professor has.
     private int numTwoStar; // The number of two-star ratings the professor has.
     private int numThreeStar; // The number of three-star ratings the professor has.
@@ -55,7 +56,6 @@ public class Professor {
      * @param tags The tags associated with the professor.
      * @param department The department this professor works in.
      */
-    @Override
     public Professor(String name, double quality, double wouldTakeAgainPercent, double difficultyRating,
                      int numOneStar, int numTwoStar, int numThreeStar, int numFourStar, 
                      int numFiveStar, int numRatings, String[] tags, String department) {
@@ -92,7 +92,6 @@ public class Professor {
      * @param tags The tags associated with the professor.
      * @param department The department this professor works in.
      */
-    @Override
     public Professor(String name, double quality, double wouldTakeAgainPercent, double difficultyRating,
                      int numOneStar, int numTwoStar, int numThreeStar, int numFourStar, 
                      int numFiveStar, int[] ratingDistribution, int numRatings, String[] tags, 
@@ -183,6 +182,24 @@ public class Professor {
     public void setDifficultyRating(double newDifficultyRating) {
         difficultyRating = newDifficultyRating;
     } // setDifficultyRating
+
+    /**
+     * Returns the difficulty rating of a professor.
+     * 
+     * @return the value of {@code professorID}.
+     */
+    public int getProfessorID() {
+        return professorID;
+    } // getProfessorID
+
+    /**
+     * Sets the ID of a professor.
+     * 
+     * @param newProfessorID
+     */
+    public void setProfessorID(int newProfessorID) {
+        professorID = newProfessorID;
+    } // setProfessorID
 
     /**
      *  Returns the number of one-star reviews.
@@ -293,7 +310,7 @@ public class Professor {
     public void setRatingDistribution(int[] newRatingDistribution) {
         // ensure the provided array has the required size
         if (newRatingDistribution.length != 5) {
-            System.err.printn("Provided array did not have a length of 5 - " +
+            System.err.println("Provided array did not have a length of 5 - " +
                               "did not update ratingDistribution.");
             return;
         } // if
