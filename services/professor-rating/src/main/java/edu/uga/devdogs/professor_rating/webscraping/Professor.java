@@ -1,3 +1,5 @@
+package edu.uga.devdogs.professor_rating.webscraping;
+
 /**
  * @author Yuval Deshe
  * Represents an entry for a professor on the RateMyProfessors website.
