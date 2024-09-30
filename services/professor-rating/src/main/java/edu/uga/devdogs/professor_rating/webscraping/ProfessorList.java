@@ -117,19 +117,21 @@ public class ProfessorList {
     } // getProfessorEntryByID
 
     /**
-     * Returns true if the specified professor is in the list, or false otherwise.
+     * Checks if the specified professor is in the list. Returns true if the specified professor 
+     * is in the list, or false otherwise. Professors should be formatted as 
+     * {professorName, professorID}.
      * 
      * @param professor The professor to search for, formatted {professorName, professorID}.
      * @return True if the professor is in the list, or false if the professor is not in the list.
      */
-    public boolean findProfessor(String[] professor) {
+    public boolean isProfessorInList(String[] professor) {
         for (String[] entry : professorData) {
             if (Arrays.equals(entry, professor)) {
                 return true;
             } // if
         } // for
         return false;
-    } // findProfessor
+    } // isProfessorInList
 
     /**
      * Adds the specified professor to the {@code professorData}.
