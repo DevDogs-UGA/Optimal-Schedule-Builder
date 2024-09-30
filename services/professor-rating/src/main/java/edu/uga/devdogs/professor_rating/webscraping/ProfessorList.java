@@ -61,7 +61,7 @@ public class ProfessorList {
      * @param professorName The name of the professor.
      * @return The entry for the professor.
      */
-    public String[] getProfessorWithName(String professorName) {
+    public String[] getProfessorByName(String professorName) {
         for (String[] professor : professorData) {
             if (professor[0].equals(professorName)) {
                 return professor;
@@ -69,7 +69,7 @@ public class ProfessorList {
         } // for
         // Return an empty array if the professor was not found
         return new String[2];
-    } // getProfessorEntryWithName
+    } // getProfessorEntryByName
 
     /**
      * Returns a professor entry with a matching name to the {@code professorID} parameter.
@@ -78,7 +78,7 @@ public class ProfessorList {
      * @param professorID The name of the professor as a String.
      * @return The entry for the professor.
      */
-    public String[] getProfessorWithID(String professorID) {
+    public String[] getProfessorByID(String professorID) {
         for (String[] entry : professorData) {
             if (entry[1].equals(professorID)) {
                 return entry;
@@ -86,7 +86,7 @@ public class ProfessorList {
         } // for
         // Return an empty array if the professor was not found
         return new String[2];
-    } // getProfessorEntryWithID
+    } // getProfessorEntryByID
 
     /**
      * Returns a professor entry with a matching name to the {@code professorID} parameter.
@@ -96,7 +96,7 @@ public class ProfessorList {
      * @param professorID The name of the professor as an Integer.
      * @return The entry for the professor.
      */
-    public String[] getProfessorWithID(int professorID) {
+    public String[] getProfessorByID(int professorID) {
         String professorIDString = Integer.toString(professorID);
         for (String[] entry : professorData) {
             if (entry[1].equals(professorIDString)) {
@@ -105,7 +105,7 @@ public class ProfessorList {
         } // for
         // Return an empty array if the professor was not found
         return new String[2];
-    } // getProfessorEntryWithID
+    } // getProfessorEntryByID
 
     /**
      * Returns true if the specified professor is in the list, or false otherwise.
@@ -145,7 +145,7 @@ public class ProfessorList {
      * @return the professor that was removed (formatted {professorName, professorID}) if it was
      * removed, otherwise an empty array.
      */
-    public String[] removeProfessorWithName(String professorName) {
+    public String[] removeProfessorByName(String professorName) {
         for (int i = 0; i < professorData.size(); i++) {
             String[] entry = professorData.get(i);
             if (entry[0].equals(professorName)) {
@@ -156,7 +156,7 @@ public class ProfessorList {
         // If a professor with the specified ID was not found.
         logger.log(Level.INFO, "Professor with name {0} not found.", professorName);
         return new String[2];
-    } // removeProfessorWithName
+    } // removeProfessorByName
 
     /**
      * Removes the professor whose ID is specified, if it exists. Returns the removed
@@ -166,7 +166,7 @@ public class ProfessorList {
      * @return the professor that was removed (formatted {professorName, professorID}) if it was
      * removed, otherwise an empty array.
      */
-    public String[] removeProfessorWithID(String professorID) {
+    public String[] removeProfessorByID(String professorID) {
         for (int i = 0; i < professorData.size(); i++) {
             String[] entry = professorData.get(i);
             if (entry[1].equals(professorID)) {
@@ -177,7 +177,7 @@ public class ProfessorList {
         // If a professor with the specified ID was not found.
         logger.log(Level.INFO, "Professor with ID {0} not found.", professorID);
         return new String[2];
-    } // removeProfessorWithID
+    } // removeProfessorByID
 
     /**
      * Removes the professor whose ID is specified, if it exists. Returns the removed
@@ -188,7 +188,7 @@ public class ProfessorList {
      * @return the professor that was removed (formatted {professorName, professorID}) if it was
      * removed, otherwise an empty array.
      */
-    public String[] removeProfessorWithID(int professorID) {
+    public String[] removeProfessorByID(int professorID) {
         String professorIDString = Integer.toString(professorID);
         for (int i = 0; i < professorData.size(); i++) {
             String[] entry = professorData.get(i);
@@ -200,5 +200,5 @@ public class ProfessorList {
         // If a professor with the specified ID was not found.
         logger.log(Level.INFO, "Professor with ID {0} not found.", professorID);
         return new String[2];
-    } // removeProfessorWithID
+    } // removeProfessorByID
 } // ProfessorList
