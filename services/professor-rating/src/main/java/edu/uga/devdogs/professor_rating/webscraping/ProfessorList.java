@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * @author Yuval Deshe
@@ -38,7 +39,7 @@ public class ProfessorList {
             if (professor.length == 2) {
                 professorData.add(professor);
             } else {
-                logger.info("Invalid entry detected.");
+                logger.log(Level.INFO, "Invalid entry detected.");
                 return;
             } // if
         } // if
@@ -74,12 +75,31 @@ public class ProfessorList {
      * Returns a professor entry with a matching name to the {@code professorID} parameter.
      * Returns an empty array if there is no entry matching the specified {@code professorID}.
      * 
-     * @param professorID The name of the professor.
+     * @param professorID The name of the professor as a String.
      * @return The entry for the professor.
      */
     public String[] getProfessorWithID(String professorID) {
         for (String[] entry : professorData) {
             if (entry[1].equals(professorID)) {
+                return entry;
+            } // if
+        } // for
+        // Return an empty array if the professor was not found
+        return new String[2];
+    } // getProfessorEntryWithID
+
+    /**
+     * Returns a professor entry with a matching name to the {@code professorID} parameter.
+     * Returns an empty array if there is no entry matching the specified {@code professorID}.
+     * This version of the method accepts an Integer instead of a String.
+     * 
+     * @param professorID The name of the professor as an Integer.
+     * @return The entry for the professor.
+     */
+    public String[] getProfessorWithID(int professorID) {
+        String professorIDString = Integer.toString(professorID);
+        for (String[] entry : professorData) {
+            if (entry[1].equals(professorIDString)) {
                 return entry;
             } // if
         } // for
@@ -108,12 +128,77 @@ public class ProfessorList {
      * @param professor an entry for one professor, formatted {professorName, professorID}.
      */
     public void addProfessor(String[]... professors) {
-        for (String[] professor : professors) {
-            if (professor.length == 2) {
-                professorData.add(professor);
+        for (String[] entry : professors) {
+            if (entry.length == 2) {
+                professorData.add(entry);
             } else {
-                logger.info("Invalid entry detected.");
+                logger.log(Level.INFO, "Invalid entry detected.");
             } // if
-        }
+        } // for
     } // addProfessor
+
+    /**
+     * Removes the professor whose name is specified, if it exists. Returns the removed
+     * professor if it was removed, or an empty array if it was not found.
+     * 
+     * @param professorName The professor to be removed.
+     * @return the professor that was removed (formatted {professorName, professorID}) if it was
+     * removed, otherwise an empty array.
+     */
+    public String[] removeProfessorWithName(String professorName) {
+        for (int i = 0; i < professorData.size(); i++) {
+            String[] entry = professorData.get(i);
+            if (entry[0].equals(professorName)) {
+                professorData.remove(i);
+                return entry;
+            } // if
+        } // for
+        // If a professor with the specified ID was not found.
+        logger.log(Level.INFO, "Professor with name {0} not found.", professorName);
+        return new String[2];
+    } // removeProfessorWithName
+
+    /**
+     * Removes the professor whose ID is specified, if it exists. Returns the removed
+     * professor if it was removed, or an empty array if it was not found.
+     * 
+     * @param professorID the name of the professor as a String.
+     * @return the professor that was removed (formatted {professorName, professorID}) if it was
+     * removed, otherwise an empty array.
+     */
+    public String[] removeProfessorWithID(String professorID) {
+        for (int i = 0; i < professorData.size(); i++) {
+            String[] entry = professorData.get(i);
+            if (entry[1].equals(professorID)) {
+                professorData.remove(i);
+                return entry;
+            } // if
+        } // for
+        // If a professor with the specified ID was not found.
+        logger.log(Level.INFO, "Professor with ID {0} not found.", professorID);
+        return new String[2];
+    } // removeProfessorWithID
+
+    /**
+     * Removes the professor whose ID is specified, if it exists. Returns the removed
+     * professor if it was removed, or an empty array if it was not found.
+     * This version of the method accepts an Integer instead of a String.
+     * 
+     * @param professorID the name of the professor as an Integer.
+     * @return the professor that was removed (formatted {professorName, professorID}) if it was
+     * removed, otherwise an empty array.
+     */
+    public String[] removeProfessorWithID(int professorID) {
+        String professorIDString = Integer.toString(professorID);
+        for (int i = 0; i < professorData.size(); i++) {
+            String[] entry = professorData.get(i);
+            if (entry[1].equals(professorIDString)) {
+                professorData.remove(i);
+                return entry;
+            } // if
+        } // for
+        // If a professor with the specified ID was not found.
+        logger.log(Level.INFO, "Professor with ID {0} not found.", professorID);
+        return new String[2];
+    } // removeProfessorWithID
 } // ProfessorList
