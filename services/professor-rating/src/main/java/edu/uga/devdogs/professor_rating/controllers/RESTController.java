@@ -54,8 +54,9 @@ public class RESTController {
      */       
     @GetMapping("/helpfulness-rating")
     public double getAggregateHelpfulnessRating(@RequestParam(required = true) String professorName, @RequestParam(required = false) String className) {
-	// return arbitraryMethodName();
-	return 2.0;
+        // return arbitraryMethodName();
+        return 2.0;
+    }
 
     /**
      * Handles GET requests for returning whether attendance is mandatory
@@ -80,4 +81,29 @@ public class RESTController {
         //return getAttendance(professorName, className);
         return 0.0;
     }
+
+    /**
+     * Handles GET requests for retrieving the aggregate difficulty rating of a professor
+     * and the class they teach.
+     * <p>
+     * This method will return the aggregate difficulty rating of a given professor and
+     * class. (The class parameter is optional.)
+     * It currently returns an arbitrary double value because the method is not yet
+     * implemented.
+     * </p>
+     *
+     * @param professorName The professor's name the user want to find the aggregete
+     * rating for.
+     * @param className The class the professor teaches that the user wants to find the
+     * aggregate rating for. This is an optional parameter.
+     *
+     * @return The aggregate difficulty rating.
+     */
+    @GetMapping("/helpfulness-rating")
+    public double getAggregateDifficultyRating(@RequestParam(required = true) String professorName,
+                                               @RequestParam(required = false) String className) {
+        // return ratingService.getDifficultyRating(professorName, className);
+        return 4.0;
+    }
+
 }
