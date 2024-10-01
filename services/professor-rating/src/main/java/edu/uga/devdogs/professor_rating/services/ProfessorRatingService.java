@@ -1,10 +1,15 @@
-package edu.uga.devdogs.professor_rating.controllers;
-
 import org.springframework.stereotype.Service;
 
+
+/**
+ * Service class that handles business logic.
+ */
 @Service
-public class ProfessorRating {
-    public static void someBusinessLogic() {
+public class RateMyProfessorService {
+    /**
+     * Placeholder business logic method
+     */
+    public void someBusinessLogic() {
         // Service logic goes here
     }
 }
