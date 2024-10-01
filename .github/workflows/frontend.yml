@@ -9,7 +9,9 @@ on:
 jobs:
     build:
         runs-on: ubuntu-20.04
-
+        defaults:
+            run:
+                working-directory: ./frontend
         name: Build and lint
         steps:
             - name: Checkout repository
@@ -23,6 +25,7 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
+                  cache-dependency-path: ./frontend/pnpm-lock.yaml
                   node-version: 22
                   cache: 'pnpm'
 
