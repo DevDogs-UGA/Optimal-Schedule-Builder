@@ -4,3 +4,14 @@
 .vscode/
 
 .DS_Store
+Thumbs.db
+
+/target/
+*.class
+*.war
+*.jar
+
+*.tmp
+*.swp
+*.swo
+*.bak
