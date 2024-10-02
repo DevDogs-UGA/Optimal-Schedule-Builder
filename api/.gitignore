@@ -1,0 +1,11 @@
+.idea/
+
+*.iml
+.vscode/
+
+.DS_Store
+Thumbs.db
+
+*.class
+*.war
+*.jar
