@@ -1,4 +1,4 @@
-//ADD PACKAGE PATH
+package main.java.edu.uga.devdogs.course_information.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ public class CourseInfoController {
      * @return message indicating the placement of implementation.
      */
     @GetMapping("/athena-name")
-    public String getCourseByMajor(@RequestParam String athenaName){
+    public String getCourseByAthenaName(@RequestParam String athenaName){
         return "Implementation for course of a specific athena name";
     }
 
@@ -68,4 +68,6 @@ public class CourseInfoController {
     public String getCourseByTime(@RequestParam String time) {
         return "Implementation for getting list of courses by a specific time slot";
     }
+
+    
 }
