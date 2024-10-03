@@ -1,4 +1,4 @@
-package com.example.bulletin.controller;
+package edu.uga.devdogs.bulletin.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
