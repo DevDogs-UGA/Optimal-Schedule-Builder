@@ -1,10 +1,12 @@
 package edu.uga.devdogs.professor_rating.webscraping;
+import java.util.logging.Logger;
 
 /**
  * @author Yuval Deshe
  * Represents an entry for a professor on the RateMyProfessors website.
  */
 public class Professor {
+    Logger logger = Logger.getLogger(getClass().getName()); // Used instead of printing to stderr.
     private String name; // The name of the professor.
     private double quality; // The overall quality of the professor.
     private double wouldTakeAgainPercent; // The percentage of students who would take 
@@ -312,7 +314,7 @@ public class Professor {
     public void setRatingDistribution(int[] newRatingDistribution) {
         // ensure the provided array has the required size
         if (newRatingDistribution.length != 5) {
-            System.err.println("Provided array did not have a length of 5 - " +
+            logger.info("Provided array did not have a length of 5 - " +
                               "did not update ratingDistribution.");
             return;
         } // if
