@@ -34,4 +34,30 @@ public class BulletinController {
     }
 
     // Other endpoints related to Bulletin data could be added here
+
+    /**
+     * Retrieves a list of courses based on the specified parameters.
+     *
+     * @author Raghav Vikramprabhu
+     *
+     * @param creditHours The required number of credit hours for the courses.
+     * @param majorCode   The optional major code (e.g., "CSCI").
+     * @param classLevel  The optional class level (e.g., 4000).
+     * @return A list of courses that match the given criteria.
+     */
+    @GetMapping("/courses")
+    public List<Course> getCourses(
+            @RequestParam("creditHours") int creditHours,
+            @RequestParam(value = "majorCode", required = false) String majorCode,
+            @RequestParam(value = "classLevel", required = false) Integer classLevel
+    ) {
+        // Placeholder return to avoid compilation error.
+        // List<Course> courses = fetchCourses(creditHours, majorCode, classLevel);
+        return List.of(new Course());  // Replace with actual data once implemented
+    }
+
+    // Uncomment when implementing the function
+    // private List<Course> fetchCourses(int creditHours, String majorCode, Integer classLevel) {
+    //     // Function implementation logic goes here.
+    // }
 }

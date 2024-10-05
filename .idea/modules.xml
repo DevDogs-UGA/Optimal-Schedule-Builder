@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Optimal-Schedule-Builder.iml" filepath="$PROJECT_DIR$/.idea/Optimal-Schedule-Builder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services/bulletin/bulletin.iml" filepath="$PROJECT_DIR$/services/bulletin/bulletin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services/course-information/course-information.iml" filepath="$PROJECT_DIR$/services/course-information/course-information.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services/coursicle/coursicle.iml" filepath="$PROJECT_DIR$/services/coursicle/coursicle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services/optimize/optimize.iml" filepath="$PROJECT_DIR$/services/optimize/optimize.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services/professor-rating/professor-rating.iml" filepath="$PROJECT_DIR$/services/professor-rating/professor-rating.iml" />
+    </modules>
+  </component>
+</project>
