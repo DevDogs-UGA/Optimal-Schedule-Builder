@@ -1,26 +1,28 @@
-# Created by JP Park
-# Last maintained by JP Park
-
-version: '1.0'
-
 services:
-  config-server:
-    image: # TODO
-    container_name: # TODO
+  proxy:
+    image: docker.io/caddy:alpine
     ports:
-      - # TODO
-    environment:
+      - 8080:80
+      - 8443:443
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
 
-
-  eureka-server:
-    image: # TODO
-    container_name: # TODO
+  frontend:
+    build: ./frontend
     ports:
-      - # TODO
-    environment:
+      - 3000:8080
 
-  api-gateway:
-    image: # TODO
-    container_name: # TODO
-    ports:
-      - # TODO
+  bulletin:
+    build: ./services/bulletin
+
+  course-information:
+    build: ./services/course-information
+
+  coursicle:
+    build: ./services/coursicle
+
+  optimize:
+    build: ./services/optimize
+
+  professor-rating:
+    build: ./services/professor-rating
