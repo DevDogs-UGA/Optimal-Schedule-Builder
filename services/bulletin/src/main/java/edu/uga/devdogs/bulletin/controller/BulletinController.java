@@ -17,6 +17,9 @@ import java.util.List;
 @RequestMapping("/api/bulletin")
 public class BulletinController {
 
+    // Mock class to fix compiler errors -- TODO remove me
+    public static class Course { }
+
     /**
      * Retrieves course information based on the provided course ID.
      *
