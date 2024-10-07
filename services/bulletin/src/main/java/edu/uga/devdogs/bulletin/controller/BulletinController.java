@@ -21,13 +21,13 @@ public class BulletinController {
      * Retrieves course information based on the given term, like Fall or Summer.
      *
      * @param term The term for which the course has to be in.
-     * @return A "Course" List containing the course information (ID, title, description, semester).
+     * @return A "Course" List containing the course information from a specific term.
      */
     @GetMapping("/course")
     public List<Course> getCourseByTerm(@RequestParam String term) {
-
         List<Course> courseList = new ArrayList<>();
-        return courseList;
+        //courseList = courseTerm(term);
+        //the above is a placeholder function that returns a list of courses required by term.
     }
 
     /**
