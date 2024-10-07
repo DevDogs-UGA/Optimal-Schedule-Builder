@@ -52,7 +52,7 @@ public class BulletinController {
      */
     @GetMapping("/course/crn/extras")
     public extras isHonorsLabOnline(String crn) {
-        return getSpecialTypeForCRN(crn);
+        return getExtrasForCRN(crn);
     }
 
     // Other endpoints related to Bulletin data could be added here
