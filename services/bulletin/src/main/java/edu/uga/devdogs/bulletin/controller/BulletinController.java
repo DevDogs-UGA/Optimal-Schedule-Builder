@@ -52,6 +52,7 @@ public class BulletinController {
      */
     @GetMapping("/course/crn/extras")
     public extras isHonorsLabOnline(String crn) {
+        // Need to make getExtrasForCRN(String crn) later
         return getExtrasForCRN(crn);
     }
 
