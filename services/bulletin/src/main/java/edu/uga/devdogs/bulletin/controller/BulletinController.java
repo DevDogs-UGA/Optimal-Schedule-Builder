@@ -51,7 +51,7 @@ public class BulletinController {
      * @see extras
      */
     @GetMapping("/course/crn/extras")
-    public extras honorsLabOnline(String crn) {
+    public extras isHonorsLabOnline(String crn) {
         return getSpecialTypeForCRN(crn);
     }
 
