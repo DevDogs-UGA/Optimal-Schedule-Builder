@@ -200,7 +200,7 @@ public class CourseScraper {
 
                 // output here
                 FileOutputStream  out = new FileOutputStream(new java.io.File(String.format("%s/%s", path, fileName)));
-                out.write(response.bodyAsBytes());          // resultImageResponse.body() is where the image's contents are.
+                out.write(response.bodyAsBytes());         
                 out.close();
             }
 
@@ -381,7 +381,7 @@ public class CourseScraper {
 
                 // output here
                 FileOutputStream  out = new FileOutputStream(new java.io.File(String.format("%s/%s", path, fileName)));
-                out.write(response.bodyAsBytes());          // resultImageResponse.body() is where the image's contents are.
+                out.write(response.bodyAsBytes());          
                 out.close();
 
                 int i = 0;
@@ -559,7 +559,7 @@ public class CourseScraper {
 
                 // output here
                 FileOutputStream  out = new FileOutputStream(new java.io.File(String.format("%s/%s", path, fileName)));
-                out.write(response.bodyAsBytes());          // resultImageResponse.body() is where the image's contents are.
+                out.write(response.bodyAsBytes());          
                 out.close();
             }
 
