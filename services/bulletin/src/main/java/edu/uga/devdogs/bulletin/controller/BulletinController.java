@@ -89,7 +89,8 @@ public class BulletinController {
     @GetMapping("/course/coreqs")
     public List<Course> getCoReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
-            @RequestParam(value = "crn", required = false) String crn) {
+            @RequestParam(value = "crn", required = false) String crn
+    ) {
         // Placeholder return to avoid compilation error.
         // List<Course> coReqs = fetchCoReqs(courseId, crn);
         List<Course> coReqs = new ArrayList<>();
@@ -107,7 +108,8 @@ public class BulletinController {
     @GetMapping("/course/prereqs")
     public List<Course> getPreReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
-            @RequestParam(value = "crn", required = false) String crn) {
+            @RequestParam(value = "crn", required = false) String crn
+    ) {
         // Placeholder return to avoid compilation error.
         // List<Course> preReqs = fetchPreReqs(courseId, crn);
         List<Course> preReqs = new ArrayList<>();
