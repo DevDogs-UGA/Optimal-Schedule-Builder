@@ -59,20 +59,42 @@ public class BulletinController {
     }
 
     /**
+     * Retrieves a list of courses based on the specified parameters. For example, you can edit this function to query
+     * with your required parameters such as credit Hours and add on additional optional ones like,
+     * "Give me all the 4 credit hours CSCI classes"
+     *
+     * @param creditHours The required number of credit hours for the courses. REQUIRED PARAMETER
+     * @param majorCode   The optional major code (e.g., "CSCI"). OPTIONAL PARAMETER
+     * @param classLevel  The optional class level (e.g., 4000). OPTIONAL PARAMETER
+     * @return A list of courses that match the given criteria.
+     */
+    @GetMapping("/courses")
+    public List<Course> getCourses(
+            @RequestParam("creditHours") int creditHours,
+            @RequestParam(value = "majorCode", required = false) String majorCode,
+            @RequestParam(value = "classLevel", required = false) Integer classLevel
+    ) {
+        // Placeholder return to avoid compilation error.
+        // List<Course> courses = fetchCourses(creditHours, majorCode, classLevel);
+        return List.of(new Course());  // Replace with actual data once implemented
+    }
+
+    /**
      * Retrieves co-requisites for a given course ID or CRN.
      *
      * @param courseId The ID of the course to retrieve co-requisites for. (optional)
      * @param crn The CRN of the course to retrieve co-requisites for. (optional)
-     * @return A list of courses that are co-requisites for the given course.
+     * @return A list of course objects that are co-requisites for the given course.
      */
     @GetMapping("/course/coreqs")
     public List<Course> getCoReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
-            @RequestParam(value = "crn", required = false) String crn
-    ) {
+            @RequestParam(value = "crn", required = false) String crn) {
         // Placeholder return to avoid compilation error.
-        // Implement business logic to fetch co-requisites
-        return List.of(new Course());  // Placeholder return to avoid compilation error.
+        // List<Course> coReqs = fetchCoReqs(courseId, crn);
+        List<Course> coReqs = new ArrayList<>();
+        coReqs.add(new Course()); // Placeholder return to avoid compilation error.
+        return coReqs;
     }
 
     /**
@@ -80,16 +102,17 @@ public class BulletinController {
      *
      * @param courseId The ID of the course to retrieve pre-requisites for. (optional)
      * @param crn The CRN of the course to retrieve pre-requisites for. (optional)
-     * @return A list of courses that are pre-requisites for the given course.
+     * @return A list of course objects that are pre-requisites for the given course.
      */
     @GetMapping("/course/prereqs")
     public List<Course> getPreReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
-            @RequestParam(value = "crn", required = false) String crn
-    ) {
+            @RequestParam(value = "crn", required = false) String crn) {
         // Placeholder return to avoid compilation error.
-        // Implement business logic to fetch co-requisites
-        return List.of(new Course());  // Placeholder return to avoid compilation error.
+        // List<Course> preReqs = fetchPreReqs(courseId, crn);
+        List<Course> preReqs = new ArrayList<>();
+        preReqs.add(new Course()); // Placeholder return to avoid compilation error.
+        return preReqs;
     }
 }
-}
+
