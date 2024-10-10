@@ -28,9 +28,32 @@ public class BulletinController {
         // TODO: Replace with actual service layer calls and implement the Course class
         List<Course> courseList = new ArrayList<>();
 
-
-
         return courseList;
+    }
+
+    /**
+     * Enum for special types of courses.
+     * HONORS: Honors course
+     * LAB: Course with a lab component
+     * ONLINE: Online course
+     */
+    public enum extras {
+        HONORS,
+        LAB,
+        ONLINE
+    }
+
+    /**
+     * Retrieves the special type of a course based on its CRN.
+     * 
+     * @param crn The Course Registration Number of the course.
+     * @return The special type of the course, which can be HONORS, LAB, or ONLINE.
+     * @see extras
+     */
+    @GetMapping("/course/crn/extras")
+    public extras isHonorsLabOnline(String crn) {
+        // Need to make getExtrasForCRN(String crn) later
+        return getExtrasForCRN(crn);
     }
 
     // Other endpoints related to Bulletin data could be added here
