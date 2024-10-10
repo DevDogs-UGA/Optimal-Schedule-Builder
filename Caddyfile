@@ -1,0 +1,17 @@
+https://localhost, http://localhost {
+	route /* {
+		reverse_proxy frontend:3000
+	}
+
+	route /api/bulletin/ {
+		reverse_proxy bulletin:8080
+	}
+
+	route /api/course_information/ {
+		reverse_proxy course-information:8080
+	}
+
+	route /api/professor-service/ {
+		reverse_proxy professor-rating:8080
+	}
+}
