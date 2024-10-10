@@ -4,7 +4,7 @@ This directory contains the sample data to be used in our prototypes.
 
 ## Contents
 
-- `courses.json`: JSON file containing sample course data. Includes 
+- `courses.json`: JSON file containing sample course data. Includes all courses and sections listed in the `Course Information` Google Doc.
 ```json
 {
   "courses": [
