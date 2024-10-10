@@ -22,7 +22,7 @@ public class CourseInfoController {
      * @param professor given.
      * 
      * @param professor name of the professor teaching the course
-     * @return course information list that's given by the professor.
+     * @return course information list that's related to the given professor.
      */
     @GetMapping("/professor")
    public List<Section> getCourseByProfessor(@RequestParam String professor){
