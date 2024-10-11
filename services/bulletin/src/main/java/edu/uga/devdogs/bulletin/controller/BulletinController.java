@@ -33,7 +33,6 @@ public class BulletinController {
         return courseList;
     }
 
-    // Other endpoints related to Bulletin data could be added here
 
     /**
      * Retrieves a list of courses based on the specified parameters. For example, you can edit this function to query
@@ -57,4 +56,45 @@ public class BulletinController {
         // List<Course> courses = fetchCourses(creditHours, majorCode, classLevel);
         return List.of(new Course());  // Replace with actual data once implemented
     }
+
+    /**
+     * Retrieves co-requisites for a given course ID or CRN.
+     *
+     * @param courseId The ID of the course to retrieve co-requisites for. (optional)
+     * @param crn The CRN of the course to retrieve co-requisites for. (optional)
+     * @return A list of course objects that are co-requisites for the given course.
+     */
+    @GetMapping("/course/coreqs")
+    public List<Course> getCoReqs(
+            @RequestParam(value = "courseId", required = false) String courseId,
+            @RequestParam(value = "crn", required = false) String crn
+    ) {
+        // Placeholder return to avoid compilation error.
+        // List<Course> coReqs = fetchCoReqs(courseId, crn);
+        List<Course> coReqs = new ArrayList<>();
+        coReqs.add(new Course()); // Placeholder return to avoid compilation error.
+        return coReqs;
+    }
+
+    /**
+     * Retrieves pre-requisites for a given course ID or CRN.
+     *
+     * @param courseId The ID of the course to retrieve pre-requisites for. (optional)
+     * @param crn The CRN of the course to retrieve pre-requisites for. (optional)
+     * @return A list of course objects that are pre-requisites for the given course.
+     */
+    @GetMapping("/course/prereqs")
+    public List<Course> getPreReqs(
+            @RequestParam(value = "courseId", required = false) String courseId,
+            @RequestParam(value = "crn", required = false) String crn
+    ) {
+        // Placeholder return to avoid compilation error.
+        // List<Course> preReqs = fetchPreReqs(courseId, crn);
+        List<Course> preReqs = new ArrayList<>();
+        preReqs.add(new Course()); // Placeholder return to avoid compilation error.
+        return preReqs;
+    }
+
+    // Other endpoints related to Bulletin data could be added here
 }
+
