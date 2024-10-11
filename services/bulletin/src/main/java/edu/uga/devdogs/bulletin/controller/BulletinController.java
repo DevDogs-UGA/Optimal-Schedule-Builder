@@ -1,9 +1,16 @@
 package edu.uga.devdogs.bulletin.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import edu.uga.devdogs.bulletin.database.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/bulletin")
+@Tag(name = "Bulletin API", description = "API for accessing UGA Bulletin course information")
 public class BulletinController {
 
     /**
@@ -23,15 +31,39 @@ public class BulletinController {
      * @param courseId The ID of the course to retrieve. (e.g., "CSCI-1301")
      * @return A "Course" List containing the course information (ID, title, description, semester).
      */
-    @GetMapping("/course")
-    public List<Course> getCourseInfo(@RequestParam String courseId) {
-        // TODO: Replace with actual service layer calls and implement the Course class
-        List<Course> courseList = new ArrayList<>();
+    @Operation(summary = "Get course information by course ID", description = "Retrieves course information based on the provided course ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid course ID"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
+    @GetMapping("/get-course-by-id")
+    public ResponseEntity<Course> getCourseInfo(@RequestParam(value = "courseId") String courseId) {
 
+        // Return 400 for empty courseId
+        if (courseId.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
 
+        try {
+            // Call method to get course by ID
+            Course course = getCourseByID(courseId);
 
-        return courseList;
+            // Check if the course is not found (null)
+            if (course == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return 404 if no course is found
+            }
+
+            // Return the course if found
+            return ResponseEntity.ok(course);
+
+        } catch (Exception e) {
+
+            // Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
+
 
 
     /**
@@ -47,15 +79,36 @@ public class BulletinController {
      * @return A list of courses that match the given criteria.
      */
     @GetMapping("/courses")
-    public List<Course> getCourses(
-            @RequestParam("creditHours") int creditHours,
+    public ResponseEntity<List<Course>> getCourses(
+            @RequestParam(value = "creditHours") int creditHours,
             @RequestParam(value = "majorCode", required = false) String majorCode,
             @RequestParam(value = "classLevel", required = false) Integer classLevel
     ) {
-        // Placeholder return to avoid compilation error.
-        // List<Course> courses = fetchCourses(creditHours, majorCode, classLevel);
-        return List.of(new Course());  // Replace with actual data once implemented
+        // Validation for creditHours (if negative or invalid)
+        if (creditHours <= 0 || creditHours > 4) {
+            return ResponseEntity.badRequest().body(null); // Return 400 for bad request
+        }
+        
+        try {
+            // Fetch the courses based on provided filters
+            List<Course> courses = fetchCourses(creditHours, majorCode, classLevel);
+            
+            // Check if no courses are found
+            if (courses.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courses); // Return 404 if no courses found
+            }
+
+            // Return the list of courses with a 200 OK response
+            return ResponseEntity.ok(courses);
+
+        } catch (Exception e) {
+            // Handle any exceptions and return an internal server error response
+            // You might want to log the error for debugging purposes
+            // logger.error("Error fetching courses", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Return 500 if server error occurs
+        }
     }
+
 
     /**
      * Retrieves co-requisites for a given course ID or CRN.
@@ -65,16 +118,32 @@ public class BulletinController {
      * @return A list of course objects that are co-requisites for the given course.
      */
     @GetMapping("/course/coreqs")
-    public List<Course> getCoReqs(
+    public ResponseEntity<List<Course>> getCoReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
             @RequestParam(value = "crn", required = false) String crn
     ) {
-        // Placeholder return to avoid compilation error.
-        // List<Course> coReqs = fetchCoReqs(courseId, crn);
-        List<Course> coReqs = new ArrayList<>();
-        coReqs.add(new Course()); // Placeholder return to avoid compilation error.
-        return coReqs;
+        // Check if both courseId and crn are null or empty
+        if ((courseId == null || courseId.isEmpty()) && (crn == null || crn.isEmpty())) {
+            return ResponseEntity.badRequest().body(null); // Return 400 if neither parameter is provided
+        }
+
+        try {
+            // Fetch co-requisite courses using the courseId or crn
+            List<Course> coReqs = fetchCoReqs(courseId, crn); // Replace with actual method to fetch co-requisites
+
+            // If no co-requisites found, return 404
+            if (coReqs.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(coReqs);
+            }
+
+            // Return the list of co-requisite courses
+            return ResponseEntity.ok(coReqs);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
+
 
     /**
      * Retrieves pre-requisites for a given course ID or CRN.
@@ -84,16 +153,33 @@ public class BulletinController {
      * @return A list of course objects that are pre-requisites for the given course.
      */
     @GetMapping("/course/prereqs")
-    public List<Course> getPreReqs(
+    public ResponseEntity<List<Course>> getPreReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
             @RequestParam(value = "crn", required = false) String crn
     ) {
-        // Placeholder return to avoid compilation error.
-        // List<Course> preReqs = fetchPreReqs(courseId, crn);
-        List<Course> preReqs = new ArrayList<>();
-        preReqs.add(new Course()); // Placeholder return to avoid compilation error.
-        return preReqs;
+        // Check if both courseId and crn are null or empty
+        if ((courseId == null || courseId.isEmpty()) && (crn == null || crn.isEmpty())) {
+            return ResponseEntity.badRequest().body(null); // Return 400 if neither parameter is provided
+        }
+
+        try {
+            // Fetch pre-requisite courses using the courseId or crn
+            List<Course> preReqs = fetchPreReqs(courseId, crn); // Replace with actual method to fetch pre-requisites
+
+            // If no pre-requisites found, return 404
+            if (preReqs.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(preReqs);
+            }
+
+            // Return the list of pre-requisite courses
+            return ResponseEntity.ok(preReqs);
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
+
 
     // Other endpoints related to Bulletin data could be added here
 }
