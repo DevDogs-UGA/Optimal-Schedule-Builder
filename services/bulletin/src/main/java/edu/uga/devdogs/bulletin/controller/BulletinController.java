@@ -33,7 +33,6 @@ public class BulletinController {
         return courseList;
     }
 
-    // Other endpoints related to Bulletin data could be added here
 
     /**
      * Retrieves a list of courses based on the specified parameters. For example, you can edit this function to query
@@ -41,27 +40,6 @@ public class BulletinController {
      * "Give me all the 4 credit hours CSCI classes"
      *
      * @author Raghav Vikramprabhu
-     *
-     * @param creditHours The required number of credit hours for the courses. REQUIRED PARAMETER
-     * @param majorCode   The optional major code (e.g., "CSCI"). OPTIONAL PARAMETER
-     * @param classLevel  The optional class level (e.g., 4000). OPTIONAL PARAMETER
-     * @return A list of courses that match the given criteria.
-     */
-    @GetMapping("/courses")
-    public List<Course> getCourses(
-            @RequestParam("creditHours") int creditHours,
-            @RequestParam(value = "majorCode", required = false) String majorCode,
-            @RequestParam(value = "classLevel", required = false) Integer classLevel
-    ) {
-        // Placeholder return to avoid compilation error.
-        // List<Course> courses = fetchCourses(creditHours, majorCode, classLevel);
-        return List.of(new Course());  // Replace with actual data once implemented
-    }
-
-    /**
-     * Retrieves a list of courses based on the specified parameters. For example, you can edit this function to query
-     * with your required parameters such as credit Hours and add on additional optional ones like,
-     * "Give me all the 4 credit hours CSCI classes"
      *
      * @param creditHours The required number of credit hours for the courses. REQUIRED PARAMETER
      * @param majorCode   The optional major code (e.g., "CSCI"). OPTIONAL PARAMETER
@@ -116,5 +94,7 @@ public class BulletinController {
         preReqs.add(new Course()); // Placeholder return to avoid compilation error.
         return preReqs;
     }
+
+    // Other endpoints related to Bulletin data could be added here
 }
 
