@@ -1,3 +1,5 @@
+package edu.uga.devdogs.professor_rating.webscraping;
+
 import java.util.Date;
 
 /**
