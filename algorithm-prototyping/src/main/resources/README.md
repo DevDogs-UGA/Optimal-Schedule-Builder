@@ -21,8 +21,8 @@ This directory contains the sample data to be used in our prototypes.
                 "Wednesday",
                 "Friday"
               ],
-              "start": "12:40",
-              "end": "13:30",
+              "start_time": "12:40",
+              "end_time": "13:30",
               "building_name": "Park Hall"
             },
             ...
