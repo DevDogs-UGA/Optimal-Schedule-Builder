@@ -11,7 +11,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>brute-force-prototype</artifactId>
+    <artifactId>sample-data-parser</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
