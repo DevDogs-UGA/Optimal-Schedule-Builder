@@ -4,15 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>edu.uga.devdogs</groupId>
-        <artifactId>algorithm-prototyping</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
-
-    <artifactId>brute-force-prototype</artifactId>
+    <groupId>edu.uga.devdogs</groupId>
+    <artifactId>algorithm-prototyping</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>sample-data-parser</module>
+        <module>brute-force-prototype</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
