@@ -4,7 +4,7 @@ This directory contains the sample data to be used in our prototypes.
 
 ## Contents
 
-- `courses.json`: JSON file containing sample course data. Includes all courses and sections listed in the [`Course Information`](https://docs.google.com/document/d/15_oJ8q1UvlBLBLKztub_5BtrNufYX5yk-8lavj_PnLw/edit?usp=sharing) Google Doc.
+- `courses.json`: JSON file containing sample course data. Includes all courses, sections, and classes listed in the [`Course Information`](https://docs.google.com/document/d/15_oJ8q1UvlBLBLKztub_5BtrNufYX5yk-8lavj_PnLw/edit?usp=sharing) Google Doc.
 ```json
 {
   "courses": [
@@ -13,16 +13,20 @@ This directory contains the sample data to be used in our prototypes.
       "sections": [
         {
           "CRN": 25013,
-          "professor": "Daniel Barnum",
-          "times": {
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
-            "start": "12:40",
-            "end": "13:30"
-          }
+          "professor_name": "Daniel Barnum",
+          "classes": [
+            {
+              "days": [
+                "Monday",
+                "Wednesday",
+                "Friday"
+              ],
+              "start": "12:40",
+              "end": "13:30",
+              "building_name": "Park Hall"
+            },
+            ...
+          ]
         },
         ...
       ]
