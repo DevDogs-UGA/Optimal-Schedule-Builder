@@ -7,7 +7,7 @@ import java.time.LocalTime;
 public record Course(String courseCode, Section[] sections) {
 
     public record Section(
-            int crn,
+            String crn,
             @SerializedName("professor_name") Professor professor,
             Class[] classes) {
 

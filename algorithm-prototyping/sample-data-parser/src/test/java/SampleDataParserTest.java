@@ -30,6 +30,8 @@ public class SampleDataParserTest {
                 "The professor of the first section of the first course should be Daniel Barnum");
         assertEquals(5, sampleData.courses()[0].sections()[0].professor().quality(),
                 "The professor of the first section of the first course should have a quality of 5.");
+        assertEquals("25013", sampleData.courses()[0].sections()[0].crn(),
+                "The CRN of the first section of the first course should be the string \"25013\".");
         assertNotNull(sampleData.distances(),
                 "Distances should not be null.");
         assertNotNull(sampleData.distances().buildings(),

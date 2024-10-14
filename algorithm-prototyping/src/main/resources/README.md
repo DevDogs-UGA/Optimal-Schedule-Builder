@@ -11,7 +11,7 @@ This directory contains the sample data to be used in our prototypes.
     "course_code": "ENGL 1101",
     "sections": [
       {
-        "crn": 25013,
+        "crn": "25013",
         "professor_name": "Daniel Barnum",
         "classes": [
           {
