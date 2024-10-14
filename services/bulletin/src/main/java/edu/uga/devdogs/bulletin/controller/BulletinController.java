@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -181,6 +182,32 @@ public class BulletinController {
     }
 
 
+    /**
+     * Gets the special types of a course (honors/lab/online) from a CRN.
+     * @param crn The CRN of the course to find the special types.
+     * @return A list of Strings that correspond the the special types of that course.
+     */
+    @GetMapping("/course/specialCourseTypes")
+    public ResponseEntity<List<String>> getSpecialCourseTypesFromCRN(
+        @RequestParam(value = "crn", required = true) String crn
+    ) {
+        if (crn == null || crn.isEmpty()) {
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+
+        try {
+
+            List<String> specialCourseTypes = fetchSpecialCourseTypes(crn); // Changed method name to fetchSpecialCourseTypes
+
+            if (specialCourseTypes.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(specialCourseTypes);
+            } 
+
+            return ResponseEntity.ok(specialCourseTypes);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course types."));
+        }
+    }
     // Other endpoints related to Bulletin data could be added here
 }
 
