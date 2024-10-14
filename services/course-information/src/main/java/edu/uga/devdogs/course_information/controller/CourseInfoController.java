@@ -19,7 +19,7 @@ import java.util.List;
  * CRN, time slot, and athena name.
  */
 @RestController
-@RequestMapping("/api/course_information")
+@RequestMapping("/api/courseInformation")
 public class CourseInfoController {
 
     /**
@@ -34,7 +34,7 @@ public class CourseInfoController {
         @ApiResponse(responseCode = "400", description = "Invalid major"),
         @ApiResponse(responseCode = "404", description = "Course not found")
     })
-    @GetMapping("/courses-by-major")
+    @GetMapping("/coursesByMajor")
     @Tag(name="course-information")
     public ResponseEntity<List<Course>> getCourseList(@RequestParam String major) {
 
