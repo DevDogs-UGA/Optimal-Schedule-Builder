@@ -1,6 +1,7 @@
 package edu.uga.devdogs.bulletin.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -209,5 +210,38 @@ public class BulletinController {
         }
     }
     // Other endpoints related to Bulletin data could be added here
+    
+    /**
+     * Retrieves a list of sections that matches the requirements given.
+     * 
+     * @param requirement The string name for a requirement
+     * @return A list of courses that fufill the requirement
+     */
+    @Operation(summary = "get courses by requirement", description = "Retrieves a list of course objects with the given requirement fufilled")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid requirement"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
+    @GetMapping("/requirement")
+    @Tag(name="bulletin")
+    public ResponseEntity<List<Course>> getRequirementCourses(@RequestParam("requirement") String requirement) {
+        //return 400 for empty requirement
+        if requirement.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        try {
+            List<Course> courses = getCoursesByRequirement(requirement);
+            if (courses.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+                // Return 404 if no courses are found
+            }
+            // Return courses if found
+            return ResponseEntity.ok(courses);
+        } catch (Exception e) {
+            // Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
 
