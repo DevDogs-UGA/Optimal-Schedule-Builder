@@ -34,6 +34,9 @@ This directory contains the sample data to be used in our prototypes.
 ]
 ```
 
+- `scripts/generate_professors_outline.py`: Python script that generates a JSON file called `professors.json` containing all the professors in `courses.json` with `quality` set to `0` for easy data entry.
+
+
 - `professors.json`: JSON file containing sample professor data. Includes all professors listed in `courses.json` and their corresponding RateMyProfessor quality ratings. If the professor has no RateMyProfessor rating, their quality is null.
 ```json
 [
@@ -45,13 +48,16 @@ This directory contains the sample data to be used in our prototypes.
 ]
 ```
 
+- `scripts/generate_buildings_outline.py`: Python script that generates a JSON file called `buildings.json` containing all the buildings in `courses.json` with `x` and `y` set to `0` for easy data entry.
+
+
 - `buildings.json`: JSON file containing sample building data. Includes all buildings listed in `courses.json` and their corresponding positions based on the map found in the [`Algorithm Prototyping`](https://drive.google.com/file/d/1J2_vlChwx_oWGYKRrmDkDBzWY6dORn6v/view?usp=drive_link) document.
 ```json
 [
   {
    "name": "Park Hall",
     "x": 3,
-   "y": 2
+    "y": 2
   },
   ...
 ]
