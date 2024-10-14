@@ -79,7 +79,14 @@ public class BulletinController {
      * @param classLevel  The optional class level (e.g., 4000). OPTIONAL PARAMETER
      * @return A list of courses that match the given criteria.
      */
+    @Operation(summary = "Get courses by credit hours", description = "Retrieves a list of Course objects with the given number of credit hours. Optional major and class level parameters may also be included.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid parameters"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
     @GetMapping("/courses")
+    @Tag(name = "bulletin")
     public ResponseEntity<List<Course>> getCourses(
             @RequestParam(value = "creditHours") int creditHours,
             @RequestParam(value = "majorCode", required = false) String majorCode,
@@ -118,7 +125,14 @@ public class BulletinController {
      * @param crn The CRN of the course to retrieve co-requisites for. (optional)
      * @return A list of course objects that are co-requisites for the given course.
      */
+    @Operation(summary = "Get co-reqs by course ID or CRN", description = "Retrieves a list of Course objects that are co-requisites for the given course")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid course ID or CRN"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
     @GetMapping("/course/coreqs")
+    @Tag(name = "bulletin")
     public ResponseEntity<List<Course>> getCoReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
             @RequestParam(value = "crn", required = false) String crn
@@ -153,7 +167,14 @@ public class BulletinController {
      * @param crn The CRN of the course to retrieve pre-requisites for. (optional)
      * @return A list of course objects that are pre-requisites for the given course.
      */
+    @Operation(summary = "Get pre-reqs by course ID or CRN", description = "Retrieves a list of Course objects that are pre-requisites for the given course")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid course ID or CRN"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
     @GetMapping("/course/prereqs")
+    @Tag(name = "bulletin")
     public ResponseEntity<List<Course>> getPreReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
             @RequestParam(value = "crn", required = false) String crn
