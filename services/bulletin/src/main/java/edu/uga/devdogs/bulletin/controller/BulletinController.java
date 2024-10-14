@@ -34,4 +34,16 @@ public class BulletinController {
     }
 
     // Other endpoints related to Bulletin data could be added here
+    
+    /**
+     * Returns a list of sections that matches the requirements given.
+     * 
+     * @param requirement The string name for a requirement
+     * @return A list of courses that fufill the requirement
+     */
+    @GetMapping("/requirement")
+    public List<Course> getRequirementCourses(@RequestParam("requirement") String requirement) {
+        List<Course> courses = getCourses(requirement);
+        return courses;
+    }
 }
