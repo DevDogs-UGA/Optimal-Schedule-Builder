@@ -41,23 +41,23 @@
   },
   {
     "name": "Aderhold Hall",
-    "x": 0,
-    "y": 0
+    "x": 16,
+    "y": 2
   },
   {
     "name": "Life Sciences",
-    "x": 0,
-    "y": 0
+    "x": 17,
+    "y": 4
   },
   {
     "name": "Forest Resources",
-    "x": 0,
-    "y": 0
+    "x": 12,
+    "y": 8
   },
   {
     "name": "Food Sciences",
-    "x": 0,
-    "y": 0
+    "x": 16,
+    "y": 14
   },
   {
     "name": "Geography Geology",
