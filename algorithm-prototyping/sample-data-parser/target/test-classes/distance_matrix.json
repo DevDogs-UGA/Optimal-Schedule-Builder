@@ -1,0 +1,14 @@
+{
+  "buildings": [
+    "Park Hall",
+    "Boyd",
+    "Miller Plant Sciences",
+    "Miller Learning Center"
+  ],
+  "distance_matrix": [
+    [1.5, 2.3, 9.1, 2.0],
+    [1.5, 2.3, 9.1, 2.0],
+    [1.5, 2.3, 9.1, 2.0],
+    [1.5, 2.3, 9.1, 2.0]
+  ]
+}
