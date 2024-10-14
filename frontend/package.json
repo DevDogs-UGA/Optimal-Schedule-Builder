@@ -1,11 +1,19 @@
 {
+<<<<<<< HEAD
   "name": "optimal-schedule-builder",
   "version": "0.1.0",
   "private": true,
+=======
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+>>>>>>> 3a117b9f4c95dda3aa086f7d0b79d386dc967370
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+<<<<<<< HEAD
     "lint": "next lint"
   },
   "dependencies": {
@@ -19,4 +27,35 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.7"
   }
+=======
+    "lint": "next lint",
+    "lint:check": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
+    "lint:fix": "eslint --ext \".ts,.vue\" --ignore-path .gitignore --fix .",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write --list-different ."
+  },
+  "dependencies": {
+    "@t3-oss/env-nextjs": "^0.11.1",
+    "next": "14.2.13",
+    "react": "^18",
+    "react-dom": "^18",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.56.10",
+    "@types/node": "^22.7.4",
+    "@types/react": "^18.3.10",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.13",
+    "postcss": "^8.4.47",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.8",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.2"
+  },
+  "packageManager": "pnpm@9.11.0"
+>>>>>>> 3a117b9f4c95dda3aa086f7d0b79d386dc967370
 }
