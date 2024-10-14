@@ -6,7 +6,9 @@ import com.google.gson.GsonBuilder;
 import edu.uga.devdogs.deserializers.LocalTimeDeserializer;
 import edu.uga.devdogs.deserializers.ProfessorDeserializer;
 import edu.uga.devdogs.records.Course;
+import edu.uga.devdogs.records.Distances;
 import edu.uga.devdogs.records.Professor;
+import edu.uga.devdogs.records.SampleData;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,15 +21,16 @@ public class SampleDataParser {
 
     }
 
-    public Course[] parse(String professorsFilePath, String coursesFilePath) {
+    public SampleData parse(String professorsFilePath, String coursesFilePath, String distancesFilePath) {
         String professorsJson = readFile(professorsFilePath);
         String coursesJson = readFile(coursesFilePath);
+        String distancesJson = readFile(distancesFilePath);
 
-        Gson professorsGson = new GsonBuilder()
+        Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
 
-        Professor[] professors = professorsGson.fromJson(professorsJson, Professor[].class);
+        Professor[] professors = gson.fromJson(professorsJson, Professor[].class);
 
         Gson coursesGson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -35,7 +38,11 @@ public class SampleDataParser {
                 .registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer())
                 .create();
 
-        return coursesGson.fromJson(coursesJson, Course[].class);
+        Course[] courses = coursesGson.fromJson(coursesJson, Course[].class);
+
+        Distances distances = gson.fromJson(distancesJson, Distances.class);
+
+        return new SampleData(courses, distances);
     }
 
     private static String readFile(String filePath) {
