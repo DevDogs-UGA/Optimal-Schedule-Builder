@@ -59,7 +59,7 @@ public class BulletinController {
         }
         try {
             List<Course> courses = getCoursesByRequirement(requirement);
-            if (courseList == null) {
+            if (courses.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
                 // Return 404 if no courses are found
             }
