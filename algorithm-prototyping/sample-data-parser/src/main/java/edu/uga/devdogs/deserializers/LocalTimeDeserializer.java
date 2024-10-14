@@ -1,4 +1,4 @@
-package edu.uga.devdogs;
+package edu.uga.devdogs.deserializers;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

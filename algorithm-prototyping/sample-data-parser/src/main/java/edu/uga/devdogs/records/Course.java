@@ -1,4 +1,4 @@
-package edu.uga.devdogs;
+package edu.uga.devdogs.records;
 
 import com.google.gson.annotations.SerializedName;
 

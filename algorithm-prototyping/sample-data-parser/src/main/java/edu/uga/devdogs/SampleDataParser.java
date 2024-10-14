@@ -3,6 +3,10 @@ package edu.uga.devdogs;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import edu.uga.devdogs.deserializers.LocalTimeDeserializer;
+import edu.uga.devdogs.deserializers.ProfessorDeserializer;
+import edu.uga.devdogs.records.Course;
+import edu.uga.devdogs.records.Professor;
 
 import java.io.IOException;
 import java.nio.file.Files;

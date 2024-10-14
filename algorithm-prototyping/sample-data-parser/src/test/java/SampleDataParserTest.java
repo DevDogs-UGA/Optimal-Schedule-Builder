@@ -1,4 +1,4 @@
-import edu.uga.devdogs.Course;
+import edu.uga.devdogs.records.Course;
 import edu.uga.devdogs.SampleDataParser;
 import org.junit.jupiter.api.Test;
 
