@@ -56,7 +56,7 @@ public class RESTController {
     public double getAggregateHelpfulnessRating(@RequestParam(required = true) String professorName, @RequestParam(required = false) String className) {
 	// return arbitraryMethodName();
 	return 2.0;
-
+    }
     /**
      * Handles GET requests for returning whether attendance is mandatory
      * for a given professor and class.

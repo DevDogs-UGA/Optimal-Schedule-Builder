@@ -1,0 +1,23 @@
+[
+  {
+    "course_code": "ENGL 1101",
+    "sections": [
+      {
+        "crn": "25013",
+        "professor_name": "Daniel Barnum",
+        "classes": [
+          {
+            "days": [
+              "Monday",
+              "Wednesday",
+              "Friday"
+            ],
+            "start_time": "12:40",
+            "end_time": "13:30",
+            "building_name": "Park Hall"
+          }
+        ]
+      }
+    ]
+  }
+]
