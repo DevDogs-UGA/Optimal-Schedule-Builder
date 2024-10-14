@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -191,7 +192,7 @@ public class BulletinController {
         @RequestParam(value = "crn", required = true) String crn
     ) {
         if (crn == null || crn.isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(Collections.emptyList());
         }
 
         try {
@@ -204,7 +205,7 @@ public class BulletinController {
 
             return ResponseEntity.ok(specialCourseTypes);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course types."));
         }
     }
     // Other endpoints related to Bulletin data could be added here
