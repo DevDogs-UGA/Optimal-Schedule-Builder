@@ -11,6 +11,7 @@ public class Schedule {
 
     // Contains a list of classes for each day of the week
     private List<List<Class>> days;
+    private List<Section> sections;
 
     public Schedule() {
         this.days = new ArrayList<>(5); // 5 days of classes (Mon-Fri)
