@@ -1,7 +1,7 @@
-package edu.uga.devdogs;
+package edu.uga.devdogs.bruteforceprototype;
 
-import edu.uga.devdogs.records.Section;
-import edu.uga.devdogs.records.Class;
+import edu.uga.devdogs.sampledataparser.records.Section;
+import edu.uga.devdogs.sampledataparser.records.Class;
 
 import java.time.DayOfWeek;
 import java.util.*;

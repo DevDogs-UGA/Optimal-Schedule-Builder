@@ -1,10 +1,10 @@
-package edu.uga.devdogs.deserializers;
+package edu.uga.devdogs.sampledataparser.deserializers;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import edu.uga.devdogs.records.Professor;
+import edu.uga.devdogs.sampledataparser.records.Professor;
 
 import java.lang.reflect.Type;
 

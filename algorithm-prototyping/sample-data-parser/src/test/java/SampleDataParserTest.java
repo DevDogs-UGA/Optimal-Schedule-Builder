@@ -1,5 +1,5 @@
-import edu.uga.devdogs.SampleDataParser;
-import edu.uga.devdogs.records.SampleData;
+import edu.uga.devdogs.sampledataparser.SampleDataParser;
+import edu.uga.devdogs.sampledataparser.records.SampleData;
 import org.junit.jupiter.api.Test;
 
 import java.time.DayOfWeek;

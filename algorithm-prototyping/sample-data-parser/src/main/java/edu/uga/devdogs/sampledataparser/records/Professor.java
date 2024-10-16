@@ -1,4 +1,4 @@
-package edu.uga.devdogs.records;
+package edu.uga.devdogs.sampledataparser.records;
 
 public record Professor(String name,
                         int quality) {

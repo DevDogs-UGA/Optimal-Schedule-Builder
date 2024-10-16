@@ -1,4 +1,4 @@
-package edu.uga.devdogs;
+package edu.uga.devdogs.bruteforceprototype;
 
 /**
  * Utility class for performing operations and calculations related to a Schedule.

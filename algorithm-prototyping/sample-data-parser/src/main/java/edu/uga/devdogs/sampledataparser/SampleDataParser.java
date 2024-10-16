@@ -1,15 +1,15 @@
-package edu.uga.devdogs;
+package edu.uga.devdogs.sampledataparser;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import edu.uga.devdogs.deserializers.DayOfWeekArrayDeserializer;
-import edu.uga.devdogs.deserializers.LocalTimeDeserializer;
-import edu.uga.devdogs.deserializers.ProfessorDeserializer;
-import edu.uga.devdogs.records.Course;
-import edu.uga.devdogs.records.Distances;
-import edu.uga.devdogs.records.Professor;
-import edu.uga.devdogs.records.SampleData;
+import edu.uga.devdogs.sampledataparser.deserializers.DayOfWeekArrayDeserializer;
+import edu.uga.devdogs.sampledataparser.deserializers.LocalTimeDeserializer;
+import edu.uga.devdogs.sampledataparser.deserializers.ProfessorDeserializer;
+import edu.uga.devdogs.sampledataparser.records.Course;
+import edu.uga.devdogs.sampledataparser.records.Distances;
+import edu.uga.devdogs.sampledataparser.records.Professor;
+import edu.uga.devdogs.sampledataparser.records.SampleData;
 
 import java.io.IOException;
 import java.nio.file.Files;

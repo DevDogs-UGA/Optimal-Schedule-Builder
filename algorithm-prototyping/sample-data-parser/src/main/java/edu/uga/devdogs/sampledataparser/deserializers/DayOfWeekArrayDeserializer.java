@@ -1,4 +1,4 @@
-package edu.uga.devdogs.deserializers;
+package edu.uga.devdogs.sampledataparser.deserializers;
 
 import com.google.gson.*;
 

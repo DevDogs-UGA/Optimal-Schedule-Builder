@@ -1,4 +1,4 @@
-package edu.uga.devdogs.records;
+package edu.uga.devdogs.sampledataparser.records;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;

@@ -1,6 +1,6 @@
-package edu.uga.devdogs;
+package edu.uga.devdogs.bruteforceprototype;
 
-import edu.uga.devdogs.records.Class;
+import edu.uga.devdogs.sampledataparser.records.Class;
 
 import java.util.Comparator;
 
