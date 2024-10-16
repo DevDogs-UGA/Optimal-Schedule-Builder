@@ -17,12 +17,30 @@ import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
+/**
+ * The SampleDataParser class is responsible for parsing JSON data from multiple files
+ * into structured Java objects. It deserializes the data for professors, courses, and building distances,
+ * and returns a {@link SampleData} object containing all parsed data.
+ */
 public class SampleDataParser {
 
+    /**
+     * Constructs a SampleDataParser object.
+     */
     public SampleDataParser() {
 
     }
 
+    /**
+     * Parses JSON data from the provided file paths, deserializing it into {@link Professor}, {@link Course},
+     * and {@link Distances} objects. The method combines the parsed data into a {@link SampleData} object.
+     *
+     * @param professorsFilePath the file path to the JSON file containing professor data.
+     * @param coursesFilePath    the file path to the JSON file containing course data.
+     * @param distancesFilePath  the file path to the JSON file containing building distance data.
+     * @return a {@link SampleData} object containing the parsed course, professor, and distance data.
+     * @throws IllegalArgumentException if any of the files cannot be found or read.
+     */
     public SampleData parse(String professorsFilePath, String coursesFilePath, String distancesFilePath) {
         String professorsJson = readFile(professorsFilePath);
         String coursesJson = readFile(coursesFilePath);
@@ -48,6 +66,13 @@ public class SampleDataParser {
         return new SampleData(courses, distances);
     }
 
+    /**
+     * Reads a file and returns its contents as a string.
+     *
+     * @param filePath the file path of the JSON file to read.
+     * @return the contents of the file as a string.
+     * @throws IllegalArgumentException if the file cannot be found or read.
+     */
     private static String readFile(String filePath) {
         String json;
 
