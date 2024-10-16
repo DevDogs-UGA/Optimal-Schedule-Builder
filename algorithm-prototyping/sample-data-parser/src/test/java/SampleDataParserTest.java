@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SampleDataParserTest {
 
     @Test
-    void testValidFiles() throws Exception {
+    void testValidFiles() {
         String professorsFilePath = "src/test/resources/professors.json";
         String coursesFilePath = "src/test/resources/courses.json";
         String distancesFilePath = "src/test/resources/distance_matrix.json";
