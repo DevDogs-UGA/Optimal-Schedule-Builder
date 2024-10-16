@@ -24,7 +24,7 @@ public class Schedule {
      * An EnumMap that organizes classes by day of the week. Each day is associated
      * with a TreeSet of classes, which are sorted by start time.
      */
-    private final EnumMap<DayOfWeek, Set<Class>> days;
+    private final EnumMap<DayOfWeek, TreeSet<Class>> days;
 
     /**
      * Constructs a Schedule object that organizes sections and their corresponding classes by days of the week.
@@ -64,7 +64,7 @@ public class Schedule {
      *
      * @return an EnumMap mapping DayOfWeek to a Set of classes.
      */
-    public EnumMap<DayOfWeek, Set<Class>> days() {
+    public EnumMap<DayOfWeek, TreeSet<Class>> days() {
         return days;
     }
 
