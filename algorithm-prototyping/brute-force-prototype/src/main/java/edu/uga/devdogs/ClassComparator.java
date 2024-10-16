@@ -8,6 +8,12 @@ public class ClassComparator implements Comparator<Class> {
 
     @Override
     public int compare(Class class1, Class class2) {
-        return class1.startTime().compareTo(class2.startTime());
+        int timeComparison = class1.startTime().compareTo(class2.startTime());
+        if (timeComparison != 0) {
+            return timeComparison;
+        }
+
+        // If start times are the same, compare by CRN as a fallback
+        return class1.crn().compareTo(class2.crn());
     }
 }
