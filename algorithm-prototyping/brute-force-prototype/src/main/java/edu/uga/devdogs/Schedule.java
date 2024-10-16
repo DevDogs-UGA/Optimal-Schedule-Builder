@@ -67,25 +67,5 @@ public class Schedule {
     public EnumMap<DayOfWeek, TreeSet<Class>> days() {
         return days;
     }
-
-    /**
-     * Validates the schedule to check for any time conflicts between classes.
-     *
-     * @return true if the schedule is valid (no time conflicts), false otherwise.
-     */
-    public boolean validate() {
-        return true;
-    }
-
-    /**
-     * Checks if two classes have overlapping times.
-     *
-     * @param class1 the first class to compare
-     * @param class2 the second class to compare
-     * @return true if the classes have a time conflict, false otherwise
-     */
-    private static boolean checkTimeConflict(Class class1, Class class2) {
-        return false;
-    }
 }
 
