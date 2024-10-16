@@ -1,7 +1,7 @@
 package edu.uga.devdogs;
 
-import edu.uga.devdogs.records.Course.Section;
-import edu.uga.devdogs.records.Course.Section.Class;
+import edu.uga.devdogs.records.Section;
+import edu.uga.devdogs.records.Class;
 
 import java.time.DayOfWeek;
 import java.util.*;
@@ -42,8 +42,7 @@ public class Schedule {
 
         for (Section section : sections) { // Iterates through all sections
             for (Class _class : section.classes()) { // Iterates through all classes in the current section
-                for (String dayString : _class.days()) { // Iterates through all days in the current class
-                    DayOfWeek day = DayOfWeek.valueOf(dayString.toUpperCase()); // Converts the current day from a String to a DayOfWeek enum
+                for (DayOfWeek day : _class.days()) { // Iterates through all days in the current class
                     days.get(day).add(_class); // Adds the current class to the TreeSet associated with the current DayOfWeek
                 }
             }

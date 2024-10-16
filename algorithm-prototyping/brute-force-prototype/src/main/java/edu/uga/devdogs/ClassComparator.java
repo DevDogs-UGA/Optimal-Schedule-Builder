@@ -1,6 +1,6 @@
 package edu.uga.devdogs;
 
-import edu.uga.devdogs.records.Course.Section.Class;
+import edu.uga.devdogs.records.Class;
 
 import java.util.Comparator;
 
