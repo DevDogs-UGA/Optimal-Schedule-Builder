@@ -2,6 +2,8 @@ import edu.uga.devdogs.SampleDataParser;
 import edu.uga.devdogs.records.SampleData;
 import org.junit.jupiter.api.Test;
 
+import java.time.DayOfWeek;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SampleDataParserTest {
@@ -32,6 +34,8 @@ public class SampleDataParserTest {
                 "The professor of the first section of the first course should have a quality of 5.");
         assertEquals("25013", sampleData.courses()[0].sections()[0].crn(),
                 "The CRN of the first section of the first course should be the string \"25013\".");
+        assertArrayEquals(new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY}, sampleData.courses()[0].sections()[0].classes()[0].days(),
+                "The days of the first class of the first section of the first course should be {DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY}.");
         assertNotNull(sampleData.distances(),
                 "Distances should not be null.");
         assertNotNull(sampleData.distances().buildings(),

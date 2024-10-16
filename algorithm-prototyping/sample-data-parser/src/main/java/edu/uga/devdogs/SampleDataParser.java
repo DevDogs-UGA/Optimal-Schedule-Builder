@@ -3,6 +3,7 @@ package edu.uga.devdogs;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import edu.uga.devdogs.deserializers.DayOfWeekArrayDeserializer;
 import edu.uga.devdogs.deserializers.LocalTimeDeserializer;
 import edu.uga.devdogs.deserializers.ProfessorDeserializer;
 import edu.uga.devdogs.records.Course;
@@ -13,6 +14,7 @@ import edu.uga.devdogs.records.SampleData;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 public class SampleDataParser {
@@ -36,6 +38,7 @@ public class SampleDataParser {
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .registerTypeAdapter(Professor.class, new ProfessorDeserializer(professors))
                 .registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer())
+                .registerTypeAdapter(DayOfWeek[].class, new DayOfWeekArrayDeserializer())
                 .create();
 
         Course[] courses = coursesGson.fromJson(coursesJson, Course[].class);
