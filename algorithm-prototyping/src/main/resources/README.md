@@ -11,10 +11,12 @@ This directory contains the sample data to be used in our prototypes.
     "course_code": "ENGL 1101",
     "sections": [
       {
+        "course_code": "ENGL 1101",
         "crn": "25013",
         "professor_name": "Daniel Barnum",
         "classes": [
           {
+            "crn": "25013",
             "days": [
               "Monday",
               "Wednesday",

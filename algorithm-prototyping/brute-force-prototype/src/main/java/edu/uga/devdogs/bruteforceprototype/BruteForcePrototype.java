@@ -1,4 +1,4 @@
-package edu.uga.devdogs;
+package edu.uga.devdogs.bruteforceprototype;
 
 public class BruteForcePrototype {
     public static void main(String[] args) {
