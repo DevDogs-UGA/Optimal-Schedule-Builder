@@ -8,10 +8,8 @@ import java.util.*;
 
 /**
  * The Schedule class represents a collection of Sections and their corresponding
- * Classes organized by days of the week. It provides functionality for checking
- * the validity of a Schedule based on the presence of time conflicts. It also
- * organizes the data in a way that allows for Schedule-level and Class-level
- * objectives to be calculated easily.
+ * Classes organized by days of the week. It organizes the data in a way that
+ * allows for Schedule-level and Class-level objectives to be calculated easily.
  */
 public class Schedule {
 
