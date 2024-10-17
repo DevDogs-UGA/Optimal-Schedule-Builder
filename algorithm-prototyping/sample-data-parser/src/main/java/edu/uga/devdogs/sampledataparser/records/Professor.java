@@ -7,5 +7,5 @@ package edu.uga.devdogs.sampledataparser.records;
  * @param quality The quality rating of the professor (e.g., on a scale from 1 to 5).
  */
 public record Professor(String name,
-                        int quality) {
+                        double quality) {
 }
