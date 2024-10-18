@@ -1,4 +1,6 @@
-package edu.uga.devdogs.bruteforceprototype;
+package edu.uga.devdogs.bruteforceprototype.schedule;
+
+import edu.uga.devdogs.sampledataparser.records.Distances;
 
 /**
  * Utility class for performing operations and calculations related to a Schedule.
@@ -38,9 +40,10 @@ public class ScheduleUtil {
      * between consecutive classes.
      *
      * @param schedule the schedule for which to compute the maximum distance
+     * @param distances object that represents distances between buildings on campus.
      * @return the maximum distance between buildings for consecutive classes
      */
-    public static double computeMaxDistance(Schedule schedule) {
+    public static double computeMaxDistance(Schedule schedule, Distances distances) {
         return 0.0;
     }
 
@@ -60,10 +63,11 @@ public class ScheduleUtil {
      * This method computes each objective, normalizes their values, and computes a weighted sum.
      *
      * @param schedule the schedule to evaluate
+     * @param distances object that represents distances between buildings on campus.
      * @param weights an array of floats representing the weights for each objective
      * @return the overall objective score for the schedule
      */
-    public static double computeOverallObjective(Schedule schedule, Float[] weights) {
+    public static double computeOverallObjective(Schedule schedule, Distances distances, Float[] weights) {
         return 0.0;
     }
 
