@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class CourseSectionEntity implements Serializable {
+    // Variables
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long courseSectionId;
 
     private int crn;
@@ -33,6 +33,9 @@ public class CourseSectionEntity implements Serializable {
 
     private int year;
 
+    // Relationships (not yet created)
+
+    // Constructors, getters, setters, and toString 
     public CourseSectionEntity() {}
 
     public CourseSectionEntity(long courseSectionId, int crn, int sec, char stat, double creditHoursLow,
