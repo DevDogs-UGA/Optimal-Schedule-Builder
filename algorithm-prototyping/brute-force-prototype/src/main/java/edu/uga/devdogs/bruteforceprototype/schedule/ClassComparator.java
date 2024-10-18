@@ -1,4 +1,4 @@
-package edu.uga.devdogs.bruteforceprototype;
+package edu.uga.devdogs.bruteforceprototype.schedule;
 
 import edu.uga.devdogs.sampledataparser.records.Class;
 

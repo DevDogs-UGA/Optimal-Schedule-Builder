@@ -1,5 +1,6 @@
 package edu.uga.devdogs.bruteforceprototype;
 
+import edu.uga.devdogs.bruteforceprototype.schedule.Schedule;
 import edu.uga.devdogs.sampledataparser.records.Course;
 import edu.uga.devdogs.sampledataparser.records.Distances;
 import edu.uga.devdogs.sampledataparser.records.SampleData;
