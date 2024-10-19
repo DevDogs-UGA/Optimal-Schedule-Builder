@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Java JPA entity represention for Class
  */
 @Entity
-public class Class implements Serializable{
+public class ClassEntity implements Serializable{
     
     /*
      * Variables
@@ -42,11 +42,11 @@ public class Class implements Serializable{
       */
 
      // Default constructor
-     public Class() {
+     public ClassEntity() {
      }
 
      // Constructor w/o classID
-     public Class(String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
+     public ClassEntity(String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
          this.days = days;
          this.startTime = startTime;
          this.endTime = endTime;
@@ -56,7 +56,7 @@ public class Class implements Serializable{
      }
 
      // Constructor w/ classID
-     public Class(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
+     public ClassEntity(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
          this.classId = classId;
          this.days = days;
          this.startTime = startTime;
