@@ -9,7 +9,7 @@ import java.sql.Time;
 
 @Configuration
 public class ClassEntityConfig {
-
+    @Bean
     CommandLineRunner commandLineRunner(ClassEntityRepository classRepository, CourseRepository courseRepository) {
         return args -> {
             ClassEntity class1 = new ClassEntity(
