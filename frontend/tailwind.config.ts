@@ -7,6 +7,8 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "bulldog-red": "#a02c3c",
+        "dusty-pink": "#f0d4dc",
       },
     },
   },
