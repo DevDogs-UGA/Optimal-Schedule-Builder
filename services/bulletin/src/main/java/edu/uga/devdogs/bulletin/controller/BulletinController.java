@@ -23,11 +23,32 @@ public class BulletinController {
      * @param term The term for which the course has to be in.
      * @return A "Course" List containing the course information from a specific term.
      */
-    @GetMapping("/course")
-    public List<Course> getCourseByTerm(@RequestParam String term) {
-        List<Course> courseList = new ArrayList<>();
-        //courseList = courseTerm(term);
-        //the above is a placeholder function that returns a list of courses required by term.
+    @Operation(summary = "Get courses by term", description = "Retrieves courses based on the given term")
+    @ApiResponse(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid term"),
+        @ApiResponse(responseCode = "404",description = "Course not found")
+    })
+    @GetMapping("/term")
+    public List<Course> getCourseByTerm(@RequestParam(value = "term", required = true) String term) {
+        
+        if(term.isEmpty()){
+            return ResponseEntity.badRequest().body(null); //Returns 400 if parameter isn't given
+        }
+
+        try {
+            List<Course> courseList = fetchCourseByTerm(term); //fetches the courses based on term
+
+            if(courseList.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseList); //Checks and returns 404 error if courseList information is empty
+            }
+
+            return ResponseEntity.ok(courseList); //Returns course information if everything is correct
+        } catch (Exception e) {
+            //Catches any server problems or exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+        
     }
 
     /**
