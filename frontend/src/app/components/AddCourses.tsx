@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "./Button";
-import { SearchSelector } from "./SearchSelector";
+import { SearchFilter } from "./SearchFilter";
 import { useState } from "react";
 
 interface TabProps {
@@ -33,7 +33,7 @@ export const AddCourses = () => {
         {tabs.map((tab, index) => (
           <TabButton
             key={index}
-            label={`By ${tab === "crn" ? "CRN" : "tab"}`}
+            label={`By ${tab === "crn" ? "CRN" : tab}`}
             onClick={() => handleTabChange(index)}
             className={
               currentTab === index
@@ -44,20 +44,20 @@ export const AddCourses = () => {
         ))}
       </div>
       <main className="bg-barely-pink border-dusty-pink justify-between gap-4 border-2 px-12 py-8">
-        <div className="items-center justify-center space-y-4 py-12">
+        <div className="items-center justify-center space-y-8 py-16">
           {currentTab === 0 ? (
             <>
-              <SearchSelector text="Subject" />
-              <SearchSelector text="Course" />
+              <SearchFilter text="Subject" />
+              <SearchFilter text="Course" />
             </>
           ) : currentTab === 1 ? (
             <>
-              <SearchSelector text="Instructor" />
-              <SearchSelector text="Course" />
+              <SearchFilter text="Instructor" />
+              <SearchFilter text="Course" />
             </>
           ) : currentTab === 2 ? (
             <>
-              <SearchSelector text="CRN" />
+              <SearchFilter text="CRN" />
             </>
           ) : null}
         </div>
