@@ -43,7 +43,7 @@ export const AddCourses = () => {
           />
         ))}
       </div>
-      <main className="bg-barely-pink border-dusty-pink justify-between gap-4 border-2 px-12 py-8">
+      <main className="justify-between gap-4 border-2 border-dusty-pink bg-barely-pink px-12 py-8">
         <div className="items-center justify-center space-y-8 py-16">
           {currentTab === 0 ? (
             <>
