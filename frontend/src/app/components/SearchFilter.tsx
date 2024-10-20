@@ -1,0 +1,16 @@
+interface props {
+  text?: string;
+}
+
+export const SearchFilter = ({ text }: props) => {
+  return (
+    <div className="flex items-center justify-between">
+      <label className="text-xl font-bold">{text}</label>
+      <input
+        type="text"
+        className="w-3/4 border-2 border-dusty-pink"
+        placeholder="Dropdown Placeholder"
+      />
+    </div>
+  );
+};
