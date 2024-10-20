@@ -1,9 +1,11 @@
 import Filters from "./component/Filters";
 
-export default function HomePage() {
+const Homepage = () => {
   return (
     <div>
       <Filters />
     </div>
   );
 }
+
+export default Homepage;
