@@ -28,12 +28,12 @@ export const AddCourses = () => {
   };
 
   return (
-    <div className="min-w-fit">
+    <div className="min-h-max min-w-fit">
       <div className="flex gap-2">
         {tabs.map((tab, index) => (
           <TabButton
             key={index}
-            label={`By ${tab}`}
+            label={`By ${tab === "crn" ? "CRN" : "tab"}`}
             onClick={() => handleTabChange(index)}
             className={
               currentTab === index
