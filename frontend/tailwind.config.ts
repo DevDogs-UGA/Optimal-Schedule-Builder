@@ -9,6 +9,7 @@ export default {
         foreground: "var(--foreground)",
         "bulldog-red": "#a02c3c",
         "dusty-pink": "#f0d4dc",
+        "barely-pink": "#fff7f9",
       },
     },
   },
