@@ -4,14 +4,14 @@ const CallToAction = () => {
   return (
     <div className="flex">
       {/* Left side label */}
-      <div className=" flex items-center bg-BarelyPink px-6 py-2 rounded-full">
+      <div className="relative left-[2rem] flex items-center bg-BarelyPink px-6 py-2 rounded-full">
         <span className="text-GroutGray w-[10rem] p-2 text-left">Ready?</span>
       </div>
 
       {/* Right side button */}
-      <button className="relative right-[50px] flex items-center trasition ease-in-out duration-300 hover:bg-[#8b0923] bg-BulldogRed text-white px-6 py-2 rounded-full">
+      <button className="relative right-[2rem] flex items-center trasition ease-in-out duration-300 hover:bg-[#8b0923] bg-BulldogRed text-white px-6 py-2 rounded-full">
         <span className="mr-2 p-2 w-[10rem] text-left">Get Started</span>
-        <div className="bg-white p-2 rounded-full">
+        <div className="bg-white p-2 rounded-full mr-[30%]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
