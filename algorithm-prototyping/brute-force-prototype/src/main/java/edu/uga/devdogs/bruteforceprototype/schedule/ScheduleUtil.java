@@ -31,7 +31,18 @@ public class ScheduleUtil {
      * @return the average professor quality rating for the schedule
      */
     public static double computeAverageProfessorQuality(Schedule schedule) {
-        return 0.0;
+
+        double avgProfQuality = 0.0;
+
+        // Used to create the summation of the quality of professors within the schedule.
+        for (int i = 0; i < schedule.professor().length; i++) {
+            avgProfQuality += schedule.professor()[i].quality();
+        }
+
+        avgProfQuality /= schedule.professor().length;
+
+        return avgProfQuality;
+
     }
 
     /**
