@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Navbar() {
+export default function ScheduleViewNavBar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleNavbar = (): void => {
@@ -52,17 +52,17 @@ export default function Navbar() {
         <div className="mr-8 hidden flex-nowrap items-center justify-around gap-8 text-[20px] font-bold sm:flex">
           <Link href="/">
             <button className="rounded-full px-2 py-1 transition duration-300 ease-in-out hover:bg-BulldogRed/50 md:px-4">
-              App
+              Modify
             </button>
           </Link>
           <Link href="/">
             <button className="rounded-full px-2 py-1 transition duration-300 ease-in-out hover:bg-BulldogRed/50 md:px-4">
-              About Us
+              Shuffle
             </button>
           </Link>
           <Link href="/">
             <button className="rounded-full px-2 py-1 transition duration-300 ease-in-out hover:bg-BulldogRed/50 md:px-4">
-              Contact
+              List View
             </button>
           </Link>
         </div>
@@ -72,17 +72,17 @@ export default function Navbar() {
           <div className="absolute left-0 top-[4.5rem] z-[998] w-full flex-col items-center justify-start rounded-b-lg bg-[#F8E6EA] shadow-lg sm:hidden">
             <Link href="/">
               <button className="block w-full px-4 py-3 text-left text-[1.2rem] font-bold transition duration-300 ease-in-out hover:bg-BulldogRed/50">
-                App
+                Modify
               </button>
             </Link>
             <Link href="/">
               <button className="block w-full px-4 py-3 text-left text-[1.2rem] font-bold transition duration-300 ease-in-out hover:bg-BulldogRed/50">
-                About Us
+                Shuffle
               </button>
             </Link>
             <Link href="/">
               <button className="block w-full px-4 py-3 text-left text-[1.2rem] font-bold transition duration-300 ease-in-out hover:bg-BulldogRed/50">
-                Contact
+                List View
               </button>
             </Link>
           </div>

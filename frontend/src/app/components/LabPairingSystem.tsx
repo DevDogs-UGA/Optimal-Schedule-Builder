@@ -2,7 +2,7 @@ import React from "react";
 
 export default function LabPairingSystem() {
   return (
-    <div className="flex transition ease-in-out duration-300 bg-[#F3EDED] w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-xl hover:bg-[#c3a5a5] items-center justify-center">
+    <div className="flex h-24 w-24 items-center justify-center rounded-xl bg-[#F3EDED] transition duration-300 ease-in-out hover:bg-[#c3a5a5] sm:h-32 sm:w-32 md:h-40 md:w-40">
       <p className="text-[10px] sm:text-[14px] md:text-[16px]">
         Lab Pairing System
       </p>
