@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class BulletinController {
         @ApiResponse(responseCode = "400", description = "Invalid course ID"),
         @ApiResponse(responseCode = "404", description = "Course not found")
     })
-    @GetMapping("/get-course-by-id")
+    @GetMapping("/getCourseById")
     public ResponseEntity<Course> getCourseInfo(@RequestParam(value = "courseId") String courseId) {
 
         // Return 400 for empty courseId
@@ -80,6 +79,12 @@ public class BulletinController {
      * @param classLevel  The optional class level (e.g., 4000). OPTIONAL PARAMETER
      * @return A list of courses that match the given criteria.
      */
+    @Operation(summary = "Retrieves a list of courses based on major and class level", description = "Retrieves a list of course objects using major code 'CSCI' and/or class level")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Courses found"),
+        @ApiResponse(responseCode = "400", description = "Invalid major code"),
+        @ApiResponse(responseCode = "404", description = "Courses not found")
+    })
     @GetMapping("/courses")
     public ResponseEntity<List<Course>> getCourses(
             @RequestParam(value = "creditHours") int creditHours,
@@ -119,6 +124,12 @@ public class BulletinController {
      * @param crn The CRN of the course to retrieve co-requisites for. (optional)
      * @return A list of course objects that are co-requisites for the given course.
      */
+    @Operation(summary = "Get coreqs by course ID", description = "Retrieves co-requisites based on the provided course ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid course ID"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
     @GetMapping("/course/coreqs")
     public ResponseEntity<List<Course>> getCoReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
@@ -154,6 +165,12 @@ public class BulletinController {
      * @param crn The CRN of the course to retrieve pre-requisites for. (optional)
      * @return A list of course objects that are pre-requisites for the given course.
      */
+    @Operation(summary = "Get prereqs by course ID", description = "Retrieves pre-requisites based on the provided course ID or CRN.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid course ID"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
     @GetMapping("/course/prereqs")
     public ResponseEntity<List<Course>> getPreReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
@@ -188,6 +205,12 @@ public class BulletinController {
      * @param crn The CRN of the course to find the special types.
      * @return A list of Strings that correspond the the special types of that course.
      */
+    @Operation(summary = "Get special course type by crn", description = "Retrieves if the section is honors, online, or lab based on given crn")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid course CRN"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
     @GetMapping("/course/specialCourseTypes")
     public ResponseEntity<List<String>> getSpecialCourseTypesFromCRN(
         @RequestParam(value = "crn", required = true) String crn

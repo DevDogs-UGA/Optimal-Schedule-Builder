@@ -18,8 +18,9 @@ import java.util.List;
  * Provides courses based on parameters like major, professor,
  * CRN, time slot, and athena name.
  */
+@Tag(name="Course Information API", description="Uses the Course PDF to provide detailed course data")
 @RestController
-@RequestMapping("/api/course_information")
+@RequestMapping("/api/courseInformation")
 public class CourseInfoController {
 
     /**
@@ -28,15 +29,15 @@ public class CourseInfoController {
      * @param major The major identifier for which to select courses (e.g. CSCI)
      * @return a list of Course objects matching the given major
      */
-    @Operation(summary = "get courses by major", description = "Retrieves a list of course objects with the given major identifier.")
+    @Operation(summary = "Get courses by major", description = "Retrieves a list of course objects with the given major identifier.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Course found"),
         @ApiResponse(responseCode = "400", description = "Invalid major"),
         @ApiResponse(responseCode = "404", description = "Course not found")
     })
-    @GetMapping("/courses-by-major");
-    @Tag(name="course-information");
-    public ResponseEntity<List<Course>> getCourseList(@RequestParam(value = "major", required = "true") String major) {
+    @GetMapping("/coursesByMajor")
+    @Tag(name="course-information")
+    public ResponseEntity<List<Course>> getCourseList(@RequestParam String major) {
 
         //return 400 for empty major
         if (major.isEmpty()) {
