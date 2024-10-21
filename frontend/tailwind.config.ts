@@ -3,6 +3,9 @@ import type { Config } from "tailwindcss";
 export default {
   content: ["./src/**/*.tsx", "./src/**/*.ts"],
   theme: {
+    screens: {
+      xs: "480px",
+    },
     extend: {
       colors: {
         background: "var(--background)",
