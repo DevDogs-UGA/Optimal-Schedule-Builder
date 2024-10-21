@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 import java.io.Serializable;
-import java.util.List;
 
 import edu.uga.devdogs.course_information.course_section.CourseSectionEntity;
 
@@ -39,8 +38,8 @@ public class Class implements Serializable{
      * Relationships
      * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
-    private List<CourseSectionEntity> courseSections;
-    
+    private CourseSectionEntity courseSection;
+
      /*
       * Constructors
       */

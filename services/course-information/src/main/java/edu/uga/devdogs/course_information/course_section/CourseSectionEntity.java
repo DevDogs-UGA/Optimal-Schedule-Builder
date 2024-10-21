@@ -1,6 +1,7 @@
 package edu.uga.devdogs.course_information.course_section;
 
 import java.io.Serializable;
+import java.util.List;
 
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Class.Class;
@@ -37,7 +38,7 @@ public class CourseSectionEntity implements Serializable {
 
     // Relationships (not yet created)
     private Course course;
-    private Class sectionClass;
+    private List<Class> classes;
 
     // Constructors, getters, setters, and toString 
     public CourseSectionEntity() {}
