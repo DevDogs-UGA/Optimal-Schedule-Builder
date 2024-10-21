@@ -66,16 +66,16 @@ public class CourseInfoController {
     /**
      * Returns the details of a specified CRN
      * 
-     * @param crn The CRN of the course
+     * @param crn The CRN of the section
      * @return returns a section object for the CRN
      */
-    @Operation(summary = "get courses by major", description = "Retrieves a list of course objects with the given major identifier.")
+    @Operation(summary = "get section by crn", description = "Retrieves a section from the given CRN.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
-        @ApiResponse(responseCode = "400", description = "Invalid major"),
-        @ApiResponse(responseCode = "404", description = "Course not found")
+        @ApiResponse(responseCode = "200", description = "Section found"),
+        @ApiResponse(responseCode = "400", description = "Invalid CRN"),
+        @ApiResponse(responseCode = "404", description = "Section not found")
     })
-    @GetMapping("/courses-by-crn")
+    @GetMapping("/section-by-crn")
     @Tag(name="course-information")
     public ResponseEntity<Section> getCourseEntity(@RequestParam String crn) {
 
