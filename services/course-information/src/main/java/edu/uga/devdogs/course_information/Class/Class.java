@@ -42,11 +42,11 @@ public class Class implements Serializable{
       */
 
      // Default constructor
-     public ClassEntity() {
+     public Class() {
      }
 
      // Constructor w/o classID
-     public ClassEntity(String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
+     public Class(String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
          this.days = days;
          this.startTime = startTime;
          this.endTime = endTime;
@@ -56,7 +56,7 @@ public class Class implements Serializable{
      }
 
      // Constructor w/ classID
-     public ClassEntity(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
+     public Class(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
          this.classId = classId;
          this.days = days;
          this.startTime = startTime;

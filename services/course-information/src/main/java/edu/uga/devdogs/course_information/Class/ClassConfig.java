@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import java.sql.Time;
 
 @Configuration
-public class ClassEntityConfig {
+public class ClassConfig {
     @Bean
-    CommandLineRunner commandLineRunner(ClassEntityRepository classRepository, CourseRepository courseRepository) {
+    CommandLineRunner commandLineRunner(ClassRepository classRepository, CourseRepository courseRepository) {
         return args -> {
-            ClassEntity class1 = new ClassEntity(
+            Class class1 = new Class(
                     "MWF", 
                     Time.valueOf("08:00:00"), 
                     Time.valueOf("09:15:00"), 
@@ -21,7 +21,7 @@ public class ClassEntityConfig {
                     "Main Campus" 
             );
 
-            ClassEntity class2 = new ClassEntity(
+            Class class2 = new Class(
                     "TR", 
                     Time.valueOf("13:00:00"), 
                     Time.valueOf("14:15:00"), 
