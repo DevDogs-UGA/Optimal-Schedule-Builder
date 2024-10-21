@@ -55,7 +55,26 @@ public class ScheduleUtil {
      * @return the average idle time between classes in the schedule
      */
     public static double computeAverageIdleTime(Schedule schedule) {
-        return 0.0;
+        int countOfClassGaps = 0;
+        int sumOfTimeGaps = 0;
+
+        // Loop through the days
+        for (TreeSet<Class> day: schedule.days().values()){
+            int lastTimeEnd = -1;
+            // Loop through all of the classes in a single day
+            for (Class iClass: day){
+                if (lastTimeEnd == -1){
+                    lastTimeEnd = iClass.endTime().getHour()*60 + iClass.endTime().getMinute();
+                    continue;
+                }
+                sumOfTimeGaps += iClass.startTime().getHour()*60 + iClass.startTime().getMinute();
+                sumOfTimeGaps -= lastTimeEnd;
+                lastTimeEnd = iClass.endTime().getHour()*60 + iClass.endTime().getMinute();
+                countOfClassGaps++;
+            }
+        }
+
+        return sumOfTimeGaps / sumOfTimeGaps;
     }
 
     /**
