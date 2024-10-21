@@ -164,7 +164,12 @@ public class BulletinController {
      * @param crn The CRN of the course to retrieve pre-requisites for. (optional)
      * @return A list of course objects that are pre-requisites for the given course.
      */
-    
+    @Operation(summary = "Get prereqs by course ID", description = "Retrieves pre-requisites based on the provided course ID or CRN.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid course ID"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
     @GetMapping("/course/prereqs")
     public ResponseEntity<List<Course>> getPreReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
@@ -199,6 +204,12 @@ public class BulletinController {
      * @param crn The CRN of the course to find the special types.
      * @return A list of Strings that correspond the the special types of that course.
      */
+    @Operation(summary = "Get special course type by crn", description = "Retrieves if the section is honors, online, or lab based on given crn")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid course CRN"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
     @GetMapping("/course/specialCourseTypes")
     public ResponseEntity<List<String>> getSpecialCourseTypesFromCRN(
         @RequestParam(value = "crn", required = true) String crn
