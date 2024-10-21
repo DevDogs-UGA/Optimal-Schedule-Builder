@@ -224,21 +224,21 @@ public class BulletinController {
 
     /**
      * Gets course sections from class time and optionally class name
-     * @param courseTime The name of the course to retrieve course sections (required)
-     * @param courseName The name of the course to retrieve course sections (optional)
+     * @param timeSlot The name of the course to retrieve course sections (required)
+     * @param crn The crn course to retrieve course sections (optional)
      * @return A list of Strings that correspond the the special types of that course.
      */
     @GetMapping("/course/sections")
     public ResponseEntity<List<String>> getCourseSections(
-        @RequestParam(value = "courseTime", required = true) String courseTime,
-        @RequestParam(value = "courseName", required = false) String className
+        @RequestParam(value = "timeSlot", required = true) String timeSlot,
+        @RequestParam(value = "crn", required = false) String crn
     ) {
-        if ((courseTime == null || courseTime.isEmpty()) && (className == null || className.isEmpty())) {
+        if ((timeSlot == null || timeSlot.isEmpty()) && (crn == null || crn.isEmpty())) {
             return ResponseEntity.badRequest().body(null); // Return 400 if neither parameter is provided
         }
 
         try {
-            List<String> courseSections = fetchCourseSection(courseTime, className);
+            List<String> courseSections = fetchCourseSection(timeSlot, crn);
 
             if (courseSections.isEmpty()){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseSections);
@@ -248,7 +248,7 @@ public class BulletinController {
 
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course sections."));
-        }
+
     }
 
     // Other endpoints related to Bulletin data could be added here
