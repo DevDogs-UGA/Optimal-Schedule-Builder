@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Java JPA entity represention for Class
  */
 @Entity
-public class ClassEntity implements Serializable{
+public class Class implements Serializable{
     
     /*
      * Variables
