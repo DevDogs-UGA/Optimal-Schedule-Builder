@@ -33,13 +33,21 @@ public class ScheduleUtil {
     public static double computeAverageProfessorQuality(Schedule schedule) {
 
         double avgProfQuality = 0.0;
+        int profIncludedInCalc = schedule.professor().length;
 
         // Used to create the summation of the quality of professors within the schedule.
         for (int i = 0; i < schedule.professor().length; i++) {
-            avgProfQuality += schedule.professor()[i].quality();
+            // Ensures that only professors with data are included in calculation.
+            if (schedule.professor()[i].quality() == 0.0) {
+                // Decreases our professor count to prevent statistical misguidance.
+                profIncludedInCalc--;
+            } else {
+                // Adds valid professors to our summation
+                avgProfQuality += schedule.professor()[i].quality();
+            }
         }
 
-        avgProfQuality /= schedule.professor().length;
+        avgProfQuality /= profIncludedInCalc;
 
         return avgProfQuality;
 
