@@ -2,6 +2,8 @@ package edu.uga.devdogs.course_information.course_section;
 
 import java.io.Serializable;
 
+import edu.uga.devdogs.course_information.Course.Course;
+import edu.uga.devdogs.course_information.Class.Class;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -34,6 +36,8 @@ public class CourseSectionEntity implements Serializable {
     private int year;
 
     // Relationships (not yet created)
+    private Course course;
+    private Class sectionClass;
 
     // Constructors, getters, setters, and toString 
     public CourseSectionEntity() {}
