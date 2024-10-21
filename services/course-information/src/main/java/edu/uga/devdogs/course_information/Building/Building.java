@@ -15,7 +15,8 @@ public class Building implements Serializable {
      * Variables
      */
 
-     @Id
+    // serves as the id.
+    @Id
     private int buildingNumber;
 
     private String name;
