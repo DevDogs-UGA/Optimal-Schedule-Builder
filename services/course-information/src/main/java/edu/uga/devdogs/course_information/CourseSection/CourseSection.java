@@ -1,4 +1,4 @@
-package edu.uga.devdogs.course_information.course_section;
+package edu.uga.devdogs.course_information.CourseSection;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
-public class CourseSectionEntity implements Serializable {
+public class CourseSection implements Serializable {
     // Variables
     @Id
     @GeneratedValue
