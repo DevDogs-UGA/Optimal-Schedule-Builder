@@ -43,7 +43,7 @@ export const AddCourses = () => {
           />
         ))}
       </div>
-      <main className="justify-between gap-4 border-2 border-dusty-pink bg-barely-pink px-12 py-8">
+      <main className="border-dusty-pink bg-barely-pink justify-between gap-4 border-2 px-12 py-8">
         <div className="items-center justify-center space-y-8 py-16">
           {currentTab === 0 ? (
             <>
@@ -61,7 +61,7 @@ export const AddCourses = () => {
             </>
           ) : null}
         </div>
-        <section className="flex flex-col gap-4 xs:flex-row xs:justify-end">
+        <section className="xs:flex-row xs:justify-end flex flex-col gap-4">
           <Button text="Search" />
           <Button text="Add" />
         </section>

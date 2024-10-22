@@ -1,8 +1,8 @@
 function Footer() {
   return (
-    <footer className="w-full bg-slate-200 mt-4">
+    <footer className="mt-4 w-full bg-slate-200">
       <div className="flex items-center justify-between px-8 py-4">
-        <div className="sm:flex-row flex flex-col gap-x-4 gap-y-2">
+        <div className="flex flex-col gap-x-4 gap-y-2 sm:flex-row">
           <a href="" className="hover:text-slate-600">
             Privacy Policy
           </a>
