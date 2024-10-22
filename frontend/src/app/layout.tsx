@@ -7,7 +7,6 @@ import Image from "next/image";
 
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
-import { SearchFilter } from "./components/courses/SearchFilter";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,8 +46,9 @@ export default function RootLayout({
         />
 
         <main className="min-h-screen">
+          <Navbar />
           {children}
-          <SearchFilter text="Subject" />
+          <Footer />
         </main>
       </body>
     </html>
