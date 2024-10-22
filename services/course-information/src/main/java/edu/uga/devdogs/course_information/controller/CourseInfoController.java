@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/courseInformation")
 public class CourseInfoController {
-<<<<<<< HEAD
+
    
     /**
      * Asks for list of course information that relates to the 
@@ -60,8 +60,7 @@ public class CourseInfoController {
      }
    } 
     
-}
-=======
+
 
     /**
      * Retrieves a list of courses for a given major
@@ -142,6 +141,3 @@ public class CourseInfoController {
         }
     }
 }
-  
-}
->>>>>>> 02f2c2d791a265b1f081f3666f185d47dd813859
