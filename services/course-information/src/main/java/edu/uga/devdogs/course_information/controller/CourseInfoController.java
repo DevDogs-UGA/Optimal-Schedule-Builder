@@ -24,14 +24,30 @@ public class CourseInfoController {
      * @param professor name of the professor teaching the course
      * @return course information list that's related to the given professor.
      */
+    @Operation(summary = "get list of courses by professor", description = "Retrieces course information relating to the professor.")
+    @ApiResponse(value = {
+          @ApiResponse(responseCode = "200",description = "Course found"),
+          @ApiResponse(responseCode = "400",description = "Invalid Course ID"),
+          @ApiResponse(responseCode = "404",description = "Course not found")
+    })
     @GetMapping("/professor")
-   public List<Section> getCourseByProfessor(@RequestParam String professor){
-        List <Section> courseInfo = new ArrayList<>();
+   public List<Section> getCourseByProfessor(@RequestParam(value = "professor",required = true) String professor){
+        
+     if(professor == null || professor.isEmpty()){
+          return ResponseEntity.badRequest().body(null); //Returns 400 if the parameter is not provided
+     }
 
-        //courseInfo = professorCourse();
-        //professorCourse is a dummy function that provides a list of course information pertaining to the professor.
+     try {
+          List<Section> courseInfo = fetchCoursesByProf(professor); //Fetches course information based on professor
+          
+          if(courseInfo.isEmpty()){
+               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseInfo); //Returns 404 error code is course info isn't found
+          }
 
-        return courseInfo;
+          return ResponseEntity.ok(courseInfo);
+     } catch (Exception e){
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+     }
    } 
     
 }
