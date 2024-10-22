@@ -9,11 +9,7 @@
         "classes": [
           {
             "crn": "25013",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "12:40",
             "end_time": "13:30",
             "building_name": "Park Hall"
