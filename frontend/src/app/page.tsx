@@ -8,7 +8,7 @@ import LabPairingSystem from "./components/LabPairingSystem";
 
 const Homepage = () => {
   return (
-    <div className="relative w-full flex flex-col min-h-screen">
+    <div className="relative flex min-h-screen w-full flex-col">
       {/* Background Images */}
       <div className="absolute left-0 top-0 h-[50%] w-[50%]">
         <div className="h-[75%] w-[75%] bg-[url('/images/pawsImage.png')] bg-contain bg-no-repeat"></div>
