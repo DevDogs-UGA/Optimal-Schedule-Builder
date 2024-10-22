@@ -61,7 +61,7 @@ export const AddCourses = () => {
             </>
           ) : null}
         </div>
-        <section className="flex justify-end gap-4">
+        <section className="flex flex-col gap-4 xs:flex-row xs:justify-end">
           <Button text="Search" />
           <Button text="Add" />
         </section>
