@@ -8,6 +8,9 @@ import edu.uga.devdogs.course_information.Class.Class;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class CourseSectionEntity implements Serializable {
@@ -37,7 +40,10 @@ public class CourseSectionEntity implements Serializable {
     private int year;
 
     // Relationships (not yet created)
+    @ManyToOne
+    @JoinColumn(name = "courseId")
     private Course course;
+    @OneToMany(mappedBy = "courseSection")
     private List<Class> classes;
 
     // Constructors, getters, setters, and toString 
