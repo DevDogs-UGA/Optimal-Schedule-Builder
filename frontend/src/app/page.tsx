@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-import Footer from "./component/Footer";
-
-export default function HomePage() {
-  // return <main>Main Page</main>;
-  return (
-    <>
-      <Footer />
-    </>
-  );
-}
-=======
 import React from "react";
 import CallToAction from "./components/CallToAction";
 import Link from "next/link";
@@ -59,4 +47,3 @@ const Homepage = () => {
 };
 
 export default Homepage;
->>>>>>> b589e7e0981c12b5aab907adf803e251f98b36a5
