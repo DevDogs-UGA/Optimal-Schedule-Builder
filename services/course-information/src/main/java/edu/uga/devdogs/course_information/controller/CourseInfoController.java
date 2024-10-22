@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import Course from 
+
 import java.util.List;
 
 /**
@@ -18,6 +18,7 @@ import java.util.List;
  * Provides courses based on parameters like major, professor,
  * CRN, time slot, and athena name.
  */
+@Tag(name="Course Information API", description="Uses the Course PDF to provide detailed course data")
 @RestController
 @RequestMapping("/api/courseInformation")
 public class CourseInfoController {
@@ -28,7 +29,7 @@ public class CourseInfoController {
      * @param major The major identifier for which to select courses (e.g. CSCI)
      * @return a list of Course objects matching the given major
      */
-    @Operation(summary = "get courses by major", description = "Retrieves a list of course objects with the given major identifier.")
+    @Operation(summary = "Get courses by major", description = "Retrieves a list of course objects with the given major identifier.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Course found"),
         @ApiResponse(responseCode = "400", description = "Invalid major"),
@@ -62,5 +63,44 @@ public class CourseInfoController {
         }
     }
 
-    
+    /**
+     * Returns the details of a specified CRN
+     * 
+     * @param crn The CRN of the section
+     * @return returns a section object for the CRN
+     */
+    @Operation(summary = "get section by crn", description = "Retrieves a section from the given CRN.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Section found"),
+        @ApiResponse(responseCode = "400", description = "Invalid CRN"),
+        @ApiResponse(responseCode = "404", description = "Section not found")
+    })
+    @GetMapping("/section-by-crn")
+    @Tag(name="course-information")
+    public ResponseEntity<Section> getCourseEntity(@RequestParam String crn) {
+
+        //return 400 for empty CRN
+        if (crn.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        try {
+            //Call method to get section details
+            Section sectionDetails = getSectionByCRN(crn);
+
+            //Check if the above method call returned null
+            if (sectionDetails == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); //Return 404 if no courses are found
+            }
+
+            //Return the section if found
+            return ResponseEntity.ok(sectionDetails);
+
+        } catch (Exception e) {
+
+            //Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+}
+  
 }
