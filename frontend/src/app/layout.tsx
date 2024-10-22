@@ -1,8 +1,13 @@
+import "../styles/globals.css";
+
 import { Inter } from "next/font/google";
+
 import { type Metadata } from "next";
-import "@/styles/globals.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Image from "next/image";
+
+import { Navbar } from "./components/Navbar";
+import { Footer } from "./components/Footer";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,11 +21,35 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        {children}
-        <Footer />
+    <html lang="en" className={inter.className}>
+      <body className="bg-background relative min-h-screen">
+        <Image
+          className="absolute left-0 top-0 -z-10"
+          src="/images/paws.svg"
+          alt="Paws"
+          width={300}
+          height={300}
+        />
+        <Image
+          className="absolute bottom-0 right-0 -z-10"
+          src="/images/paws.svg"
+          alt="Paws"
+          width={300}
+          height={300}
+        />
+        <Image
+          className="absolute bottom-1/3 right-1/4 -z-10 hidden lg:block"
+          src="/images/paws.svg"
+          alt="Paws"
+          width={300}
+          height={300}
+        />
+
+        <main className="min-h-screen">
+          <Navbar />
+          {children}
+          <Footer />
+        </main>
       </body>
     </html>
   );
