@@ -7,17 +7,17 @@ export const SearchFilter = ({ text }: props) => {
     <>
       <div className="sborder-gray-200 p-2sm:p-4 m-3 w-auto rounded-lg border bg-[#fff1f2] sm:m-4 sm:w-2/3">
         {" "}
-        {/* Filter Component*/}
+        {/* Div for Whole Filter Component*/}
         <h1 className="m-4 text-center text-lg font-bold sm:m-2 sm:ml-8 sm:mt-8 sm:w-full sm:text-left sm:text-2xl sm:font-bold">
           Filters
         </h1>{" "}
-        {/* Filter Title */}
+        {/* h1 For Filter Title */}
         <div className="sm:mb-4 sm:ml-8 sm:mr-8 sm:mt-4 sm:flex sm:flex-row sm:justify-center sm:space-x-36">
           {" "}
-          {/* Filters*/}
+          {/* Div for filters*/}
           <div className="m-4 grid grid-cols-2 gap-4">
             {" "}
-            {/* Column 1*/}
+            {/* Div For Column 1*/}
             <div className="text-right">
               {" "}
               {/* Course Status Label */}
@@ -27,7 +27,7 @@ export const SearchFilter = ({ text }: props) => {
             </div>
             <div className="flex flex-col space-y-5">
               {" "}
-              {/* Checkboxes */}
+              {/* Div For Checkboxes */}
               <div className="sm:flex sm:items-center sm:space-x-3">
                 <input
                   type="checkbox"
@@ -65,17 +65,17 @@ export const SearchFilter = ({ text }: props) => {
           </div>
           <div className="m-4 grid grid-cols-2 gap-4">
             {" "}
-            {/* Column 2 */}
+            {/* Div For Column 2 */}
             <div className="grid grid-rows-3 gap-4">
               {" "}
-              {/* Labels */}
+              {/* Div For Labels */}
               <label className="text-right font-bold">Term:</label>
               <label className="text-right font-bold">Instruction:</label>
               <label className="text-right font-bold">Campus:</label>
             </div>
             <div className="grid grid-rows-3 gap-4">
               {" "}
-              {/* Dropdowns */}
+              {/* Div For Dropdowns */}
               <Dropdown />
               <Dropdown />
               <Dropdown />
@@ -83,17 +83,17 @@ export const SearchFilter = ({ text }: props) => {
           </div>
           <div className="m-4 grid grid-cols-2 gap-4">
             {" "}
-            {/* Column 3 */}
+            {/* Div For Column 3 in Filters*/}
             <div className="grid grid-rows-3 gap-4">
               {" "}
-              {/* Labels */}
+              {/* Div For Labels */}
               <label className="text-right font-bold">Levels:</label>
               <label className="text-right font-bold">Credit Hours:</label>
               <label className="text-right font-bold">Building:</label>
             </div>
             <div className="grid grid-rows-3 gap-4">
               {" "}
-              {/* Dropdowns */}
+              {/* Div For Dropdowns */}
               <Dropdown />
               <Dropdown />
               <Dropdown />
@@ -111,7 +111,7 @@ export function Dropdown() {
     <>
       <div className="w-full">
         <select name="cars" id="cars" className="text-md border bg-gray-50">
-          <option value="volvo">Lorem ipsum</option>
+          <option value="volvo">Placeholder</option>
         </select>
       </div>
     </>
