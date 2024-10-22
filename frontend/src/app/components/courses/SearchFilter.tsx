@@ -5,12 +5,13 @@ interface props {
 export const SearchFilter = ({ text }: props) => {
   return (
     <>
-      <div className="sborder-gray-200 p-2sm:p-4 m-3 w-auto rounded-lg border bg-[#fff1f2] sm:m-4 sm:w-2/3">
+      <div className="sborder-gray-200 p-2sm:p-4 m-3 w-auto rounded-lg border bg-[#fff1f2] sm:m-4">
         {" "}
         {/* Filter Component*/}
         <h1 className="m-4 text-center text-lg font-bold sm:m-2 sm:ml-8 sm:mt-8 sm:w-full sm:text-left sm:text-2xl sm:font-bold">
           Filters
-        </h1>{" "}
+        </h1>
+        {" "}
         {/* Filter Title */}
         <div className="sm:mb-4 sm:ml-8 sm:mr-8 sm:mt-4 sm:flex sm:flex-row sm:justify-center sm:space-x-36">
           {" "}
