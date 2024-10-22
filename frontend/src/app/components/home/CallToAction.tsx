@@ -4,14 +4,14 @@ export function CallToAction() {
   return (
     <div className="flex">
       {/* Left side label */}
-      <div className="bg-barely-pink relative left-8 flex items-center rounded-full px-6 py-2">
-        <span className="text-grout-gray w-32 p-2 text-left md:w-40">
+      <div className="relative left-8 flex items-center rounded-full bg-barely-pink px-6 py-2">
+        <span className="w-32 p-2 text-left text-grout-gray md:w-40">
           Ready?
         </span>
       </div>
 
       {/* Right side button */}
-      <button className="trasition bg-bulldog-red relative right-8 flex items-center rounded-full px-6 py-2 text-white duration-300 ease-in-out hover:bg-[#8b0923]">
+      <button className="trasition relative right-8 flex items-center rounded-full bg-bulldog-red px-6 py-2 text-white duration-300 ease-in-out hover:bg-[#8b0923]">
         <span className="mr-2 w-24 text-left font-bold md:w-40 md:p-2">
           Get Started
         </span>
@@ -22,7 +22,7 @@ export function CallToAction() {
             viewBox="0 0 24 24"
             strokeWidth={2}
             stroke="currentColor"
-            className="text-gold h-4 w-4"
+            className="h-4 w-4 text-gold"
           >
             <path
               strokeLinecap="round"

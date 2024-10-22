@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="flex h-[calc(100vh-5rem)] flex-grow flex-col items-center justify-center pt-20 text-center">
       <div className="space-y-4">
-        <h2 className="text-bulldog-red text-center text-xl font-semibold md:text-2xl">
+        <h2 className="text-center text-xl font-semibold text-bulldog-red md:text-2xl">
           For Students, By Students
         </h2>
         <h1 className="text-4xl font-bold md:text-6xl">

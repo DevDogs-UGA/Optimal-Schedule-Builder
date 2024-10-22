@@ -52,17 +52,17 @@ export function Navbar() {
         {/* Desktop Menu */}
         <div className="mr-8 hidden flex-nowrap items-center justify-around gap-8 text-[20px] font-bold sm:flex">
           <Link href="/">
-            <button className="hover:bg-bulldog-red/50 rounded-full px-2 py-1 transition duration-300 ease-in-out md:px-4">
+            <button className="rounded-full px-2 py-1 transition duration-300 ease-in-out hover:bg-bulldog-red/50 md:px-4">
               App
             </button>
           </Link>
           <Link href="/">
-            <button className="hover:bg-bulldog-red/50 rounded-full px-2 py-1 transition duration-300 ease-in-out md:px-4">
+            <button className="rounded-full px-2 py-1 transition duration-300 ease-in-out hover:bg-bulldog-red/50 md:px-4">
               About Us
             </button>
           </Link>
           <Link href="/">
-            <button className="hover:bg-bulldog-red/50 rounded-full px-2 py-1 transition duration-300 ease-in-out md:px-4">
+            <button className="rounded-full px-2 py-1 transition duration-300 ease-in-out hover:bg-bulldog-red/50 md:px-4">
               Contact
             </button>
           </Link>
@@ -72,17 +72,17 @@ export function Navbar() {
         {isDropdownOpen && (
           <div className="absolute left-0 top-[4.5rem] z-[998] w-full flex-col items-center justify-start rounded-b-lg bg-[#F8E6EA] shadow-lg sm:hidden">
             <Link href="/">
-              <button className="hover:bg-bulldog-red/50 block w-full px-4 py-3 text-left text-[1.2rem] font-bold transition duration-300 ease-in-out">
+              <button className="block w-full px-4 py-3 text-left text-[1.2rem] font-bold transition duration-300 ease-in-out hover:bg-bulldog-red/50">
                 App
               </button>
             </Link>
             <Link href="/">
-              <button className="hover:bg-bulldog-red/50 block w-full px-4 py-3 text-left text-[1.2rem] font-bold transition duration-300 ease-in-out">
+              <button className="block w-full px-4 py-3 text-left text-[1.2rem] font-bold transition duration-300 ease-in-out hover:bg-bulldog-red/50">
                 About Us
               </button>
             </Link>
             <Link href="/">
-              <button className="hover:bg-bulldog-red/50 block w-full px-4 py-3 text-left text-[1.2rem] font-bold transition duration-300 ease-in-out">
+              <button className="block w-full px-4 py-3 text-left text-[1.2rem] font-bold transition duration-300 ease-in-out hover:bg-bulldog-red/50">
                 Contact
               </button>
             </Link>

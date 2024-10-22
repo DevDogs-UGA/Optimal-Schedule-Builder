@@ -22,7 +22,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="bg-background relative min-h-screen">
+      <body className="relative min-h-screen bg-background">
         <Image
           className="absolute left-0 top-0 -z-10"
           src="/images/paws.svg"
