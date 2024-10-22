@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "./Button";
+import { Button } from "../ui/Button";
 import { SearchFilter } from "./SearchFilter";
 import { useState } from "react";
 
@@ -43,7 +43,7 @@ export const AddCourses = () => {
           />
         ))}
       </div>
-      <main className="border-dusty-pink bg-barely-pink justify-between gap-4 border-2 px-12 py-8">
+      <main className="justify-between gap-4 border-2 border-dusty-pink bg-barely-pink px-12 py-8">
         <div className="items-center justify-center space-y-8 py-16">
           {currentTab === 0 ? (
             <>
@@ -61,7 +61,7 @@ export const AddCourses = () => {
             </>
           ) : null}
         </div>
-        <section className="xs:flex-row xs:justify-end flex flex-col gap-4">
+        <section className="flex flex-col gap-4 sm:flex-row sm:justify-end">
           <Button text="Search" />
           <Button text="Add" />
         </section>
