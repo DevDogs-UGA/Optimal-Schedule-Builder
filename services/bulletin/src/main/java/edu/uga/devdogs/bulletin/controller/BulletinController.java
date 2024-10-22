@@ -165,7 +165,12 @@ public class BulletinController {
      * @param crn The CRN of the course to retrieve pre-requisites for. (optional)
      * @return A list of course objects that are pre-requisites for the given course.
      */
-    
+    @Operation(summary = "Get prereqs by course ID", description = "Retrieves pre-requisites based on the provided course ID or CRN.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid course ID"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
     @GetMapping("/course/prereqs")
     public ResponseEntity<List<Course>> getPreReqs(
             @RequestParam(value = "courseId", required = false) String courseId,
@@ -200,6 +205,12 @@ public class BulletinController {
      * @param crn The CRN of the course to find the special types.
      * @return A list of Strings that correspond the the special types of that course.
      */
+    @Operation(summary = "Get special course type by crn", description = "Retrieves if the section is honors, online, or lab based on given crn")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid course CRN"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
     @GetMapping("/course/specialCourseTypes")
     public ResponseEntity<List<String>> getSpecialCourseTypesFromCRN(
         @RequestParam(value = "crn", required = true) String crn
@@ -221,6 +232,36 @@ public class BulletinController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course types."));
         }
     }
+
+    /**
+     * Gets course sections from class time and optionally class name
+     * @param timeSlot The name of the course to retrieve course sections (required)
+     * @param crn The crn course to retrieve course sections (optional)
+     * @return A list of Strings that correspond the the special types of that course.
+     */
+    @GetMapping("/course/sections")
+    public ResponseEntity<List<String>> getCourseSections(
+        @RequestParam(value = "timeSlot", required = true) String timeSlot,
+        @RequestParam(value = "crn", required = false) String crn
+    ) {
+        if ((timeSlot == null || timeSlot.isEmpty()) && (crn == null || crn.isEmpty())) {
+            return ResponseEntity.badRequest().body(null); // Return 400 if neither parameter is provided
+        }
+
+        try {
+            List<String> courseSections = fetchCourseSection(timeSlot, crn);
+
+            if (courseSections.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseSections);
+            }
+
+            return ResponseEntity.ok(courseSections);
+
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course sections."));
+
+    }
+
     // Other endpoints related to Bulletin data could be added here
     
     /**
