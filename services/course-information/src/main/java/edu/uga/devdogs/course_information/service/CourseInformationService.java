@@ -1,5 +1,6 @@
 package edu.uga.devdogs.course_information.service;
 
+import edu.uga.devdogs.course_information.exception; 
 import org.springframework.stereotype.Service;
 import java.util.List;
 
