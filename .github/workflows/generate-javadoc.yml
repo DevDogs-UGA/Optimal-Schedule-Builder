@@ -1,0 +1,39 @@
+name: Deploy Javadoc - Algorithm
+
+on:
+  push:
+    paths:
+      - 'algorithm-prototyping/**'
+    branches:
+      - dev
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+
+      - name: Generate JavaDoc
+        run: |
+          cd algorithm-prototyping
+          mvn javadoc:javadoc
+
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: algorithm-prototyping/build/docs/javadoc
