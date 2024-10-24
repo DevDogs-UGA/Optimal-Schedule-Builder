@@ -63,11 +63,11 @@ public class ScheduleUtil {
      * This method computes each objective, normalizes their values, and computes a weighted sum.
      *
      * @param schedule the schedule to evaluate
-     * @param distances object that represents distances between buildings on campus.
+     * @param distances object that represents distances between buildings on campus
      * @param weights an array of floats representing the weights for each objective
      * @return the overall objective score for the schedule
      */
-    public static double computeOverallObjective(Schedule schedule, Distances distances, Float[] weights) {
+    public static double computeOverallObjective(Schedule schedule, Distances distances, double[] weights) {
         return 0.0;
     }
 
