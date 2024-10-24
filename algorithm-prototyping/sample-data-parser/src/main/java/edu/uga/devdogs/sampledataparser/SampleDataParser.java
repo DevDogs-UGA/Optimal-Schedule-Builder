@@ -27,13 +27,6 @@ import java.util.List;
 public class SampleDataParser {
 
     /**
-     * Constructs a SampleDataParser object.
-     */
-    public SampleDataParser() {
-
-    }
-
-    /**
      * Parses JSON data from the provided file paths, deserializing it into {@link Professor}, {@link Course},
      * and {@link Distances} objects. The method combines the parsed data into a {@link SampleData} object.
      *
@@ -43,7 +36,7 @@ public class SampleDataParser {
      * @return a {@link SampleData} object containing the parsed course, professor, and distance data.
      * @throws IllegalArgumentException if any of the files cannot be found or read.
      */
-    public SampleData parse(String professorsFilePath, String coursesFilePath, String distancesFilePath) {
+    public static SampleData parse(String professorsFilePath, String coursesFilePath, String distancesFilePath) {
         String professorsJson = readFile(professorsFilePath);
         String coursesJson = readFile(coursesFilePath);
         String distancesJson = readFile(distancesFilePath);
