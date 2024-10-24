@@ -3,7 +3,8 @@ package edu.uga.devdogs.sampledataparser;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import edu.uga.devdogs.sampledataparser.deserializers.DayOfWeekArrayDeserializer;
+import com.google.gson.reflect.TypeToken;
+import edu.uga.devdogs.sampledataparser.deserializers.DayOfWeekListDeserializer;
 import edu.uga.devdogs.sampledataparser.deserializers.LocalTimeDeserializer;
 import edu.uga.devdogs.sampledataparser.deserializers.ProfessorDeserializer;
 import edu.uga.devdogs.sampledataparser.records.Course;
@@ -16,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * The SampleDataParser class is responsible for parsing JSON data from multiple files
@@ -50,16 +52,16 @@ public class SampleDataParser {
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
 
-        Professor[] professors = gson.fromJson(professorsJson, Professor[].class);
+        List<Professor> professors = gson.fromJson(professorsJson, new TypeToken<List<Professor>>() {}.getType());
 
         Gson coursesGson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .registerTypeAdapter(Professor.class, new ProfessorDeserializer(professors))
                 .registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer())
-                .registerTypeAdapter(DayOfWeek[].class, new DayOfWeekArrayDeserializer())
+                .registerTypeAdapter(new TypeToken<List<DayOfWeek>>() {}.getType(), new DayOfWeekListDeserializer())
                 .create();
 
-        Course[] courses = coursesGson.fromJson(coursesJson, Course[].class);
+        List<Course> courses = coursesGson.fromJson(coursesJson, new TypeToken<List<Course>>() {}.getType());
 
         Distances distances = gson.fromJson(distancesJson, Distances.class);
 

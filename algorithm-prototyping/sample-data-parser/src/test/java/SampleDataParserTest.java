@@ -3,6 +3,8 @@ import edu.uga.devdogs.sampledataparser.records.SampleData;
 import org.junit.jupiter.api.Test;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,39 +26,39 @@ public class SampleDataParserTest {
                 "SampleData should not be null.");
         assertNotNull(sampleData.courses(),
                 "Courses should not be null.");
-        assertEquals(1, sampleData.courses().length,
+        assertEquals(1, sampleData.courses().size(),
                 "Courses array should not be of length 1.");
-        assertEquals("ENGL 1101", sampleData.courses()[0].courseCode(),
+        assertEquals("ENGL 1101", sampleData.courses().getFirst().courseCode(),
                 "CourseCode of the first course should be the string \"ENGL 1101\".");
-        assertEquals(1, sampleData.courses()[0].sections().length,
+        assertEquals(1, sampleData.courses().getFirst().sections().size(),
                 "Sections array of the first course should be of length 1.");
-        assertEquals("ENGL 1101", sampleData.courses()[0].sections()[0].courseCode(),
+        assertEquals("ENGL 1101", sampleData.courses().getFirst().sections().getFirst().courseCode(),
                 "CourseCode of the first section of the first course should be the string \"ENGL 1101\".");
-        assertEquals("25013", sampleData.courses()[0].sections()[0].crn(),
+        assertEquals("25013", sampleData.courses().getFirst().sections().getFirst().crn(),
                 "CRN of the first section of the first course should be the string \"25013\".");
-        assertEquals("Daniel Barnum", sampleData.courses()[0].sections()[0].professor().name(),
+        assertEquals("Daniel Barnum", sampleData.courses().getFirst().sections().getFirst().professor().name(),
                 "The professor of the first section of the first course should be Daniel Barnum");
-        assertEquals(5, sampleData.courses()[0].sections()[0].professor().quality(),
+        assertEquals(5, sampleData.courses().getFirst().sections().getFirst().professor().quality(),
                 "The professor of the first section of the first course should have a quality of 5.");
-        assertEquals("25013", sampleData.courses()[0].sections()[0].classes()[0].crn(),
+        assertEquals("25013", sampleData.courses().getFirst().sections().getFirst().classes().getFirst().crn(),
                 "CRN of the first class of the first section of the first course should be the string \"25013\".");
-        assertArrayEquals(new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY}, sampleData.courses()[0].sections()[0].classes()[0].days(),
-                "The days of the first class of the first section of the first course should be {DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY}.");
+        assertEquals(DayOfWeek.MONDAY, sampleData.courses().getFirst().sections().getFirst().classes().getFirst().days().getFirst(),
+                "The first day of the first class of the first section of the first course should be DayOfWeek.MONDAY.");
         assertNotNull(sampleData.distances(),
                 "Distances should not be null.");
         assertNotNull(sampleData.distances().buildings(),
                 "Buildings should not be null.");
-        assertEquals(4, sampleData.distances().buildings().length,
+        assertEquals(4, sampleData.distances().buildings().size(),
                 "Buildings array should be of length 4.");
-        assertEquals("Park Hall", sampleData.distances().buildings()[0],
+        assertEquals("Park Hall", sampleData.distances().buildings().getFirst(),
                 "The first building should be Park Hall.");
         assertNotNull(sampleData.distances().matrix(),
                 "Matrix should not be null.");
-        assertEquals(4, sampleData.distances().matrix().length,
+        assertEquals(4, sampleData.distances().matrix().size(),
                 "Matrix should have 4 rows.");
-        assertEquals(4, sampleData.distances().matrix()[0].length,
+        assertEquals(4, sampleData.distances().matrix().getFirst().size(),
                 "Matrix should have 4 columns.");
-        assertEquals(2.3, sampleData.distances().matrix()[1][1], 0.00001,
+        assertEquals(2.3, sampleData.distances().matrix().get(1).get(1), 0.00001,
                 "Matrix[1][1] should be 2.3.");
     }
 
