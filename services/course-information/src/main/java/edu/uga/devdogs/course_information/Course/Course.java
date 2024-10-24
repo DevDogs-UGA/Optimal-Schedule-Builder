@@ -3,8 +3,12 @@ package edu.uga.devdogs.course_information.Course;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import java.io.Serializable;
+import java.util.List;
+
+import edu.uga.devdogs.course_information.course_section.CourseSectionEntity;
 
 
 @Entity
@@ -23,7 +27,8 @@ public class Course implements Serializable {
     private String department;
 
     //Relationships
-
+    @OneToMany(mappedBy = "course")
+    private List<CourseSectionEntity> courseSections;
 
     //Constructors, getters, setters...
     public Course() {

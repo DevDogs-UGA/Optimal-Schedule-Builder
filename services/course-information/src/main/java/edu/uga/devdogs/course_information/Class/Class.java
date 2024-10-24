@@ -3,8 +3,12 @@ package edu.uga.devdogs.course_information.Class;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
+
+import edu.uga.devdogs.course_information.course_section.CourseSectionEntity;
 
 /*
  * Java JPA entity represention for Class
@@ -36,6 +40,9 @@ public class Class implements Serializable{
      * Relationships
      * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
+    @ManyToOne
+    @JoinColumn(name = "courseSectionId")
+    private CourseSectionEntity courseSection;
 
      /*
       * Constructors
