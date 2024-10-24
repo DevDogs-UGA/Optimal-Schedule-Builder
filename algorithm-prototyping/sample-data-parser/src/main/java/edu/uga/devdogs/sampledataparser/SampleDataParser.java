@@ -4,6 +4,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import edu.uga.devdogs.sampledataparser.deserializers.CourseMapDeserializer;
 import edu.uga.devdogs.sampledataparser.deserializers.DayOfWeekListDeserializer;
 import edu.uga.devdogs.sampledataparser.deserializers.LocalTimeDeserializer;
 import edu.uga.devdogs.sampledataparser.deserializers.ProfessorDeserializer;
@@ -18,6 +19,7 @@ import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The SampleDataParser class is responsible for parsing JSON data from multiple files
@@ -52,9 +54,10 @@ public class SampleDataParser {
                 .registerTypeAdapter(Professor.class, new ProfessorDeserializer(professors))
                 .registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer())
                 .registerTypeAdapter(new TypeToken<List<DayOfWeek>>() {}.getType(), new DayOfWeekListDeserializer())
+                .registerTypeAdapter(new TypeToken<Map<String, Course>>() {}.getType(), new CourseMapDeserializer())
                 .create();
 
-        List<Course> courses = coursesGson.fromJson(coursesJson, new TypeToken<List<Course>>() {}.getType());
+        Map<String, Course> courses = coursesGson.fromJson(coursesJson, new TypeToken<Map<String, Course>>() {}.getType());
 
         Distances distances = gson.fromJson(distancesJson, Distances.class);
 

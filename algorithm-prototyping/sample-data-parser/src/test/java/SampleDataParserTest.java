@@ -31,13 +31,13 @@ public class SampleDataParserTest {
     void testParsedCourses() {
         assertEquals(1, sampleData.courses().size(), "Courses array should be of length 1.");
 
-        var course = sampleData.courses().getFirst();
+        var course = sampleData.courses().get("ENGL 1101");
         assertEquals("ENGL 1101", course.courseCode(), "CourseCode of the first course should be 'ENGL 1101'.");
     }
 
     @Test
     void testParsedSections() {
-        var course = sampleData.courses().getFirst();
+        var course = sampleData.courses().get("ENGL 1101");
         assertEquals(1, course.sections().size(), "Sections array of the first course should be of length 1.");
 
         var section = course.sections().getFirst();
@@ -47,7 +47,7 @@ public class SampleDataParserTest {
 
     @Test
     void testParsedProfessor() {
-        var section = sampleData.courses().getFirst().sections().getFirst();
+        var section = sampleData.courses().get("ENGL 1101").sections().getFirst();
         var professor = section.professor();
 
         assertEquals("Daniel Barnum", professor.name(), "The professor should be Daniel Barnum.");
@@ -56,7 +56,7 @@ public class SampleDataParserTest {
 
     @Test
     void testParsedClasses() {
-        var section = sampleData.courses().getFirst().sections().getFirst();
+        var section = sampleData.courses().get("ENGL 1101").sections().getFirst();
         var classData = section.classes().getFirst();
 
         assertEquals("25013", classData.crn(), "CRN of the first class should be '25013'.");

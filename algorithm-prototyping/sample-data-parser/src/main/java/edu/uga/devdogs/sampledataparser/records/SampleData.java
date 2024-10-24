@@ -1,6 +1,6 @@
 package edu.uga.devdogs.sampledataparser.records;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the sample data used in the scheduling system, containing the available courses and distances between buildings.
@@ -8,6 +8,6 @@ import java.util.List;
  * @param courses   The array of courses in the sample data.
  * @param distances The distances between buildings on campus.
  */
-public record SampleData(List<Course> courses,
+public record SampleData(Map<String, Course> courses,
                          Distances distances) {
 }
