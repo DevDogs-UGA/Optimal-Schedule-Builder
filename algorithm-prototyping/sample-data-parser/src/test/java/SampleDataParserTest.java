@@ -15,7 +15,7 @@ public class SampleDataParserTest {
     static void setUp() {
         String professorsFilePath = "src/test/resources/professors.json";
         String coursesFilePath = "src/test/resources/courses.json";
-        String distancesFilePath = "src/test/resources/distance_matrix.json";
+        String distancesFilePath = "src/test/resources/distances.json";
 
         sampleData = SampleDataParser.parse(professorsFilePath, coursesFilePath, distancesFilePath);
     }
@@ -57,20 +57,17 @@ public class SampleDataParserTest {
     @Test
     void testParsedClasses() {
         var section = sampleData.courses().get("ENGL 1101").sections().getFirst();
-        var classData = section.classes().getFirst();
+        var _class = section.classes().getFirst();
 
-        assertEquals("25013", classData.crn(), "CRN of the first class should be '25013'.");
-        assertEquals(DayOfWeek.MONDAY, classData.days().getFirst(), "The first day should be DayOfWeek.MONDAY.");
+        assertEquals("25013", _class.crn(), "CRN of the first class should be '25013'.");
+        assertEquals(DayOfWeek.MONDAY, _class.days().getFirst(), "The first day should be DayOfWeek.MONDAY.");
     }
 
     @Test
     void testParsedDistances() {
         var distances = sampleData.distances();
-        assertEquals(4, distances.buildings().size(), "Buildings array should be of length 4.");
-        assertEquals("Park Hall", distances.buildings().getFirst(), "The first building should be Park Hall.");
 
-        assertEquals(4, distances.matrix().size(), "Matrix should have 4 rows.");
-        assertEquals(4, distances.matrix().getFirst().size(), "Matrix should have 4 columns.");
-        assertEquals(2.3, distances.matrix().get(1).get(1), 0.00001, "Matrix[1][1] should be 2.3.");
+        assertEquals(0.0, distances.get("Park Hall").get("Park Hall"), "The distance between 'Park Hall' and 'Park Hall' should be 0.0");
+        assertEquals(1.5, distances.get("Boyd").get("Miller Plant Sciences"), "The distance between 'Boyd' and 'Miller Plant Sciences' should be 1.5");
     }
 }

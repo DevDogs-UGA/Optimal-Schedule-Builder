@@ -9,5 +9,5 @@ import java.util.Map;
  * @param distances The distances between buildings on campus.
  */
 public record SampleData(Map<String, Course> courses,
-                         Distances distances) {
+                         Map<String, Map<String, Double>> distances) {
 }

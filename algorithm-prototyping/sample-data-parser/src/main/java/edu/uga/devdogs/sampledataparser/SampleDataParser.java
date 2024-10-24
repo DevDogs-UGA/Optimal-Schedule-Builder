@@ -59,7 +59,7 @@ public class SampleDataParser {
 
         Map<String, Course> courses = coursesGson.fromJson(coursesJson, new TypeToken<Map<String, Course>>() {}.getType());
 
-        Distances distances = gson.fromJson(distancesJson, Distances.class);
+        Map<String, Map<String, Double>> distances = gson.fromJson(distancesJson, new TypeToken<Map<String, Map<String, Double>>>() {}.getType());
 
         return new SampleData(courses, distances);
     }
