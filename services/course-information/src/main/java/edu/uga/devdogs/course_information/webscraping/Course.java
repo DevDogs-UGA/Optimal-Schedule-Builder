@@ -1,5 +1,3 @@
-package edu.uga.devdogs.course_information.webscraping;
-
 /**
  * @author Yuval Deshe
  * Represents an entry for a Course at UGA.
@@ -12,7 +10,7 @@ public class Course {
 
     private int crn; // The Course Reference Number (CRN) of the course.
     private String sec; //section : denotes different sections of a class like B1 and B2. is usually null if the class is not available for the semester
-    private String stat; //status of the course like avalable or not 
+    private String stat; //status of the course like avalable or not
     private String creditHours; // The amount of credit hours the course fulfills.
     private String meetingDays; // The days of the week that the course meets.
     private String meetingTimes; // The times that the course meets.
@@ -21,6 +19,9 @@ public class Course {
     private String campus; // The campus the class is offered at.
     private String professor; // The professor who teaches the course.
     private String partOfTerm; // The part of the semester that the course is offered in.
+    private String coPrerequisiteClasses; //Any pre or co requisite courses.
+    private String description; //The description of the course.
+
     private int classSize; // The total number of seats in the class.
     private int availableSeats; // The number of available seats in the class.
 
@@ -42,13 +43,12 @@ public class Course {
      * @param stat status of the course
      * @param creditHours the number of credit hours the course fulfills.
      * @param meetingDays the days of the week that the class meets.(e.g. M W F or T R).
-     * @param meetingTimes the times that the course meets. Times should be formatted as 
+     * @param meetingTimes the times that the course meets. Times should be formatted as
      * XX:XX am/pm-XX:XX am/pm (e.g. '11:10 am-12:25 pm' or '03:00 pm-03:50 pm').
      * @param building the building that the class takes place in.
      * @param roomNumber the room number of the class.
      * @param campus the campus the class is offered at.
      * @param professor the professor who teaches the course
-     * @param description a description of the class.
      * @param partOfTerm the part of the semester that the class is offered.
      * @param classSize the total number of seats in the course.
      * @param availableSeats the amount of available seats in the course.
@@ -70,7 +70,7 @@ public class Course {
                   String partOfTerm,
                   int classSize,
                   int availableSeats
-                  ) {
+    ) {
         this.subject = subject;
         this.courseNumber = courseNumber;
         this.title = title;
@@ -92,11 +92,11 @@ public class Course {
 
     public String getTitle()  {
         return this.title;
-       }
+    }
     public void setTitle(String s) {
         this.title = s;
     }
-    
+
     public String getDepartment()  {
         return this.department;
     }
@@ -251,11 +251,6 @@ public class Course {
     } // setCampus
 
     /**
-     * Returns the description of the course.
-     * @return the value of {@code description}.
-     */
-
-    /**
      * Returns the part of the semester that the course is held in.
      * @return the value of {@code partOfTerm}.
      */
@@ -334,4 +329,37 @@ public class Course {
     public void setCrn(int crn) {
         this.crn = crn;
     } // setCrn
+
+    /**
+     * Gets the co and prerequisite courses.
+     * @return the value of {@code coPrerequisiteClasses}.
+     */
+    public String getCoPrerequisiteClasses() {
+        return coPrerequisiteClasses;
+    } //getCoPrerequisiteClasses
+
+    /**
+     * Sets the co and prerequisite courses.
+     * @param coPrerequisiteClasses the new value of {@code coPrerequisiteClasses}.
+     */
+    public void setCoPrerequisiteClasses(String coPrerequisiteClasses) {
+        this.coPrerequisiteClasses = coPrerequisiteClasses;
+    } //setCoPrerequisiteClasses
+
+    /**
+     * Returns the description of the course.
+     * @return the value of {@code description}.
+     */
+    public String getDescription() {
+        return description;
+    } //getDescription
+
+    /**
+     * Sets the course description
+     * @param description the new value of {@code description}.
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    } //setDescription
+
 } // Course
