@@ -3,7 +3,9 @@ package edu.uga.devdogs.sampledataparser;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import edu.uga.devdogs.sampledataparser.deserializers.DayOfWeekArrayDeserializer;
+import com.google.gson.reflect.TypeToken;
+import edu.uga.devdogs.sampledataparser.deserializers.CourseMapDeserializer;
+import edu.uga.devdogs.sampledataparser.deserializers.DayOfWeekListDeserializer;
 import edu.uga.devdogs.sampledataparser.deserializers.LocalTimeDeserializer;
 import edu.uga.devdogs.sampledataparser.deserializers.ProfessorDeserializer;
 import edu.uga.devdogs.sampledataparser.records.Course;
@@ -16,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The SampleDataParser class is responsible for parsing JSON data from multiple files
@@ -23,13 +27,6 @@ import java.time.LocalTime;
  * and returns a {@link SampleData} object containing all parsed data.
  */
 public class SampleDataParser {
-
-    /**
-     * Constructs a SampleDataParser object.
-     */
-    public SampleDataParser() {
-
-    }
 
     /**
      * Parses JSON data from the provided file paths, deserializing it into {@link Professor}, {@link Course},
@@ -41,7 +38,7 @@ public class SampleDataParser {
      * @return a {@link SampleData} object containing the parsed course, professor, and distance data.
      * @throws IllegalArgumentException if any of the files cannot be found or read.
      */
-    public SampleData parse(String professorsFilePath, String coursesFilePath, String distancesFilePath) {
+    public static SampleData parse(String professorsFilePath, String coursesFilePath, String distancesFilePath) {
         String professorsJson = readFile(professorsFilePath);
         String coursesJson = readFile(coursesFilePath);
         String distancesJson = readFile(distancesFilePath);
@@ -50,18 +47,19 @@ public class SampleDataParser {
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
 
-        Professor[] professors = gson.fromJson(professorsJson, Professor[].class);
+        List<Professor> professors = gson.fromJson(professorsJson, new TypeToken<List<Professor>>() {}.getType());
 
         Gson coursesGson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .registerTypeAdapter(Professor.class, new ProfessorDeserializer(professors))
                 .registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer())
-                .registerTypeAdapter(DayOfWeek[].class, new DayOfWeekArrayDeserializer())
+                .registerTypeAdapter(new TypeToken<List<DayOfWeek>>() {}.getType(), new DayOfWeekListDeserializer())
+                .registerTypeAdapter(new TypeToken<Map<String, Course>>() {}.getType(), new CourseMapDeserializer())
                 .create();
 
-        Course[] courses = coursesGson.fromJson(coursesJson, Course[].class);
+        Map<String, Course> courses = coursesGson.fromJson(coursesJson, new TypeToken<Map<String, Course>>() {}.getType());
 
-        Distances distances = gson.fromJson(distancesJson, Distances.class);
+        Map<String, Map<String, Double>> distances = gson.fromJson(distancesJson, new TypeToken<Map<String, Map<String, Double>>>() {}.getType());
 
         return new SampleData(courses, distances);
     }
