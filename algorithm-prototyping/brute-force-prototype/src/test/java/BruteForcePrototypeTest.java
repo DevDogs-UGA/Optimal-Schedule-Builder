@@ -1,4 +1,3 @@
-import edu.uga.devdogs.bruteforceprototype.BruteForcePrototype;
 import edu.uga.devdogs.sampledataparser.SampleDataParser;
 import edu.uga.devdogs.sampledataparser.records.Course;
 import edu.uga.devdogs.sampledataparser.records.SampleData;
@@ -12,7 +11,7 @@ import java.util.Set;
 
 public class BruteForcePrototypeTest {
 
-    static BruteForcePrototype bruteForce;
+    static Map<String, Map<String, Double>> distances;
 
     static List<Set<Course>> testCourseSets;
 
@@ -26,9 +25,7 @@ public class BruteForcePrototypeTest {
         // Parse sample data
         SampleData sampleData = SampleDataParser.parse(professorsFilePath, coursesFilePath, distancesFilePath);
         Map<String, Course> courses = sampleData.courses();
-
-        // Initialize the brute force prototype with the sample data
-        bruteForce = new BruteForcePrototype(sampleData);
+        distances = sampleData.distances();
 
         // Initialize the list of course sets
         testCourseSets = new ArrayList<>();

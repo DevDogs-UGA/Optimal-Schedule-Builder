@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class ScheduleUtilTest {
 
-    static SampleData sampleData;
+    static Map<String, Map<String, Double>> distances;
 
     static List<Schedule> testSchedules;
 
@@ -24,8 +24,9 @@ public class ScheduleUtilTest {
         String distancesFilePath = "../src/main/resources/distances.json";
 
         // Parse sample data
-        sampleData = SampleDataParser.parse(professorsFilePath, coursesFilePath, distancesFilePath);
+        SampleData sampleData = SampleDataParser.parse(professorsFilePath, coursesFilePath, distancesFilePath);
         Map<String, Course> courses = sampleData.courses();
+        distances = sampleData.distances();
 
         // Initialize the list of test schedules
         testSchedules = new ArrayList<>();
