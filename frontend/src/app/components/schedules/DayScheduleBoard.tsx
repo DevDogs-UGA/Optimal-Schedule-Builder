@@ -1,4 +1,4 @@
-import { ClassData } from "../../../types/scheduleTypes";
+import { type ClassData } from "../../../types/scheduleTypes";
 import DayClass from "@/components/schedules/DayClass";
 
 interface DayScheduleBoardProps {

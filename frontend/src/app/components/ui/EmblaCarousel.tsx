@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { type EmblaOptionsType } from "embla-carousel";
-import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
 import useEmblaCarousel from "embla-carousel-react";
 import "../../../styles/embla.css";
 
@@ -11,9 +10,7 @@ type PropType = {
 };
 
 const EmblaCarousel: React.FC<PropType> = ({ slides, options }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel(options);
-  const { selectedIndex, scrollSnaps, onDotButtonClick } =
-    useDotButton(emblaApi);
+  const [emblaRef] = useEmblaCarousel(options);
 
   return (
     <section className="embla">
@@ -26,18 +23,6 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options }) => {
           ))}
         </div>
       </div>
-
-      {/* <div className="embla__controls">
-        <div className="embla__dots">
-          {scrollSnaps.map((_, index) => (
-            <DotButton
-              key={index}
-              onClick={() => onDotButtonClick(index)}
-              className={`embla__dot${index === selectedIndex ? "embla__dot--selected" : ""}`}
-            />
-          ))}
-        </div>
-      </div> */}
     </section>
   );
 };
