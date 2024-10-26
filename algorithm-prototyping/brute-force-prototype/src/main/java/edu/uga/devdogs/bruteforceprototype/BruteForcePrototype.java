@@ -1,6 +1,7 @@
 package edu.uga.devdogs.bruteforceprototype;
 
 import edu.uga.devdogs.bruteforceprototype.schedule.Schedule;
+import edu.uga.devdogs.bruteforceprototype.schedule.ScheduleUtil;
 import edu.uga.devdogs.sampledataparser.records.Course;
 
 import java.util.HashSet;
@@ -22,7 +23,20 @@ public class BruteForcePrototype {
      * @return the schedule with the highest overall objective score based on the input courses and weights
      */
     public static Schedule optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights) {
-        return new Schedule(new HashSet<>());
+        Set<Schedule> validSchedules = generateValidSchedules(inputCourses);
+
+        Schedule optimalSchedule = null;
+        double optimalOverallObjective = 0;
+
+        for (Schedule schedule : validSchedules) {
+            double overallObjective = ScheduleUtil.computeOverallObjective(schedule, distances, weights);
+            if(overallObjective > optimalOverallObjective) {
+                optimalSchedule = schedule;
+                optimalOverallObjective = overallObjective;
+            }
+        }
+
+        return optimalSchedule;
     }
 
 
