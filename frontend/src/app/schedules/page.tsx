@@ -105,10 +105,10 @@ export default function SchedulePage() {
 
   // Sorts the Classes by Start Time
   Object.keys(weekScheduleData).forEach((day) => {
-    weekScheduleData[day].sort((a, b) => {
+    weekScheduleData[day]?.sort((a, b) => {
       const timeA = new Date(`1970/01/01 ${a.timeStart}`); // Any date can be used since we're only comparing times
       const timeB = new Date(`1970/01/01 ${b.timeStart}`);
-      return timeA - timeB;
+      return timeA.getTime() - timeB.getTime();
     });
   });
 

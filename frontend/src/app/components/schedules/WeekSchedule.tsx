@@ -1,15 +1,12 @@
 import { type WeekSchedule as WeekScheduleType } from "../../../types/scheduleTypes";
 import DayScheduleBoard from "@/components/schedules/DayScheduleBoard";
 import EmblaCarousel from "../ui/EmblaCarousel";
-import { type EmblaOptionsType } from "embla-carousel";
 
 interface WeekScheduleProps {
   weekData: WeekScheduleType;
 }
 
 export default function WeekSchedule({ weekData }: WeekScheduleProps) {
-  const OPTIONS: EmblaOptionsType = { containScroll: false };
-
   // Convert each DayScheduleBoard into a carousel slide
   const slides = Object.entries(weekData).map(([day, classes]) => (
     <DayScheduleBoard key={day} day={day} classesInfo={classes} />
@@ -19,7 +16,7 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
     <div className="mx-auto min-h-screen md:w-[85%]">
       {/* Mobile View: Show Carousel */}
       <div className="block md:hidden">
-        <EmblaCarousel slides={slides} options={OPTIONS} />
+        <EmblaCarousel slides={slides} />
       </div>
 
       {/* Desktop View: Show Grid */}
