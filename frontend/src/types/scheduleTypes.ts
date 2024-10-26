@@ -7,12 +7,8 @@ interface ClassData {
   bgColor: string;
 }
 
-interface DaySchedule {
-  [key: string]: ClassData[];
-}
+type DaySchedule = Record<string, ClassData[]>;
 
-interface WeekSchedule {
-  [day: string]: ClassData[];
-}
+type WeekSchedule = Record<string, ClassData[]>;
 
 export type { ClassData, DaySchedule, WeekSchedule };

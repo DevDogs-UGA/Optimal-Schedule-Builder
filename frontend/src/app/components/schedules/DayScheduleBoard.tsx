@@ -13,8 +13,14 @@ export default function DayScheduleBoard({
   const getTimeDifference = (time1: string, time2: string): number => {
     const date1 = new Date(`1970/01/01 ${time1}`);
     const date2 = new Date(`1970/01/01 ${time2}`);
+
+    // If time2 is earlier than time1, adjust by adding 24 hours to time2
+
+    date2.setHours(date2.getHours() + 12);
+    date1.setHours(date1.getHours() + 12);
+
     const differenceInMinutes = Math.abs(
-      (date1.getTime() - date2.getTime()) / (1000 * 60),
+      (date2.getTime() - date1.getTime()) / (1000 * 60),
     );
     return differenceInMinutes;
   };
@@ -22,12 +28,13 @@ export default function DayScheduleBoard({
   return (
     <div className="mx-auto mt-10 h-[70vh] w-full max-w-md rounded-xl bg-pink-100 p-6">
       <h2 className="text mb-4 text-xl font-bold">{day}</h2>
-      <div className="space-y-2">
+      <div className="">
         {classesInfo.map((classData, index) => {
-          const nextClass = classesInfo[index + 1];
-          const timeDifference = nextClass
-            ? getTimeDifference(classData.timeStart, nextClass.timeStart)
-            : null;
+          const referenceTime = "8:00 am"; // Always compare to 8:00 AM
+          const timeDifference = getTimeDifference(
+            referenceTime,
+            classData.timeStart,
+          );
 
           return (
             <DayClass

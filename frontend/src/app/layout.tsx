@@ -18,9 +18,6 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  
-  
-
   return (
     <html lang="en" className={inter.className}>
       <body className="relative min-h-screen bg-background">
@@ -47,7 +44,6 @@ export default function RootLayout({
         />
 
         <main className="min-h-screen">
-          
           {children}
           <Footer />
         </main>

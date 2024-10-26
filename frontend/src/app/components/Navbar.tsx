@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-
 // Custom hook for scroll direction
 function useScrollDirection() {
   const [scrollDirection, setScrollDirection] = useState("up");
@@ -85,17 +84,17 @@ export function Navbar() {
         <div className="mr-8 hidden flex-nowrap items-center justify-around gap-8 text-[20px] font-bold sm:flex">
           <Link href="/">
             <button className="rounded-full px-2 py-1 transition duration-300 ease-in-out hover:bg-bulldog-red/50 md:px-4">
-              Modify
+              App
             </button>
           </Link>
           <Link href="/">
             <button className="rounded-full px-2 py-1 transition duration-300 ease-in-out hover:bg-bulldog-red/50 md:px-4">
-              Shuffle
+              About Us
             </button>
           </Link>
           <Link href="/">
             <button className="rounded-full px-2 py-1 transition duration-300 ease-in-out hover:bg-bulldog-red/50 md:px-4">
-              List View
+              Contact
             </button>
           </Link>
         </div>

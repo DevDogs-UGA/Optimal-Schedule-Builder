@@ -16,10 +16,13 @@ export default function DayClass({
   return (
     <div
       className={`w-full rounded-lg p-4 ${bgColor} transition duration-150 ease-in-out hover:bg-black ${className}`}
-      style={{ marginBottom: timeDifference ? `${timeDifference * .35}px` : "0px" }}
+      style={{
+        position: "relative",
+        top: timeDifference ? `${timeDifference * 0.5}px` : "0px",
+      }}
     >
       <div className="flex justify-between">
-        <div className="space-y-1">
+        <div className="">
           <h2 className="font-bold text-white">{classTitle}</h2>
           {location && <p className="text-sm text-white/90">{location}</p>}
         </div>

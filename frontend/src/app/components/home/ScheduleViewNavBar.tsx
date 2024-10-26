@@ -40,7 +40,7 @@ export function ScheduleViewNavBar() {
 
   return (
     <div
-      className={`sticky sm:top-5 z-[999] w-full transition-transform duration-300 ${
+      className={`sticky z-[999] w-full transition-transform duration-300 sm:top-5 ${
         scrollDirection === "down" ? "-translate-y-[130%]" : "translate-y-0"
       }`}
     >
