@@ -1,4 +1,4 @@
-import { WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
+import { WeekSchedule as WeekScheduleType } from "../../types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
 
 export default function SchedulePage() {
@@ -24,19 +24,11 @@ export default function SchedulePage() {
         timeEnd: "2:00 pm",
         bgColor: "bg-teal-500",
       },
-      
       {
         classTitle: "MUSIC 2300",
         location: "Hugh Hodgson School of Music",
-        timeStart: "12:45 pm",
-        timeEnd: "2:00 pm",
-        bgColor: "bg-teal-500",
-      },
-      {
-        classTitle: "MUSIC 2300",
-        location: "Hugh Hodgson School of Music",
-        timeStart: "12:45 pm",
-        timeEnd: "2:00 pm",
+        timeStart: "5:00 pm",
+        timeEnd: "7:00 pm",
         bgColor: "bg-teal-500",
       },
     ],
@@ -131,6 +123,17 @@ export default function SchedulePage() {
 
     // Add more days as needed
   };
+
+  // Sorts the Classes by Start Time
+Object.keys(weekScheduleData).forEach((day) => {
+  weekScheduleData[day].sort((a, b) => {
+    const timeA = new Date(`1970/01/01 ${a.timeStart}`); // Any date can be used since we're only comparing times
+    const timeB = new Date(`1970/01/01 ${b.timeStart}`);
+    return timeA - timeB;
+  });
+});
+  
+  
 
   return (
     <div className="min-h-screen w-[85%] mx-auto">

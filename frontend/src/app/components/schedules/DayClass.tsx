@@ -1,4 +1,4 @@
-import { ClassData } from "@/types/scheduleTypes.ts";
+import { ClassData } from "../../../types/scheduleTypes";
 
 interface DayClassProps extends ClassData {
   className?: string;
@@ -10,11 +10,13 @@ export default function DayClass({
   timeStart,
   timeEnd,
   bgColor,
+  timeDifference,
   className = "",
 }: DayClassProps) {
   return (
     <div
       className={`w-full rounded-lg p-4 ${bgColor} transition duration-150 ease-in-out hover:bg-black ${className}`}
+      style={{ marginBottom: timeDifference ? `${timeDifference * .35}px` : "0px" }}
     >
       <div className="flex justify-between">
         <div className="space-y-1">

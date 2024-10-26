@@ -3,6 +3,7 @@ interface ClassData {
   location?: string;
   timeStart: string;
   timeEnd: string;
+  timeDifference?: number | null; // Optional, can be number or null
   bgColor: string;
 }
 

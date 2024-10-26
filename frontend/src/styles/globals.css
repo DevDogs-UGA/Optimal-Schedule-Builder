@@ -42,3 +42,52 @@ h6 {
 /* [data-theme="dark"] {
   TODO: Add the dark mode styles here
 } */
+
+.OuterRingAnimation { 
+  /* background: black; */
+  text-align: center;
+  
+  position: relative;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.OuterRingAnimation::after,
+.OuterRingAnimation::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  background-image: conic-gradient(
+    from var(--angle),
+    red,
+    blue,
+    yellow,
+    green,
+    red
+  );
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+  border-radius: inherit;
+  animation: 3s spin linear infinite;
+}
+
+.OuterRingAnimation::before {
+  filter: blur(1.5rem);
+  opacity: 0.5;
+}
+
+@keyframes spin {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
