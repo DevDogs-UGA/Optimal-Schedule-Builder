@@ -11,7 +11,8 @@
     "lint:check": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
     "lint:fix": "eslint --ext \".ts,.vue\" --ignore-path .gitignore --fix .",
     "format:check": "prettier --check .",
-    "format:fix": "prettier --write --list-different ."
+    "format:fix": "prettier --write --list-different .",
+    "fl": "prettier --write --list-different . && eslint --ext \".ts,.vue\" --ignore-path .gitignore --fix ."
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.11.1",

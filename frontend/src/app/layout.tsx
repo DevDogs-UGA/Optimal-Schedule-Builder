@@ -1,13 +1,11 @@
 import "../styles/globals.css";
-
 import { Inter } from "next/font/google";
-
 import { type Metadata } from "next";
 import Image from "next/image";
 
-import { Navbar } from "./components/Navbar";
-import { Footer } from "./components/Footer";
-
+// import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+// import { ScheduleViewNavBar } from "@/components/home/ScheduleViewNavBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,6 +18,9 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  
+  
+
   return (
     <html lang="en" className={inter.className}>
       <body className="relative min-h-screen bg-background">
@@ -46,7 +47,7 @@ export default function RootLayout({
         />
 
         <main className="min-h-screen">
-          <Navbar />
+          
           {children}
           <Footer />
         </main>

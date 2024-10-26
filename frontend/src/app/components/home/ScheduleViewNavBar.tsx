@@ -1,19 +1,50 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+// Custom hook for scroll direction
+function useScrollDirection() {
+  const [scrollDirection, setScrollDirection] = useState("up");
+  const [prevScroll, setPrevScroll] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+
+      // Only trigger hide/show after scrolling a bit (e.g., 10px)
+      if (Math.abs(currentScroll - prevScroll) < 10) return;
+
+      const direction = currentScroll > prevScroll ? "down" : "up";
+      if (direction !== scrollDirection) {
+        setScrollDirection(direction);
+      }
+      setPrevScroll(currentScroll > 0 ? currentScroll : 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [scrollDirection, prevScroll]);
+
+  return scrollDirection;
+}
+
 export function ScheduleViewNavBar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const scrollDirection = useScrollDirection();
 
   const toggleNavbar = (): void => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
-    <div className="relative z-[999] w-full">
-      <div className="fixed left-1/2 top-0 flex h-[4.5rem] w-full -translate-x-1/2 items-center justify-between rounded-none border border-[#F8E6EA] border-opacity-40 bg-[#F8E6EA] bg-opacity-80 shadow-lg shadow-black/[0.03] backdrop-blur-[0.5rem] sm:top-6 sm:h-[4rem] sm:w-[36rem] sm:rounded-full md:h-[4rem] md:w-[45rem] lg:w-[60rem] xl:w-[80rem]">
+    <div
+      className={`sticky sm:top-5 z-[999] w-full transition-transform duration-300 ${
+        scrollDirection === "down" ? "-translate-y-[130%]" : "translate-y-0"
+      }`}
+    >
+      <div className="flex h-[4.5rem] w-full items-center justify-between rounded-none border border-[#F8E6EA] border-opacity-40 bg-[#F8E6EA] bg-opacity-80 shadow-lg shadow-black/[0.03] backdrop-blur-[0.5rem] sm:mx-auto sm:h-[4rem] sm:w-[36rem] sm:rounded-full md:h-[4rem] md:w-[45rem] lg:w-[60rem] xl:w-[80rem]">
         {/* Logo and Title */}
         <div className="flex items-center space-x-2 pl-8">
           <Link href="/" className="flex items-center gap-3">
