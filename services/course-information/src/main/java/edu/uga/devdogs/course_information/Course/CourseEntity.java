@@ -7,9 +7,10 @@ import jakarta.persistence.Id;
 import java.io.Serializable;
 
 
+// Java JPA entity represention for Class
 @Entity
-public class Course implements Serializable {
-    //Variables
+public class CourseEntity implements Serializable {
+    // Variables
     @Id
     @GeneratedValue
     private long courseId;
@@ -22,27 +23,36 @@ public class Course implements Serializable {
 
     private String department;
 
-    //Relationships
+    /*
+     * Relationships (not yet created)
+     * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
+     */
 
+    /*
+     * Constructors
+     */
 
-    //Constructors, getters, setters...
-    public Course() {
+    public CourseEntity() {
     }
 
-    public Course(String subject, String courseNumber, String title, String department) {
+    public CourseEntity(String subject, String courseNumber, String title, String department) {
         this.subject = subject;
         this.courseNumber = courseNumber;
         this.title = title;
         this.department = department;
     }
 
-    public Course(long courseId, String subject, String courseNumber, String title, String department) {
+    public CourseEntity(long courseId, String subject, String courseNumber, String title, String department) {
         this.courseId = courseId;
         this.subject = subject;
         this.courseNumber = courseNumber;
         this.title = title;
         this.department = department;
     }
+
+    /*
+    * Getters and Setters
+    */
 
     public long getCourseId() {
         return courseId;
@@ -83,6 +93,10 @@ public class Course implements Serializable {
     public void setDepartment(String department) {
         this.department = department;
     }
+
+    /*
+     * toString
+     */
 
     @Override
     public String toString() {
