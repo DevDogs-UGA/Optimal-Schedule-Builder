@@ -37,5 +37,25 @@ public class BulletinCourseService {
         // Service logic goes here
     }
 
+    /**
+     * Retrieves the type of class (e.g., Honors, Lab, Online) for a given course ID.
+     *
+     * @param courseId the ID of the course
+     * @return the type of the class as a String
+     * @throws IllegalArgumentException if the course ID is invalid or not found
+     */
+    public String getClassTypeByCourseId(Long courseId) {
+        // Validate the courseId
+        if (courseId == null || courseId <= 0) {
+            throw new IllegalArgumentException("Invalid course ID");
+        }
+
+        // Example JPA call to fetch course type
+        // Assuming Course entity has a method getType() that returns the type of the course
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalArgumentException("Course not found for ID: " + courseId));
+
+        return course.getType();
+    }    
+    
 }
 
