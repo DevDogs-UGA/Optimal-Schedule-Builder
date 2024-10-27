@@ -5,6 +5,8 @@ import { Minimap } from "./components/home/Minimap";
 import { ScheduleSave } from "./components/home/ScheduleSave";
 import { HomepageAlert } from "./components/home/HomepageAlert";
 import { LabPairingSystem } from "./components/home/LabPairingSystem";
+import Basemap from "./images/Basemap.png";
+import { Button } from "./components/ui/ButtonRounded";
 
 export default function Home() {
   return (
@@ -32,6 +34,20 @@ export default function Home() {
         <div className="flex flex-col items-center justify-end gap-4">
           <LabPairingSystem />
           <HomepageAlert />
+        </div>
+      </div>
+      <div>
+        Test my component here
+        <Link href="/">
+          <div className="h-[10rem] w-[10rem] rounded-xl bg-[#F3EDED] ease-in-out sm:h-[10rem] sm:w-[20rem] md:h-[12rem] md:w-[25rem] lg:h-[15rem] lg:w-[30rem] flex flex-col items-center justify-center">
+            <div>
+              <img src={Basemap.src} className="max-h-[97%] max-w-[97%] rounded-xl object-contain m-auto" />
+            </div>
+          </div>
+        </Link>
+        <div>
+          <Button text="distance: xx miles" />
+          <Button text="time: xx minutes" />
         </div>
       </div>
     </div>
