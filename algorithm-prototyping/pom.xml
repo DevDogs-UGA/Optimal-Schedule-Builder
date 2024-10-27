@@ -30,4 +30,22 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>aggregate</goal> <!-- Aggregates Javadocs from all submodules -->
+                        </goals>
+                        <phase>site</phase> <!-- Bind the aggregation to the 'site' phase -->
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

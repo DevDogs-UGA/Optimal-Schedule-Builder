@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap");
+
+* {
+  margin: 0;
+  font-family: myriad-pro, "Heebo", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Heebo", sans-serif;
+}
+
+:root {
+  --background: 0 100% 99%;
+
+  --dusty-pink: 342 100% 95%;
+  --bulldog-red: 348 88% 39%;
+  --barely-pink: 345 100% 98%;
+  --dev-dog-blue: 240 20% 25%;
+  --nearly-black: 45 6% 13%;
+  --midnight-blue: 240 20% 17%;
+  --grout-gray: 0 5% 52%;
+  --glory-glory-red: 349 100% 45%;
+  --mud-gray: 346 7% 37%;
+  --pebble-gray: 346 9% 63%;
+  --limestone: 20 12% 81%;
+  --baby-blue: 180 33% 89%;
+  --lake-herrick: 183 100% 34%;
+  --gold: 22 89% 79%;
+  --peach: 0 65% 69%;
+  --wave: 184 52% 63%;
+}
+
+/* [data-theme="dark"] {
+  TODO: Add the dark mode styles here
+} */

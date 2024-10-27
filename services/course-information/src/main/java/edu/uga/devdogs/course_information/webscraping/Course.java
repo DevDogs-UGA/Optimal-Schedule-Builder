@@ -1,5 +1,4 @@
 package edu.uga.devdogs.course_information.webscraping;
-import java.util.Date;
 
 /**
  * @author Yuval Deshe
@@ -8,94 +7,115 @@ import java.util.Date;
 public class Course {
     private String subject; // The four-letter String representing the course subject (e.g. CSCI).
     private String courseNumber; // The course number (e.g. 1302).
-    private String professor; // The professor who teaches the course.
+    private String title; //ie intro to software development
+    private String department; //ie School of Computing
+
+    private int crn; // The Course Reference Number (CRN) of the course.
+    private String sec; //section : denotes different sections of a class like B1 and B2. is usually null if the class is not available for the semester
+    private String stat; //status of the course like avalable or not 
+    private String creditHours; // The amount of credit hours the course fulfills.
     private String meetingDays; // The days of the week that the course meets.
     private String meetingTimes; // The times that the course meets.
     private String building; // The building that the class takes place in.
     private String roomNumber; // The room number of the class.
     private String campus; // The campus the class is offered at.
-    private String description; // A description of the class.
+    private String professor; // The professor who teaches the course.
     private String partOfTerm; // The part of the semester that the course is offered in.
-    private Date startDate; // The date that the course starts.
-    private Date endDate; // The date that the course ends.
-    private Course[] prereqs; // Prerequisite courses for the class.
-    private Course[] coreqs; // Corequisite courses for the class.
-    private int creditHours; // The amount of credit hours the course fulfills.
     private int classSize; // The total number of seats in the class.
     private int availableSeats; // The number of available seats in the class.
-    private int crn; // The Course Reference Number (CRN) of the course.
 
     /**
      * Constructs a {@code Course} object.
      */
     public Course() {
-        subject = "";
-        courseNumber = "";
-        professor = "";
-        meetingDays = "";
-        meetingTimes = "";
-        building = "";
-        roomNumber = "";
-        campus = "";
-        description = "";
-        partOfTerm = "";
-        startDate = new Date();
-        endDate = new Date();
-        prereqs = new Course[0];
-        coreqs = new Course[0];
-        creditHours = 0;
-        classSize = 0;
-        availableSeats = 0;
-        crn = 0;
+        this("","","","",-1,"","","","","","","","","","",-1, -1);
     } // Course
 
     /**
      * Constructs a {@code Course} object with all variables specified as parameters.
      * @param subject the four-letter String representing the course subjectr (e.g. CSCI).
      * @param courseNumber the course number (e.g. 1302)
-     * @param professor the professor who teaches the course
-     * @param meetingDays the days of the week that the class meets. Days should be formatted as 
-     * one letter separated by spaces (e.g. M W F or T R).
+     * @param title title of the course eg intro to software development
+     * @param department school of computing
+     * @param crn the Course Reference Number (CRN) of the course.
+     * @param sec specfific section of the class
+     * @param stat status of the course
+     * @param creditHours the number of credit hours the course fulfills.
+     * @param meetingDays the days of the week that the class meets.(e.g. M W F or T R).
      * @param meetingTimes the times that the course meets. Times should be formatted as 
      * XX:XX am/pm-XX:XX am/pm (e.g. '11:10 am-12:25 pm' or '03:00 pm-03:50 pm').
      * @param building the building that the class takes place in.
      * @param roomNumber the room number of the class.
      * @param campus the campus the class is offered at.
+     * @param professor the professor who teaches the course
      * @param description a description of the class.
      * @param partOfTerm the part of the semester that the class is offered.
-     * @param startDate the date the class starts.
-     * @param endDate the date the class ends.
-     * @param prereqs the pre-requisite classes of the course.
-     * @param coreqs the co-requisite classes of the course.
-     * @param creditHours the number of credit hours the course fulfills.
      * @param classSize the total number of seats in the course.
      * @param availableSeats the amount of available seats in the course.
-     * @param crn the Course Reference Number (CRN) of the course.
      */
-    public Course(String subject, String courseNumber, String professor, String meetingDays, 
-                  String meetingTimes, String building, String roomNumber, String campus, 
-                  String description, String partOfTerm, Date startDate, Date endDate, 
-                  Course[] prereqs, Course[] coreqs, int creditHours, int classSize, 
-                  int availableSeats, int crn) {
+    public Course(String subject,
+                  String courseNumber,
+                  String title,
+                  String department,
+                  int crn,
+                  String sec,
+                  String stat,
+                  String creditHours,
+                  String meetingDays,
+                  String meetingTimes,
+                  String building,
+                  String roomNumber,
+                  String campus,
+                  String professor,
+                  String partOfTerm,
+                  int classSize,
+                  int availableSeats
+                  ) {
         this.subject = subject;
         this.courseNumber = courseNumber;
-        this.professor = professor;
+        this.title = title;
+        this.department = department;
+        this.crn = crn;
+        this.sec = sec;
+        this.stat = stat;
+        this.creditHours = creditHours;
         this.meetingDays = meetingDays;
         this.meetingTimes = meetingTimes;
         this.building = building;
         this.roomNumber = roomNumber;
         this.campus = campus;
-        this.description = description;
+        this.professor = professor;
         this.partOfTerm = partOfTerm;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.prereqs = prereqs;
-        this.coreqs = coreqs;
-        this.creditHours = creditHours;
         this.classSize = classSize;
         this.availableSeats = availableSeats;
-        this.crn = crn;
-    } // Course
+    }
+
+    public String getTitle()  {
+        return this.title;
+       }
+    public void setTitle(String s) {
+        this.title = s;
+    }
+    
+    public String getDepartment()  {
+        return this.department;
+    }
+    public void setDepartment(String s) {
+        this.department = s;
+    }
+    public String getSec() {
+        return this.sec;
+    }
+    public void setSec(String s) {
+        this.sec = s;
+    }
+    public String getStat() {
+        return this.stat;
+    }
+    public void setStat(String s) {
+        this.stat = s;
+    }
+
 
     /**
      * Returns the course's subject.
@@ -128,6 +148,7 @@ public class Course {
     public void setCourseNumber(String courseNumber) {
         this.courseNumber = courseNumber;
     } // setCourseNumber
+
 
     /**
      * Returns the professor that teaches the course.
@@ -233,17 +254,6 @@ public class Course {
      * Returns the description of the course.
      * @return the value of {@code description}.
      */
-    public String getDescription() {
-        return this.description;
-    } // getDescription
-
-    /**
-     * Sets the description of the course.
-     * @param description the new value of {@code description}.
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    } // setDescription
 
     /**
      * Returns the part of the semester that the course is held in.
@@ -262,74 +272,10 @@ public class Course {
     } // setPartOfTerm
 
     /**
-     * Returns the date that the class starts on.
-     * @return the value of {@code startDate}.
-     */
-    public Date getStartDate() {
-        return this.startDate;
-    } // getStartDate
-
-    /**
-     * Sets the date that the class starts on.
-     * @param startDate the new value of {@code startDate}.
-     */
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    } // setStartDate
-
-    /**
-     * Returns the date that the class ends on.
-     * @return the value of {@code endDate}.
-     */
-    public Date getEndDate() {
-        return this.endDate;
-    } // getEndDate
-
-    /**
-     * Sets the date that the class ends on.
-     * @param endDate the new value of {@code endDate}.
-     */
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    } // setEndDate
-
-    /**
-     * Returns the pre-requisite classes for this course.
-     * @return the value of {@code prereqs}.
-     */
-    public Course[] getPrereqs() {
-        return this.prereqs;
-    } // getPrereqs
-
-    /**
-     * Sets the pre-requisite classes for this course.
-     * @param prereqs the new value of {@code prereqs}.
-     */
-    public void setPrereqs(Course[] prereqs) {
-        this.prereqs = prereqs;
-    } // setPrereqs
-
-    /**
-     * Returns the co-requisite classes for this course.
-     * @return the value of {@code coreqs}.
-     */
-    public Course[] getCoreqs() {
-        return this.coreqs;
-    } // getCoreqs
-
-    /**
-     * Sets the co-requisite classes for this course.
-     * @param coreqs the new value of {@code coreqs}.
-     */
-    public void setCoreqs(Course[] coreqs) {
-        this.coreqs = coreqs;
-    } // setCoreqs
-
-    /**
      * Returns the number of credit hours that this course fulfills.
      * @return the value of {@code creditHours}.
      */
-    public int getCreditHours() {
+    public String getCreditHours() {
         return this.creditHours;
     } // getCreditHours
 
@@ -337,7 +283,7 @@ public class Course {
      * Sets the number of credit hours that this course fulfills.
      * @param creditHours the new value of {@code creditHours}.
      */
-    public void setCreditHours(int creditHours) {
+    public void setCreditHours(String creditHours) {
         this.creditHours = creditHours;
     } // setCreditHours
 
