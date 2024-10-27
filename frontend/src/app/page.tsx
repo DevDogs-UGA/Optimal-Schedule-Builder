@@ -1,3 +1,10 @@
+import Filters from "../app/filters";
+
 export default function HomePage() {
-  return <main>Main Page</main>;
+  return (
+    <div>
+      <main>Main Page</main>
+      <Filters />
+    </div>
+  );
 }
