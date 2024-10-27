@@ -56,6 +56,28 @@ public class BulletinCourseService {
 
         return course.getType();
     }    
-    
+
+    /**
+     * Retrieves a list of courses available in a specified term.
+     *
+     * <p>
+     * This method fetches courses from the database that are available in the given term.
+     * If the term is null or empty, it returns all available courses.
+     * </p>
+     *
+     * @param term the academic term for which courses are to be retrieved
+     * @return a list of courses available in the specified term
+     */
+    public List<Course> getCoursesByTerm(String term) {
+        // Check if the term is provided and not empty
+        if (term != null && !term.isEmpty()) {
+            // Fetch courses for the specified term
+            return courseRepository.findByTerm(term);
+        }
+
+        // Return all courses if no term is specified
+        return courseRepository.findAll();
+    }
+
 }
 
