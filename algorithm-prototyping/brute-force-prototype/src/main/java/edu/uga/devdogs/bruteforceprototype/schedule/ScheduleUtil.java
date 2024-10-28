@@ -68,7 +68,40 @@ public class ScheduleUtil {
      * @return the overall objective score for the schedule
      */
     public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances, double[] weights) {
-        return 0.0;
+        // The minimum rating on rate my professor is 1.0(if they have ratings).
+        final double profesorQualityMinimum = 1.0;
+        // The maximum rating on rate my professor is 5.0
+        final double profesorQualityMaximum = 5.0;
+        // The minimum distance between classes is 0.0 if they are in the same building.
+        final double maxDistanceMinimum = 0.0;
+        // The highest distance shown in the document is 22.1, so 30 should be a good maximum for calculations.
+        final double maxDistanceMaximum = 30.0;
+        // The minimum average idle time is 0 which should only happen if the person has one class a day.
+        final double averageIdleTimeMinimum = 0;
+        // The earliest a class can start is 8:00 a.m. and latest a class can go is 9:00 p.m. which is 780 minutes between those times.
+
+        final double averageIdleTimeMaximum = 780;
+
+        // finds the values and then plugs them into the normalize function with the minimum and maximum.
+        double normalizedProfessorQuality = normalizeValue(computeAverageProfessorQuality(schedule), profesorQualityMinimum, profesorQualityMaximum);
+        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule, distances), maxDistanceMinimum, maxDistanceMaximum);
+        double normalizedAverageIdleTime = normalizeValue(computeAverageIdleTime(schedule), averageIdleTimeMinimum, averageIdleTimeMaximum);
+
+        // computes the weighted sum. normalizedMaxDistance and normalizedAverageIdleTime are being subtracted from 1 since
+        // the higher the value, the worse the schedule.
+        return normalizedProfessorQuality * weights[0] + (1 - normalizedMaxDistance) * weights[1] + (1 - normalizedAverageIdleTime) * weights[2];
+    }
+
+    private static double normalizeValue(double value, double min, double max) {
+        // clips the value if below the minimum or above the maximum
+        if (value < min) {
+            return 0.0;
+        } else if (value > max) {
+            return 1.0;
+        } else {
+            // normalizes the values using min-max normalization
+            return (value - min) / (max - min);
+        }
     }
 
 }
