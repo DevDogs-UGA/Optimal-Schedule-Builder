@@ -41,13 +41,14 @@ public class Class implements Serializable{
      * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
 
-     /*
-      * Constructors
-      */
     @ManyToOne
     @JoinColumn(name = "courseSectionId")
     private CourseSection courseSection;
 
+     /*
+      * Constructors
+      */
+    
      // Default constructor
      public Class() {
      }
