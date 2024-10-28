@@ -1,5 +1,7 @@
 package edu.uga.devdogs.bruteforceprototype.schedule;
 
+import edu.uga.devdogs.sampledataparser.records.Section;
+
 import java.util.Map;
 
 /**
@@ -31,7 +33,6 @@ public class ScheduleUtil {
      * @return the average professor quality rating for the schedule
      */
     public static double computeAverageProfessorQuality(Schedule schedule) {
-
         double avgProfQuality = 0.0;
         int profIncludedInCalc = schedule.sections().size();
 
@@ -50,8 +51,6 @@ public class ScheduleUtil {
         avgProfQuality /= profIncludedInCalc;
 
         return avgProfQuality;
-
-
     }
 
     /**
