@@ -1,6 +1,9 @@
 package edu.uga.devdogs.bruteforceprototype.schedule;
 
+import java.util.Set;
+
 import edu.uga.devdogs.sampledataparser.records.Distances;
+import edu.uga.devdogs.sampledataparser.records.Section;
 
 /**
  * Utility class for performing operations and calculations related to a Schedule.
@@ -31,7 +34,17 @@ public class ScheduleUtil {
      * @return the average professor quality rating for the schedule
      */
     public static double computeAverageProfessorQuality(Schedule schedule) {
-        return 0.0;
+        double rtn = 0.0;
+        double numberOfClasses = 0.0;
+
+        Set<Section> sections = schedule.sections();
+
+        for (Section section : sections) {
+            rtn += section.professor().quality();
+            numberOfClasses++;
+        }
+
+        return rtn / numberOfClasses;
     }
 
     /**
