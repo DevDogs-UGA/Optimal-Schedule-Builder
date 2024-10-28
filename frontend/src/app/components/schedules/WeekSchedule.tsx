@@ -13,7 +13,7 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
   ));
 
   return (
-    <div className="mx-auto min-h-screen md:w-[85%]">
+    <div className="min-h-screen w-[100%]">
       {/* Mobile View: Show Carousel */}
       <div className="block md:hidden">
         <EmblaCarousel slides={slides} />

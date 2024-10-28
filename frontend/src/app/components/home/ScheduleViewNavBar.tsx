@@ -101,7 +101,7 @@ export function ScheduleViewNavBar() {
 
         {/* Mobile Dropdown */}
         {isDropdownOpen && (
-          <div className="absolute left-0 top-[4.5rem] z-[998] w-full flex-col items-center justify-start rounded-b-lg bg-[#F8E6EA] shadow-lg sm:hidden">
+          <div className="absolute left-0 top-[4.5rem] z-[998] w-full flex-col items-center justify-start rounded-none bg-[#F8E6EA] shadow-lg sm:hidden">
             <Link href="/">
               <button className="block w-full px-4 py-3 text-left text-[1.2rem] font-bold transition duration-300 ease-in-out hover:bg-bulldog-red/50">
                 Modify

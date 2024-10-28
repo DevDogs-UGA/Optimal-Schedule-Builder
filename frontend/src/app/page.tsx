@@ -38,12 +38,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      <div className="flex">
-        <div className="card">
-          <p className="text-white">ajslfjasljdflkasjfljas as flkajsdf as</p>
-        </div>
-      </div>
     </div>
   );
 }

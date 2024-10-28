@@ -28,7 +28,7 @@ export default function DayScheduleBoard({
   return (
     <div className="mx-auto mt-10 h-[70vh] w-full max-w-md rounded-xl bg-pink-100 p-6">
       <h2 className="text mb-4 text-xl font-bold">{day}</h2>
-      <div className="">
+      <div className="containerForScheduleView">
         {classesInfo.map((classData, index) => {
           const referenceTime = "8:00 am"; // Always compare to 8:00 AM
           const timeDifference = getTimeDifference(
@@ -40,7 +40,7 @@ export default function DayScheduleBoard({
             <DayClass
               key={`${day}-${classData.classTitle}-${index}`}
               {...classData}
-              timeDifference={timeDifference} // Pass the difference as a prop
+              timeDifference={timeDifference}
             />
           );
         })}

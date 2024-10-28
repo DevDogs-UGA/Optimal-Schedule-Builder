@@ -91,3 +91,11 @@ h6 {
     --angle: 360deg;
   }
 }
+
+/* #containerForScheduleView {
+  position: relative;
+}
+
+#containerForScheduleView > * {
+  position: absolute;
+} */
