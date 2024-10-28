@@ -79,7 +79,6 @@ public class ScheduleUtil {
         // The minimum average idle time is 0 which should only happen if the person has one class a day.
         final double averageIdleTimeMinimum = 0;
         // The earliest a class can start is 8:00 a.m. and latest a class can go is 9:00 p.m. which is 780 minutes between those times.
-
         final double averageIdleTimeMaximum = 780;
 
         // finds the values and then plugs them into the normalize function with the minimum and maximum.
