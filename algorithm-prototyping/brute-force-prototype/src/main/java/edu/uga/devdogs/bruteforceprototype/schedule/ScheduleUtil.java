@@ -20,8 +20,25 @@ public class ScheduleUtil {
      * @return true if the schedule is valid and contains no time conflicts, false otherwise
      */
     public static boolean validate(Schedule schedule) {
-        return false;
-    }
+        // iterates through days in a schedule
+        for (int i = 0; i < schedule.getDays().size(); i++) {
+            // if only one class the DAY must be valid, so we continue to the next day
+            if (schedule.getDays().get(i).size() == 1) {continue};
+            // iterates through classes in a day
+            for (int j = 0; j < schedule.getDays().get(i).size() - 1; j++) {
+                // variable for the current class
+                Class currentClass = schedule.getDays().get(i).get(j);
+                // variable for the class after the current
+                Class nextClass = schedule.getDays().get(i).get(j + 1);
+                // checks if the end time of the current class is greater than or equal to the start time of the next class
+                if (currentClass.endTime().compareTo(nextClass.startTime()) >= 0) {
+                    return false; // conflict found, no need to continue iteration
+                } // if
+            } // nested for
+        } // outer for
+        // no conflicts found, so schedule valid
+        return true;
+    } // validate
 
     /**
      * Computes the average quality rating of professors in the schedule.
