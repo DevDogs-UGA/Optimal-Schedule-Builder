@@ -16,6 +16,10 @@ public class ScheduleUtil {
      * Validates the given schedule by checking for any time conflicts between classes.
      * A time conflict occurs when two classes overlap in their scheduled times.
      *
+     * Iterates through the list of days, then iterates through classes in the day.
+     * If the end time of the current class is greater than or equal to the start time
+     * of the next class there is a time conflict.
+     *
      * @param schedule the schedule to be validated
      * @return true if the schedule is valid and contains no time conflicts, false otherwise
      */
