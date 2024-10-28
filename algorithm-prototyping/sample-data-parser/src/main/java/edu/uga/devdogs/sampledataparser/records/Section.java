@@ -2,6 +2,8 @@ package edu.uga.devdogs.sampledataparser.records;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Represents a section of a course, including the course code, CRN, professor, and associated classes.
  *
@@ -13,5 +15,5 @@ import com.google.gson.annotations.SerializedName;
 public record Section(String courseCode,
                       String crn,
                       @SerializedName("professor_name") Professor professor,
-                      Class[] classes) {
+                      List<Class> classes) {
 }

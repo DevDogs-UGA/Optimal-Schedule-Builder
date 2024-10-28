@@ -13,6 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Controller that handles the Course-Information details.
  * Provides courses based on parameters like major, professor,
@@ -22,6 +25,42 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/courseInformation")
 public class CourseInfoController {
+
+   
+    /**
+     * Asks for list of course information that relates to the 
+     * @param professor given.
+     * 
+     * @param professor name of the professor teaching the course
+     * @return course information list that's related to the given professor.
+     */
+    @Operation(summary = "get list of courses by professor", description = "Retrieces course information relating to the professor.")
+    @ApiResponse(value = {
+          @ApiResponse(responseCode = "200",description = "Course found"),
+          @ApiResponse(responseCode = "400",description = "Invalid Course ID"),
+          @ApiResponse(responseCode = "404",description = "Course not found")
+    })
+    @GetMapping("/professor")
+   public List<Section> getCourseByProfessor(@RequestParam(value = "professor",required = true) String professor){
+        
+     if(professor == null || professor.isEmpty()){
+          return ResponseEntity.badRequest().body(null); //Returns 400 if the parameter is not provided
+     }
+
+     try {
+          List<Section> courseInfo = fetchCoursesByProf(professor); //Fetches course information based on professor
+          
+          if(courseInfo.isEmpty()){
+               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseInfo); //Returns 404 error code is course info isn't found
+          }
+
+          return ResponseEntity.ok(courseInfo);
+     } catch (Exception e){
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+     }
+   } 
+    
+
 
     /**
      * Retrieves a list of courses for a given major
@@ -101,6 +140,44 @@ public class CourseInfoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-}
-  
+    
+    /**
+     * Retrieves course information based on Athena name.
+     * 
+     * @param athenaName The Athena name of the course
+     * @return Course details for the given Athena name
+     */
+    @Operation(summary = "Get course by Athena name", description = "Retrieves course information based on the provided Athena name.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid Athena name"),
+        @ApiResponse(responseCode = "404", description = "Course not found")
+    })
+    @GetMapping("/course-by-athena-name")
+    @Tag(name="course-information")
+    public ResponseEntity<Course> getCourseByAthenaName(@RequestParam String athenaName) {
+
+        // Return 400 for empty athenaName
+        if (athenaName.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        try {
+            // Call a service method to fetch the course by Athena name
+            Course courseDetails = getCourseByAthenaNameService(athenaName);  // not yet implemented
+
+            // Check if the above method call returned null
+            if (courseDetails == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // return 404 if no course is found
+            }
+
+            // Return the course details if found
+            return ResponseEntity.ok(courseDetails);
+
+        } catch (Exception e) {
+            // Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }

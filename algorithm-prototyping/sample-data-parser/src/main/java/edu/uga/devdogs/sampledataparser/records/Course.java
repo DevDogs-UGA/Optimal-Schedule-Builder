@@ -1,5 +1,7 @@
 package edu.uga.devdogs.sampledataparser.records;
 
+import java.util.List;
+
 /**
  * Represents a course with a course code and its associated sections.
  *
@@ -7,5 +9,5 @@ package edu.uga.devdogs.sampledataparser.records;
  * @param sections   The sections available for this course.
  */
 public record Course(String courseCode,
-                     Section[] sections) {
+                     List<Section> sections) {
 }
