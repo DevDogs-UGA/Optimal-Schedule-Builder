@@ -1,4 +1,4 @@
-package edu.uga.devdogs.course_information.CourseSection;
+package edu.uga.devdogs.course_information.course_section;
 
 import java.io.Serializable;
 
@@ -6,8 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
-
-// Java JPA entity represention for CourseSection
 @Entity
 public class CourseSectionEntity implements Serializable {
     // Variables
@@ -35,15 +33,9 @@ public class CourseSectionEntity implements Serializable {
 
     private int year;
 
-    /*
-     * Relationships (not yet created)
-     * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
-     */
+    // Relationships (not yet created)
 
-    /*
-     * Constructors
-     */
-
+    // Constructors, getters, setters, and toString 
     public CourseSectionEntity() {}
 
     public CourseSectionEntity(long courseSectionId, int crn, int sec, char stat, double creditHoursLow,
@@ -74,10 +66,6 @@ public class CourseSectionEntity implements Serializable {
         this.seatsAvailable = seatsAvailable;
         this.year = year;
     }
-
-    /*
-    * Getters and Setters
-    */
 
     public long getId() {
         return courseSectionId;
@@ -166,10 +154,6 @@ public class CourseSectionEntity implements Serializable {
     public void setYear(int year) {
         this.year = year;
     }
-
-    /*
-     * toString
-     */
 
     @Override
     public String toString() {

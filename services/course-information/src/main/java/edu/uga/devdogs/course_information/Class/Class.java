@@ -6,11 +6,16 @@ import jakarta.persistence.Id;
 
 import java.io.Serializable;
 
-
-// Java JPA entity represention for Class
+/*
+ * Java JPA entity represention for Class
+ */
 @Entity
-public class ClassEntity implements Serializable{
-    // Variables
+public class Class implements Serializable{
+    
+    /*
+     * Variables
+     */
+
     @Id
     @GeneratedValue
     private int classId;
@@ -28,20 +33,20 @@ public class ClassEntity implements Serializable{
     private String campus;
 
     /*
-     * Relationships (not yet created)
+     * Relationships
      * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
 
-    /*
-     * Constructors
-     */
+     /*
+      * Constructors
+      */
 
      // Default constructor
-     public ClassEntity() {
+     public Class() {
      }
 
      // Constructor w/o classID
-     public ClassEntity(String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
+     public Class(String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
          this.days = days;
          this.startTime = startTime;
          this.endTime = endTime;
@@ -51,7 +56,7 @@ public class ClassEntity implements Serializable{
      }
 
      // Constructor w/ classID
-     public ClassEntity(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
+     public Class(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
          this.classId = classId;
          this.days = days;
          this.startTime = startTime;
