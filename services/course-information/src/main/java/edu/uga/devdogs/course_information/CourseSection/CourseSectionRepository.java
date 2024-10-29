@@ -16,6 +16,5 @@ public interface CourseSectionRepository extends JpaRepository<CourseSection, Lo
     @Query("SELECT cs FROM CourseSection cs WHERE cs.term = ?1 AND cs.year = ?2")
     List<CourseSection> getCoursesByTermAndYear(int term, int year);
 
-    @Query("Select c FROM CourseSection cs WHERE cs.professor = ?1")
-    List<Course> fetchCoursesByProfessor(String professor);
+    
 }
