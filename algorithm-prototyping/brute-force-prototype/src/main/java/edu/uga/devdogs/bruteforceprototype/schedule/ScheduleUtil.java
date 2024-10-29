@@ -52,33 +52,33 @@ public class ScheduleUtil {
      * Idle time refers to the time gaps between two consecutive classes.
      *
      * @param schedule the schedule for which to compute the average idle time
+     * @throws IllegalArgumentException if schedule is not valid
      * @return the average idle time between classes in the schedule in minutes
-     *      if schedule is not valid (ex. overlapping classes) returns -1.0
      */
     public static double computeAverageIdleTime(Schedule schedule) {
         int countOfClassGaps = 0;
         int sumOfTimeGaps = 0;
-
-        if (!validate(schedule)) {
-            return -1.0;
-        }
 
         // Loop through the days
         for (TreeSet<Class> day: schedule.days().values()){
             int prevEndTime = -1;
 
             // Loop through all of the classes in a single day
-            for (Class iClass: day){
-                int startTime = iClass.startTime().getHour()*60 + iClass.startTime().getMinute();
-                int endTime = iClass.endTime().getHour()*60 + iClass.endTime().getMinute();
+            for (Class _class: day){
+                int currStartTime = _class.startTime().getHour()*60 + _class.startTime().getMinute();
+                int currEndTime = _class.endTime().getHour()*60 + _class.endTime().getMinute();
 
+                // Checks for invalid schedules
+                if (currStartTime < prevEndTime){
+                    throw new IllegalArgumentException("Schedule contains time conflicts.");
+                }
+                
                 // Only runs if there is a previous class in the current day
                 if (prevEndTime != -1){
-                    sumOfTimeGaps += startTime - prevEndTime;
+                    sumOfTimeGaps += currStartTime - prevEndTime;
                     countOfClassGaps++;
                 }
-
-                prevEndTime = endTime;
+                prevEndTime = currEndTime;
             }
         }
         if (countOfClassGaps == 0){
