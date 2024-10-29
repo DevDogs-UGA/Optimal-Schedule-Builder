@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BuildingRepository extends JpaRepository<Building, Long>{
     
     //This will get a building by its unique ID
+    @Query("select u from Building where u.id = ?1")
     Building getById(int id);
 
     //@Query("select u from Building where u.name = ?1")
