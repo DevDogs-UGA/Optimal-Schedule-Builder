@@ -17,7 +17,7 @@ public class CourseSection implements Serializable {
     // Variables
     @Id
     @GeneratedValue
-    private long courseSectionId;
+    private int courseSectionId;
 
     private int crn;
 
@@ -49,7 +49,7 @@ public class CourseSection implements Serializable {
     // Constructors, getters, setters, and toString 
     public CourseSection() {}
 
-    public CourseSection(long courseSectionId, int crn, int sec, char stat, double creditHoursLow,
+    public CourseSection(int courseSectionId, int crn, int sec, char stat, double creditHoursLow,
             double creditHoursHigh, String instructor, int term, int classSize, int seatsAvailable, int year, Course course, List<Class> classes) {
         this.courseSectionId = courseSectionId;
         this.crn = crn;
@@ -86,7 +86,7 @@ public class CourseSection implements Serializable {
         return courseSectionId;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.courseSectionId = id;
     }
 
