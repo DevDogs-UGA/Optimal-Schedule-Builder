@@ -114,6 +114,7 @@ public class CourseInformationApplication {
 
 				classRepository.save(class1);
 				classRepository.save(class2);
+				//
 			};
 		}
 
