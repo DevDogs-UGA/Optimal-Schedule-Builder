@@ -1,5 +1,7 @@
 package edu.uga.devdogs.bruteforceprototype.schedule;
 
+import edu.uga.devdogs.sampledataparser.records.Section;
+
 import java.util.Map;
 
 /**
@@ -31,7 +33,24 @@ public class ScheduleUtil {
      * @return the average professor quality rating for the schedule
      */
     public static double computeAverageProfessorQuality(Schedule schedule) {
-        return 0.0;
+        double avgProfQuality = 0.0;
+        int profIncludedInCalc = schedule.sections().size();
+
+        // Used to create the summation of the quality of professors within the schedule.
+        for (Section section : schedule.sections()) {
+            // Ensures that only professors with data are included in calculation.
+            if (section.professor().quality() == 0.0) {
+                // Decreases our professor count to prevent statistical misguidance.
+                profIncludedInCalc--;
+            } else {
+                // Adds valid professors to our summation
+                avgProfQuality += section.professor().quality();
+            }
+        }
+
+        avgProfQuality /= profIncludedInCalc;
+
+        return avgProfQuality;
     }
 
     /**
