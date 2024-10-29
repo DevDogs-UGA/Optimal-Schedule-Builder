@@ -2,6 +2,9 @@ package edu.uga.devdogs.course_information.CourseSection;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import edu.uga.devdogs.course_information.webscraping.Course;
+
 import java.util.List;
 
 public interface CourseSectionRepository extends JpaRepository<CourseSection, Long>{
@@ -12,4 +15,7 @@ public interface CourseSectionRepository extends JpaRepository<CourseSection, Lo
 
     @Query("SELECT cs FROM CourseSection cs WHERE cs.term = ?1 AND cs.year = ?2")
     List<CourseSection> getCoursesByTermAndYear(int term, int year);
+
+    @Query("Select c FROM CourseSection cs WHERE cs.professor = ?1")
+    List<Course> fetchCoursesByProfessor(String professor);
 }
