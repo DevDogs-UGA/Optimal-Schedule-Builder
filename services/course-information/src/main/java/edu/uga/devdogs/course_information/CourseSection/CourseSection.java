@@ -188,7 +188,7 @@ public class CourseSection implements Serializable {
 
     @Override
     public String toString() {
-        return "CourseSectionEntity [courseSectionId=" + courseSectionId + ", crn=" + crn + ", sec=" + sec + ", stat="
+        return "CourseSection [courseSectionId=" + courseSectionId + ", crn=" + crn + ", sec=" + sec + ", stat="
                 + stat + ", creditHoursLow=" + creditHoursLow + ", creditHoursHigh=" + creditHoursHigh + ", instructor="
                 + instructor + ", term=" + term + ", classSize=" + classSize + ", seatsAvailable=" + seatsAvailable
                 + ", year=" + year + "]";
