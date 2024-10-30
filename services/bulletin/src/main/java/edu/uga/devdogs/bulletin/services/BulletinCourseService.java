@@ -37,5 +37,33 @@ public class BulletinCourseService {
         // Service logic goes here
     }
 
+    /**
+     * Method to get a list of courses matching a given special type (honors, lab, or online).
+     * The methods it calls in the JPA layer will be implemented later by the database team.
+     * In-line comments in the body of the function indicate what data we need from the JPA layer.
+     * 
+     * @param type the type of course of which to retrieve a list.
+     * @return A list of course objects matching the given type.
+     */
+    public List<Course> getCoursesByType(String type) {
+        List<Course> returnList;
+        if (type.equals("honors")) {
+            //we want to get a list of all honors courses from the database
+            returnList = bulletinJPAFile.getHonorsCourses();
+        } else if (type.equals("online")) {
+            //we want to get a list of all online courses from the database
+            returnList = bulletinJPAFile.getOnlineCourses();
+        } else if (type.equals("lab")) {
+            //we want to get a list of all lab courses from the database
+            returnList = bulletinJPAFile.getLabCourses();
+        }
+
+        if (returnList != null) {
+            return returnList;
+        } else {
+            throw new CourseNotFoundException("Courses with the type " + type + " not found!");
+        }
+    }
+
 }
 
