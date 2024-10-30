@@ -1,18 +1,15 @@
 "use client";
-import { useState } from "react";
+
 import { Button } from "./Button";
 
-export function Card({
-  image,
-  heading,
-  text,
-  handleClick,
-}: {
-  image: any;
-  heading: any;
-  text: any;
-  handleClick: any;
-}) {
+interface props {
+  image?: string;
+  heading?: string;
+  text?: string;
+  handleClick?: () => void;
+}
+
+export function Card({ image, heading, text, handleClick }: props) {
   return (
     <div>
       <div className="h-1 w-64 bg-[#B3072A] sm:w-96"></div>
