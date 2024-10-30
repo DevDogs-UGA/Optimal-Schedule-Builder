@@ -10,4 +10,8 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
 
     //@Query("select u from Course where u.title = ?1")
     //Course getByTitle(String title);
+
+    // @Query("SELECT u FROM Course u ORDER BY c.department ASC")
+    // List<Course> findAllCoursesSortedByMajor();
+
 }
