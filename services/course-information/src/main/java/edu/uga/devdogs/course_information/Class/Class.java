@@ -3,8 +3,12 @@ package edu.uga.devdogs.course_information.Class;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
+
+import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 
 /*
  * Java JPA entity represention for Class
@@ -37,26 +41,31 @@ public class Class implements Serializable{
      * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
 
+    @ManyToOne
+    @JoinColumn(name = "courseSectionId")
+    private CourseSection courseSection;
+
      /*
       * Constructors
       */
-
+    
      // Default constructor
      public Class() {
      }
 
      // Constructor w/o classID
-     public Class(String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
+     public Class(String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus, CourseSection courseSection) {
          this.days = days;
          this.startTime = startTime;
          this.endTime = endTime;
          this.building = building;
          this.room = room;
          this.campus = campus;
+         this.courseSection = courseSection;
      }
 
      // Constructor w/ classID
-     public Class(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus) {
+     public Class(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus, CourseSection courseSection) {
          this.classId = classId;
          this.days = days;
          this.startTime = startTime;
@@ -64,6 +73,7 @@ public class Class implements Serializable{
          this.building = building;
          this.room = room;
          this.campus = campus;
+         this.courseSection = courseSection;
      }
 
     /*
@@ -124,6 +134,14 @@ public class Class implements Serializable{
 
     public void setCampus(String campus) {
         this.campus = campus;
+    }
+
+    public CourseSection getCourseSection() {
+        return courseSection;
+    }
+
+    public void setCourseSection(CourseSection courseSection){
+        this.courseSection = courseSection;
     }
 
     /*

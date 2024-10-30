@@ -17,7 +17,7 @@ public class Building implements Serializable {
 
     // serves as the id.
     @Id
-    private int buildingNumber;
+    private long buildingNumber;
 
     private String name;
 
@@ -54,7 +54,7 @@ public class Building implements Serializable {
      * Getters and Setters
      */
 
-    public int getBuildingNumber() {
+    public long getBuildingNumber() {
         return buildingNumber;
     }
 

@@ -6,10 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import edu.uga.devdogs.course_information.Class.Class;
 import edu.uga.devdogs.course_information.Class.ClassRepository;
-//import edu.uga.devdogs.course_information.config_files.CourseConfig;
-import edu.uga.devdogs.course_information.course_section.CourseSectionEntity;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
+import edu.uga.devdogs.course_information.CourseSection.CourseSection;
+import edu.uga.devdogs.course_information.Building.Building;
+import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
+import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import java.sql.Time;
 
 
@@ -17,28 +19,31 @@ import java.sql.Time;
 public class CourseInformationApplication {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(CourseInformationApplication.class, args);
-		@Bean
+	}
+
+	@Bean
     	CommandLineRunner courseSecCommandLineRunner(
 			CourseSectionRepository courseSectionRepository,
 			CourseRepository courseRepository, 
 			Building building, 
-			ClassRepository classRepository) {
+			ClassRepository classRepository,
+			BuildingRepository buildingRepository) {
 				return args -> {
 					//CourseSection interface objects
 					CourseSection section1 = new CourseSection (
 						123456,
 						4,
-						"something",
-						1,
-						4,
+						'A',
+						1.0,
+						4.0,
 						"Barnes",
-						3,
+						2,
 						40,
-						12,
-						3,
-						1293
+						40,
+						2024,
+						null,
+						null
 					);
 
 					courseSectionRepository.save(section1);
@@ -48,7 +53,8 @@ public class CourseInformationApplication {
 						"physiology", 
 						"420", 
 						"pain", 
-						"Mary Francis early education"
+						"Mary Francis early education",
+						null
 					);
 
 					courseRepository.save(course1);
@@ -92,7 +98,8 @@ public class CourseInformationApplication {
 							Time.valueOf("09:15:00"), 
 							"Science Building", 
 							"101", 
-							"Main Campus" 
+							"Main Campus" ,
+							null
 					);
 
 					Class class2 = new Class(
@@ -101,14 +108,14 @@ public class CourseInformationApplication {
 							Time.valueOf("14:15:00"), 
 							"Engineering Hall", 
 							"205", 
-							"North Campus"
+							"North Campus",
+							null
 					);
 
 				classRepository.save(class1);
 				classRepository.save(class2);
 			};
 		}
-	}
 
 
 }
