@@ -33,7 +33,7 @@ export function Card({
             {text}
           </p>
         </div>
-        {/* Button (handleClick */}
+        {/* Button (handleClick) */}
         <div>
           <Button
             onClick={handleClick}
