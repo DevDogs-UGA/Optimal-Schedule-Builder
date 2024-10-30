@@ -3,8 +3,12 @@ package edu.uga.devdogs.course_information.Course;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import java.io.Serializable;
+import java.util.List;
+
+import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 
 
 @Entity
@@ -23,25 +27,28 @@ public class Course implements Serializable {
     private String department;
 
     //Relationships
-
+    @OneToMany(mappedBy = "course")
+    private List<CourseSection> courseSections;
 
     //Constructors, getters, setters...
     public Course() {
     }
 
-    public Course(String subject, String courseNumber, String title, String department) {
+    public Course(String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {
         this.subject = subject;
         this.courseNumber = courseNumber;
         this.title = title;
         this.department = department;
+        this.courseSections = courseSections;
     }
 
-    public Course(long courseId, String subject, String courseNumber, String title, String department) {
+    public Course(long courseId, String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {
         this.courseId = courseId;
         this.subject = subject;
         this.courseNumber = courseNumber;
         this.title = title;
         this.department = department;
+        this.courseSections = courseSections;
     }
 
     public long getCourseId() {
@@ -82,6 +89,14 @@ public class Course implements Serializable {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public List<CourseSection> getCourseSections() {
+        return courseSections;
+    }
+
+    public void setCourseSections(List<CourseSection> courseSections) {
+        this.courseSections = courseSections;
     }
 
     @Override
