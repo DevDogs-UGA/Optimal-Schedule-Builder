@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Basemap from "../../../public/images/Basemap.png";
 import { Button } from "../components/ui/ButtonRounded";
 import { Navbar } from "../components/Navbar";
@@ -29,9 +30,10 @@ export default function Home() {
         <div className="flex w-full flex-col items-center p-4 sm:h-full">
           <div className="flex h-[36rem] w-full items-center justify-center rounded-xl bg-[#F3EDED] p-4 ease-in-out md:w-[41rem] lg:w-[53rem] xl:w-[73rem]">
             <div className="h-full w-full">
-              <img
-                src={Basemap.src}
+              <Image
+                src={Basemap}
                 className="m-auto h-full w-full rounded-xl object-cover"
+                alt="Placeholder Map of UGA's Campus"
               />
             </div>
           </div>
