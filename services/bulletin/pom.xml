@@ -71,6 +71,26 @@
 			<version>1.7.0</version>
 		</dependency>
 
+		<dependency>
+		<!-- jsoup HTML parser library @ https://jsoup.org/ -->
+		<groupId>org.jsoup</groupId>
+		<artifactId>jsoup</artifactId>
+		<version>1.18.1</version>
+	</dependency>
+
+		<dependency>
+			<!-- jsoup HTML parser library @ https://jsoup.org/ -->
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>4.25.0</version>
+		</dependency>
+
+
+
+
+
+
+
 	</dependencies>
 
 	<build>
