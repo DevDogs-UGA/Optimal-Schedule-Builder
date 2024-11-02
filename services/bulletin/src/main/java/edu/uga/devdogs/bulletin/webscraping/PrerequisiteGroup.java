@@ -2,6 +2,12 @@ package edu.uga.devdogs.bulletin.webscraping;
 
 import java.util.ArrayList;
 
+/**
+ * @author Whitman Stewart
+ * A prerequisite group represents any of the conditions that would meet  one part of a course's requirements.
+ * For example, CSCI 4730's requirements -- (CSCI 4720 or CSCI 4720E or CSEE 4280) and CSCI 2720 -- would have two
+ * prerequisite groups: "CSCI 4720 or CSCI 4720E or CSEE 4280", and "CSCI 2720."
+ */
 public class PrerequisiteGroup {
     private boolean requiresHonors;
 
@@ -15,7 +21,10 @@ public class PrerequisiteGroup {
 
     public boolean canSubstituteDepartmentPermission() {
         return canSubstituteDepartmentPermission;
-    }
+    } /*If this condition is true and there are no classes inside of this group, the prerequisite can only be
+    met by having department permission (that is, it is restricted). If this condition is true and there are classes inside
+    of the group, the prerequisite can be met by taking one of the classes OR by having department permission.
+     */
 
     public void setCanSubstituteDepartmentPermission(boolean canSubstituteDepartmentPermission) {
         this.canSubstituteDepartmentPermission = canSubstituteDepartmentPermission;
@@ -27,7 +36,7 @@ public class PrerequisiteGroup {
         return classes;
     }
 
-    private ArrayList<PrerequisiteClass> classes = new ArrayList<>();
+    private ArrayList<PrerequisiteClass> classes = new ArrayList<>(); //Taking one of these classes means the prerequisite has been met.
 
     public PrerequisiteGroup() {
     }
