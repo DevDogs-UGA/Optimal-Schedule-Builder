@@ -25,6 +25,7 @@ public class BulletinScraper {
         WebDriver driver = new FirefoxDriver(options);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
+        // Navigate to the bulletin site, enter the desired prefix into the prefix field, and click enter.
         driver.get("https://bulletin.uga.edu/coursesHome");
         WebElement prefixEntry = driver.findElement(By.id("txtEnterPrefix"));
         prefixEntry.sendKeys(coursePrefix);
@@ -32,35 +33,43 @@ public class BulletinScraper {
         WebElement btn = driver.findElement(By.id("Imgbut_go_offPrefixCourse"));
         btn.click();
 
+        // Wait for the next page to load, then parse the HTML.
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("lblCourseResultText")));
-
-
-
         Document document = Jsoup.parse(driver.getPageSource());
+
+        // Find the table with the information about each course.
         Element courseResults = document.getElementById("lblCourseResultText");
-
-
         Elements resultsTables = courseResults.getElementsByClass("courseresultstable");
         boolean isCourseID = false;
         boolean isPrerequisites = false;
         for (Element table : resultsTables) {
+
+            // Loop through each row of the table to find the information we need
             Elements allData = table.getElementsByTag("td");
             for (Element data : allData) {
                 String text = data.text();
-                //System.out.println(text);
+
+                // The row in the table contains the course ID - print it
                 if (text.contains("Course ID")) {
                     isCourseID = true;
                 } else if (isCourseID) {
                     String courseID = text.substring(0,text.indexOf("."));
                     System.out.println("course name: " + courseID);
                     isCourseID = false;
+
+
+                // The row in the table contains the prerequisites
                 } else if (text.contains("Prerequisite")) {
                     isPrerequisites = true;
                 } else if (isPrerequisites) {
+                    // I found that some departments call the "permission of department" requirement "permission of school"
                     String modifiedText = text.replace("school", "department") + "END";
-                    Pattern uppercaseLettersRegex = Pattern.compile("\\b[A-Z]{4}\\b");
-                    Pattern courseNumberRegex = Pattern.compile("\\b\\d{4}[A-Z]?\\b");
+
+                    Pattern uppercaseLettersRegex = Pattern.compile("\\b[A-Z]{4}\\b"); // i.e. "MATH"
+                    Pattern courseNumberRegex = Pattern.compile("\\b\\d{4}[A-Z]?\\b"); // i.e. "1113"
                     System.out.println("RAW prerequisites:" + text);
+
+                    // Split up the string whereever it says "or" or "and", also handle special honors and department cases
                     int index = 0;
                     int startIndex = 0;
                     ArrayList<String> strings = new ArrayList<>();
@@ -81,12 +90,14 @@ public class BulletinScraper {
                         }
                         index++;
                     }
+
                     ArrayList<PrerequisiteGroup> groups = new ArrayList<>();
                     PrerequisiteGroup currentGroup = new PrerequisiteGroup();
+
                     for (String s : strings) {
                         System.out.println(s);
-                        Matcher letterMatcher = uppercaseLettersRegex.matcher(s);
-                        Matcher numberMatcher = courseNumberRegex.matcher(s);
+                        Matcher letterMatcher = uppercaseLettersRegex.matcher(s); // find all prefixes
+                        Matcher numberMatcher = courseNumberRegex.matcher(s); // find all suffixes
                         ArrayList<String> prefixes = new ArrayList<>();
                         ArrayList<String> suffixes = new ArrayList<>();
 
@@ -96,6 +107,8 @@ public class BulletinScraper {
                         while (numberMatcher.find()) {
                             suffixes.add(numberMatcher.group());
                         }
+
+                        // Add all requirements to meet the prerequisite into the prerequisite group
                         if (prefixes.size() > 0 && suffixes.size() > 0) {
                             PrerequisiteClass prerequisite = new PrerequisiteClass(prefixes, suffixes);
                             currentGroup.addClass(prerequisite);
@@ -105,7 +118,7 @@ public class BulletinScraper {
                             currentGroup.setCanSubstituteDepartmentPermission(true);
                         }
 
-
+                        // "and" signals the start of a NEW prerequisite group
                         if (s.contains("and")) {
                             groups.add(currentGroup);
                             currentGroup = new PrerequisiteGroup();
