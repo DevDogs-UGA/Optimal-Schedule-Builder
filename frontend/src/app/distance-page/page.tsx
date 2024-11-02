@@ -1,4 +1,4 @@
-import Basemap from "../images/Basemap.png";
+import Basemap from "../../../public/images/Basemap.png";
 import { Button } from "../components/ui/ButtonRounded";
 import { Navbar } from "../components/Navbar";
 
