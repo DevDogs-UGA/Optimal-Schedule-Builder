@@ -60,18 +60,33 @@ public class ScheduleUtil {
 
     /**
      * Computes the overall objective score for the given schedule based on weighted objectives.
-     * This method computes each objective, normalizes their values, and computes a weighted sum.
+     * This method computes each objective, normalizes their values using min-max normalization, and computes a weighted sum.
+     * The weighted sum increases as averageProfessorScore increases and decreases as maxDistance and averageIdleTime increase.
      *
      * @param schedule the schedule to evaluate
      * @param distances a nested string map that represents distances between buildings on campus
-     * @param weights an array of floats representing the weights for each objective
+     * @param weights an array of floats representing the weights for each objective;
+     *                must be of length 3 and add to 1.0
+     *                weights[0] corresponds to averageProfessorQuality
+     *                weights[1] corresponds to maxDistance
+     *                weights[2] corresponds to averageIdleTime
+     *
      * @return the overall objective score for the schedule
      */
     public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances, double[] weights) {
+       // Checks if the parameters are valid
+       if (schedule == null || distances == null || weights == null) {
+           throw new IllegalArgumentException("Parameters cannot be null");
+       } else if (weights.length != 3) {
+           throw new IllegalArgumentException("Number of weights must be 3");
+       } else if (Math.abs(weights[0] + weights[1] + weights[2] - 1) > 1e-6) {
+           throw new IllegalArgumentException("The sum of the weights must be equal to 1");
+       }
+
         // The minimum rating on rate my professor is 1.0(if they have ratings).
-        final double profesorQualityMinimum = 1.0;
+        final double professorQualityMinimum = 1.0;
         // The maximum rating on rate my professor is 5.0
-        final double profesorQualityMaximum = 5.0;
+        final double professorQualityMaximum = 5.0;
         // The minimum distance between classes is 0.0 if they are in the same building.
         final double maxDistanceMinimum = 0.0;
         // The highest distance shown in the document is 22.1, so 30 should be a good maximum for calculations.
@@ -82,7 +97,7 @@ public class ScheduleUtil {
         final double averageIdleTimeMaximum = 780;
 
         // finds the values and then plugs them into the normalize function with the minimum and maximum.
-        double normalizedProfessorQuality = normalizeValue(computeAverageProfessorQuality(schedule), profesorQualityMinimum, profesorQualityMaximum);
+        double normalizedProfessorQuality = normalizeValue(computeAverageProfessorQuality(schedule), professorQualityMinimum, professorQualityMaximum);
         double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule, distances), maxDistanceMinimum, maxDistanceMaximum);
         double normalizedAverageIdleTime = normalizeValue(computeAverageIdleTime(schedule), averageIdleTimeMinimum, averageIdleTimeMaximum);
 
@@ -91,6 +106,16 @@ public class ScheduleUtil {
         return normalizedProfessorQuality * weights[0] + (1 - normalizedMaxDistance) * weights[1] + (1 - normalizedAverageIdleTime) * weights[2];
     }
 
+    /**
+     * Normalizes the values using min-max normalization and clips outliers
+     * to the min or the max.
+     *
+     * @param value the value to normalize
+     * @param max the maximum value that should normally be recieved
+     * @param min the minimum value that should normally be recieved
+     *
+     * @return the normalized value, between 0 and 1.
+     */
     private static double normalizeValue(double value, double min, double max) {
         // clips the value if below the minimum or above the maximum
         if (value < min) {
