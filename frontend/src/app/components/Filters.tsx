@@ -2,7 +2,7 @@ interface props {
   text?: string;
 }
 
-export const SearchFilter = ({ text }: props) => {
+export const SearchFilter = ({}: props) => {
   return (
     <>
       <div className="sborder-gray-200 p-2sm:p-4 m-3 w-auto rounded-lg border bg-[#fff1f2] sm:m-4 sm:w-2/3">
