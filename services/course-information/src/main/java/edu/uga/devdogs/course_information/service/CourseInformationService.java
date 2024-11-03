@@ -5,26 +5,54 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Service class that handles course information business logic.
- * This class provides methods for the management of 
- * course information
+ * Service class that handles business logic for managing course information.
+ *
+ * <p>
+ * This service layer is responsible for providing methods related to course
+ * information management, including retrieving class schedules and course details
+ * based on specific criteria. It acts as an intermediary between the controller
+ * layer and the data repository, ensuring that all course information operations
+ * are correctly managed and returned to the client.
+ * </p>
+ *
+ * <p>
+ * This class may be extended in the future to include more complex data
+ * processing and transformation related to course information.
+ * </p>
+ *
+ * @see CourseInformationService
+ * @since 1.0
  */
 @Service
 public class CourseInformationService {
     // Methods go here
 
     /**
-     * Method to get a list of class objects matching the given time slot and CRN. The method 
-     * it calls in the JPA layer will be implemented later.
-     * 
-     * @param timeSlot
-     * @param courseName
-     * @return A list of Class objects matching the given time slot and CRN
+     * Retrieves a list of Course section (class) objects that match the specified time slot and CRN (Course Reference Number).
+     *
+     * <p>
+     * This method queries the data repository for classes scheduled in a given time slot
+     * and having the specified CRN. The underlying repository method will be implemented later.
+     * </p>
+     *
+     * @param timeSlot the time slot for which to retrieve class information (e.g., "10:00 AM - 11:15 AM")
+     * @param crn the course reference number to identify a specific class
+     * @return a list of {@link Class} objects that match the given time slot and CRN
+     * @throws CourseNotFoundException if no classes are found for the specified time slot and CRN
      */
     public List<Class> getClassesByCrnAndTime(String timeSlot, String crn) {
         //Right now, the file that will contain the following method has not been created yet,
         //so we use a fictitious file name.
-        return courseInfoJPAFile.getClassesByCrnAndTime(timeSlot, crn);        
+
+        //Make object to store returnList to make sure courese actually exist
+        List<Class> returnList;
+
+        returnList = courseInfoJPAFile.getClassesByCrnAndTime(timeSlot, crn);
+
+        if (returnList != null)
+            return returnList;
+        else
+            throw new CourseNotFoundException("Class not found for timeSlot: " + timeSlot + " and CRN: " + crn);
     }
 
 
