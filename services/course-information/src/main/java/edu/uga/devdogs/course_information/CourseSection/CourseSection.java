@@ -14,12 +14,12 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class CourseSection implements Serializable {
-        // Variables
+    // Variables
     @Id
     @GeneratedValue
-    private int courseSectionId;
+    private long courseSectionId;
 
-private int crn;
+    private int crn;
 
     private int sec;
 
@@ -46,49 +46,47 @@ private int crn;
     @OneToMany(mappedBy = "courseSection")
     private List<Class> classes;
 
-
-
     // Constructors, getters, setters, and toString 
     public CourseSection() {}
 
-    public CourseSection(int courseSectionId, int crn, int sec, char stat, double creditHoursLow,
-    double creditHoursHigh, String instructor, int term, int classSize, int seatsAvailable, int year, Course course, List<Class> classes) {
-this.courseSectionId = courseSectionId;
-this.crn = crn;
-this.sec = sec;
-this.stat = stat;
-this.creditHoursLow = creditHoursLow;
-this.creditHoursHigh = creditHoursHigh;
-this.instructor = instructor;
-this.term = term;
-this.classSize = classSize;
-this.seatsAvailable = seatsAvailable;
-this.year = year;
-this.course = course;
-this.classes = classes;
-}
+    public CourseSection(long courseSectionId, int crn, int sec, char stat, double creditHoursLow,
+            double creditHoursHigh, String instructor, int term, int classSize, int seatsAvailable, int year, Course course, List<Class> classes) {
+        this.courseSectionId = courseSectionId;
+        this.crn = crn;
+        this.sec = sec;
+        this.stat = stat;
+        this.creditHoursLow = creditHoursLow;
+        this.creditHoursHigh = creditHoursHigh;
+        this.instructor = instructor;
+        this.term = term;
+        this.classSize = classSize;
+        this.seatsAvailable = seatsAvailable;
+        this.year = year;
+        this.course = course;
+        this.classes = classes;
+    }
 
-public CourseSection(int crn, int sec, char stat, double creditHoursLow, double creditHoursHigh, String instructor,
-    int term, int classSize, int seatsAvailable, int year, Course course, List<Class> classes) {
-this.crn = crn;
-this.sec = sec;
-this.stat = stat;
-this.creditHoursLow = creditHoursLow;
-this.creditHoursHigh = creditHoursHigh;
-this.instructor = instructor;
-this.term = term;
-this.classSize = classSize;
-this.seatsAvailable = seatsAvailable;
-this.year = year;
-this.course = course;
-this.classes = classes;
-}
+    public CourseSection(int crn, int sec, char stat, double creditHoursLow, double creditHoursHigh, String instructor,
+            int term, int classSize, int seatsAvailable, int year, Course course, List<Class> classes) {
+        this.crn = crn;
+        this.sec = sec;
+        this.stat = stat;
+        this.creditHoursLow = creditHoursLow;
+        this.creditHoursHigh = creditHoursHigh;
+        this.instructor = instructor;
+        this.term = term;
+        this.classSize = classSize;
+        this.seatsAvailable = seatsAvailable;
+        this.year = year;
+        this.course = course;
+        this.classes = classes;
+    }
 
-public long getId() {
-return courseSectionId;
-}
+    public long getId() {
+        return courseSectionId;
+    }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.courseSectionId = id;
     }
 
@@ -190,12 +188,12 @@ return courseSectionId;
 
     @Override
     public String toString() {
-        return "CourseSectionEntity [courseSectionId=" + courseSectionId + ", crn=" + crn + ", sec=" + sec + ", stat="
+        return "CourseSection [courseSectionId=" + courseSectionId + ", crn=" + crn + ", sec=" + sec + ", stat="
                 + stat + ", creditHoursLow=" + creditHoursLow + ", creditHoursHigh=" + creditHoursHigh + ", instructor="
                 + instructor + ", term=" + term + ", classSize=" + classSize + ", seatsAvailable=" + seatsAvailable
                 + ", year=" + year + "]";
     }
 
-}
 
+}
 
