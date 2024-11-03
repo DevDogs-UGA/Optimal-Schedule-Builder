@@ -14,3 +14,4 @@ public interface CourseSectionRepository extends JpaRepository<CourseSection, Lo
     List<Course> getCoursesBySubject(String subject);    
     
 }
+
