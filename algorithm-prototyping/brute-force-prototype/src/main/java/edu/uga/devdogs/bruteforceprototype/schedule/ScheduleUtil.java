@@ -3,6 +3,8 @@ package edu.uga.devdogs.bruteforceprototype.schedule;
 import edu.uga.devdogs.sampledataparser.records.Section;
 import edu.uga.devdogs.sampledataparser.records.Class;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -62,7 +64,30 @@ public class ScheduleUtil {
      * @return the maximum distance between buildings for consecutive classes
      */
     public static double computeMaxDistance(Schedule schedule, Map<String, Map<String, Double>> distances) {
-        return 0.0;
+        if (schedule == null || distances == null) {
+            throw new IllegalArgumentException("Schedule or Distances cannot be null");
+        }
+
+        double maxDistance = 0.0;
+
+        // Iterates over each day in the schedule
+        for (TreeSet<Class> day : schedule.days().values()) {
+            // Converts the TreeSet to List for direct indexing
+            // TODO: Replace TreeSet with a sorted List for days in Schedule
+            List<Class> dayList = new ArrayList<>(day);
+            // Iterates over consecutive class pairs
+            for (int i = 0; i < dayList.size() - 1; i++) {
+                String building1 = dayList.get(i).buildingName();
+                String building2 = dayList.get(i + 1).buildingName();
+                double distance = distances.get(building1).get(building2);
+
+                if (distance > maxDistance) {
+                    maxDistance = distance;
+                }
+            }
+        }
+
+        return maxDistance;
     }
 
     /**
