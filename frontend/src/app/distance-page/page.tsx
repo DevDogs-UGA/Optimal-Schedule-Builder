@@ -8,7 +8,7 @@ export default function Home() {
     <div className="min-h-screen">
       <Navbar />
       <div className="flex h-[calc(100vh-5rem)] flex-grow flex-col items-center justify-center pt-20 text-center">
-        <div className="mb-12 flex items-center justify-center rounded-none border border-[#F8E6EA] border-opacity-40 bg-[#F3EDED] bg-opacity-80 shadow-lg shadow-black/[0.03] backdrop-blur-[0.5rem] sm:top-6 sm:h-[4rem] sm:w-[42rem] sm:rounded-full md:h-[3rem]">
+        <div className="mb-12 flex items-center justify-center rounded-none border border-[#F8E6EA] border-opacity-40 bg-[#F3EDED] bg-opacity-80 shadow-lg shadow-black/[0.03] backdrop-blur-[0.5rem] sm:top-6 sm:h-[4rem] sm:w-[40rem] sm:rounded-full md:h-[3rem]">
           <div className="flex-nowrap items-center justify-around space-x-6 space-y-2 text-[12px] font-bold sm:flex sm:space-y-0">
             <button className="h-[2.5rem] w-[7rem] rounded-full bg-[#F3B0B0] shadow-md shadow-black/[0.4] transition duration-300 ease-in-out hover:bg-bulldog-red/50 md:px-4">
               MONDAY
