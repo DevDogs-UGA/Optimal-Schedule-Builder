@@ -117,5 +117,25 @@ public class BulletinCourseService {
         }
     }
 
+    /**
+     * Retrieves the type of a class (e.g., Honors, Lab, Online) based on the given course ID.
+     *
+     * <p>
+     * This method queries the repository for a {@link Course} object with the specified ID
+     * and returns its type. If the course does not exist, it throws a {@link CourseNotFoundException}.
+     * </p>
+     *
+     * @param courseId the unique identifier for the course
+     * @return the type of the course as a string
+     * @throws CourseNotFoundException if no course with the specified ID is found
+     */
+    public String getCourseTypeById(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found for ID: " + courseId));
+
+        // Assuming the Course entity has a method getType() that returns the type of the course
+        return course.getType();
+    }
+
 }
 
