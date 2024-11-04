@@ -24,8 +24,7 @@ public class ScheduleUtilTest {
 
         // Parse sample data
         SampleData sampleData = SampleDataParser.parse(professorsFilePath, coursesFilePath, distancesFilePath);
-        courses = sampleData.courses();
-        distances = sampleData.distances();
+
 
         // Example of how to create a test schedule:
         Schedule testSchedule = new Schedule(Set.of(
