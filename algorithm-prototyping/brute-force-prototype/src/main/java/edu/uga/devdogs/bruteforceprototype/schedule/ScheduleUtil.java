@@ -26,7 +26,33 @@ public class ScheduleUtil {
      * @return true if the schedule is valid and contains no time conflicts, false otherwise
      */
     public static boolean validate(Schedule schedule) {
-        return false;
+        if (schedule == null) {
+            throw new IllegalArgumentException("Schedule cannot be null");
+        }
+
+        // Iterates over each day in the schedule
+        for (TreeSet<Class> day : schedule.days().values()) {
+            // Converts the TreeSet to List for direct indexing
+            // TODO: Replace TreeSet with a sorted List for days in Schedule
+            List<Class> dayList = new ArrayList<>(day);
+
+            // Iterates over consecutive class pairs
+            for (int i = 0; i < dayList.size() - 1; i++) {
+                Class currClass = dayList.get(i);
+                Class nextClass = dayList.get(i + 1);
+
+                // Convert time to minutes
+                int currEndTime = currClass.endTime().getHour() * 60 + currClass.endTime().getMinute();
+                int nextStartTime = nextClass.startTime().getHour() * 60 + nextClass.startTime().getMinute();
+
+                // Check if the current class end time overlaps with the next class start time
+                if (currEndTime > nextStartTime) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -75,11 +101,12 @@ public class ScheduleUtil {
             // Converts the TreeSet to List for direct indexing
             // TODO: Replace TreeSet with a sorted List for days in Schedule
             List<Class> dayList = new ArrayList<>(day);
+
             // Iterates over consecutive class pairs
             for (int i = 0; i < dayList.size() - 1; i++) {
-                String building1 = dayList.get(i).buildingName();
-                String building2 = dayList.get(i + 1).buildingName();
-                double distance = distances.get(building1).get(building2);
+                Class currClass = dayList.get(i);
+                Class nextClass = dayList.get(i + 1);
+                double distance = distances.get(currClass.buildingName()).get(nextClass.buildingName());
 
                 if (distance > maxDistance) {
                     maxDistance = distance;
