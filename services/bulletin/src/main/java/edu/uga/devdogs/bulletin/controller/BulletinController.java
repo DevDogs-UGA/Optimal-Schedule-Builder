@@ -314,7 +314,7 @@ public class BulletinController {
     @Tag(name="bulletin")
     public ResponseEntity<List<Course>> getRequirementCourses(@RequestParam("requirement") String requirement) {
         //return 400 for empty requirement
-        if requirement.isEmpty()) {
+        if (requirement.isEmpty()) {
             return ResponseEntity.badRequest().body(null);
         }
         try {
