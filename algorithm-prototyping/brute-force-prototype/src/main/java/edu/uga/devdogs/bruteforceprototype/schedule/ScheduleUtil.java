@@ -1,6 +1,7 @@
 package edu.uga.devdogs.bruteforceprototype.schedule;
 
 import java.util.Map;
+import java.util.Iterator;
 
 /**
  * Utility class for performing operations and calculations related to a Schedule.
