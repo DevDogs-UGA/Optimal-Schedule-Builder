@@ -26,22 +26,22 @@ public class ScheduleUtil {
     public static boolean validate(Schedule schedule) {
         // iterates through the days of the week
         for (DayOfWeek day : schedule.days().keySet()) {
-            if (schedule.days().get(day).size() == 1 || schedule.days().get(day).size() == 0) {
+            TreeSet<Class> classes = schedule.days().get(day);
+
+            if (classes.size() <= 1) {
                 continue;
-            } else {
-                TreeSet<Class> classes = schedule.days().get(day);
-                Iterator<Class> iterator = classes.iterator();
-                if (iterator.hasNext()) {
-                    Class currentClass = iterator.next();
-                    while (iterator.hasNext()) {
-                        Class nextClass = iterator.next();
-                        if (currentClass.endTime().compareTo(nextClass.startTime) >= 0) {
-                            return false; // conflict found
-                        } // if
-                        currentClass = nextClass; // move to next class
-                    } // while
+            }
+
+            Iterator<Class> iterator = classes.iterator();
+            Class currentClass = iterator.next();
+
+            while (iterator.hasNext()) {
+                Class nextClass = iterator.next();
+                if (currentClass.endTime().compareTo(nextClass.startTime) >= 0) {
+                    return false; // conflict found
                 } // if
-            } // if-else
+                currentClass = nextClass; // move to next class
+            } // while
         } // for
         return true;
     }// validate
