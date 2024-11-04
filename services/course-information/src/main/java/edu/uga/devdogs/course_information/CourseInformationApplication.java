@@ -26,7 +26,6 @@ public class CourseInformationApplication {
     	CommandLineRunner courseSecCommandLineRunner(
 			CourseSectionRepository courseSectionRepository,
 			CourseRepository courseRepository, 
-			Building building, 
 			ClassRepository classRepository,
 			BuildingRepository buildingRepository) {
 				return args -> {
