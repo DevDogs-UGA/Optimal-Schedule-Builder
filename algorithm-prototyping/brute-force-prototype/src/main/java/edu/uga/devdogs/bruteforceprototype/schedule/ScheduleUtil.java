@@ -1,8 +1,10 @@
 package edu.uga.devdogs.bruteforceprototype.schedule;
 
-import edu.uga.devdogs.sampledataparser.records.Section;
+import edu.uga.devdogs.sampledataparser.records.*;
+import edu.uga.devdogs.bruteforceprototype.*;
 
-import java.util.Map;
+import java.time.DayOfWeek;
+import java.util.*;
 
 /**
  * Utility class for performing operations and calculations related to a Schedule.
@@ -33,21 +35,7 @@ public class ScheduleUtil {
      * @return the average professor quality rating for the schedule
      */
     public static double computeAverageProfessorQuality(Schedule schedule) {
-        double professorQualitySum = 0.0;
-        int includedProfessorCount = schedule.sections().size();
-        // Used to create the summation of the quality of professors within the schedule.
-        for (Section section : schedule.sections()) {
-            // Ensures that only professors with data are included in calculation.
-            if (section.professor().quality() == 0.0) {
-                // Decreases our professor count to prevent statistical misguidance.
-                includedProfessorCount--;
-            } else {
-                // Adds valid professors to our summation
-                professorQualitySum += section.professor().quality();
-            }
-        }
-
-        return professorQualitySum / includedProfessorCount;
+        return 0.0;
     }
 
     /**
@@ -56,11 +44,39 @@ public class ScheduleUtil {
      * between consecutive classes.
      *
      * @param schedule the schedule for which to compute the maximum distance
-     * @param distances a nested string map that represents distances between buildings on campus
+     * @param distances object that represents distances between buildings on campus.
      * @return the maximum distance between buildings for consecutive classes
      */
     public static double computeMaxDistance(Schedule schedule, Map<String, Map<String, Double>> distances) {
-        return 0.0;
+        EnumMap<DayOfWeek, TreeSet<Class>> classMap = schedule.days(); // Reference to schedule object.
+        double maxDistance = 0; // Double to be returned.
+
+        // Iterator that goes over each day of the week.
+        for (DayOfWeek day : classMap.keySet()) {
+            TreeSet<Class> classes = classMap.get(day); // Get all classes for the day
+
+            if (classes.size() > 1) { // Check for more than 1 class, otherwise do nothing (no distance covered).
+                Class previousClass = null;
+                // Iterator that goes over each class for the day.
+                for (Class currentClass : classes) {
+                    if (previousClass != null) {
+                        // Gets the distance between buildings of previous class and current class.
+                        double distance = distances.
+                                get(previousClass.buildingName()).
+                                get(currentClass.buildingName());
+
+                        // Update max distance if distance is greater.
+                        if (distance > maxDistance) {
+                            maxDistance = distance;
+                        }
+                    }
+
+                    previousClass = currentClass;
+                }
+            }
+        }
+
+        return maxDistance;
     }
 
     /**
@@ -79,11 +95,11 @@ public class ScheduleUtil {
      * This method computes each objective, normalizes their values, and computes a weighted sum.
      *
      * @param schedule the schedule to evaluate
-     * @param distances a nested string map that represents distances between buildings on campus
+     * @param distances object that represents distances between buildings on campus.
      * @param weights an array of floats representing the weights for each objective
      * @return the overall objective score for the schedule
      */
-    public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances, double[] weights) {
+    public static double computeOverallObjective(Schedule schedule, Distances distances, Float[] weights) {
         return 0.0;
     }
 
