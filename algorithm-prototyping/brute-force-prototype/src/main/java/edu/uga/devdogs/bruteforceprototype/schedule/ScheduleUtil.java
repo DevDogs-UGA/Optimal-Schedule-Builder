@@ -1,8 +1,10 @@
 package edu.uga.devdogs.bruteforceprototype.schedule;
 
 import edu.uga.devdogs.sampledataparser.records.Section;
+import edu.uga.devdogs.sampledataparser.records.Class;
 
 import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * Utility class for performing operations and calculations related to a Schedule.
@@ -68,10 +70,40 @@ public class ScheduleUtil {
      * Idle time refers to the time gaps between two consecutive classes.
      *
      * @param schedule the schedule for which to compute the average idle time
-     * @return the average idle time between classes in the schedule
+     * @return the average idle time between classes in the schedule in minutes
+     * @throws IllegalArgumentException if schedule is not valid
      */
     public static double computeAverageIdleTime(Schedule schedule) {
-        return 0.0;
+        int countOfClassGaps = 0;
+        int sumOfTimeGaps = 0;
+
+        // Loop through the days
+        for (TreeSet<Class> day: schedule.days().values()){
+            int prevEndTime = -1;
+
+            // Loop through all the classes in a single day
+            for (Class _class: day){
+                int currStartTime = _class.startTime().getHour()*60 + _class.startTime().getMinute();
+                int currEndTime = _class.endTime().getHour()*60 + _class.endTime().getMinute();
+
+                // Checks for invalid schedules
+                if (currStartTime < prevEndTime){
+                    throw new IllegalArgumentException("Schedule contains time conflicts.");
+                }
+
+                // Only runs if there is a previous class in the current day
+                if (prevEndTime != -1){
+                    sumOfTimeGaps += currStartTime - prevEndTime;
+                    countOfClassGaps++;
+                }
+                prevEndTime = currEndTime;
+            }
+        }
+        if (countOfClassGaps == 0){
+            return 0;
+        }
+
+        return (double) sumOfTimeGaps / countOfClassGaps;
     }
 
     /**
