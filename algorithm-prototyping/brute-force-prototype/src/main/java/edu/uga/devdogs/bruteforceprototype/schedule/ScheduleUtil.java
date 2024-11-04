@@ -16,33 +16,35 @@ public class ScheduleUtil {
      * Validates the given schedule by checking for any time conflicts between classes.
      * A time conflict occurs when two classes overlap in their scheduled times.
      *
-     * Iterates through the list of days, then iterates through classes in the day.
-     * If the end time of the current class is greater than or equal to the start time
-     * of the next class there is a time conflict.
+     * Iterates through days of the week, checks if the day has 0/1 classes, in which case
+     * it continues to the next day of the week. If there are more than one class in the day,
+     * iterate through the classes in the day and check for time conflicts.
      *
      * @param schedule the schedule to be validated
-     * @return true if the schedule is valid and contains no time conflicts, false otherwise
+     * @return false if a time conflict is found, true if there are no conflicts found.
      */
     public static boolean validate(Schedule schedule) {
-        // iterates through days in a schedule
-        for (int i = 0; i < schedule.getDays().size(); i++) {
-            // if only one class the DAY must be valid, so we continue to the next day
-            if (schedule.getDays().get(i).size() == 1) {continue};
-            // iterates through classes in a day
-            for (int j = 0; j < schedule.getDays().get(i).size() - 1; j++) {
-                // variable for the current class
-                Class currentClass = schedule.getDays().get(i).get(j);
-                // variable for the class after the current
-                Class nextClass = schedule.getDays().get(i).get(j + 1);
-                // checks if the end time of the current class is greater than or equal to the start time of the next class
-                if (currentClass.endTime().compareTo(nextClass.startTime()) >= 0) {
-                    return false; // conflict found, no need to continue iteration
+        // iterates through the days of the week
+        for (DayOfWeek day : schedule.days().keySet()) {
+            if (schedule.days().get(day).size() == 1 || schedule.days().get(day).size() == 0) {
+                continue;
+            } else {
+                TreeSet<Class> classes = schedule.days().get(day);
+                Iterator<Class> iterator = classes.iterator();
+                if (iterator.hasNext()) {
+                    Class currentClass = iterator.next();
+                    while (iterator.hasNext()) {
+                        Class nextClass = iterator.next();
+                        if (currentClass.endTime().compareTo(nextClass.startTime) >= 0) {
+                            return false; // conflict found
+                        } // if
+                        currentClass = nextClass; // move to next class
+                    } // while
                 } // if
-            } // nested for
-        } // outer for
-        // no conflicts found, so schedule valid
+            } // if-else
+        } // for
         return true;
-    } // validate
+    }// validate
 
     /**
      * Computes the average quality rating of professors in the schedule.
