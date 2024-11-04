@@ -38,12 +38,17 @@ public class BulletinCourseService {
     }
 
     /**
-     * Method to get a list of courses matching a given special type (honors, lab, or online).
-     * The methods it calls in the JPA layer will be implemented later by the database team.
-     * In-line comments in the body of the function indicate what data we need from the JPA layer.
-     * 
-     * @param type the type of course of which to retrieve a list.
-     * @return A list of course objects matching the given type.
+     * Retrieves a list of courses that match the specified type (e.g., honors, lab, or online).
+     *
+     * <p>
+     * The type parameter determines the category of courses to retrieve, such as "honors" for honors courses,
+     * "lab" for lab courses, or "online" for online courses. If no courses are found for the specified type,
+     * a {@link CourseNotFoundException} is thrown.
+     * </p>
+     *
+     * @param type the type of course to retrieve
+     * @return a list of {@link Course} objects that match the specified type
+     * @throws CourseNotFoundException if no courses of the specified type are found
      */
     public List<Course> getCoursesByType(String type) {
         List<Course> returnList;
@@ -66,10 +71,17 @@ public class BulletinCourseService {
     }
 
     /**
-     * Method retrieves the requirements for a given course.
+     * Retrieves the prerequisites or requirements for a specified course.
      *
-     * @param courseName The identifier for the course (e.g., CSCI1302).
-     * @return a list of required classes for the given course.
+     * <p>
+     * Given a course identifier, this method queries the repository for a {@link Course} object
+     * with matching course code and returns its requirements. If the course does not exist, it throws
+     * a {@link CourseNotFoundException}.
+     * </p>
+     *
+     * @param courseName the unique identifier for the course (e.g., "CSCI1302")
+     * @return a list of requirement strings representing the prerequisites for the course
+     * @throws CourseNotFoundException if no course with the specified identifier is found
      */
     public List<String> getCourseRequirements(String courseName) {
         // Find the course by courseCode (assuming courseCode is a field in the Course entity)
