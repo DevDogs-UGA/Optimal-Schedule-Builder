@@ -1,0 +1,1 @@
+This is a private folder which makes it not part of the routing system, you can put whatever in here and it wont interfere with nextjs page routing system.
