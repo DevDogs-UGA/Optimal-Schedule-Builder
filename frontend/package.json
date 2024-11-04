@@ -1,41 +1,23 @@
 {
-<<<<<<< HEAD
-  "name": "optimal-schedule-builder",
-  "version": "0.1.0",
-  "private": true,
-=======
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "type": "module",
->>>>>>> 3a117b9f4c95dda3aa086f7d0b79d386dc967370
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-<<<<<<< HEAD
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.7"
-  },
-  "devDependencies": {
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.7"
-  }
-=======
     "lint": "next lint",
     "lint:check": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
     "lint:fix": "eslint --ext \".ts,.vue\" --ignore-path .gitignore --fix .",
     "format:check": "prettier --check .",
-    "format:fix": "prettier --write --list-different ."
+    "format:fix": "prettier --write --list-different .",
+    "fl": "prettier --write --list-different . && eslint --ext \".ts,.vue\" --ignore-path .gitignore --fix ."
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.11.1",
+    "embla-carousel": "^8.3.0",
+    "embla-carousel-react": "^8.3.0",
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",
@@ -57,5 +39,4 @@
     "typescript": "^5.6.2"
   },
   "packageManager": "pnpm@9.11.0"
->>>>>>> 3a117b9f4c95dda3aa086f7d0b79d386dc967370
 }
