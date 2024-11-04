@@ -1,5 +1,7 @@
 package edu.uga.devdogs.course_information.Course;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,4 +12,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
 
     //@Query("select u from Course where u.title = ?1")
     //Course getByTitle(String title);
+    
+    // Find courses by Athena Name
+    List<Course> findByTitle(String Title);
 }
