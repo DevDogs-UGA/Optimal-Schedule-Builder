@@ -95,5 +95,47 @@ public class BulletinCourseService {
         }
     }
 
+    /**
+     * Retrieves a list of courses offered in a specified term (e.g., Fall, Spring, Summer).
+     *
+     * <p>
+     * The term parameter determines the academic term for which to retrieve courses.
+     * If no courses are found for the specified term, a {@link CourseNotFoundException} is thrown.
+     * </p>
+     *
+     * @param term the academic term to retrieve courses for
+     * @return a list of {@link Course} objects offered in the specified term
+     * @throws CourseNotFoundException if no courses are found for the specified term
+     */
+    public List<Course> getCoursesByTerm(String term) {
+        List<Course> courses = courseRepository.findByTerm(term);
+
+        if (courses != null && !courses.isEmpty()) {
+            return courses;
+        } else {
+            throw new CourseNotFoundException("No courses found for term: " + term);
+        }
+    }
+
+    /**
+     * Retrieves the type of a class (e.g., Honors, Lab, Online) based on the given course ID.
+     *
+     * <p>
+     * This method queries the repository for a {@link Course} object with the specified ID
+     * and returns its type. If the course does not exist, it throws a {@link CourseNotFoundException}.
+     * </p>
+     *
+     * @param courseId the unique identifier for the course
+     * @return the type of the course as a string
+     * @throws CourseNotFoundException if no course with the specified ID is found
+     */
+    public String getCourseTypeById(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found for ID: " + courseId));
+
+        // Assuming the Course entity has a method getType() that returns the type of the course
+        return course.getType();
+    }
+
 }
 
