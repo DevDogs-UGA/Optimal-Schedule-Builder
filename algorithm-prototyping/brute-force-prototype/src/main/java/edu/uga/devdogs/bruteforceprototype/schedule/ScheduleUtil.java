@@ -211,8 +211,8 @@ public class ScheduleUtil {
      * to the min or the max.
      *
      * @param value the value to normalize
-     * @param max the maximum value that should normally be recieved
-     * @param min the minimum value that should normally be recieved
+     * @param max the maximum value that should normally be received
+     * @param min the minimum value that should normally be received
      *
      * @return the normalized value, between 0 and 1.
      */
