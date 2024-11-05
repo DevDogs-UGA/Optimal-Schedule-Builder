@@ -25,4 +25,15 @@ public class CourseInformationService {
         //so we use a fictitious file name.
         return courseInfoJPAFile.getClassesByCrnAndTime(timeSlot, crn);
     }
+
+    /**
+     * Method to get a list of section details matching the given CRN. The method
+     * it calls in the JPA layer will be implemented later.
+     *
+     * @param crn
+     * @return A list of Section Details objects matching the given time slot and CRN
+     */
+    public List<Class> getSectionDetailsByCrn(String crn){
+        return SectionDetailsJPAFile.getSectionDetailsByCrn(crn);
+    }
 }
