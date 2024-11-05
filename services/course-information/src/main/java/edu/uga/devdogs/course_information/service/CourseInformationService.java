@@ -55,5 +55,22 @@ public class CourseInformationService {
             throw new CourseNotFoundException("Class not found for timeSlot: " + timeSlot + " and CRN: " + crn);
     }
 
+    /**
+     * Method to get a list of section details matching the given CRN. The method
+     * it calls in the JPA layer will be implemented later.
+     *
+     * @param crn
+     * @return A list of Section Details objects matching the given time slot and CRN
+     */
+    public List<Class> getSectionDetailsByCrn(String crn){
+        List<Class> returnList;
+
+        returnList = SectionDetailsJPAFile.getSectionDetailsByCrn(crn);
+
+        if (returnList != null)
+            return returnList;
+        else
+            throw new SectionDetailsNotFoundException("Section details not found for CRN: " + crn);
+    }
 
 }
