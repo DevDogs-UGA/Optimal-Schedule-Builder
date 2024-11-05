@@ -8,6 +8,7 @@ import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
 
+import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 
 /*
@@ -30,8 +31,6 @@ public class Class implements Serializable{
 
     private  java.sql.Time endTime;
 
-    private String building;
-
     private String room;
 
     private String campus;
@@ -45,6 +44,9 @@ public class Class implements Serializable{
     @JoinColumn(name = "courseSectionId")
     private CourseSection courseSection;
 
+    @ManyToOne
+    @JoinColumn(name = "buildingNumber")
+    private Building building;
      /*
       * Constructors
       */
@@ -54,7 +56,7 @@ public class Class implements Serializable{
      }
 
      // Constructor w/o classID
-     public Class(String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus, CourseSection courseSection) {
+     public Class(String days, java.sql.Time startTime, java.sql.Time endTime, Building building, String room, String campus, CourseSection courseSection) {
          this.days = days;
          this.startTime = startTime;
          this.endTime = endTime;
@@ -65,7 +67,7 @@ public class Class implements Serializable{
      }
 
      // Constructor w/ classID
-     public Class(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, String building, String room, String campus, CourseSection courseSection) {
+     public Class(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, Building building, String room, String campus, CourseSection courseSection) {
          this.classId = classId;
          this.days = days;
          this.startTime = startTime;
@@ -112,11 +114,11 @@ public class Class implements Serializable{
         this.endTime = endTime;
     }
 
-    public String getBuilding() {
+    public Building getBuilding() {
         return building;
     }
 
-    public void setBuilding(String building) {
+    public void setBuilding(Building building) {
         this.building = building;
     }
 
@@ -153,7 +155,6 @@ public class Class implements Serializable{
             + ", days=" + days 
             + ", startTime=" + startTime 
             + ", endTime=" + endTime
-            + ", building=" + building
             + ", room=" + room
             + ", campus=" + campus + "]";
     }
