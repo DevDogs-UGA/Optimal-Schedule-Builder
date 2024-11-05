@@ -292,4 +292,36 @@ public class Pdf {
         fos.write(body.readAllBytes());
         fos.close();
     }
+
+    /**
+     * Extracts course codes and numbers from a PDF transcript.
+     *
+     * <p>This method reads a PDF file located at the specified file path, extracts the text content, and 
+     * parses lines to find course codes. A valid course code is determined by a set of criteria:
+     * it must be exactly four uppercase letters, followed by a course number that is exactly four 
+     * characters in length. The resulting list of course codes and numbers is returned as a 
+     * String array.
+     *
+     * @param fileLocation the location of the PDF transcript file.
+     * @return an array of Strings, where each entry is a course code and number in the format "CODE XXXX".
+     * @throws IOException if an error occurs while reading the PDF file.
+     */
+    public static String[] fromTranscript(String fileLocation) throws IOException {
+        List<String> classes = new ArrayList<>();
+        File file = new File(filePath);
+        PDDocument document = Loader.loadPDF(file);
+        PDFTextStripper pdfStripper = new PDFTextStripper();
+        String text = pdfStripper.getText(document);
+        String[] lines = text.split("\n");
+
+        for (String line : lines) {
+            String[] split = line.split(" ");
+            if (split.length > 1 && split[0].length() == 4 && split[0].equals(split[0].toUpperCase())
+                    && split[1].length() == 4) {
+                classes.add(split[0] + " " + split[1]);
+            }
+        }
+
+        return classes;
+    }
 }
