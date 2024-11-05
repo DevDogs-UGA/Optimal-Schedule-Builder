@@ -30,9 +30,42 @@ public class ScheduleUtilTest {
         // Example of how to create a test schedule:
         Schedule testSchedule = new Schedule(Set.of(
                 courses.get("ENGL 1101").sections().get(1),
-                courses.get("CSCI 1302").sections().get(2),
-                courses.get("PHYS 1211").sections().get(3),
-                courses.get("PHYS 1211L").sections().get(2)
+                courses.get("CSCI 1301").sections().get(2),
+                courses.get("PHYS 1211").sections().get(2),
+                courses.get("PHYS 1211L").sections().get(1)
+        ));
+
+
+        // Test Schedule 2
+        Schedule testSchedule2 = new Schedule(Set.of(
+                courses.get("ENGL 1102").sections().get(0),
+                courses.get("CSCI 1302").sections().get(1),
+                courses.get("CHEM 1211").sections().get(0),
+                courses.get("CHEM 1211L").sections().get(1)
+        ));
+
+        // Test Schedule 3
+        Schedule testSchedule3 = new Schedule(Set.of(
+                courses.get("CHEM 1211").sections().get(1),
+                courses.get("CHEM 1211L").sections().get(2),
+                courses.get("PHYS 1212").sections().get(0),
+                courses.get("PHYS 1212L").sections().get(0)
+        ));
+
+        // Test Schedule 4
+        Schedule testSchedule3 = new Schedule(Set.of(
+                courses.get("ENGL 1102").sections().get(1),
+                courses.get("PHYS 1211").sections().get(2),
+                courses.get("MATH 2250").sections().get(2),
+                courses.get("PHYS 1211L").sections().get(0)
+        ));
+
+        // Test Schedule 5
+        Schedule testSchedule3 = new Schedule(Set.of(
+                courses.get("MATH 2700").sections().get(1),
+                courses.get("CHEM 1211").sections().get(0),
+                courses.get("CHEM 1211L").sections().get(1),
+                courses.get("ENGL 1102").sections().get(0)
         ));
     }
 
