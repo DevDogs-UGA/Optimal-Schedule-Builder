@@ -38,6 +38,42 @@ public class BulletinCourseService {
     }
 
     /**
+<<<<<<< HEAD
+     * Service method for receiving courses of a specified amount of credit hours
+     * 
+     * @param creditHour the number of credit hours that a class needs to have
+     * @return list of "Courses" that have a specific number of credit hours.
+     */
+    @Operation(summary = "Get courses by a specific credit hour",description = "Retrieves courses that have a specified number of credit hours")
+    @ApiResponse(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid credit hours"),
+        @ApiResponse(responseCode = "404",description = "Course not found")
+    })
+    @GetMapping("/term")
+    public List<Course> getCoursesByCreditHours(@RequestParam(value = "creditHours", required = true) int creditHours) {
+        if(creditHours == 0 && creditHours >= 5) {
+            return ResponseEntity.badRequest().body(null); //Returns 400 if creditHours is invalid
+        } else if(creditHours > 0){
+            try {
+                //Make sure Credit hours is greater than 0
+                /*Return list of courses that has the specific amount of credit hours */
+
+                List<Course> data = JPA.getCredits(creditHours);
+
+                if(data.isEmpty()){
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseList); //Checks and returns 404 error if data information is empty
+                }
+
+                return ResponseEntity.ok(data); //Returns course information if everything is correct
+            } catch (Exception e) {
+                //Catches any server problems or exceptions
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        }
+    }
+
+    /**
      * Retrieves a list of courses that match the specified type (e.g., honors, lab, or online).
      *
      * <p>
