@@ -9,11 +9,7 @@
         "classes": [
           {
             "crn": "16043",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "08:00",
             "end_time": "08:50",
             "building_name": "Park Hall"
@@ -27,11 +23,7 @@
         "classes": [
           {
             "crn": "25013",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "12:40",
             "end_time": "13:30",
             "building_name": "Park Hall"
@@ -45,10 +37,7 @@
         "classes": [
           {
             "crn": "25108",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "11:10",
             "end_time": "12:25",
             "building_name": "Park Hall"
@@ -67,11 +56,7 @@
         "classes": [
           {
             "crn": "16559",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "08:00",
             "end_time": "08:50",
             "building_name": "Park Hall"
@@ -85,10 +70,7 @@
         "classes": [
           {
             "crn": "26599",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "12:45",
             "end_time": "14:00",
             "building_name": "Park Hall"
@@ -102,11 +84,7 @@
         "classes": [
           {
             "crn": "25184",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "12:40",
             "end_time": "13:30",
             "building_name": "Park Hall"
@@ -125,10 +103,7 @@
         "classes": [
           {
             "crn": "15032",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "09:35",
             "end_time": "10:50",
             "building_name": "Miller Plant Sciences"
@@ -142,10 +117,7 @@
         "classes": [
           {
             "crn": "16242",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "12:45",
             "end_time": "14:00",
             "building_name": "Miller Plant Sciences"
@@ -159,10 +131,7 @@
         "classes": [
           {
             "crn": "60269",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "11:10",
             "end_time": "12:25",
             "building_name": "Miller Plant Sciences"
@@ -181,19 +150,14 @@
         "classes": [
           {
             "crn": "69400",
-            "days": [
-              "Monday"
-            ],
+            "days": ["Monday"],
             "start_time": "15:00",
             "end_time": "15:50",
             "building_name": "Boyd"
           },
           {
             "crn": "69400",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "14:20",
             "end_time": "15:35",
             "building_name": "Boyd"
@@ -207,19 +171,14 @@
         "classes": [
           {
             "crn": "36424",
-            "days": [
-              "Monday"
-            ],
+            "days": ["Monday"],
             "start_time": "11:30",
             "end_time": "12:20",
             "building_name": "Boyd"
           },
           {
             "crn": "36424",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "11:10",
             "end_time": "12:25",
             "building_name": "Boyd"
@@ -233,19 +192,14 @@
         "classes": [
           {
             "crn": "26311",
-            "days": [
-              "Monday"
-            ],
+            "days": ["Monday"],
             "start_time": "12:40",
             "end_time": "13:30",
             "building_name": "Dawson Hall"
           },
           {
             "crn": "26311",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "12:45",
             "end_time": "14:00",
             "building_name": "Miller Plant Sciences"
@@ -264,11 +218,7 @@
         "classes": [
           {
             "crn": "27165",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "13:50",
             "end_time": "14:40",
             "building_name": "Physics"
@@ -282,11 +232,7 @@
         "classes": [
           {
             "crn": "41058",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "12:40",
             "end_time": "13:30",
             "building_name": "Physics"
@@ -300,10 +246,7 @@
         "classes": [
           {
             "crn": "41060",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "09:35",
             "end_time": "10:50",
             "building_name": "Physics"
@@ -322,9 +265,7 @@
         "classes": [
           {
             "crn": "27484",
-            "days": [
-              "Monday"
-            ],
+            "days": ["Monday"],
             "start_time": "10:20",
             "end_time": "12:20",
             "building_name": "Physics"
@@ -338,9 +279,7 @@
         "classes": [
           {
             "crn": "27487",
-            "days": [
-              "Wednesday"
-            ],
+            "days": ["Wednesday"],
             "start_time": "10:20",
             "end_time": "12:20",
             "building_name": "Physics"
@@ -354,9 +293,7 @@
         "classes": [
           {
             "crn": "27488",
-            "days": [
-              "Thursday"
-            ],
+            "days": ["Thursday"],
             "start_time": "17:30",
             "end_time": "19:30",
             "building_name": "Physics"
@@ -375,10 +312,7 @@
         "classes": [
           {
             "crn": "27173",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "14:20",
             "end_time": "15:35",
             "building_name": "Physics"
@@ -397,9 +331,7 @@
         "classes": [
           {
             "crn": "32873",
-            "days": [
-              "Wednesday"
-            ],
+            "days": ["Wednesday"],
             "start_time": "13:50",
             "end_time": "15:50",
             "building_name": "Science Learning Center"
@@ -413,9 +345,7 @@
         "classes": [
           {
             "crn": "27516",
-            "days": [
-              "Monday"
-            ],
+            "days": ["Monday"],
             "start_time": "13:50",
             "end_time": "15:50",
             "building_name": "Science Learning Center"
@@ -429,9 +359,7 @@
         "classes": [
           {
             "crn": "27514",
-            "days": [
-              "Monday"
-            ],
+            "days": ["Monday"],
             "start_time": "09:10",
             "end_time": "11:10",
             "building_name": "Science Learning Center"
@@ -450,11 +378,7 @@
         "classes": [
           {
             "crn": "13069",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "09:10",
             "end_time": "10:00",
             "building_name": "Conner Hall"
@@ -468,10 +392,7 @@
         "classes": [
           {
             "crn": "54119",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "11:10",
             "end_time": "12:25",
             "building_name": "Dawson Hall"
@@ -485,11 +406,7 @@
         "classes": [
           {
             "crn": "50431",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "09:10",
             "end_time": "10:00",
             "building_name": "Cedar Street Building C"
@@ -508,9 +425,7 @@
         "classes": [
           {
             "crn": "13532",
-            "days": [
-              "Monday"
-            ],
+            "days": ["Monday"],
             "start_time": "08:00",
             "end_time": "11:10",
             "building_name": "Science Learning Center"
@@ -524,9 +439,7 @@
         "classes": [
           {
             "crn": "13552",
-            "days": [
-              "Wednesday"
-            ],
+            "days": ["Wednesday"],
             "start_time": "16:10",
             "end_time": "19:20",
             "building_name": "Science Learning Center"
@@ -540,9 +453,7 @@
         "classes": [
           {
             "crn": "13543",
-            "days": [
-              "Tuesday"
-            ],
+            "days": ["Tuesday"],
             "start_time": "15:55",
             "end_time": "18:45",
             "building_name": "Science Learning Center"
@@ -561,20 +472,14 @@
         "classes": [
           {
             "crn": "15428",
-            "days": [
-              "Tuesday"
-            ],
+            "days": ["Tuesday"],
             "start_time": "09:35",
             "end_time": "10:50",
             "building_name": "Aderhold Hall"
           },
           {
             "crn": "15428",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "11:30",
             "end_time": "12:20",
             "building_name": "Life Sciences"
@@ -588,20 +493,14 @@
         "classes": [
           {
             "crn": "15611",
-            "days": [
-              "Tuesday"
-            ],
+            "days": ["Tuesday"],
             "start_time": "15:55",
             "end_time": "17:10",
             "building_name": "Forest Resources"
           },
           {
             "crn": "15611",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "13:50",
             "end_time": "14:40",
             "building_name": "Food Sciences"
@@ -615,19 +514,14 @@
         "classes": [
           {
             "crn": "15619",
-            "days": [
-              "Monday"
-            ],
+            "days": ["Monday"],
             "start_time": "08:00",
             "end_time": "08:50",
             "building_name": "Forest Resources"
           },
           {
             "crn": "15619",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "08:00",
             "end_time": "09:15",
             "building_name": "Boyd"
@@ -646,19 +540,14 @@
         "classes": [
           {
             "crn": "15679",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "09:35",
             "end_time": "10:50",
             "building_name": "Dawson Hall"
           },
           {
             "crn": "15679",
-            "days": [
-              "Monday"
-            ],
+            "days": ["Monday"],
             "start_time": "11:30",
             "end_time": "12:20",
             "building_name": "Boyd"
@@ -672,20 +561,14 @@
         "classes": [
           {
             "crn": "15683",
-            "days": [
-              "Thursday"
-            ],
+            "days": ["Thursday"],
             "start_time": "09:35",
             "end_time": "10:50",
             "building_name": "Dawson Hall"
           },
           {
             "crn": "15683",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "09:10",
             "end_time": "10:00",
             "building_name": "Boyd"
@@ -704,11 +587,7 @@
         "classes": [
           {
             "crn": "15977",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "09:10",
             "end_time": "10:00",
             "building_name": "Dawson Hall"
@@ -722,11 +601,7 @@
         "classes": [
           {
             "crn": "15979",
-            "days": [
-              "Monday",
-              "Wednesday",
-              "Friday"
-            ],
+            "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "10:20",
             "end_time": "11:10",
             "building_name": "Geography Geology"
@@ -740,10 +615,7 @@
         "classes": [
           {
             "crn": "15996",
-            "days": [
-              "Tuesday",
-              "Thursday"
-            ],
+            "days": ["Tuesday", "Thursday"],
             "start_time": "08:00",
             "end_time": "09:15",
             "building_name": "Boyd"

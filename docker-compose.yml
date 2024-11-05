@@ -1,26 +1,25 @@
 # Created by JP Park
 # Last maintained by JP Park
 
-version: '1.0'
+version: "1.0"
 
 services:
   config-server:
     image: # TODO
     container_name: # TODO
     ports:
-      - # TODO
+      -  # TODO
     environment:
-
 
   eureka-server:
     image: # TODO
     container_name: # TODO
     ports:
-      - # TODO
+      -  # TODO
     environment:
 
   api-gateway:
     image: # TODO
     container_name: # TODO
     ports:
-      - # TODO
+      -  # TODO
