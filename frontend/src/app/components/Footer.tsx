@@ -3,7 +3,7 @@ export function Footer() {
     <footer className="mt-4 w-full bg-slate-200">
       <div className="flex items-center justify-between px-8 py-4">
         <div className="flex flex-col gap-x-4 gap-y-2 sm:flex-row">
-          <a href="" className="hover:text-slate-600">
+          <a href="" className="hover:text-slate-900">
             Privacy Policy
           </a>
           <a href="" className="hover:text-slate-600">
