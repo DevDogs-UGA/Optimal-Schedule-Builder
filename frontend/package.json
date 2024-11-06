@@ -11,10 +11,13 @@
     "lint:check": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
     "lint:fix": "eslint --ext \".ts,.vue\" --ignore-path .gitignore --fix .",
     "format:check": "prettier --check .",
-    "format:fix": "prettier --write --list-different ."
+    "format:fix": "prettier --write --list-different .",
+    "fl": "prettier --write --list-different . && eslint --ext \".ts,.vue\" --ignore-path .gitignore --fix ."
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.11.1",
+    "embla-carousel": "^8.3.0",
+    "embla-carousel-react": "^8.3.0",
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",

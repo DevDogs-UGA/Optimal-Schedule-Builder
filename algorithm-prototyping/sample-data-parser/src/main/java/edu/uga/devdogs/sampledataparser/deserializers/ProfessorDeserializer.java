@@ -7,29 +7,30 @@ import com.google.gson.JsonParseException;
 import edu.uga.devdogs.sampledataparser.records.Professor;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * A custom deserializer for converting a JSON string into a {@link Professor} object.
- * This deserializer matches a professor's name from the JSON input with an array of pre-defined
+ * This deserializer matches a professor's name from the JSON input with a list of pre-defined
  * {@link Professor} objects. If a match is found, the corresponding {@link Professor} object is returned.
  * Otherwise, it throws a {@link JsonParseException}.
  */
 public class ProfessorDeserializer implements JsonDeserializer<Professor> {
 
-    private final Professor[] professors;
+    private final List<Professor> professors;
 
     /**
-     * Constructs a {@link ProfessorDeserializer} with a predefined array of {@link Professor} objects.
+     * Constructs a {@link ProfessorDeserializer} with a predefined list of {@link Professor} objects.
      *
-     * @param professors an array of {@link Professor} objects that will be used to match the deserialized name.
+     * @param professors a list of {@link Professor} objects that will be used to match the deserialized name.
      */
-    public ProfessorDeserializer(Professor[] professors) {
+    public ProfessorDeserializer(List<Professor> professors) {
         this.professors = professors;
     }
 
     /**
      * Deserializes a JSON element into a {@link Professor} object by matching the provided professor name
-     * (as a JSON string) to a {@link Professor} object in the predefined array of professors.
+     * (as a JSON string) to a {@link Professor} object in the predefined list of professors.
      *
      * @param json the JSON element representing a professor's name as a string.
      * @param type the type of the object to deserialize.
