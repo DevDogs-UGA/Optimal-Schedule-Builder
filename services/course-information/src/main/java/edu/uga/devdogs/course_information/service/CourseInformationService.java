@@ -94,4 +94,23 @@ public class CourseInformationService {
         }
     }
 
+    /**
+     * Retrieves all course sections taught by a specific professor.
+     *
+     * @param professorId The unique identifier of the professor
+     * @return List of course sections taught by the specified professor
+     * @throws ProfessorNotFoundException if the professor is not found
+     */
+    public List<CourseSection> getCourseSectionsByProfessor(Long professorId) {   
+        List<CourseSection>  returnList;
+
+        returnList = courseInfoJPAFile.getCourseSectionsByProfessor(professorId);
+
+        if (returnList != null) {
+            return returnList;
+        } else {
+            throw new ProfessorNotFoundException("Professor not found with ID: " + professorId);
+        }
+    }
+    
 }
