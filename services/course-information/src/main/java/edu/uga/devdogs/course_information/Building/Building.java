@@ -1,9 +1,12 @@
 package edu.uga.devdogs.course_information.Building;
 
+import edu.uga.devdogs.course_information.Class.Class;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import java.io.Serializable;
+import java.util.List;
 
 /*
  * Java JPA entity represention for Building
@@ -27,6 +30,8 @@ public class Building implements Serializable {
      * Relationships
      * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
+    @OneToMany(mappedBy = "building")
+    private List<Class> classes;
 
     /*
      * Constructors
@@ -37,16 +42,18 @@ public class Building implements Serializable {
     }
 
     // Constructor w/o buildingNumber
-    public Building(String name, String grid) {
+    public Building(String name, String grid, List<Class> classes) {
         this.name = name;
         this.grid = grid;
+        this.classes = classes;
     }
 
     // Constructor w/ buildingNumber
-    public Building(int buildingNumber, String name, String grid) {
+    public Building(int buildingNumber, String name, String grid, List<Class> classes) {
         this.buildingNumber = buildingNumber;
         this.name = name;
         this.grid = grid;
+        this.classes = classes;
     }
 
     
@@ -78,6 +85,13 @@ public class Building implements Serializable {
         this.grid = grid;
     }
 
+    public List<Class> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<Class> classes) {
+        this.classes = classes;
+    }
 
     /*
      * toString
