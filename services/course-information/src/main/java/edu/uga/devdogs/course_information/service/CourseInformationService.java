@@ -56,7 +56,7 @@ public class CourseInformationService {
     }
 
     /**
-     * Method to get a list of section details matching the given CRN. The method
+     * Method to get a list of section details (tiemslot) matching the given CRN. The method
      * it calls in the JPA layer will be implemented later.
      *
      * @param crn the given course reference number for which to retrieve section details
