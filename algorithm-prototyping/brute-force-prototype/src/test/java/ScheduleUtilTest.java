@@ -12,9 +12,8 @@ import java.util.Set;
 
 public class ScheduleUtilTest {
 
+    static Map<String, Course> courses;
     static Map<String, Map<String, Double>> distances;
-
-    static List<Schedule> testSchedules;
 
     @BeforeAll
     static void setUp() {
@@ -25,27 +24,16 @@ public class ScheduleUtilTest {
 
         // Parse sample data
         SampleData sampleData = SampleDataParser.parse(professorsFilePath, coursesFilePath, distancesFilePath);
-        Map<String, Course> courses = sampleData.courses();
+        courses = sampleData.courses();
         distances = sampleData.distances();
 
-        // Initialize the list of test schedules
-        testSchedules = new ArrayList<>();
-
-        // Add first schedule for testing
-        testSchedules.add(new Schedule(Set.of(
-                courses.get("ENGL 1101").sections().getFirst(),
-                courses.get("CSCI 1302").sections().getFirst(),
-                courses.get("PHYS 1211").sections().getFirst(),
-                courses.get("PHYS 1211L").sections().getFirst()
-        )));
-
-        // Add second schedule for testing
-        testSchedules.add(new Schedule(Set.of(
-                courses.get("ENGL 1102").sections().getFirst(),
-                courses.get("PHYS 1212").sections().getFirst(),
-                courses.get("PHYS 1212L").sections().getFirst(),
-                courses.get("MATH 2250").sections().getFirst()
-        )));
+        // Example of how to create a test schedule:
+        Schedule testSchedule = new Schedule(Set.of(
+                courses.get("ENGL 1101").sections().get(1),
+                courses.get("CSCI 1302").sections().get(2),
+                courses.get("PHYS 1211").sections().get(3),
+                courses.get("PHYS 1211L").sections().get(2)
+        ));
     }
 
     @Test

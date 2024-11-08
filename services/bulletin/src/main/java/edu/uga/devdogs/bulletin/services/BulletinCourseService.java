@@ -38,6 +38,42 @@ public class BulletinCourseService {
     }
 
     /**
+<<<<<<< HEAD
+     * Service method for receiving courses of a specified amount of credit hours
+     * 
+     * @param creditHour the number of credit hours that a class needs to have
+     * @return list of "Courses" that have a specific number of credit hours.
+     */
+    @Operation(summary = "Get courses by a specific credit hour",description = "Retrieves courses that have a specified number of credit hours")
+    @ApiResponse(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid credit hours"),
+        @ApiResponse(responseCode = "404",description = "Course not found")
+    })
+    @GetMapping("/term")
+    public List<Course> getCoursesByCreditHours(@RequestParam(value = "creditHours", required = true) int creditHours) {
+        if(creditHours == 0 && creditHours >= 5) {
+            return ResponseEntity.badRequest().body(null); //Returns 400 if creditHours is invalid
+        } else if(creditHours > 0){
+            try {
+                //Make sure Credit hours is greater than 0
+                /*Return list of courses that has the specific amount of credit hours */
+
+                List<Course> data = JPA.getCredits(creditHours);
+
+                if(data.isEmpty()){
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseList); //Checks and returns 404 error if data information is empty
+                }
+
+                return ResponseEntity.ok(data); //Returns course information if everything is correct
+            } catch (Exception e) {
+                //Catches any server problems or exceptions
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        }
+    }
+
+    /**
      * Retrieves a list of courses that match the specified type (e.g., honors, lab, or online).
      *
      * <p>
@@ -93,6 +129,48 @@ public class BulletinCourseService {
         } else {
             throw new CourseNotFoundException("Course not found for code: " + courseName);
         }
+    }
+
+    /**
+     * Retrieves a list of courses offered in a specified term (e.g., Fall, Spring, Summer).
+     *
+     * <p>
+     * The term parameter determines the academic term for which to retrieve courses.
+     * If no courses are found for the specified term, a {@link CourseNotFoundException} is thrown.
+     * </p>
+     *
+     * @param term the academic term to retrieve courses for
+     * @return a list of {@link Course} objects offered in the specified term
+     * @throws CourseNotFoundException if no courses are found for the specified term
+     */
+    public List<Course> getCoursesByTerm(String term) {
+        List<Course> courses = courseRepository.findByTerm(term);
+
+        if (courses != null && !courses.isEmpty()) {
+            return courses;
+        } else {
+            throw new CourseNotFoundException("No courses found for term: " + term);
+        }
+    }
+
+    /**
+     * Retrieves the type of a class (e.g., Honors, Lab, Online) based on the given course ID.
+     *
+     * <p>
+     * This method queries the repository for a {@link Course} object with the specified ID
+     * and returns its type. If the course does not exist, it throws a {@link CourseNotFoundException}.
+     * </p>
+     *
+     * @param courseId the unique identifier for the course
+     * @return the type of the course as a string
+     * @throws CourseNotFoundException if no course with the specified ID is found
+     */
+    public String getCourseTypeById(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found for ID: " + courseId));
+
+        // Assuming the Course entity has a method getType() that returns the type of the course
+        return course.getType();
     }
 
 }
