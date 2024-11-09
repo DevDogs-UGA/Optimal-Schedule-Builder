@@ -1,6 +1,9 @@
 package edu.uga.devdogs.course_information.controller;
 
 import edu.uga.devdogs.course_information.Course.Course;
+import edu.uga.devdogs.course_information.CourseSection.CourseSection;
+import edu.uga.devdogs.course_information.service.CourseInformationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Controller that handles the Course-Information details.
@@ -26,6 +27,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/courseInformation")
 public class CourseInfoController {
+
+    //inject our Course Information PDFs microservice into our REST controller
+    private final CourseInformationService courseInformationService;
+
+    @Autowired
+    public CourseInfoController(CourseInformationService courseInformationService) {
+        this.courseInformationService = courseInformationService;
+    }
 
    
     /**
@@ -42,14 +51,14 @@ public class CourseInfoController {
           @ApiResponse(responseCode = "404",description = "Course not found")
     })
     @GetMapping("/professor")
-   public List<Section> getCourseByProfessor(@RequestParam(value = "professor",required = true) String professor){
+   public ResponseEntity<List<CourseSection>> getCourseByProfessor(@RequestParam(value = "professor",required = true) String professor){
         
      if(professor == null || professor.isEmpty()){
           return ResponseEntity.badRequest().body(null); //Returns 400 if the parameter is not provided
      }
 
      try {
-          List<Section> courseInfo = fetchCoursesByProf(professor); //Fetches course information based on professor
+          List<CourseSection> courseInfo = fetchCoursesByProf(professor); //Fetches course information based on professor
           
           if(courseInfo.isEmpty()){
                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseInfo); //Returns 404 error code is course info isn't found
@@ -86,7 +95,7 @@ public class CourseInfoController {
 
         try {
             //Call method to get course list by major
-            List<Course> courseList = getCoursesByMajor(major);
+            List<Course> courseList = courseInformationService.getCoursesByMajor(major);
 
             //Check if the above method call returned null
             if (courseList == null) {
@@ -117,7 +126,7 @@ public class CourseInfoController {
     })
     @GetMapping("/section-by-crn")
     @Tag(name="course-information")
-    public ResponseEntity<Section> getCourseEntity(@RequestParam String crn) {
+    public ResponseEntity<CourseSection> getCourseEntity(@RequestParam String crn) {
 
         //return 400 for empty CRN
         if (crn.isEmpty()) {
@@ -125,7 +134,7 @@ public class CourseInfoController {
         }
         try {
             //Call method to get section details
-            Section sectionDetails = getSectionByCRN(crn);
+            CourseSection sectionDetails = getSectionByCRN(crn);
 
             //Check if the above method call returned null
             if (sectionDetails == null) {
