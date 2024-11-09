@@ -5,8 +5,11 @@ import edu.uga.devdogs.course_information.Class.Class;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
+import edu.uga.devdogs.course_information.exceptions.SectionDetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import edu.uga.devdogs.course_information.exceptions.CourseNotFoundException;
 
 import java.sql.Time;
 import java.text.ParseException;
