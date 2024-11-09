@@ -144,6 +144,25 @@ public class CourseInformationService {
     }
 
     /**
+     * Retrieves all course sections taught by a specific professor.
+     *
+     * @param professorId The unique identifier of the professor
+     * @return List of course sections taught by the specified professor
+     * @throws ProfessorNotFoundException if the professor is not found
+     */
+    public List<CourseSection> getCourseSectionsByProfessor(Long professorId) {   
+        
+        // Fetch course sections by professor ID
+        List<CourseSection> returnList = courseInfoJPAFile.getCourseSectionsByProfessor(professorId);
+
+        if (returnList != null) {
+            return returnList;
+        } else {
+            throw new ProfessorNotFoundException("Professor not found with ID: " + professorId);
+        }
+    }
+   
+    /* 
      * This method is a helper method to parse our timeslots (10:00 AM - 11:15 AM)
      */
     private static Time parseTime(String timeString) throws ParseException {
