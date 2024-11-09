@@ -71,6 +71,8 @@ public class CourseInformationService {
 
             //Make object to store returnList to make sure courses actually exist
             List<Class> timeReturnList = new ArrayList<>();
+            Set<String> seenTimes = new HashSet<>();
+
 
             List<Class> timeStartReturnList = classRepository.findByStartTime(startTime);
             List<Class> timeEndReturnList = classRepository.findByEndTimeBetween(endTime, endTime);
@@ -85,8 +87,10 @@ public class CourseInformationService {
             // Iterate through timeStartReturnList and check for matches in endTimeMap
             for (Class startClass : timeStartReturnList) {
                 String key = startClass.getStartTime().toString() + "-" + startClass.getEndTime().toString();
-                if (endTimeMap.containsKey(key)) {
-                    timeReturnList.add(startClass); // or add `endTimeMap.get(key)`
+
+                if (endTimeMap.containsKey(key) && !seenTimes.contains(key)) {
+                    timeReturnList.add(startClass); // Add to result list
+                    seenTimes.add(key); // Mark as seen
                 }
             }
 
