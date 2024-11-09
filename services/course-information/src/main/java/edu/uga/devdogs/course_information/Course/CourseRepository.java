@@ -11,6 +11,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     //This will get a course by its unique ID
     Course getById(Long id);
 
+    // This will get a course by its title
     Course getByTitle(String title);
 
     //This will get a list of Courses by their subject.
