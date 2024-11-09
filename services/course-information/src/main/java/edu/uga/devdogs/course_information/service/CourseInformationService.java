@@ -102,9 +102,9 @@ public class CourseInformationService {
      * @throws ProfessorNotFoundException if the professor is not found
      */
     public List<CourseSection> getCourseSectionsByProfessor(Long professorId) {   
-        List<CourseSection>  returnList;
-
-        returnList = courseInfoJPAFile.getCourseSectionsByProfessor(professorId);
+        
+        // Fetch course sections by professor ID
+        List<CourseSection> returnList = courseInfoJPAFile.getCourseSectionsByProfessor(professorId);
 
         if (returnList != null) {
             return returnList;
