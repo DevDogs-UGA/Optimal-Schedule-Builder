@@ -11,15 +11,10 @@ public interface CourseSectionRepository extends JpaRepository<CourseSection, Lo
     // This will get a list of courses by their major
     @Query("SELECT cs FROM courseSection cs WHERE cs.course.subject = ?1")
     List<Course> getCoursesBySubject(String subject);
-
-    // This will get a list of courseSections by the instructor
-    // @Query("SELECT cs FROM courseSection cs WHERE cs.instructor = ?1")
-    List<CourseSection> findAllByInstructor(String instructor);
     
-
-    // This will find a course by its CRN
-    @Query("SELECT crn from courseSection cs WHERE cd.course.suject = ?1")
-    List<Course> getCourseByCRN(int crn);
-
+    // This will get a list of course sections that match the time range
+    @Query("SELECT cs FROM CourseSection cs JOIN cs.Classes c " + 
+            "WHERE c.startTime <= :time AND c.endTime >= :time")
+    List<CourseSection> findCourseSectionsByTime(java.sql.Time time);
 }
 
