@@ -171,4 +171,20 @@ public class CourseInformationService {
         return new Time(parsedDate.getTime());
     }
 
+    /**
+     * Retreives course based on Athena name
+     *
+     *  @param athenaName The Athena name of the course
+     *  @return The {@link Course} object matching the given Athena name
+     * @throws CourseNotFoundException if no course is found for the specified Athena name
+     */
+    public Course getCourseByAthenaName(String athenaName) {
+        Course course = courseRepository.findByAthenaName(athenaName);
+
+        if (course != null) {
+            return course;
+        } else {
+            throw new CourseNotFoundException("Course not found for Athena name: " + athenaName);
+        }
+
 }
