@@ -18,13 +18,13 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
     List<Class> findByEndTimeBetween(java.sql.Time startTime, java.sql.Time endTime);
 
     // Find classes in a specific building
-    List<Class> findByBuilding(String building);
+    // List<Class> findByBuilding(String building);
 
     // Find classes by campus
     List<Class> findByCampus(String campus);
 
     // Find classes by building and room number
-    List<Class> findByBuildingAndRoom(String building, String room);
+    // List<Class> findByBuildingAndRoom(String building, String room);
 
     // Find a class by its ID
     List<Class> findByClassId(int classId);

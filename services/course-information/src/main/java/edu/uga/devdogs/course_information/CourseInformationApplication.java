@@ -49,6 +49,8 @@ public class CourseInformationApplication {
 
 					courseSectionRepository.save(section1);
 
+					System.out.println("\n\n\n\n\n\n" + courseSectionRepository.findAllByInstructor("Barnes"));
+
 					//courseRepository interface objects
 					Course course1 = new Course (
 						"physiology", 
@@ -106,7 +108,7 @@ public class CourseInformationApplication {
 							"MWF", 
 							Time.valueOf("08:00:00"), 
 							Time.valueOf("09:15:00"), 
-							"Science Building", 
+							building1, 
 							"101", 
 							"Main Campus" ,
 							null
@@ -116,7 +118,7 @@ public class CourseInformationApplication {
 							"TR", 
 							Time.valueOf("13:00:00"), 
 							Time.valueOf("14:15:00"), 
-							"Engineering Hall", 
+							building2, 
 							"205", 
 							"North Campus",
 							null
