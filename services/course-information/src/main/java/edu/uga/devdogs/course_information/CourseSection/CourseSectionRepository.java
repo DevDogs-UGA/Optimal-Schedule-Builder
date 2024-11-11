@@ -12,6 +12,11 @@ public interface CourseSectionRepository extends JpaRepository<CourseSection, Lo
     @Query("SELECT cs FROM courseSection cs WHERE cs.course.subject = ?1")
     List<Course> getCoursesBySubject(String subject);
 
+    // This will get a list of courseSections by the instructor
+    @Query("SELECT cs FROM courseSection cs WHERE cs.instructor = ?1")
+    List<CourseSection> getCourseSectionByInstructor(String instructor);
+    
+
     // This will find a course by its CRN
     @Query("SELECT crn from courseSection cs WHERE cd.course.suject = ?1")
     List<Course> getCourseByCRN(int crn);
