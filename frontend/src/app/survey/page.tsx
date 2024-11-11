@@ -5,15 +5,25 @@ import { z } from "zod";
 //TODO: Style the questionnaire page
 //TODO: Clarify the specification/typing of form inputs
 //TODO: Create/add dropdown functionality to input fields
+//TODO: Create handler to trigger zod schema errors on page
 
 //Schema created using zod to test validation in the form
 const schema = z.object({
   major: z.string().min(1, { message: "Major is required" }),
-  distance: z.number().positive({ message: "Distance must be positive" }),
+  distance: z
+    .string()
+    .refine((val) => val.trim() !== "", { message: "Distance is required" })
+    .transform((val) => parseFloat(val))
+    .refine((val) => !isNaN(val), { message: "Expected a number" })
+    .refine((val) => val >= 0, { message: "Distance must be positive" }),
   creditHours: z
-    .number()
-    .int()
-    .positive({ message: "Credit Hours must be a positive integer" }),
+    .string()
+    .refine((val) => val.trim() !== "", {
+      message: "Credit Hours are required",
+    })
+    .transform((val) => parseFloat(val))
+    .refine((val) => !isNaN(val), { message: "Expected a number" })
+    .refine((val) => val >= 0, { message: "Credit Hours must be positive" }),
   semester: z.string().min(1, { message: "Semester is required" }),
 });
 
