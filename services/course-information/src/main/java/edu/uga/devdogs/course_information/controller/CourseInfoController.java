@@ -122,7 +122,8 @@ public class CourseInfoController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Section found"),
         @ApiResponse(responseCode = "400", description = "Invalid CRN"),
-        @ApiResponse(responseCode = "404", description = "Section not found")
+        @ApiResponse(responseCode = "404", description = "Section not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/section-by-crn")
     @Tag(name="course-information")
