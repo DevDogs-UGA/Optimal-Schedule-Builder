@@ -1,4 +1,5 @@
 import edu.uga.devdogs.bruteforceprototype.schedule.Schedule;
+import edu.uga.devdogs.bruteforceprototype.schedule.ScheduleUtil;
 import edu.uga.devdogs.sampledataparser.SampleDataParser;
 import edu.uga.devdogs.sampledataparser.records.Course;
 import edu.uga.devdogs.sampledataparser.records.SampleData;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ScheduleUtilTest {
 
@@ -97,7 +100,7 @@ public class ScheduleUtilTest {
         invalidTestSchedules.add(new Schedule(Set.of(
                 courses.get("ENGL 1102").sections().get(1),
                 courses.get("CSCI 1302").sections().get(2),
-                courses.get("MATH 2250").sections().get(1),
+                courses.get("MATH 2250").sections().get(1)
                 )));
     }
 
@@ -111,6 +114,11 @@ public class ScheduleUtilTest {
     void testComputeAverageProfessorQuality() {
         // Compute the average professor quality for each schedule within validTestSchedules by hand
         // Assert that ScheduleUtil.computeAverageProfessorQuality() returns the expected value for each schedule
+        assertEquals(3.425, ScheduleUtil.computeAverageProfessorQuality(validTestSchedules.get(0)), 0.01,"The professor's average quality should be 1.");
+        assertEquals(2.075, ScheduleUtil.computeAverageProfessorQuality(validTestSchedules.get(1)), 0.01,"The professor's average quality should be 1.");
+        assertEquals(3.275, ScheduleUtil.computeAverageProfessorQuality(validTestSchedules.get(2)), 0.01,"The professor's average quality should be 1.");
+        assertEquals(4.025, ScheduleUtil.computeAverageProfessorQuality(validTestSchedules.get(3)), 0.01,"The professor's average quality should be 1.");
+        assertEquals(2.450, ScheduleUtil.computeAverageProfessorQuality(validTestSchedules.get(4)), 0.01,"The professor's average quality should be 1.");
     }
 
     @Test
