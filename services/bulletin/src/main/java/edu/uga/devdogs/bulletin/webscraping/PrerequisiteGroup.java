@@ -11,6 +11,16 @@ import java.util.ArrayList;
 public class PrerequisiteGroup {
     private boolean requiresHonors;
 
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    private String className;
+
     public boolean requiresHonors() {
         return requiresHonors;
     }
@@ -38,7 +48,8 @@ public class PrerequisiteGroup {
 
     private ArrayList<PrerequisiteClass> classes = new ArrayList<>(); //Taking one of these classes means the prerequisite has been met.
 
-    public PrerequisiteGroup() {
+    public PrerequisiteGroup(String className) {
+        this.className = className;
     }
 
     public void addClass(PrerequisiteClass prerequisite) {
@@ -48,6 +59,7 @@ public class PrerequisiteGroup {
     @Override
     public String toString() {
         String toString = "PrerequisiteGroup [ ";
+        toString += "\n\tClass Name: " + className;
         toString += "\n\tHonors: " + requiresHonors;
         toString += "\n\tCan substitute Dept. Permission: " + canSubstituteDepartmentPermission;
         toString += "\n\tClasses: ";
