@@ -84,10 +84,10 @@ public class BruteForcePrototype {
 
         // Instantiates the list of courses for the next iteration
         List<Course> nextCoursesToAdd = new ArrayList<>(currCoursesToAdd);
-        nextCoursesToAdd.removeFirst();
+        nextCoursesToAdd.remove(0);
 
         // Iterates over all sections for the next course and recurses
-        for (Section sectionToAdd: currCoursesToAdd.getFirst().sections()){
+        for (Section sectionToAdd: currCoursesToAdd.get(0).sections()){
             // Instantiates the set of sections for the next iteration
             HashSet<Section> nextSections = new HashSet<>(sections);
             nextSections.add(sectionToAdd);

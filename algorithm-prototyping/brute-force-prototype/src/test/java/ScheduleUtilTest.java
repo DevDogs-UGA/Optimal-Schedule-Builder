@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import edu.uga.devdogs.bruteforceprototype.schedule.ScheduleUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +33,8 @@ public class ScheduleUtilTest {
         SampleData sampleData = SampleDataParser.parse(professorsFilePath, coursesFilePath, distancesFilePath);
         courses = sampleData.courses();
         distances = sampleData.distances();
+        validTestSchedules = new ArrayList<>();
+        invalidTestSchedules = new ArrayList<>();
 
         // Create valid test schedules
         validTestSchedules.add(new Schedule(Set.of(
