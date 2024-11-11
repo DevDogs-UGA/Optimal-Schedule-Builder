@@ -102,13 +102,15 @@ public class CourseInformationApplication {
 					Building building10 = new Building(178, "Central Campus Mech. Building", "C - 2");
 					buildingRepository.save(building10);
 
+					System.out.println("\n\n\n\n\n"+buildingRepository.getById(178));
+
 
 					//Class interface objects
 					Class class1 = new Class(
 							"MWF", 
 							Time.valueOf("08:00:00"), 
 							Time.valueOf("09:15:00"), 
-							building1, 
+							building10, 
 							"101", 
 							"Main Campus" ,
 							null
@@ -118,7 +120,7 @@ public class CourseInformationApplication {
 							"TR", 
 							Time.valueOf("13:00:00"), 
 							Time.valueOf("14:15:00"), 
-							building2, 
+							building6, 
 							"205", 
 							"North Campus",
 							null
