@@ -46,9 +46,10 @@ public class CourseInfoController {
      */
     @Operation(summary = "get list of courses by professor", description = "Retrieces course information relating to the professor.")
     @ApiResponse(value = {
-          @ApiResponse(responseCode = "200",description = "Course found"),
-          @ApiResponse(responseCode = "400",description = "Invalid Course ID"),
-          @ApiResponse(responseCode = "404",description = "Course not found")
+        @ApiResponse(responseCode = "200", description = "Section found"),
+        @ApiResponse(responseCode = "400", description = "Invalid CRN"),
+        @ApiResponse(responseCode = "404", description = "Section not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/professor")
    public ResponseEntity<List<CourseSection>> getCourseByProfessor(@RequestParam(value = "professor",required = true) String professor){
@@ -80,9 +81,10 @@ public class CourseInfoController {
      */
     @Operation(summary = "Get courses by major", description = "Retrieves a list of course objects with the given major identifier.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
-        @ApiResponse(responseCode = "400", description = "Invalid major"),
-        @ApiResponse(responseCode = "404", description = "Course not found")
+        @ApiResponse(responseCode = "200", description = "Section found"),
+        @ApiResponse(responseCode = "400", description = "Invalid CRN"),
+        @ApiResponse(responseCode = "404", description = "Section not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/coursesByMajor")
     @Tag(name="course-information")
@@ -122,7 +124,8 @@ public class CourseInfoController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Section found"),
         @ApiResponse(responseCode = "400", description = "Invalid CRN"),
-        @ApiResponse(responseCode = "404", description = "Section not found")
+        @ApiResponse(responseCode = "404", description = "Section not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/section-by-crn")
     @Tag(name="course-information")
@@ -159,9 +162,10 @@ public class CourseInfoController {
      */
     @Operation(summary = "Get course by Athena name", description = "Retrieves course information based on the provided Athena name.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
-        @ApiResponse(responseCode = "400", description = "Invalid Athena name"),
-        @ApiResponse(responseCode = "404", description = "Course not found")
+        @ApiResponse(responseCode = "200", description = "Section found"),
+        @ApiResponse(responseCode = "400", description = "Invalid CRN"),
+        @ApiResponse(responseCode = "404", description = "Section not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/course-by-athena-name")
     @Tag(name="course-information")
