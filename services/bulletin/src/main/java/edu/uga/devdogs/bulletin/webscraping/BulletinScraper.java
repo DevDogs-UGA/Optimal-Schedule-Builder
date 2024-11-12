@@ -25,78 +25,105 @@ public class BulletinScraper {
     }
 
     // This method will take the line from the table that contains the prerequisites and parse it
-   private static ArrayList<PrerequisiteGroup> getPrerequisiteGroupFromTable(String text, String className) {
+   private static ArrayList<PrerequisiteGroup> getPrerequisiteGroupFromTable(String text, String courseName) {
+       Pattern coursePrefixRegex = Pattern.compile("\\b[A-Z]{4}\\b"); // i.e. "MATH"
+       Pattern courseSuffixRegex = Pattern.compile("\\b\\d{4}[A-Z]?\\b"); // i.e. "1113"
+
        // I found that some departments call the "permission of department" requirement "permission of school"
        String modifiedText = text.replace("school", "department") + "END";
+
+       // The groups that we will eventually return from this method.
        ArrayList<PrerequisiteGroup> prerequisiteGroups = new ArrayList<PrerequisiteGroup>();
-       Pattern uppercaseLettersRegex = Pattern.compile("\\b[A-Z]{4}\\b"); // i.e. "MATH"
-       Pattern courseNumberRegex = Pattern.compile("\\b\\d{4}[A-Z]?\\b"); // i.e. "1113"
 
-       // Split up the string whereever it says "or" or "and", also handle special honors and department cases
-       int index = 0;
-       int startIndex = 0;
-       ArrayList<String> strings = new ArrayList<>();
-       while (index <= modifiedText.length()) {
-           String str = modifiedText.substring(startIndex, index);
-           if (str.contains(" or ") || str.contains(" and ")) {
-               strings.add(str);
-               startIndex = index;
-           } else if (str.contains("END")) {
-               if (str.toLowerCase().contains("permission of honors")) {
-                   strings.add("HONORS");
-               } else if (str.toLowerCase().contains("permission of department")) {
-                   strings.add("DEPARTMENT");
-               } else {
-                   strings.add(str.replace("END",""));
+
+       /* Sometimes multiple names for a course will be on one line (i.e. "ICON(ANTH)(GEOG)(FANR)(ECOL) 8111")...
+         Split the "one" course title into all of its course names
+         Later, we will take all the prerequisites we found for this course and "assign" them to all
+         names that a class might have. */
+       ArrayList<String> courseNamePrefixes = new ArrayList<>();
+       ArrayList<String> courseNameSuffixes = new ArrayList<>();
+       ArrayList<String> courseNames = new ArrayList<>();
+        Matcher courseNamePrefixMatcher = coursePrefixRegex.matcher(courseName);
+        Matcher courseNameSuffixMatcher = courseSuffixRegex.matcher(courseName);
+       while (courseNamePrefixMatcher.find()) {
+           courseNamePrefixes.add(courseNamePrefixMatcher.group());
+       }
+       while (courseNameSuffixMatcher.find()) {
+           courseNameSuffixes.add(courseNameSuffixMatcher.group());
+       }
+       for (String prefix : courseNamePrefixes) {
+           for (String suffix : courseNameSuffixes) {
+               String course = prefix + " " + suffix;
+               courseNames.add(course);
+           }
+       }
+
+       for (String course : courseNames) {
+           // Split up the string whereever it says "or" or "and", also handle special honors and department cases
+           int index = 0;
+           int startIndex = 0;
+           ArrayList<String> strings = new ArrayList<>();
+           while (index <= modifiedText.length()) {
+               String str = modifiedText.substring(startIndex, index);
+               if (str.contains(" or ") || str.contains(" and ")) {
+                   strings.add(str);
+                   startIndex = index;
+               } else if (str.contains("END")) {
+                   if (str.toLowerCase().contains("permission of honors")) {
+                       strings.add("HONORS");
+                   } else if (str.toLowerCase().contains("permission of department")) {
+                       strings.add("DEPARTMENT");
+                   } else {
+                       strings.add(str.replace("END",""));
+                   }
+
+               }
+               index++;
+           }
+
+           // By this point, the className will have already been set (we are going down the table from the top)
+           PrerequisiteGroup currentGroup = new PrerequisiteGroup(course);
+
+           for (String s : strings) {
+               Matcher letterMatcher = coursePrefixRegex.matcher(s); // find all prefixes
+               Matcher numberMatcher = courseSuffixRegex.matcher(s); // find all suffixes
+               ArrayList<String> prefixes = new ArrayList<>();
+               ArrayList<String> suffixes = new ArrayList<>();
+               ArrayList<String> prerequisiteCourseNames = new ArrayList<>();
+
+               while (letterMatcher.find()) {
+                   prefixes.add(letterMatcher.group());
+               }
+               while (numberMatcher.find()) {
+                   suffixes.add(numberMatcher.group());
+               }
+
+               for (String prefix : prefixes) {
+                   for (String suffix : suffixes) {
+                       String prerequisiteCourseName = prefix + " " + suffix;
+                       //System.out.println(courseName);
+                       currentGroup.addCourse(prerequisiteCourseName);
+                   }
+               }
+
+               // Add all requirements to meet the prerequisite into the prerequisite group
+               if (s.toLowerCase().contains("honors")) {
+                   currentGroup.setRequiresHonors(true);
+               } else if (s.toLowerCase().contains("department")) {
+                   currentGroup.setCanSubstituteDepartmentPermission(true);
+               }
+
+               // "and" signals the start of a NEW prerequisite group
+               if (s.contains("and")) {
+                   prerequisiteGroups.add(currentGroup);
+                   currentGroup = new PrerequisiteGroup(course);
                }
 
            }
-           index++;
+           prerequisiteGroups.add(currentGroup);
        }
 
-       // By this point, the className will have already been set (we are going down the table from the top)
-       PrerequisiteGroup currentGroup = new PrerequisiteGroup(className);
 
-       for (String s : strings) {
-           Matcher letterMatcher = uppercaseLettersRegex.matcher(s); // find all prefixes
-           Matcher numberMatcher = courseNumberRegex.matcher(s); // find all suffixes
-           ArrayList<String> prefixes = new ArrayList<>();
-           ArrayList<String> suffixes = new ArrayList<>();
-           ArrayList<String> courseNames = new ArrayList<>();
-
-           while (letterMatcher.find()) {
-               prefixes.add(letterMatcher.group());
-           }
-           while (numberMatcher.find()) {
-               suffixes.add(numberMatcher.group());
-           }
-
-           for (String prefix : prefixes) {
-               for (String suffix : suffixes) {
-                   String courseName = prefix + " " + suffix;
-                   //System.out.println(courseName);
-                   currentGroup.addClass(courseName);
-               }
-           }
-
-           // Add all requirements to meet the prerequisite into the prerequisite group
-           if (s.toLowerCase().contains("honors")) {
-               currentGroup.setRequiresHonors(true);
-           } else if (s.toLowerCase().contains("department")) {
-               currentGroup.setCanSubstituteDepartmentPermission(true);
-           }
-
-           // "and" signals the start of a NEW prerequisite group
-           if (s.contains("and")) {
-               prerequisiteGroups.add(currentGroup);
-               currentGroup = new PrerequisiteGroup(className);
-           }
-
-       }
-       prerequisiteGroups.add(currentGroup);
-       for (PrerequisiteGroup group : prerequisiteGroups) {
-           //System.out.println(group);
-       }
        return prerequisiteGroups;
 
 
@@ -170,7 +197,7 @@ public class BulletinScraper {
     }
 
     public static void main(String[] args) {
-        ArrayList<PrerequisiteGroup> groups = getPrerequisitesFromBulletin("busn");
+        ArrayList<PrerequisiteGroup> groups = getPrerequisitesFromBulletin("csci");
         for (PrerequisiteGroup group : groups) {
             System.out.println(group);
         }
