@@ -51,13 +51,6 @@ public class PrerequisiteGroup {
         this.courseName = courseName;
     }
 
-    // Used to clone a prerequisite group with just a different name in the case that the Bulletin lists multiple courses on one line.
-    public PrerequisiteGroup(String courseName, PrerequisiteGroup existingPrerequisiteGroup) {
-        this.courseName = courseName;
-        this.requiresHonors = existingPrerequisiteGroup.requiresHonors();
-        this.canSubstituteDepartmentPermission = existingPrerequisiteGroup.canSubstituteDepartmentPermission();
-        this.courses = existingPrerequisiteGroup.getCourses();
-    }
 
     public void addCourse(String prerequisite) {
         courses.add(prerequisite);
