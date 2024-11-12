@@ -11,11 +11,11 @@ import java.util.ArrayList;
 public class PrerequisiteGroup {
     private boolean requiresHonors;
 
-    public String getClassName() {
-        return className;
+    public String getCourseName() {
+        return courseName;
     }
 
-    private String className;
+    private String courseName;
 
     public boolean requiresHonors() {
         return requiresHonors;
@@ -30,7 +30,7 @@ public class PrerequisiteGroup {
     } //If this condition is true, this prerequisite can be fulfilled by taking one of the classes OR having dept. permission.
 
     public boolean requiresDepartmentPermission() {
-        return canSubstituteDepartmentPermission && classes.isEmpty();
+        return canSubstituteDepartmentPermission && courses.isEmpty();
     } //True if the ONLY way to fulfill this prerequisite is by having department permission.
 
     public void setCanSubstituteDepartmentPermission(boolean canSubstituteDepartmentPermission) {
@@ -40,24 +40,38 @@ public class PrerequisiteGroup {
     private boolean canSubstituteDepartmentPermission;
 
 
-    private ArrayList<String> classes = new ArrayList<>();
-    public PrerequisiteGroup(String className) {
-        this.className = className;
+    public ArrayList<String> getCourses() {
+        return courses;
     }
 
-    public void addClass(String prerequisite) {
-        classes.add(prerequisite);
+    private ArrayList<String> courses = new ArrayList<>();
+
+    // Constructor to create a PrerequisiteGroup from scratch.
+    public PrerequisiteGroup(String courseName) {
+        this.courseName = courseName;
+    }
+
+    // Used to clone a prerequisite group with just a different name in the case that the Bulletin lists multiple courses on one line.
+    public PrerequisiteGroup(String courseName, PrerequisiteGroup existingPrerequisiteGroup) {
+        this.courseName = courseName;
+        this.requiresHonors = existingPrerequisiteGroup.requiresHonors();
+        this.canSubstituteDepartmentPermission = existingPrerequisiteGroup.canSubstituteDepartmentPermission();
+        this.courses = existingPrerequisiteGroup.getCourses();
+    }
+
+    public void addCourse(String prerequisite) {
+        courses.add(prerequisite);
     }
 
     @Override
     public String toString() {
         String toString = "PrerequisiteGroup [ ";
-        toString += "\n\tClass Name: " + className;
+        toString += "\n\tCourse Name: " + courseName;
         toString += "\n\tRequires honors: " + requiresHonors;
         toString += "\n\tCan substitute Dept. Permission: " + canSubstituteDepartmentPermission;
         toString += "\n\tRequires Dept. Permission: " + requiresDepartmentPermission();
         toString += "\n\tClasses: ";
-        for (String prerequisite : classes) {
+        for (String prerequisite : courses) {
             toString += "\n\t" + prerequisite;
         }
         toString += "\n]";
