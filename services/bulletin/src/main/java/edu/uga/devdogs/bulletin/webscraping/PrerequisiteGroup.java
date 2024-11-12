@@ -15,15 +15,11 @@ public class PrerequisiteGroup {
         return className;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
     private String className;
 
     public boolean requiresHonors() {
         return requiresHonors;
-    }
+    } // True if this prerequisite can only be fulfilled by being in the honor's program, i.e. honors only class.
 
     public void setRequiresHonors(boolean requiresHonors) {
         this.requiresHonors = requiresHonors;
@@ -31,10 +27,11 @@ public class PrerequisiteGroup {
 
     public boolean canSubstituteDepartmentPermission() {
         return canSubstituteDepartmentPermission;
-    } /*If this condition is true and there are no classes inside of this group, the prerequisite can only be
-    met by having department permission (that is, it is restricted). If this condition is true and there are classes inside
-    of the group, the prerequisite can be met by taking one of the classes OR by having department permission.
-     */
+    } //If this condition is true, this prerequisite can be fulfilled by taking one of the classes OR having dept. permission.
+
+    public boolean requiresDepartmentPermission() {
+        return canSubstituteDepartmentPermission && classes.isEmpty();
+    } //True if the ONLY way to fulfill this prerequisite is by having department permission.
 
     public void setCanSubstituteDepartmentPermission(boolean canSubstituteDepartmentPermission) {
         this.canSubstituteDepartmentPermission = canSubstituteDepartmentPermission;
@@ -42,17 +39,13 @@ public class PrerequisiteGroup {
 
     private boolean canSubstituteDepartmentPermission;
 
-    public ArrayList<PrerequisiteClass> getClasses() {
-        return classes;
-    }
 
-    private ArrayList<PrerequisiteClass> classes = new ArrayList<>(); //Taking one of these classes means the prerequisite has been met.
-
+    private ArrayList<String> classes = new ArrayList<>();
     public PrerequisiteGroup(String className) {
         this.className = className;
     }
 
-    public void addClass(PrerequisiteClass prerequisite) {
+    public void addClass(String prerequisite) {
         classes.add(prerequisite);
     }
 
@@ -60,13 +53,14 @@ public class PrerequisiteGroup {
     public String toString() {
         String toString = "PrerequisiteGroup [ ";
         toString += "\n\tClass Name: " + className;
-        toString += "\n\tHonors: " + requiresHonors;
+        toString += "\n\tRequires honors: " + requiresHonors;
         toString += "\n\tCan substitute Dept. Permission: " + canSubstituteDepartmentPermission;
+        toString += "\n\tRequires Dept. Permission: " + requiresDepartmentPermission();
         toString += "\n\tClasses: ";
-        for (PrerequisiteClass prerequisite : classes) {
+        for (String prerequisite : classes) {
             toString += "\n\t" + prerequisite;
         }
-        toString += "]";
+        toString += "\n]";
 
         return toString;
     }

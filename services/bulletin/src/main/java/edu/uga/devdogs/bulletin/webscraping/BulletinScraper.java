@@ -62,6 +62,7 @@ public class BulletinScraper {
            Matcher numberMatcher = courseNumberRegex.matcher(s); // find all suffixes
            ArrayList<String> prefixes = new ArrayList<>();
            ArrayList<String> suffixes = new ArrayList<>();
+           ArrayList<String> courseNames = new ArrayList<>();
 
            while (letterMatcher.find()) {
                prefixes.add(letterMatcher.group());
@@ -70,11 +71,16 @@ public class BulletinScraper {
                suffixes.add(numberMatcher.group());
            }
 
+           for (String prefix : prefixes) {
+               for (String suffix : suffixes) {
+                   String courseName = prefix + " " + suffix;
+                   //System.out.println(courseName);
+                   currentGroup.addClass(courseName);
+               }
+           }
+
            // Add all requirements to meet the prerequisite into the prerequisite group
-           if (prefixes.size() > 0 && suffixes.size() > 0) {
-               PrerequisiteClass prerequisite = new PrerequisiteClass(prefixes, suffixes);
-               currentGroup.addClass(prerequisite);
-           } else if (s.toLowerCase().contains("honors")) {
+           if (s.toLowerCase().contains("honors")) {
                currentGroup.setRequiresHonors(true);
            } else if (s.toLowerCase().contains("department")) {
                currentGroup.setCanSubstituteDepartmentPermission(true);
@@ -164,7 +170,7 @@ public class BulletinScraper {
     }
 
     public static void main(String[] args) {
-        ArrayList<PrerequisiteGroup> groups = getPrerequisitesFromBulletin("fanr");
+        ArrayList<PrerequisiteGroup> groups = getPrerequisitesFromBulletin("busn");
         for (PrerequisiteGroup group : groups) {
             System.out.println(group);
         }
