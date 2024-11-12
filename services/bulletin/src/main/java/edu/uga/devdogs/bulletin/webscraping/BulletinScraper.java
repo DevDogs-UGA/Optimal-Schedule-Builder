@@ -71,8 +71,8 @@ public class BulletinScraper {
                } else if (str.contains("END")) {
                    if (str.toLowerCase().contains("permission of honors")) {
                        strings.add("HONORS");
-                   } else if (str.toLowerCase().contains("permission of department")) {
-                       strings.add("DEPARTMENT");
+                   } else if (str.toLowerCase().contains("permission of ")) {
+                       strings.add("permission");
                    } else {
                        strings.add(str.replace("END",""));
                    }
@@ -109,7 +109,7 @@ public class BulletinScraper {
                // Add all requirements to meet the prerequisite into the prerequisite group
                if (s.toLowerCase().contains("honors")) {
                    currentGroup.setRequiresHonors(true);
-               } else if (s.toLowerCase().contains("department")) {
+               } else if (s.toLowerCase().contains("permission")) {
                    currentGroup.setCanSubstituteDepartmentPermission(true);
                }
 
@@ -131,7 +131,6 @@ public class BulletinScraper {
     public static ArrayList<PrerequisiteGroup> getPrerequisitesFromBulletin(String coursePrefix) {
         String className = "";
         ArrayList<PrerequisiteGroup> prerequisiteGroups = new ArrayList<PrerequisiteGroup>();
-        //WebDriverManager.chromedriver().setup();
         FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--headless");
         WebDriver driver = new FirefoxDriver(options);
@@ -182,14 +181,7 @@ public class BulletinScraper {
                     isPrerequisites = false;
 
                 }
-
-
-
-
-
             }
-
-
         }
         // Close the browser
         driver.quit();
@@ -197,7 +189,7 @@ public class BulletinScraper {
     }
 
     public static void main(String[] args) {
-        ArrayList<PrerequisiteGroup> groups = getPrerequisitesFromBulletin("csci");
+        ArrayList<PrerequisiteGroup> groups = getPrerequisitesFromBulletin("fanr");
         for (PrerequisiteGroup group : groups) {
             System.out.println(group);
         }
