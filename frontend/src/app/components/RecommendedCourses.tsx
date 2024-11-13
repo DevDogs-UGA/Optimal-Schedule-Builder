@@ -1,11 +1,10 @@
 "use client";
 
 import { RecommendedCourse } from "./RecommendedCourse";
-import { Button } from "./ui/Button";
 
 export function RecommendedCourses() {
   function handleClick() {
-    let i = 2;
+    const i = 2;
     console.log(i);
   }
 
