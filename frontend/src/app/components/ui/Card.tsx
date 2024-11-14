@@ -11,9 +11,9 @@ interface props {
 
 export function Card({ image, heading, text, handleClick }: props) {
   return (
-    <div>
-      <div className="h-1 w-64 bg-[#B3072A] sm:w-96"></div>
-      <div className="relative flex w-64 flex-col items-center justify-center bg-[#fffafa] bg-[url('/images/paws.svg')] p-8 pb-4 sm:w-96 sm:p-16 sm:pb-8">
+    <div className="flex flex-col items-center">
+      <div className="h-1 w-full max-w-lg mx-auto bg-[#B3072A]"></div>
+      <div className="relative flex w-full max-w-md flex-col items-center justify-center mx-auto bg-[#fffafa] bg-[url('/images/paws.svg')] p-8 pb-32 sm:max-w-lg sm:p-16 overflow-hidden">
         {/* Image */}
         <div className="p-4 pt-0 sm:p-8">
           <img className="min-h-24 sm:min-h-36" src={image} alt="Image" />
@@ -26,7 +26,7 @@ export function Card({ image, heading, text, handleClick }: props) {
         </div>
         {/* Text */}
         <div>
-          <p className="m-2 text-center text-sm leading-4 text-[#151618]">
+          <p className="m-2 text-center text-md leading-6 text-[#151618]">
             {text}
           </p>
         </div>
@@ -34,7 +34,7 @@ export function Card({ image, heading, text, handleClick }: props) {
         <div>
           <Button
             onClick={handleClick}
-            className="m-4 border-2 border-[#B3072A] active:bg-[#FFFAFA] active:text-[#B3072A] sm:m-8"
+            className="m-4 border-2 text-[#FFFAFA] border-[#B3072A] active:bg-[#FFFAFA] active:text-[#B3072A] sm:m-8"
             text="OK"
           />
         </div>
