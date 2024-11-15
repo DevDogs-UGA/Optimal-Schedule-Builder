@@ -1,5 +1,6 @@
 import { type WeekSchedule as WeekScheduleType } from "../../types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
+import { CallToAction } from "@/components/home/CallToAction";
 
 export default function SchedulePage() {
   const weekScheduleData: WeekScheduleType = {

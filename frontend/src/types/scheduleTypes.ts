@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface ClassData {
   classTitle: string;
   location?: string;
