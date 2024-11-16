@@ -1,64 +1,29 @@
 "use client";
-import DropDown from "@/components/DropDown";
-import useForm from "../hooks/useForm";
+import Dropdown from "@/components/Dropdown";
 import { useState } from "react";
 import { z } from "zod";
 
 //TODO: Style the questionnaire page
-//TODO: Clarify the specification/typing of form inputs
-//TODO: Create/add dropdown functionality to input fields
 //TODO: Create handler to trigger zod schema errors on page
 
 //Schema created using zod to test validation in the form
-// const schema = z.object({
-//   major: z.string().min(1, { message: "Major is required" }),
-//   distance: z
-//     .string()
-//     .refine((val) => val.trim() !== "", { message: "Distance is required" })
-//     .transform((val) => parseFloat(val))
-//     .refine((val) => !isNaN(val), { message: "Expected a number" })
-//     .refine((val) => val >= 0, { message: "Distance must be positive" }),
-//   creditHours: z
-//     .string()
-//     .refine((val) => val.trim() !== "", {
-//       message: "Credit Hours are required",
-//     })
-//     .transform((val) => parseFloat(val))
-//     .refine((val) => !isNaN(val), { message: "Expected a number" })
-//     .refine((val) => val >= 0, { message: "Credit Hours must be positive" }),
-//   semester: z.string().min(1, { message: "Semester is required" }),
-// });
+
+const surveySchema = z.object({
+  major: z.string().min(1, { message: "major is required" }),
+  distance: z
+    .string()
+    .regex(/^[^-]*$/, "distane must be positive")
+    .min(1, { message: "distance is requried" }),
+  semester: z.string().min(1, { message: "semester is required" }),
+});
 
 export default function QuestionnarePage() {
-  //This uses a custom useForm hook to create the form
-  const { values, handleChange, resetForm } = useForm({
-    major: "",
-    distance: "",
-    creditHours: "",
-    semester: "",
-  });
-
-  // const [items, setItems] = useState(["aaclass1", "bbbbclass2", "class3cc"]);
-  // const [filteredItems, setFilteredItems] = useState<string[]>([]);
-
-  // const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setFilteredItems(
-  //     items.filter((item) => {
-  //       return item.toLowerCase().includes(e.target.value.toLowerCase());
-  //     }),
-  //   );
-  //   handleChange(e);
-  // };
-
-  // The handleSubmit function will validate the form values and conver the data into JSON
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    //The try catch will catch any validation errors using the Zod schema
+  function formAction(formData: FormData) {
+    const formValues = Object.fromEntries(formData);
     try {
-      // schema.parse(values);
-      const surveyData = JSON.stringify(values);
+      const result = surveySchema.parse(formValues);
+      const surveyData = JSON.stringify(result);
       console.log(surveyData);
-      resetForm();
     } catch (err) {
       if (err instanceof z.ZodError) {
         err.errors.forEach((error) => {
@@ -66,48 +31,31 @@ export default function QuestionnarePage() {
         });
       }
     }
-  };
+  }
 
+  const data = ["comptuer science", "mandarin", "biology"];
   return (
-    <div>
-      <h1>Help Us Out First!</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>{"What's your major?"}</label>
-          <DropDown />
-        </div>
-        <div>
-          <label>{"Distance between classes?"}</label>
-          <input
-            type="number"
-            name="distance"
-            value={values.distance}
-            onChange={handleChange}
-            className="border-2 border-gray-300"
-          />
-        </div>
-        <div>
-          <label>{"How many credit hours?"}</label>
-          <input
-            type="number"
-            name="creditHours"
-            value={values.creditHours}
-            onChange={handleChange}
-            className="border-2 border-gray-300"
-          />
-        </div>
-        <div>
-          <label>{"Which semester?"}</label>
-          <input
-            type="text"
-            name="semester"
-            value={values.semester}
-            onChange={handleChange}
-            className="border-2 border-gray-300"
-          />
-        </div>
-        <button type="submit">Submit</button>
+    <main>
+      <form action={formAction}>
+        <Dropdown
+          items={data}
+          type="text"
+          name="major"
+          className="border-2 border-gray-600 text-black"
+        />
+        <Dropdown
+          type="number"
+          name="distance"
+          className="border-2 border-gray-600 text-black"
+        />
+        <Dropdown
+          type="text"
+          name="semester"
+          className="border-2 border-gray-600 text-black"
+        />
+        <br />
+        <button>Submit</button>
       </form>
-    </div>
+    </main>
   );
 }
