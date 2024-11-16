@@ -1,17 +1,9 @@
-package com.example.bulletin.service.impl;
+package edu.uga.devdogs.bulletin.services;
 
-import com.example.bulletin.model.Course;
-import com.example.bulletin.repository.CourseRepository;
-import com.example.bulletin.service.CourseService;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import edu.uga.devdogs.bulletin.database.Course;
+import edu.uga.devdogs.bulletin.exceptions.CourseNotFoundException;
+import edu.uga.devdogs.bulletin.exceptions.IncorrectArguementsException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -32,7 +24,6 @@ import java.util.List;
  */
 @Service
 public class BulletinCourseService {
-
     /**
      * Placeholder business logic method for future implementation.
      * <p>
@@ -43,7 +34,7 @@ public class BulletinCourseService {
     public void someBusinessLogic() {
         // Service logic goes here
     }
-    
+
     /**
      * Service method for getting co-requisites for a given course ID or CRN.
      *
@@ -51,55 +42,41 @@ public class BulletinCourseService {
      * @param crn The CRN of the course to retrieve co-requisites for. (optional)
      * @return A list of course objects that are co-requisites for the given course.
      */
-    @Operation(summary = "Get coreqs by courseID or CRN", description = "Retrieves co-requisites based on the provided course ID and CRN.")
-    @GetMapping("/course/coreqs")
-    public List<Course> getCoReqCourses(@RequestParam(value = "courseId", required = false) String courseID, 
-        @RequestParam(value = "crn", required = false) String CRN) {
+    public List<Course> getCoReqCourses(String courseID, String CRN) {
         String type;
-            if (courseID != null) {
-                type = courseID;
-            } else {
-                type = CRN;
-            }
-        /* Returns all the coreqs for the given CRN or CourseID */
-            return JPA.getCoReqs(type);
+        if (courseID != null) {
+            type = courseID;
+        } else {
+            type = CRN;
         }
+        /* Returns all the coreqs for the given CRN or CourseID */
+        return JPA.getCoReqs(type);
     }
 
     /**
-<<<<<<< HEAD
      * Service method for receiving courses of a specified amount of credit hours
-     * 
+     *
      * @param creditHour the number of credit hours that a class needs to have
      * @return list of "Courses" that have a specific number of credit hours.
      */
-    @Operation(summary = "Get courses by a specific credit hour",description = "Retrieves courses that have a specified number of credit hours")
-    @ApiResponse(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
-        @ApiResponse(responseCode = "400", description = "Invalid credit hours"),
-        @ApiResponse(responseCode = "404",description = "Course not found")
-    })
-    @GetMapping("/term")
-    public List<Course> getCoursesByCreditHours(@RequestParam(value = "creditHours", required = true) int creditHours) {
-        if(creditHours == 0 && creditHours >= 5) {
-            return ResponseEntity.badRequest().body(null); //Returns 400 if creditHours is invalid
+    public List<Course> getCoursesByCreditHours(int creditHours) {
+        List<Course> data = null;
+
+        if(creditHours == 0 || creditHours >= 5) {
+            throw new IncorrectArguementsException("Credit hours must be between 1 and 5 inclusive!");
         } else if(creditHours > 0){
-            try {
-                //Make sure Credit hours is greater than 0
-                /*Return list of courses that has the specific amount of credit hours */
+            //Make sure Credit hours is greater than 0
+            /*Return list of courses that has the specific amount of credit hours */
 
-                List<Course> data = JPA.getCredits(creditHours);
+            data = JPA.getCredits(creditHours);
 
-                if(data.isEmpty()){
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseList); //Checks and returns 404 error if data information is empty
-                }
-
-                return ResponseEntity.ok(data); //Returns course information if everything is correct
-            } catch (Exception e) {
-                //Catches any server problems or exceptions
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            if(data.isEmpty()){
+                throw new CourseNotFoundException(String.format("Courses with %d Credit hours not found!", creditHours)); //Checks and returns 404 error if data information is empty
             }
+
+            return data; //Returns course information if everything is correct
         }
+        return data;
     }
 
     /**
@@ -116,17 +93,18 @@ public class BulletinCourseService {
      * @throws CourseNotFoundException if no courses of the specified type are found
      */
     public List<Course> getCoursesByType(String type) {
-        List<Course> returnList;
-        if (type.equals("honors")) {
-            //we want to get a list of all honors courses from the database
-            returnList = bulletinJPAFile.getHonorsCourses();
-        } else if (type.equals("online")) {
-            //we want to get a list of all online courses from the database
-            returnList = bulletinJPAFile.getOnlineCourses();
-        } else if (type.equals("lab")) {
-            //we want to get a list of all lab courses from the database
-            returnList = bulletinJPAFile.getLabCourses();
-        }
+        List<Course> returnList = switch (type) {
+            case "honors" ->
+                //we want to get a list of all honors courses from the database
+                    bulletinJPAFile.getHonorsCourses();
+            case "online" ->
+                //we want to get a list of all online courses from the database
+                    bulletinJPAFile.getOnlineCourses();
+            case "lab" ->
+                //we want to get a list of all lab courses from the database
+                    bulletinJPAFile.getLabCourses();
+            default -> null;
+        };
 
         if (returnList != null) {
             return returnList;
@@ -201,6 +179,4 @@ public class BulletinCourseService {
         // Assuming the Course entity has a method getType() that returns the type of the course
         return course.getType();
     }
-
 }
-

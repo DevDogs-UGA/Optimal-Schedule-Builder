@@ -45,13 +45,14 @@ public class CourseInfoController {
      * @return course information list that's related to the given professor.
      */
     @Operation(summary = "get list of courses by professor", description = "Retrieces course information relating to the professor.")
-    @ApiResponse(value = {
+    @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Section found"),
         @ApiResponse(responseCode = "400", description = "Invalid CRN"),
         @ApiResponse(responseCode = "404", description = "Section not found"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/professor")
+    @Tag(name="course-information")
    public ResponseEntity<List<CourseSection>> getCourseByProfessor(@RequestParam(value = "professor",required = true) String professor){
         
      if(professor == null || professor.isEmpty()){
@@ -59,7 +60,7 @@ public class CourseInfoController {
      }
 
      try {
-          List<CourseSection> courseInfo = fetchCoursesByProf(professor); //Fetches course information based on professor
+          List<CourseSection> courseInfo = courseInformationService.getCourseSectionsByProfessor(professor); //Fetches course information based on professor
           
           if(courseInfo.isEmpty()){
                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseInfo); //Returns 404 error code is course info isn't found
@@ -137,7 +138,7 @@ public class CourseInfoController {
         }
         try {
             //Call method to get section details
-            CourseSection sectionDetails = getSectionByCRN(crn);
+            CourseSection sectionDetails = courseInformationService.getSectionDetailsByCrn(crn);
 
             //Check if the above method call returned null
             if (sectionDetails == null) {
@@ -160,7 +161,7 @@ public class CourseInfoController {
      * @param athenaName The Athena name of the course
      * @return Course details for the given Athena name
      */
-    @Operation(summary = "Get course by Athena name", description = "Retrieves course information based on the provided Athena name.")
+    @Operation(summary = "Get course by Athena name", description = "Retrieves course List based on the provided Athena name.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Section found"),
         @ApiResponse(responseCode = "400", description = "Invalid CRN"),
@@ -169,7 +170,7 @@ public class CourseInfoController {
     })
     @GetMapping("/course-by-athena-name")
     @Tag(name="course-information")
-    public ResponseEntity<Course> getCourseByAthenaName(@RequestParam String athenaName) {
+    public ResponseEntity<List<Course>> getCourseByAthenaName(@RequestParam String athenaName) {
 
         // Return 400 for empty athenaName
         if (athenaName.isEmpty()) {
@@ -178,7 +179,7 @@ public class CourseInfoController {
 
         try {
             // Call a service method to fetch the course by Athena name
-            Course courseDetails = getCourseByAthenaNameService(athenaName);  // not yet implemented
+            List<Course> courseDetails = courseInformationService.getCourseByAthenaName(athenaName);  // not yet implemented
 
             // Check if the above method call returned null
             if (courseDetails == null) {
