@@ -63,14 +63,6 @@ public class Building implements Serializable {
         this.classes = classes;
     }
 
-        // Constructor w/ buildingNumber and w/o classes
-        public Building(int buildingNumber, String name, String grid) {
-            this.buildingNumber = buildingNumber;
-            this.name = name;
-            this.grid = grid;
-            this.classes = null;
-        }
-
     
     /*
      * Getters and Setters

@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import edu.uga.devdogs.course_information.Building.Building;
-import edu.uga.devdogs.course_information.Course.Course;
 
 import java.util.List;
 
