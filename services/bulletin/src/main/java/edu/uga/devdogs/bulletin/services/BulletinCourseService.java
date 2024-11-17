@@ -36,6 +36,19 @@ public class BulletinCourseService {
     }
 
     /**
+     * Service method for getting pre-requisites for a given course ID or CRN.
+     *
+     * @param courseId The ID of the course to retrieve pre-requisites for. (optional)
+     * @param crn The CRN of the course to retrieve pre-requisites for. (optional)
+     * @return A list of course objects that are pre-requisites for the given course.
+     */
+    public List<Course> getPreReqCourses(String courseID, String crn) {
+        String type = (courseID != null) ? courseID : crn;
+        // Returns all the pre-requisites for the given CRN or CourseID
+        return JPA.getPreReqs(type);
+    }
+
+    /**
      * Service method for getting co-requisites for a given course ID or CRN.
      *
      * @param courseId The ID of the course to retrieve co-requisites for. (optional)
