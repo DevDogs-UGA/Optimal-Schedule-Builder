@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface CourseSectionRepository extends JpaRepository<CourseSection, Long>{
 
-    //This will get a list of courses by their major
-    // @Query("SELECT cs FROM courseSection cs WHERE cs.course.subject = ?1")
-    // List<Course> getCoursesBySubject(String subject);
+    // This will get a list of courses by their major
+    @Query("SELECT cs FROM courseSection cs WHERE cs.course.subject = ?1")
+    List<Course> getCoursesBySubject(String subject);
 
     // This will get a list of courseSections by the instructor
     // @Query("SELECT cs FROM courseSection cs WHERE cs.instructor = ?1")
