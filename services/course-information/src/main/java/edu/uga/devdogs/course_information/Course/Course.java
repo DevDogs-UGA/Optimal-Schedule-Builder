@@ -1,8 +1,12 @@
 package edu.uga.devdogs.course_information.Course;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -19,6 +23,7 @@ public class Course implements Serializable {
     //Variables
     @Id
     @GeneratedValue
+    @Column(name = "course_id")
     private long courseId;
 
     private String subject;
@@ -26,7 +31,7 @@ public class Course implements Serializable {
     private String courseNumber;
 
     private String title;
-
+    //this 
     private String department;
 
     //Relationships
@@ -35,161 +40,81 @@ public class Course implements Serializable {
     
     //variables for bulletin
 
+    private String courseDescription;
 
-    @ManyToOne()
-    private int departmentid;
+    private String athenaTitle;
 
-    private String description;
+    @ManyToMany
+    @JoinTable(
+        name = "equiv_courses_junction", 
+        joinColumns = @JoinColumn(name = "course_id"), 
+        inverseJoinColumns = @JoinColumn(name = "equiv_course_id")
+    )
+    List<Course> equivelantCourses;
 
-    private int credits;
+    @ManyToMany
+    @JoinTable(
+        name = "pre_req_junction", 
+        joinColumns = @JoinColumn(name = "course_id"), 
+        inverseJoinColumns = @JoinColumn(name = "prereq_course_id")
+    )
+    List<Course> prerequisiteCourses;
 
-    private String prerequisites;
+    private String semesterCourseOffered;
 
-    private String level;
+    private String gradingSystem;
 
-    private String schedule;
-
-    private String location;
-
-    private String semester;
-
-    private int year;
-
-    private int maxEnrollment;
-
-    private int currentEnrollment;
-
-    private int waitlistAvailable;
-
-    private int waitlistCount;
-
-    //marked as int in DB Design
-    private int isOnline;
-
-    private String gradeScale;
-
-    public int getDepartmentid() {
-        return departmentid;
+    public String getCourseDescription() {
+        return courseDescription;
     }
 
-    public void setDepartmentid(int departmentid) {
-        this.departmentid = departmentid;
+    public void setCourseDescription(String courseDescription) {
+        this.courseDescription = courseDescription;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAthenaTitle() {
+        return athenaTitle;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAthenaTitle(String athenaTitle) {
+        this.athenaTitle = athenaTitle;
     }
 
-    public int getCredits() {
-        return credits;
+    public List<Course> getEquivelantCourses() {
+        return equivelantCourses;
     }
 
-    public void setCredits(int credits) {
-        this.credits = credits;
+    public void setEquivelantCourses(List<Course> equivelantCourses) {
+        this.equivelantCourses = equivelantCourses;
     }
 
-    public String getPrerequisites() {
-        return prerequisites;
+    public List<Course> getPrerequisiteCourses() {
+        return prerequisiteCourses;
     }
 
-    public void setPrerequisites(String prerequisites) {
-        this.prerequisites = prerequisites;
+    public void setPrerequisiteCourses(List<Course> prerequisiteCourses) {
+        this.prerequisiteCourses = prerequisiteCourses;
     }
 
-    public String getLevel() {
-        return level;
+    public String getSemesterCourseOffered() {
+        return semesterCourseOffered;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setSemesterCourseOffered(String semesterCourseOffered) {
+        this.semesterCourseOffered = semesterCourseOffered;
     }
 
-    public String getSchedule() {
-        return schedule;
+    public String getGradingSystem() {
+        return gradingSystem;
     }
 
-    public void setSchedule(String schedule) {
-        this.schedule = schedule;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getSemester() {
-        return semester;
-    }
-
-    public void setSemester(String semester) {
-        this.semester = semester;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMaxEnrollment() {
-        return maxEnrollment;
-    }
-
-    public void setMaxEnrollment(int maxEnrollment) {
-        this.maxEnrollment = maxEnrollment;
-    }
-
-    public int getCurrentEnrollment() {
-        return currentEnrollment;
-    }
-
-    public void setCurrentEnrollment(int currentEnrollment) {
-        this.currentEnrollment = currentEnrollment;
-    }
-
-    public int getWaitlistAvailable() {
-        return waitlistAvailable;
-    }
-
-    public void setWaitlistAvailable(int waitlistAvailable) {
-        this.waitlistAvailable = waitlistAvailable;
-    }
-
-    public int getWaitlistCount() {
-        return waitlistCount;
-    }
-
-    public void setWaitlistCount(int waitlistCount) {
-        this.waitlistCount = waitlistCount;
-    }
-
-    public int getIsOnline() {
-        return isOnline;
-    }
-
-    public void setIsOnline(int isOnline) {
-        this.isOnline = isOnline;
-    }
-
-    public String getGradeScale() {
-        return gradeScale;
-    }
-
-    public void setGradeScale(String gradeScale) {
-        this.gradeScale = gradeScale;
+    public void setGradingSystem(String gradingSystem) {
+        this.gradingSystem = gradingSystem;
     }
 
     //Constructors, getters, setters...
     public Course() {
+
     }
 
     public Course(String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {
