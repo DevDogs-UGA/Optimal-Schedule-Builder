@@ -1,11 +1,16 @@
 package edu.uga.devdogs.bulletin.services;
 
 import edu.uga.devdogs.bulletin.database.Course;
+import edu.uga.devdogs.bulletin.database.Section;
 import edu.uga.devdogs.bulletin.exceptions.CourseNotFoundException;
 import edu.uga.devdogs.bulletin.exceptions.IncorrectArguementsException;
+import edu.uga.devdogs.bulletin.exceptions.SectionNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Service class that handles business logic for the Bulletin microservice.
@@ -211,5 +216,75 @@ public class BulletinCourseService {
                 .orElseThrow(() -> new CourseNotFoundException("Course not found for CRN: " + crn));
         //Assuming the Course object has a method getType() that returns the type of the course
         return course.getType();
+    }
+
+    /**
+    * Service Method to get the List of Course Sections by timeslot, optionally CRN
+     * This method returns a list of courses by the timeslot, optionally crn
+     *
+     * @param timeSlot The timeslot to use e.g. ("10:00 AM - 11:15 AM")
+     * @param crn The crn to optionally use as well
+     * @return The list of applying Course Sections
+     * @throws SectionNotFoundException if no sections matching the parameters were found.
+    * */
+    public List<Section> getSectionsByTimeAndOrCrn(String timeSlot, String crn) {
+        //Use our helper method to parse a start and end time for JPA calls
+        try {
+            Time startTime = parseTime(timeSlot.split(" - ")[0]);
+            Time endTime = parseTime(timeSlot.split(" - ")[1]);
+
+            //Make object to store returnList to make sure courses actually exist
+            List<Section> timeReturnList = new ArrayList<>();
+            Set<String> seenTimes = new HashSet<>();
+
+
+            List<Section> timeStartReturnList = sectionRepository.findByStartTime(startTime);
+            List<Section> timeEndReturnList = sectionRepository.findByEndTimeBetween(endTime, endTime);
+
+            // Create a map to store elements from timeEndReturnList by their time properties
+            Map<String, Section> endTimeMap = new HashMap<>();
+            for (Section endSection : timeEndReturnList) {
+                String key = endSection.getStartTime().toString() + "-" + endSection.getEndTime().toString();
+                endTimeMap.put(key, endSection);
+            }
+
+            // Iterate through timeStartReturnList and check for matches in endTimeMap
+            for (Section startSection : timeStartReturnList) {
+                String key = startSection.getStartTime().toString() + "-" + startSection.getEndTime().toString();
+
+                if (endTimeMap.containsKey(key) && !seenTimes.contains(key)) {
+                    timeReturnList.add(startSection); // Add to result list
+                    seenTimes.add(key); // Mark as seen
+                }
+            }
+
+            if (timeReturnList != null) {
+                if (crn != null) {
+                    List<Section> finalReturnList = null;
+                    for (Section section : timeReturnList) {
+                        if (section.getCRN().equals(crn)) {
+                            finalReturnList.add(section);
+                            break;
+                        }
+                    }
+                    return finalReturnList;
+                }
+                return timeReturnList;
+            }
+            else {
+                throw new SectionNotFoundException("Class not found for timeSlot: " + timeSlot + " and CRN: " + crn);
+            }
+        } catch (ParseException e) {
+            System.err.println("Failed to parse time: " + e.getMessage());
+        }
+    }
+
+    /*
+     * This method is a helper method to parse our timeslots (10:00 AM - 11:15 AM)
+     */
+    private static Time parseTime(String timeString) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+        Date parsedDate = sdf.parse(timeString);
+        return new Time(parsedDate.getTime());
     }
 }
