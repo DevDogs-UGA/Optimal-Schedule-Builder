@@ -280,12 +280,12 @@ public class BulletinController {
 
     /**
      * Gets course sections from class time and optionally class name
-     * @param timeSlot The name of the course to retrieve course sections (required)
+     * @param timeSlot The timeslot range to use for this (10:00 AM - 11:15 AM)
      * @param crn The crn course to retrieve course sections (optional)
      * @return A list of Strings that correspond the the special types of that course.
      */
     @GetMapping("/course/sections")
-    public ResponseEntity<List<String>> getCourseSections(
+    public ResponseEntity<List<Section>> getCourseSections(
             @RequestParam(value = "timeSlot", required = true) String timeSlot,
             @RequestParam(value = "crn", required = false) String crn
     ) {
@@ -294,7 +294,7 @@ public class BulletinController {
         }
 
         try {
-            List<String> courseSections = fetchCourseSection(timeSlot, crn);
+            List<Section> courseSections = fetchCourseSection(timeSlot, crn);
 
             if (courseSections.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseSections);
@@ -303,7 +303,7 @@ public class BulletinController {
             return ResponseEntity.ok(courseSections);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course sections."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 
         }
     }
