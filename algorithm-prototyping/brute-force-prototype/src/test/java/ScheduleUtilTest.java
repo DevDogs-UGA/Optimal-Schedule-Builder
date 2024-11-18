@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class ScheduleUtilTest {
 
     static Map<String, Course> courses;
@@ -110,14 +113,12 @@ public class ScheduleUtilTest {
         // Assert that ScheduleUtil.validate() returns true for all schedules in validTestSchedules
         // and returns false for all schedules in invalidTestSchedules
         for (Schedule schedule : validTestSchedules) {
-            // should print true 5 times
-            System.out.println(ScheduleUtil.validate(schedule));
-        } // for
+            assertTrue(ScheduleUtil.validate(schedule));
+        }
         for (Schedule schedule : invalidTestSchedules) {
-            // should print false 5 times
-            System.out.println(ScheduleUtil.validate(schedule));
-        } // for
-    } // testValidate
+            assertFalse(ScheduleUtil.validate(schedule));
+        }
+    }
 
     @Test
     void testComputeAverageProfessorQuality() {
