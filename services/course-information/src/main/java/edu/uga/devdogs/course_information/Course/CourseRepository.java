@@ -19,4 +19,9 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     
     // Find courses by Athena Name
     List<Course> findByTitle(String Title);
+
+    List<Course> findAllBySubject(String subject);   
+    
+    //this will get a list of courses by the term they're offered in 
+    List<Course> findAllBySemesterCourseOffered(String semesterCourseOffered);
 }
