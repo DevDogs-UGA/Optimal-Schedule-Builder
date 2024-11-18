@@ -31,7 +31,7 @@ public class Course implements Serializable {
     private String courseNumber;
 
     private String title;
-    //this 
+     
     private String department;
 
     //Relationships
@@ -64,6 +64,8 @@ public class Course implements Serializable {
 
     private String gradingSystem;
 
+
+    //getters and setters for bulletin
     public String getCourseDescription() {
         return courseDescription;
     }
@@ -117,6 +119,7 @@ public class Course implements Serializable {
 
     }
 
+    //constructor for course
     public Course(String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {
         this.subject = subject;
         this.courseNumber = courseNumber;
@@ -125,6 +128,7 @@ public class Course implements Serializable {
         this.courseSections = courseSections;
     }
 
+    //constructor for course with id
     public Course(long courseId, String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {
         this.courseId = courseId;
         this.subject = subject;
@@ -134,6 +138,7 @@ public class Course implements Serializable {
         this.courseSections = courseSections;
     }
 
+    //getters and setters for course
     public long getCourseId() {
         return courseId;
     }
