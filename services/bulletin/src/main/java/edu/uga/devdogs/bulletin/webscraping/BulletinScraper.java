@@ -25,7 +25,7 @@ public class BulletinScraper {
     }
 
     // This method will take the line from the table that contains the prerequisites and parse it
-   private static ArrayList<PrerequisiteGroup> getPrerequisiteGroupFromTable(String text, String courseName) {
+   private static ArrayList<RequirementGroup> getRequirementGroupFromTable(String text, String courseName) {
        Pattern coursePrefixRegex = Pattern.compile("\\b[A-Z]{4}\\b"); // i.e. "MATH"
        Pattern courseSuffixRegex = Pattern.compile("\\b\\d{4}[A-Z]?\\b"); // i.e. "1113"
 
@@ -33,7 +33,7 @@ public class BulletinScraper {
        String modifiedText = text.replace("school", "department") + "END";
 
        // The groups that we will eventually return from this method.
-       ArrayList<PrerequisiteGroup> prerequisiteGroups = new ArrayList<PrerequisiteGroup>();
+       ArrayList<RequirementGroup> requirementGroups = new ArrayList<RequirementGroup>();
 
 
        /* Sometimes multiple names for a course will be on one line (i.e. "ICON(ANTH)(GEOG)(FANR)(ECOL) 8111")...
@@ -82,7 +82,7 @@ public class BulletinScraper {
            }
 
            // By this point, the className will have already been set (we are going down the table from the top)
-           PrerequisiteGroup currentGroup = new PrerequisiteGroup(course);
+           RequirementGroup currentGroup = new RequirementGroup(course);
 
            for (String s : strings) {
                Matcher letterMatcher = coursePrefixRegex.matcher(s); // find all prefixes
@@ -115,22 +115,22 @@ public class BulletinScraper {
 
                // "and" signals the start of a NEW prerequisite group
                if (s.contains("and")) {
-                   prerequisiteGroups.add(currentGroup);
-                   currentGroup = new PrerequisiteGroup(course);
+                   requirementGroups.add(currentGroup);
+                   currentGroup = new RequirementGroup(course);
                }
 
            }
-           prerequisiteGroups.add(currentGroup);
+           requirementGroups.add(currentGroup);
        }
 
 
-       return prerequisiteGroups;
+       return requirementGroups;
 
 
    }
-    public static ArrayList<PrerequisiteGroup> getPrerequisitesFromBulletin(String coursePrefix) {
+    public static ArrayList<RequirementGroup> getRequirementsFromBulletin(String coursePrefix, String requirement) {
         String className = "";
-        ArrayList<PrerequisiteGroup> prerequisiteGroups = new ArrayList<PrerequisiteGroup>();
+        ArrayList<RequirementGroup> requirementGroups = new ArrayList<RequirementGroup>();
         FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--headless");
         WebDriver driver = new FirefoxDriver(options);
@@ -171,13 +171,13 @@ public class BulletinScraper {
 
 
                 // The row in the table contains the prerequisites, same deal w/ flag
-                } else if (text.contains("Prerequisite")) {
+                } else if (text.equals(requirement)) {
                     isPrerequisites = true;
                 } else if (isPrerequisites) {
                     // Get the prerequisites for this course...
-                    ArrayList<PrerequisiteGroup> groups = getPrerequisiteGroupFromTable(text, className);
+                    ArrayList<RequirementGroup> groups = getRequirementGroupFromTable(text, className);
                     // and add it to the prerequisites for all courses that we've collected so far.
-                    prerequisiteGroups.addAll(groups);
+                    requirementGroups.addAll(groups);
                     isPrerequisites = false;
 
                 }
@@ -185,12 +185,25 @@ public class BulletinScraper {
         }
         // Close the browser
         driver.quit();
-        return prerequisiteGroups;
+        return requirementGroups;
     }
 
+    public static ArrayList<RequirementGroup> getPrerequisitesFromBulletin(String coursePrefix) {
+        return getRequirementsFromBulletin(coursePrefix, "Prerequisite:");
+    }
+
+    public static ArrayList<RequirementGroup> getCorequisitesFromBulletin(String coursePrefix) {
+        return getRequirementsFromBulletin(coursePrefix, "Corequisite:"); //TODO CATCHING ALL!
+    }
+
+    public static ArrayList<RequirementGroup> getPreOrCorequisitesFromBulletin(String coursePrefix) {
+        return getRequirementsFromBulletin(coursePrefix, "Pre or Corequisite:");
+    }
+
+
     public static void main(String[] args) {
-        ArrayList<PrerequisiteGroup> groups = getPrerequisitesFromBulletin("fanr");
-        for (PrerequisiteGroup group : groups) {
+        ArrayList<RequirementGroup> groups = getPreOrCorequisitesFromBulletin("fanr");
+        for (RequirementGroup group : groups) {
             System.out.println(group);
         }
     }

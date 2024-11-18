@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * For example, CSCI 4730's requirements -- (CSCI 4720 or CSCI 4720E or CSEE 4280) and CSCI 2720 -- would have two
  * prerequisite groups: "CSCI 4720 or CSCI 4720E or CSEE 4280", and "CSCI 2720."
  */
-public class PrerequisiteGroup {
+public class RequirementGroup {
     private boolean requiresHonors;
 
     public String getCourseName() {
@@ -47,7 +47,7 @@ public class PrerequisiteGroup {
     private ArrayList<String> courses = new ArrayList<>();
 
     // Constructor to create a PrerequisiteGroup from scratch.
-    public PrerequisiteGroup(String courseName) {
+    public RequirementGroup(String courseName) {
         this.courseName = courseName;
     }
 
@@ -58,7 +58,7 @@ public class PrerequisiteGroup {
 
     @Override
     public String toString() {
-        String toString = "PrerequisiteGroup [ ";
+        String toString = "RequirementGroup [ ";
         toString += "\n\tCourse Name: " + courseName;
         toString += "\n\tRequires honors: " + requiresHonors;
         toString += "\n\tCan substitute Dept. Permission: " + canSubstituteDepartmentPermission;
