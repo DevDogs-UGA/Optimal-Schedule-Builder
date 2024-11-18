@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -138,6 +140,19 @@ public class ScheduleUtilTest {
     void testComputeMaxDistance() {
         // Compute the max distance for each schedule within validTestSchedules by hand
         // Assert that ScheduleUtil.computeMaxDistance() returns the expected value for each schedule
+
+        //region Valid Schedules
+        assertNotNull(validTestSchedules.get(0));
+        assertEquals(14.317821063276353, ScheduleUtil.computeMaxDistance(validTestSchedules.get(0), distances));
+        assertNotNull(validTestSchedules.get(1));
+        assertEquals(13.92838827718412, ScheduleUtil.computeMaxDistance(validTestSchedules.get(1), distances));
+        assertNotNull(validTestSchedules.get(2));
+        assertEquals(14.0, ScheduleUtil.computeMaxDistance(validTestSchedules.get(2), distances));
+        assertNotNull(validTestSchedules.get(3));
+        assertEquals(9.486832980505138, ScheduleUtil.computeMaxDistance(validTestSchedules.get(3), distances));
+        assertNotNull(validTestSchedules.get(4));
+        assertEquals(15.033296378372908, ScheduleUtil.computeMaxDistance(validTestSchedules.get(4), distances));
+        //endregion
     }
 
     @Test
