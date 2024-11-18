@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
 public interface CourseRepository extends JpaRepository<Course, Long>{
@@ -23,4 +25,9 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     //This will get a list of courses by their major
     //@Query("SELECT cs FROM courseSection cs WHERE cs.course.subject = ?1")
     List<Course> findAllBySubject(String subject);
+
+    // Gets all courses by a certain credit hour
+    // The creditHours placeholder in the query is linked to the method parameter using @Param
+    @Query("SELECT c FROM Course c JOIN c.courseSections cs WHERE cs.creditHoursLow <= :creditHours AND cs.creditHoursHigh >= :creditHours")
+    List<Course> getCoursesByCreditHours(@Param("creditHours") double creditHours);
 }
