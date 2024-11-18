@@ -31,4 +31,12 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
 
     // Gets corequisites by course ID
     List<Course> getCorequisites(Long id);
+    
+    // Find courses by Athena Name
+    List<Course> findByTitle(String Title);
+
+    List<Course> findAllBySubject(String subject);   
+    
+    //this will get a list of courses by the term they're offered in 
+    List<Course> findAllBySemesterCourseOffered(String semesterCourseOffered);
 }
