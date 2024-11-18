@@ -12,10 +12,10 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long>{
 
     //This will get a course by its unique ID
-    Course getById(Long id);
+    Course findById(Long id);
 
     // This will get a course by its title
-    Course getByTitle(String title);
+    Course findByTitle(String title);
 
     //This will get a list of Courses by their subject.
     List<Course> findBySubject(String subject);
@@ -36,7 +36,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     List<Course> getCorequisites(Long id);
     
     // Find courses by Athena Name
-    List<Course> findByTitle(String title);
+    List<Course> findAllByTitle(String Title);
 
     //This will get a list of courses by their major
     //@Query("SELECT cs FROM courseSection cs WHERE cs.course.subject = ?1")
@@ -51,4 +51,5 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     //The default findAll isn't compatible with a list as a parameter.
     @Query("SELECT c FROM Course c WHERE :semester MEMBER OF c.semesters")
     List<Course> findAllBySemester(@Param("semester") String semesters);
+    List<Course> findAllCoursesByCreditHours(double creditHours);
 }
