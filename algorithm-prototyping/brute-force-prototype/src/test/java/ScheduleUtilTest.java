@@ -4,7 +4,9 @@ import edu.uga.devdogs.sampledataparser.records.Course;
 import edu.uga.devdogs.sampledataparser.records.SampleData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import edu.uga.devdogs.bruteforceprototype.schedule.ScheduleUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +30,8 @@ public class ScheduleUtilTest {
         SampleData sampleData = SampleDataParser.parse(professorsFilePath, coursesFilePath, distancesFilePath);
         courses = sampleData.courses();
         distances = sampleData.distances();
+        validTestSchedules = new ArrayList<>();
+        invalidTestSchedules = new ArrayList<>();
 
         // Create valid test schedules
         validTestSchedules.add(new Schedule(Set.of(
@@ -97,15 +101,23 @@ public class ScheduleUtilTest {
         invalidTestSchedules.add(new Schedule(Set.of(
                 courses.get("ENGL 1102").sections().get(1),
                 courses.get("CSCI 1302").sections().get(2),
-                courses.get("MATH 2250").sections().get(1),
-                )));
+                courses.get("MATH 2250").sections().get(1)
+        )));
     }
 
     @Test
     void testValidate() {
         // Assert that ScheduleUtil.validate() returns true for all schedules in validTestSchedules
         // and returns false for all schedules in invalidTestSchedules
-    }
+        for (Schedule schedule : validTestSchedules) {
+            // should print true 5 times
+            System.out.println(ScheduleUtil.validate(schedule));
+        } // for
+        for (Schedule schedule : invalidTestSchedules) {
+            // should print false 5 times
+            System.out.println(ScheduleUtil.validate(schedule));
+        } // for
+    } // testValidate
 
     @Test
     void testComputeAverageProfessorQuality() {
