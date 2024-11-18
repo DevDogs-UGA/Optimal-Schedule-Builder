@@ -42,6 +42,10 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     //@Query("SELECT cs FROM courseSection cs WHERE cs.course.subject = ?1")
     List<Course> findAllBySubject(String subject);
 
+    // Gets all courses by a certain credit hour
+    @Query("SELECT c FROM Course c JOIN c.courseSections cs WHERE cs.creditHoursLow <= :creditHours AND cs.creditHoursHigh >= :creditHours")
+    List<Course> getCoursesByCreditHours(double creditHours);
+
     
     //This will get a list of courses by the term they're offered in
     //The default findAll isn't compatible with a list as a parameter.
