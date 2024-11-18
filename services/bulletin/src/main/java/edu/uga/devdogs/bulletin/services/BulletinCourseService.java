@@ -192,4 +192,24 @@ public class BulletinCourseService {
         // Assuming the Course entity has a method getType() that returns the type of the course
         return course.getType();
     }
+
+    /**
+     * Retrieves the type of a class (e.g. Honors, Lab, Online) 
+     * based on the given Course Reference Number (CRN).
+     * 
+     * <p>
+     * This method queries the repository for a {@link Course} object with the specified CRN
+     * and returns its type. If the course does not exist, it throws a {@link CourseNotFoundException}.
+     * </p>
+     * 
+     * @param CRN the Course Reference Number for a section of the course
+     * @return the type of the course as a String
+     * @throws CourseNotFoundException if no course with the specified CRN is found
+     */
+    public String getCourseTypeByCRN(int crn) {
+        Course course = courseRepository.findByCRN(crn)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found for CRN: " + crn));
+        //Assuming the Course object has a method getType() that returns the type of the course
+        return course.getType();
+    }
 }
