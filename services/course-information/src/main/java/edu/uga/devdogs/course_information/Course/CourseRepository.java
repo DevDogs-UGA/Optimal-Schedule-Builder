@@ -42,6 +42,6 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     
     //This will get a list of courses by the term they're offered in
     //The default findAll isn't compatible with a list as a parameter.
-    @Query("SELECT c FROM Course c JOIN c.semesters s WHERE s = :semester")
+    @Query("SELECT c FROM Course c WHERE :semester MEMBER OF c.semesters")
     List<Course> findAllBySemester(@Param("semester") String semesters);
 }
