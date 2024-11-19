@@ -9,7 +9,7 @@ interface DropdownProps {
   className?: string;
   min?: string;
   placeholder?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  formStatus?: boolean;
 }
 
 export default function Dropdown({
@@ -19,37 +19,16 @@ export default function Dropdown({
   className,
   min,
   placeholder,
-  onChange,
+  formStatus,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState<string[]>(items);
   const dropdownRef = useRef<HTMLUListElement>(null);
 
-  const handleQuery = (data: string) => {
-    const regex = new RegExp("^" + data, "i");
-    const filter = items.filter((item) => regex.test(item));
-    setFilteredData(filter);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const data = e.target.value;
-    setQuery(data);
-    handleQuery(data);
-    if (onChange) {
-      onChange(e);
-    }
-  };
-  const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    const data = e.currentTarget.textContent;
-    setQuery(data ?? "");
-    handleQuery(data ?? "");
-    setIsOpen(false);
-  };
-
   useEffect(() => {
     const handleClose = (e: MouseEvent) => {
-      if (!dropdownRef.current?.contains(e.target as Node) && isOpen) {
+      if (!dropdownRef.current?.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -57,33 +36,56 @@ export default function Dropdown({
     return () => {
       document.removeEventListener("mousedown", handleClose);
     };
-  });
+  }, [isOpen]);
+
+  const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const regex = new RegExp("^" + event.currentTarget.value, "i");
+    const filter = items.filter((item) => regex.test(item));
+    setFilteredData(filter);
+  };
+
+  useEffect(() => {
+    setQuery("");
+  }, [formStatus]);
 
   return (
-    <section>
+    <>
       <input
+        id="input"
         onClick={() => setIsOpen(true)}
-        onInput={handleInputChange}
+        onInput={(e) => {
+          setIsOpen(true);
+          setQuery(e.currentTarget.value);
+        }}
+        onChange={handleQuery}
         value={query}
         type={type}
         name={name}
-        className={className}
+        className={`border-2 px-2 py-1 focus:outline-none ${className}`}
         min={min}
         placeholder={placeholder}
+        autoComplete="off"
       />
 
-      {isOpen && type === "text" && (
+      {isOpen && filteredData.length > 0 && (
         <ul
           ref={dropdownRef}
-          className={`absolute bg-white text-black ${className}`}
+          className={`absolute bg-white text-black ${className} max-h-44 overflow-y-scroll`}
         >
           {filteredData.map((item, index) => (
-            <li className="text-left" onClick={handleItemClick} key={index}>
+            <li
+              className="p-1 text-left hover:bg-limestone"
+              onClick={(e) => {
+                setQuery(e.currentTarget.textContent ?? "");
+                setIsOpen(false);
+              }}
+              key={index}
+            >
               {item}
             </li>
           ))}
         </ul>
       )}
-    </section>
+    </>
   );
 }
