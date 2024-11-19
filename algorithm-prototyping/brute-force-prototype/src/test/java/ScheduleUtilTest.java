@@ -89,7 +89,7 @@ public class ScheduleUtilTest {
                 courses.get("CHEM 1211").sections().get(0),
                 courses.get("CHEM 1211L").sections().get(0),
                 courses.get("MATH 2250").sections().get(0),
-                courses.get("CSCI 1302").sections().notepadget(0)
+                courses.get("CSCI 1302").sections().get(0)
         )));
 
         invalidTestSchedules.add(new Schedule(Set.of(
