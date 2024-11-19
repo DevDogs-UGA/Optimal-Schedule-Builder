@@ -1,7 +1,10 @@
 package edu.uga.devdogs.course_information.Course;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
@@ -11,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.ManyToAny;
@@ -44,13 +48,13 @@ public class Course implements Serializable {
 
     private String athenaTitle;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "equiv_courses_junction", 
         joinColumns = @JoinColumn(name = "course_id"), 
         inverseJoinColumns = @JoinColumn(name = "equiv_course_id")
     )
-    List<Course> equivelantCourses;
+    List<Course> equivalentCourses;
 
     @ManyToMany
     @JoinTable(
@@ -60,9 +64,28 @@ public class Course implements Serializable {
     )
     List<Course> prerequisiteCourses;
 
-    private String semesterCourseOffered;
+    @ElementCollection
+    private List<String> semesters;
 
     private String gradingSystem;
+
+    public Course(long courseId, String subject, String courseNumber, String title, String department,
+            List<CourseSection> courseSections, String courseDescription, String athenaTitle,
+            List<Course> equivalentCourses, List<Course> prerequisiteCourses, List<String> semesters,
+            String gradingSystem) {
+        this.courseId = courseId;
+        this.subject = subject;
+        this.courseNumber = courseNumber;
+        this.title = title;
+        this.department = department;
+        this.courseSections = courseSections;
+        this.courseDescription = courseDescription;
+        this.athenaTitle = athenaTitle;
+        this.equivalentCourses = equivalentCourses;
+        this.prerequisiteCourses = prerequisiteCourses;
+        this.semesters = semesters;
+        this.gradingSystem = gradingSystem;
+    }
 
     public String getCourseDescription() {
         return courseDescription;
@@ -80,12 +103,12 @@ public class Course implements Serializable {
         this.athenaTitle = athenaTitle;
     }
 
-    public List<Course> getEquivelantCourses() {
-        return equivelantCourses;
+    public List<Course> getEquivalentCourses() {
+        return equivalentCourses;
     }
 
-    public void setEquivelantCourses(List<Course> equivelantCourses) {
-        this.equivelantCourses = equivelantCourses;
+    public void setEquivalentCourses(List<Course> equivelantCourses) {
+        this.equivalentCourses = equivelantCourses;
     }
 
     public List<Course> getPrerequisiteCourses() {
@@ -96,12 +119,12 @@ public class Course implements Serializable {
         this.prerequisiteCourses = prerequisiteCourses;
     }
 
-    public String getSemesterCourseOffered() {
-        return semesterCourseOffered;
+    public List<String> getSemesters() {
+        return semesters;
     }
 
-    public void setSemesterCourseOffered(String semesterCourseOffered) {
-        this.semesterCourseOffered = semesterCourseOffered;
+    public void setSemesters(List<String> semesters) {
+        this.semesters = semesters;
     }
 
     public String getGradingSystem() {
@@ -123,6 +146,8 @@ public class Course implements Serializable {
         this.title = title;
         this.department = department;
         this.courseSections = courseSections;
+        this.equivalentCourses = new ArrayList<>();
+        this.prerequisiteCourses = new ArrayList<>();
     }
 
     public Course(long courseId, String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {

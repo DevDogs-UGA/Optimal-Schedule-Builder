@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+
 import java.util.List;
 
 public interface CourseRepository extends JpaRepository<Course, Long>{
@@ -18,10 +21,12 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     List<Course> findBySubject(String subject);
     
     // Find courses by Athena Name
-    List<Course> findByTitle(String Title);
+    List<Course> findByTitle(String title);
 
     List<Course> findAllBySubject(String subject);   
     
-    //this will get a list of courses by the term they're offered in 
-    List<Course> findAllBySemesterCourseOffered(String semesterCourseOffered);
+    //This will get a list of courses by the term they're offered in
+    //The default findAll isn't compatible with a list as a parameter.
+    @Query("SELECT c FROM Course c JOIN c.semesters s WHERE s = :semester")
+    List<Course> findAllBySemester(@Param("semester") String semesters);
 }
