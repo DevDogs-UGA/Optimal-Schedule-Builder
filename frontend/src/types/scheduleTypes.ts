@@ -2,14 +2,16 @@ import { useState } from "react";
 
 interface ClassData {
   classTitle: string;
-  location?: string;
-  schedule: {
-    [day: string]: {
-      timeStart: string;
-      timeEnd: string;
-      timeDifference?: number | null; // Optional, can be number or null
-    }
-  }
+  className: string;
+  description: string;
+  location: string;
+  timeStart: string;
+  timeEnd: string;
+  timeDifference: number | null; // Optional, can be number or null
+  professor: string;
+  semester: string;
+  credits: number;
+  crn: number;
   bgColor: string;
 }
 
