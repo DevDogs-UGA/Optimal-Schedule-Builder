@@ -7,9 +7,16 @@ export default function SchedulePage() {
     Monday: [
       {
         classTitle: "CSCI 3030",
+        className: "Computing, Ethics, and Society",
+        description: "",
         location: "Park Hall",
         timeStart: "8:00 am",
         timeEnd: "9:15 am",
+        timeDifference: null,
+        professor: "John Doe",
+        semester: "Spring 2025",
+        credits: 3,
+        crn: 26510,
         bgColor: "bg-red-600",
       },
       {
