@@ -3,9 +3,13 @@ import { useState } from "react";
 interface ClassData {
   classTitle: string;
   location?: string;
-  timeStart: string;
-  timeEnd: string;
-  timeDifference?: number | null; // Optional, can be number or null
+  schedule: {
+    [day: string]: {
+      timeStart: string;
+      timeEnd: string;
+      timeDifference?: number | null; // Optional, can be number or null
+    }
+  }
   bgColor: string;
 }
 
