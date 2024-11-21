@@ -1,5 +1,9 @@
+// Returning User: -> Saved Plans
+// New User: -> Saved Plans
+
 import { type WeekSchedule as WeekScheduleType } from "../../types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
+import Link from "next/link";
 
 export default function SchedulePage() {
   const weekScheduleData: WeekScheduleType = {
@@ -114,6 +118,9 @@ export default function SchedulePage() {
 
   return (
     <div className="mx-auto min-h-screen w-[100%]">
+      <div className="p-7 text-center text-blue-600">
+        <Link href={"/route-map"}>Route Map</Link>
+      </div>
       <WeekSchedule weekData={weekScheduleData} />
     </div>
   );
