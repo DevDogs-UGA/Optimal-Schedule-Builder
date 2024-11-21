@@ -18,12 +18,17 @@ function CourseInfo({
   semester,
   credits,
   crn,
-  bgColor,
+  color,
   onClose,
 }: DayClassProps) {
+
+  const borderColor = "border-" + color;
+  const borderColorClass = `border-4 border-${borderColor} rounded`;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-50 ">
-      <div className="bg-white p-8 border rounded-lg max-w-lg w-full" style={{backgroundColor: bgColor}}>
+        // <div className="fixed z-50 flex items-center justify-center bg-white bg-opacity-100 p-16 border-4" style={{ borderColor: color }}>
+    <div className={`fixed z-50 flex items-center justify-center bg-white bg-opacity-100 p-16 ${color} ${borderColorClass}`}>
+      <div className="bg-white p-8 border rounded-lg max-w-lg w-full" style={{backgroundColor: color}}>
         <button onClick={onClose} className="absolute top-4 right-4 text-x1 font-bold">&times;</button>
         <h2 className="text-xl font-bold"> {classTitle}: {className} </h2>
         <p> {classTitle}: {className} </p>
@@ -37,7 +42,7 @@ function CourseInfo({
         <h2 className="text-xl font-bold"> Weekly Schedule: </h2>
         <p> {timeStart} - {timeEnd} </p>
       </div>
-    </div>
+    </div> 
 
   );
 }
@@ -54,14 +59,16 @@ export default function DayClass({
   semester,
   credits,
   crn,
-  bgColor,
+  color,
 }: DayClassProps) {
 
   const [courseBlockClicked, setcourseBlockClicked] = useState(false);
-
   const courseBlockInfo = () => {
     setcourseBlockClicked(!courseBlockClicked);
   }
+
+  // formatting for background color
+  const bgColor = "bg-" + color;
 
   return (
     <div className={`relative ${className}`} onClick={courseBlockInfo}>
@@ -94,7 +101,7 @@ export default function DayClass({
           semester={semester}
           credits={credits}
           crn={crn}
-          bgColor={bgColor}
+          color={color}
           onClose={courseBlockInfo}
         />
       )}

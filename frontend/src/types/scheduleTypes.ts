@@ -12,7 +12,7 @@ interface ClassData {
   semester: string;
   credits: number;
   crn: number;
-  bgColor: string;
+  color: string;
 }
 
 type DaySchedule = Record<string, ClassData[]>;
