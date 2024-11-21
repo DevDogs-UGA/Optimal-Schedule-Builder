@@ -119,7 +119,9 @@ export default function SchedulePage() {
   return (
     <div className="mx-auto min-h-screen w-[100%]">
       <div className="p-7 text-center text-blue-600">
-        <Link href={"/route-map"}>Route Map</Link>
+        <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
+          <Link href={"/route-map"}>Route Map</Link>
+        </button>
       </div>
       <WeekSchedule weekData={weekScheduleData} />
     </div>
