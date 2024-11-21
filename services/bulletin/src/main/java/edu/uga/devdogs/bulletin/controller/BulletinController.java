@@ -1,5 +1,7 @@
 package edu.uga.devdogs.bulletin.controller;
 
+import edu.uga.devdogs.bulletin.services.BulletinCourseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,13 @@ import java.util.List;
 @Tag(name = "Bulletin API", description = "API for accessing UGA Bulletin course information")
 public class BulletinController {
 
+    //Inject our bulletin microservices instance using autowired
+    private final BulletinCourseService bulletinCourseService;
+
+    @Autowired
+    public BulletinController(BulletinCourseService bulletinCourseService) {
+        this.bulletinCourseService = bulletinCourseService;
+    }
     /**
      * Retrieves course information based on the given term, like Fall or Summer.
      *
@@ -33,20 +42,22 @@ public class BulletinController {
      * @return A "Course" List containing the course information from a specific term.
      */
     @Operation(summary = "Get courses by term", description = "Retrieves courses based on the given term")
-    @ApiResponse(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
-        @ApiResponse(responseCode = "400", description = "Invalid term"),
-        @ApiResponse(responseCode = "404",description = "Course not found")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Course found"),
+            @ApiResponse(responseCode = "400", description = "Invalid term"),
+            @ApiResponse(responseCode = "404",description = "Course not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping("/term")
-    public List<Course> getCourseByTerm(@RequestParam(value = "term", required = true) String term) {
-        
+    @Tag(name = "bulletin")
+    public ResponseEntity<List<Course>> getCourseByTerm(@RequestParam(value = "term", required = true) String term) {
+
         if(term.isEmpty()){
             return ResponseEntity.badRequest().body(null); //Returns 400 if parameter isn't given
         }
 
         try {
-            List<Course> courseList = fetchCourseByTerm(term); //fetches the courses based on term
+            List<Course> courseList = bulletinCourseService.getCoursesByTerm(term); //fetches the courses based on term
 
             if(courseList.isEmpty()){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseList); //Checks and returns 404 error if courseList information is empty
@@ -57,7 +68,7 @@ public class BulletinController {
             //Catches any server problems or exceptions
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        
+
     }
 
     /**
@@ -68,9 +79,9 @@ public class BulletinController {
      */
     @Operation(summary = "Get course information by course ID", description = "Retrieves course information based on the provided course ID.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
-        @ApiResponse(responseCode = "400", description = "Invalid course ID"),
-        @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "200", description = "Course found"),
+            @ApiResponse(responseCode = "400", description = "Invalid course ID"),
+            @ApiResponse(responseCode = "404", description = "Course not found")
     })
     @GetMapping("/getCourseById")
     public ResponseEntity<Course> getCourseInfo(@RequestParam(value = "courseId") String courseId) {
@@ -115,9 +126,9 @@ public class BulletinController {
      */
     @Operation(summary = "Retrieves a list of courses based on major and class level", description = "Retrieves a list of course objects using major code 'CSCI' and/or class level")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Courses found"),
-        @ApiResponse(responseCode = "400", description = "Invalid major code"),
-        @ApiResponse(responseCode = "404", description = "Courses not found")
+            @ApiResponse(responseCode = "200", description = "Courses found"),
+            @ApiResponse(responseCode = "400", description = "Invalid major code"),
+            @ApiResponse(responseCode = "404", description = "Courses not found")
     })
     @GetMapping("/courses")
     public ResponseEntity<List<Course>> getCourses(
@@ -129,11 +140,11 @@ public class BulletinController {
         if (creditHours <= 0 || creditHours > 4) {
             return ResponseEntity.badRequest().body(null); // Return 400 for bad request
         }
-        
+
         try {
             // Fetch the courses based on provided filters
-            List<Course> courses = fetchCourses(creditHours, majorCode, classLevel);
-            
+            List<Course> courses = bulletinCourseService.getCoursesByType(type);
+
             // Check if no courses are found
             if (courses.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courses); // Return 404 if no courses found
@@ -160,9 +171,9 @@ public class BulletinController {
      */
     @Operation(summary = "Get coreqs by course ID", description = "Retrieves co-requisites based on the provided course ID.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
-        @ApiResponse(responseCode = "400", description = "Invalid course ID"),
-        @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "200", description = "Course found"),
+            @ApiResponse(responseCode = "400", description = "Invalid course ID"),
+            @ApiResponse(responseCode = "404", description = "Course not found")
     })
     @GetMapping("/course/coreqs")
     public ResponseEntity<List<Course>> getCoReqs(
@@ -176,7 +187,7 @@ public class BulletinController {
 
         try {
             // Fetch co-requisite courses using the courseId or crn
-            List<Course> coReqs = fetchCoReqs(courseId, crn); // Replace with actual method to fetch co-requisites
+            List<Course> coReqs = bulletinCourseService.getCoReqCourses(courseId, crn); // Replace with actual method to fetch co-requisites
 
             // If no co-requisites found, return 404
             if (coReqs.isEmpty()) {
@@ -201,9 +212,9 @@ public class BulletinController {
      */
     @Operation(summary = "Get prereqs by course ID", description = "Retrieves pre-requisites based on the provided course ID or CRN.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
-        @ApiResponse(responseCode = "400", description = "Invalid course ID"),
-        @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "200", description = "Course found"),
+            @ApiResponse(responseCode = "400", description = "Invalid course ID"),
+            @ApiResponse(responseCode = "404", description = "Course not found")
     })
     @GetMapping("/course/prereqs")
     public ResponseEntity<List<Course>> getPreReqs(
@@ -228,7 +239,7 @@ public class BulletinController {
             return ResponseEntity.ok(preReqs);
 
         } catch (Exception e) {
-            
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -241,13 +252,13 @@ public class BulletinController {
      */
     @Operation(summary = "Get special course type by crn", description = "Retrieves if the section is honors, online, or lab based on given crn")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
-        @ApiResponse(responseCode = "400", description = "Invalid course CRN"),
-        @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "200", description = "Course found"),
+            @ApiResponse(responseCode = "400", description = "Invalid course CRN"),
+            @ApiResponse(responseCode = "404", description = "Course not found")
     })
     @GetMapping("/course/specialCourseTypes")
     public ResponseEntity<List<String>> getSpecialCourseTypesFromCRN(
-        @RequestParam(value = "crn", required = true) String crn
+            @RequestParam(value = "crn", required = true) String crn
     ) {
         if (crn == null || crn.isEmpty()) {
             return ResponseEntity.badRequest().body(Collections.emptyList());
@@ -259,7 +270,7 @@ public class BulletinController {
 
             if (specialCourseTypes.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(specialCourseTypes);
-            } 
+            }
 
             return ResponseEntity.ok(specialCourseTypes);
         } catch (Exception e) {
@@ -269,50 +280,51 @@ public class BulletinController {
 
     /**
      * Gets course sections from class time and optionally class name
-     * @param timeSlot The name of the course to retrieve course sections (required)
+     * @param timeSlot The timeslot range to use for this (10:00 AM - 11:15 AM)
      * @param crn The crn course to retrieve course sections (optional)
      * @return A list of Strings that correspond the the special types of that course.
      */
     @GetMapping("/course/sections")
-    public ResponseEntity<List<String>> getCourseSections(
-        @RequestParam(value = "timeSlot", required = true) String timeSlot,
-        @RequestParam(value = "crn", required = false) String crn
+    public ResponseEntity<List<Section>> getCourseSections(
+            @RequestParam(value = "timeSlot", required = true) String timeSlot,
+            @RequestParam(value = "crn", required = false) String crn
     ) {
         if ((timeSlot == null || timeSlot.isEmpty()) && (crn == null || crn.isEmpty())) {
             return ResponseEntity.badRequest().body(null); // Return 400 if neither parameter is provided
         }
 
         try {
-            List<String> courseSections = fetchCourseSection(timeSlot, crn);
+            List<Section> courseSections = fetchCourseSection(timeSlot, crn);
 
-            if (courseSections.isEmpty()){
+            if (courseSections.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseSections);
             }
 
             return ResponseEntity.ok(courseSections);
 
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course sections."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 
+        }
     }
 
     // Other endpoints related to Bulletin data could be added here
-    
+
     /**
      * Retrieves a list of sections that matches the requirements given.
-     * 
+     *
      * @param requirement The string name for a requirement
      * @return A list of courses that fufill the requirement
      */
     @Operation(summary = "get courses by requirement", description = "Retrieves a list of course objects with the given requirement fufilled")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
-        @ApiResponse(responseCode = "400", description = "Invalid requirement"),
-        @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "200", description = "Course found"),
+            @ApiResponse(responseCode = "400", description = "Invalid requirement"),
+            @ApiResponse(responseCode = "404", description = "Course not found")
     })
     @GetMapping("/requirement")
-    @Tag(name="bulletin")
-    public ResponseEntity<List<Course>> getRequirementCourses(@RequestParam("requirement") String requirement) {
+    @Tag(name = "bulletin")
+    public ResponseEntity<List<Course>> getRequirementCourses (@RequestParam("requirement") String requirement){
         //return 400 for empty requirement
         if (requirement.isEmpty()) {
             return ResponseEntity.badRequest().body(null);

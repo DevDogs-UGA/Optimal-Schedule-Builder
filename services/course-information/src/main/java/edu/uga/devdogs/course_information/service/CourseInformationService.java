@@ -4,8 +4,9 @@ import edu.uga.devdogs.course_information.Class.ClassRepository;
 import edu.uga.devdogs.course_information.Class.Class;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
+import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
-import edu.uga.devdogs.course_information.exceptions.SectionDetailsNotFoundException;
+import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -113,15 +114,15 @@ public class CourseInformationService {
      * @param crn the given course reference number for which to retrieve section details
      * @return A list of Section Details objects matching the given time slot and CRN
      */
-    public List<Class> getSectionDetailsByCrn(String crn){
-        List<Class> returnList;
+    public CourseSection getSectionDetailsByCrn(String crn){
+        CourseSection returnList;
 
         returnList = SectionDetailsJPAFile.getSectionDetailsByCrn(crn);
 
         if (returnList != null)
             return returnList;
         else
-            throw new SectionDetailsNotFoundException("Section details not found for CRN: " + crn);
+            throw new ProfessorNotFoundException("Section details not found for CRN: " + crn);
     }
 
     /**
@@ -134,7 +135,7 @@ public class CourseInformationService {
     public List<Course> getCoursesByMajor(String major) {
         List<Course> returnList;
 
-        returnList = courseSectionRepository.getCoursesBySubject(major);
+        returnList = courseRepository.findBySubject(major);
 
         if (returnList != null) {
             return returnList;
@@ -146,19 +147,19 @@ public class CourseInformationService {
     /**
      * Retrieves all course sections taught by a specific professor.
      *
-     * @param professorId The unique identifier of the professor
+     * @param professorName The professor's name
      * @return List of course sections taught by the specified professor
      * @throws ProfessorNotFoundException if the professor is not found
      */
-    public List<CourseSection> getCourseSectionsByProfessor(Long professorId) {   
+    public List<CourseSection> getCourseSectionsByProfessor(String professorName) {
         
-        // Fetch course sections by professor ID
-        List<CourseSection> returnList = courseInfoJPAFile.getCourseSectionsByProfessor(professorId);
+        // Fetch course sections by professor name
+        List<CourseSection> returnList = courseInfoJPAFile.getCourseSectionsByProfessor(professorName);
 
         if (returnList != null) {
             return returnList;
         } else {
-            throw new ProfessorNotFoundException("Professor not found with ID: " + professorId);
+            throw new ProfessorNotFoundException(String.format("Professor %s not found!", professorName));
         }
     }
    
@@ -178,13 +179,13 @@ public class CourseInformationService {
      *  @return The {@link Course} object matching the given Athena name
      * @throws CourseNotFoundException if no course is found for the specified Athena name
      */
-    public Course getCourseByAthenaName(String athenaName) {
-        Course course = courseRepository.findByAthenaName(athenaName);
+    public List<Course> getCourseByAthenaName(String athenaName) {
+        List<Course> course = courseRepository.findByTitle(athenaName);
 
         if (course != null) {
             return course;
         } else {
             throw new CourseNotFoundException("Course not found for Athena name: " + athenaName);
         }
-
+    }
 }
