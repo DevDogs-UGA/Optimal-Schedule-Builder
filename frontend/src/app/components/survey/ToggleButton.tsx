@@ -15,7 +15,7 @@ export const ToggleButton = ({
 }: ToggleButtonProps) => {
   const [isToggled, setIsToggled] = useState(false);
   const sharedStyling =
-    "text-xl border-r-0 border-2 sm:border-2 px-[7.5%] py-[5%] duration-300 ease-in-out ";
+    "text-xl border-r-0 border-2 sm:border-2 px-[8%] py-[5%] duration-300 ease-in-out ";
   useEffect(() => {
     if (isFormSubmitted) {
       setIsToggled(false);

@@ -129,7 +129,7 @@ export const QuestionnareForm = ({ className }: Props) => {
         ref={formRef}
         onSubmit={submitForm}
         onKeyDown={(e) => e.key != "Enter"}
-        className="lg:y-20 my-10 flex w-full flex-col gap-8 p-8 font-bold"
+        className="my-10 flex w-full flex-col gap-8 p-8 px-5 font-bold sm:px-20"
       >
         <div>
           <h1>What&apos;s your major?</h1>
@@ -144,7 +144,7 @@ export const QuestionnareForm = ({ className }: Props) => {
         </div>
         <div>
           <h1>Select preferred days</h1>
-          <div className="flex w-full items-center">
+          <div className="flex w-full items-center justify-center sm:justify-normal">
             {days.map((day, index) => (
               <ToggleButton
                 onClick={(e: MouseEvent<HTMLButtonElement>) =>
