@@ -14,7 +14,7 @@ export default function Questionnaire() {
         </div>
         <div className="text-blue-600">
           <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
-            <Link href={"/generate-schedule"}>Freshmen</Link>
+            <Link href={"/generate-schedule"}>Freshmen Click Here</Link>
           </button>
         </div>
         <br></br>
