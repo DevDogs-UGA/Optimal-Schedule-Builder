@@ -13,8 +13,8 @@ export const TimeSelector = ({
   placeholder,
 }: Props) => {
   //Lists for dropdown
-  let hourList = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
-  let minuteList = Array.from({ length: 59 }, (_, i) =>
+  const hourList = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
+  const minuteList = Array.from({ length: 59 }, (_, i) =>
     (i + 1).toString().padStart(2, "0"),
   );
   const hourRef = useRef<HTMLInputElement>(null);
@@ -33,7 +33,7 @@ export const TimeSelector = ({
         }
       }
     }
-  }, [isFormSubmitted]);
+  }, [isFormSubmitted, onChange]);
 
   const sharedStyling =
     "border-2 w-full focus:outline-none p-2 duration-300 ease-in-out";
