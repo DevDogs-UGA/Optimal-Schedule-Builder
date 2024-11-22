@@ -1,8 +1,8 @@
 "use client";
 import { z } from "zod";
 import { type MouseEvent, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/Button";
-import { Dropdown } from "@/components/ui/Dropdown";
+import { Button } from "../../components/ui/Button";
+import { Dropdown } from "../../components/ui/Dropdown";
 import { ToggleButton } from "./ToggleButton";
 import { TimeSelector } from "./TimeSelector";
 
