@@ -1,4 +1,4 @@
-import { Dropdown } from "../ui/Dropdown";
+import { DropdownSearchInput } from "../ui/DropdownSearchInput";
 
 interface props {
   text?: string;
@@ -11,7 +11,7 @@ export const SearchFilter = ({ text, items, className }: props) => {
     <div className={`sm:grid sm:grid-cols-5 sm:items-center ${className}`}>
       <label className="col-start-1 text-xl font-bold">{text}</label>
       <div className="col-span-3">
-        <Dropdown items={items} />
+        <DropdownSearchInput items={items} />
       </div>
     </div>
   );

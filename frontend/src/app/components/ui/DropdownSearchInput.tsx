@@ -16,7 +16,7 @@ interface DropdownProps {
 }
 
 //Uses forwardRef to get the input field props to the parent
-export const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
+export const DropdownSearchInput = forwardRef<HTMLInputElement, DropdownProps>(
   (
     {
       items = [],
@@ -124,4 +124,4 @@ export const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
   },
 );
 
-Dropdown.displayName = "Dropdown";
+DropdownSearchInput.displayName = "DropdownSearchInput";
