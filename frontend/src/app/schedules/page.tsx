@@ -17,7 +17,7 @@ export default function SchedulePage() {
         semester: "Spring 2025",
         credits: 3,
         crn: 26510,
-        color: "red-500",
+        color: "bg-bulldog-red",
       },
       {
         classTitle: "BIOL 1103",
