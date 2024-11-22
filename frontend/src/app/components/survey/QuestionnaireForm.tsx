@@ -129,7 +129,7 @@ export const QuestionnareForm = ({ className }: Props) => {
         ref={formRef}
         onSubmit={submitForm}
         onKeyDown={(e) => e.key != "Enter"}
-        className="flex w-full flex-col gap-3 p-8 font-bold lg:p-20"
+        className="flex w-full flex-col gap-8 p-8 font-bold lg:p-20"
       >
         <div>
           <h1>What&apos;s your major?</h1>
