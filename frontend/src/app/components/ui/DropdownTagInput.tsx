@@ -81,12 +81,9 @@ export default function DropdownTagInput({
 
   return (
     <div id="dropdown-container" className="relative">
-      <style>
-        {` .no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } `}
-      </style>
       <div
         ref={searchBarRef}
-        className={`no-scrollbar flex h-12 w-full items-center overflow-x-auto overflow-y-hidden rounded-md border-2 bg-white p-1 hover:scroll-smooth ${className}`}
+        className={`flex h-12 w-full items-center overflow-x-auto overflow-y-hidden rounded-md border-2 bg-white p-1 hover:scroll-smooth ${className}`}
       >
         <ul className="flex max-w-44 gap-2 p-1">
           {tags.length > 0 &&
