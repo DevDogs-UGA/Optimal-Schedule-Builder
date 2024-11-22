@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { type MouseEvent, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/Button";
-import { Dropdown } from "@/components/ui/Dropdown";
+import { Dropdown } from "../ui/Dropdown";
 import { ToggleButton } from "./ToggleButton";
 import { TimeSelector } from "./TimeSelector";
 
