@@ -40,14 +40,14 @@ public class SampleDataParserTest {
         var course = sampleData.courses().get("ENGL 1101");
         assertEquals(1, course.sections().size(), "Sections array of the first course should be of length 1.");
 
-        var section = course.sections().getFirst();
+        var section = course.sections().get(0);
         assertEquals("ENGL 1101", section.courseCode(), "CourseCode of the first section should be 'ENGL 1101'.");
         assertEquals("25013", section.crn(), "CRN of the first section should be '25013'.");
     }
 
     @Test
     void testParsedProfessor() {
-        var section = sampleData.courses().get("ENGL 1101").sections().getFirst();
+        var section = sampleData.courses().get("ENGL 1101").sections().get(0);
         var professor = section.professor();
 
         assertEquals("Daniel Barnum", professor.name(), "The professor should be Daniel Barnum.");
@@ -56,11 +56,11 @@ public class SampleDataParserTest {
 
     @Test
     void testParsedClasses() {
-        var section = sampleData.courses().get("ENGL 1101").sections().getFirst();
-        var _class = section.classes().getFirst();
+        var section = sampleData.courses().get("ENGL 1101").sections().get(0);
+        var _class = section.classes().get(0);
 
         assertEquals("25013", _class.crn(), "CRN of the first class should be '25013'.");
-        assertEquals(DayOfWeek.MONDAY, _class.days().getFirst(), "The first day should be DayOfWeek.MONDAY.");
+        assertEquals(DayOfWeek.MONDAY, _class.days().get(0), "The first day should be DayOfWeek.MONDAY.");
     }
 
     @Test
