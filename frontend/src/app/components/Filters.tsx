@@ -1,4 +1,4 @@
-import { Dropdown } from "./ui/Dropdown";
+import { DropdownSearchInput } from "./ui/DropdownSearchInput";
 import DropdownTagInput from "./ui/DropdownTagInput";
 
 interface props {
@@ -104,7 +104,7 @@ export const SearchFilter = ({}: props) => {
             <div className="grid grid-rows-3 gap-4">
               {" "}
               {/* Div For Dropdowns */}
-              <Dropdown
+              <DropdownSearchInput
                 items={termList}
                 placeholder="Enter Term"
                 className={dropdownStyling}
@@ -114,7 +114,7 @@ export const SearchFilter = ({}: props) => {
                 placeholder="Enter Instruction"
                 className={dropdownStyling}
               />
-              <Dropdown
+              <DropdownSearchInput
                 items={campusList}
                 placeholder="Enter Campus"
                 className={dropdownStyling}
@@ -134,7 +134,7 @@ export const SearchFilter = ({}: props) => {
             <div className="grid grid-rows-3 gap-4">
               {" "}
               {/* Div For Dropdowns */}
-              <Dropdown
+              <DropdownSearchInput
                 items={educationLevelList}
                 placeholder="Enter Level"
                 className={dropdownStyling}
@@ -144,7 +144,7 @@ export const SearchFilter = ({}: props) => {
                 placeholder="Enter Credit Hours"
                 className={dropdownStyling}
               />
-              <Dropdown
+              <DropdownSearchInput
                 items={buildingList}
                 placeholder="Enter Building"
                 className={dropdownStyling}

@@ -1,8 +1,8 @@
 "use client";
 import { z } from "zod";
 import { type MouseEvent, useEffect, useRef, useState } from "react";
-import { Button } from "../../components/ui/Button";
-import { Dropdown } from "../../components/ui/Dropdown";
+import { Button } from "@/components/ui/Button";
+import { DropdownSearchInput } from "../ui/DropdownSearchInput";
 import { ToggleButton } from "./ToggleButton";
 import { TimeSelector } from "./TimeSelector";
 
@@ -133,7 +133,7 @@ export const QuestionnareForm = ({ className }: Props) => {
       >
         <div>
           <h1>What&apos;s your major?</h1>
-          <Dropdown
+          <DropdownSearchInput
             name="major"
             items={dummyData}
             className={dropdownStyling}
@@ -181,7 +181,7 @@ export const QuestionnareForm = ({ className }: Props) => {
         <div>
           <h1>Distance between classes?</h1>
           <div className="flex items-center gap-4">
-            <Dropdown
+            <DropdownSearchInput
               type="number"
               name="minDistance"
               className={"select-none text-black"}
@@ -191,7 +191,7 @@ export const QuestionnareForm = ({ className }: Props) => {
               errorList={errorList}
             />
             <h1>-</h1>
-            <Dropdown
+            <DropdownSearchInput
               type="number"
               name="maxDistance"
               className={"select-none text-black"}
@@ -205,7 +205,7 @@ export const QuestionnareForm = ({ className }: Props) => {
         <div>
           <h1>How many credit hours?</h1>
           <div className="flex items-center gap-4">
-            <Dropdown
+            <DropdownSearchInput
               type="number"
               name="minCreditHours"
               className={dropdownStyling}
@@ -216,7 +216,7 @@ export const QuestionnareForm = ({ className }: Props) => {
               errorList={errorList}
             />
             <h1>-</h1>
-            <Dropdown
+            <DropdownSearchInput
               type="number"
               name="maxCreditHours"
               className={dropdownStyling}
@@ -230,7 +230,7 @@ export const QuestionnareForm = ({ className }: Props) => {
         </div>
         <div>
           <h1>Which term?</h1>
-          <Dropdown
+          <DropdownSearchInput
             name="term"
             items={semesterList}
             className={dropdownStyling}
