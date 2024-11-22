@@ -1,6 +1,6 @@
 "use client";
 import { z } from "zod";
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import { type MouseEvent, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/Button";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { ToggleButton } from "./ToggleButton";
@@ -18,8 +18,10 @@ const surveySchema = z.object({
   //Days is saved into the formData as a string, so that's why this is parsing it from a stirng into an array to check for values
   days: z
     .string()
-    .transform((str) => JSON.parse(str))
-    .refine((arr) => arr.length > 0, { message: "Please Select Days" }),
+    .transform((str) => JSON.parse(str) as string[])
+    .refine((arr: string[]) => arr.length > 0, {
+      message: "Please Select Days",
+    }),
 
   minDistance: z.string().min(1, { message: "Min value requried" }),
   maxDistance: z.string().min(1, { message: "Max value requried" }),

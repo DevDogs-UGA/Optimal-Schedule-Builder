@@ -69,7 +69,7 @@ export const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       if (errorList) {
         setError(errorList.find((err) => err.path[0] === name));
       }
-    }, [errorList]);
+    }, [errorList, name]);
 
     const sharedStyling = "w-full rounded-md border-2 ";
 
@@ -123,3 +123,5 @@ export const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
     );
   },
 );
+
+Dropdown.displayName = "Dropdown";
