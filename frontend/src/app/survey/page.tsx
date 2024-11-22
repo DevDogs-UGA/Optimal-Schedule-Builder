@@ -1,4 +1,4 @@
-import { QuestionnareForm } from "@/components/survey/QuestionnaireForm";
+import { QuestionnareForm } from ".././components/survey/QuestionnaireForm";
 import { Navbar } from "../components/Navbar";
 import Image from "next/image";
 

@@ -1,4 +1,4 @@
-import { Dropdown } from "@/components/ui/Dropdown";
+import { Dropdown } from "../../components/ui/Dropdown";
 import { useEffect, useRef } from "react";
 
 interface Props {
