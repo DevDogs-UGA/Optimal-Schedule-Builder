@@ -41,7 +41,7 @@ export const TimeSelector = ({
     <div className="flex items-center">
       <Dropdown
         ref={hourRef}
-        className={`rounded-r-none ${sharedStyling} min-x-20 max-w-24 text-center`}
+        className={`rounded-r-none ${sharedStyling} min-w-full text-center md:max-w-14`}
         items={hourList}
         min="1"
         isFormSubmitted={isFormSubmitted}
@@ -50,7 +50,7 @@ export const TimeSelector = ({
       <h1 className="mx-2 text-xl">:</h1>
       <Dropdown
         ref={minuteRef}
-        className={`rounded-none ${sharedStyling} min-x-20 max-w-24 text-center`}
+        className={`rounded-none ${sharedStyling} min-w-full text-center md:max-w-14`}
         items={minuteList}
         min="1"
         isFormSubmitted={isFormSubmitted}
@@ -58,7 +58,7 @@ export const TimeSelector = ({
       />
       <Dropdown
         ref={meridianRef}
-        className={`rounded-l-none ${sharedStyling} min-x-20 max-w-24 text-center`}
+        className={`rounded-l-none ${sharedStyling} min-w-full text-center md:max-w-16`}
         items={["AM", "PM"]}
         min="1"
         isFormSubmitted={isFormSubmitted}
