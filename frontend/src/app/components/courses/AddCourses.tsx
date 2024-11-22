@@ -27,8 +27,14 @@ export const AddCourses = () => {
     setCurrentTab(index);
   };
 
+  //TODO: Replace all dummy data with their respective items
+  const subjectData: string[] = [];
+  const courseData: string[] = [];
+  const instructorData: string[] = [];
+  const CRNData: string[] = [];
+
   return (
-    <div className="min-h-max min-w-fit">
+    <div className="min-w-full">
       <div className="flex gap-2">
         {tabs.map((tab, index) => (
           <TabButton
@@ -45,25 +51,27 @@ export const AddCourses = () => {
       </div>
       <main className="justify-between gap-4 border-2 border-dusty-pink bg-barely-pink px-12 py-8">
         <div className="items-center justify-center space-y-8 py-16">
-          {currentTab === 0 ? (
+          {currentTab === 0 && (
             <>
-              <SearchFilter text="Subject" />
-              <SearchFilter text="Course" />
+              <SearchFilter text="Subject" items={subjectData} />
+              <SearchFilter text="Course" items={courseData} />
             </>
-          ) : currentTab === 1 ? (
+          )}
+          {currentTab === 1 && (
             <>
-              <SearchFilter text="Instructor" />
-              <SearchFilter text="Course" />
+              <SearchFilter text="Instructor" items={instructorData} />
+              <SearchFilter text="Course" items={courseData} />
             </>
-          ) : currentTab === 2 ? (
+          )}
+          {currentTab === 2 && (
             <>
-              <SearchFilter text="CRN" />
+              <SearchFilter text="CRN" items={CRNData} className="mb-20" />
             </>
-          ) : null}
+          )}
         </div>
         <section className="flex flex-col gap-4 sm:flex-row sm:justify-end">
-          <Button text="Search" />
-          <Button text="Add" />
+          <Button text="Search" className="text-white" />
+          <Button text="Add" className="text-white" />
         </section>
       </main>
     </div>
