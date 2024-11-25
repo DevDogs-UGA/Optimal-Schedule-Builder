@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+// TODO: Create an ARRAY of start and end times for each day. 
+
 interface ClassData {
   classTitle: string;
   className: string;

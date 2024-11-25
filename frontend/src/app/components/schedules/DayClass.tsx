@@ -3,6 +3,9 @@
 import { type ClassData } from "../../../types/scheduleTypes";
 import { useState, useEffect } from "react";
 
+/* TODO HERE:
+  1. Add logic for 
+*/
 
 interface DayClassProps extends ClassData {
   onClose?: () => void;
@@ -11,12 +14,12 @@ interface DayClassProps extends ClassData {
 // Allows course block info window to resize itself relative to the screen size
 function useResize() {
   const [width, setWidth] = useState("80vw");
-  const [height, setHeight] = useState("50vh");
+  const [height, setHeight] = useState("70vh");
 
   useEffect(() => {
     const handleResize = () => {
       setWidth(`${window.innerWidth * 0.8}px`);
-      setHeight(`${window.innerHeight * 0.5}px`);
+      setHeight(`${window.innerHeight * 0.7}px`);
     };
     window.addEventListener("resize", handleResize);
 
