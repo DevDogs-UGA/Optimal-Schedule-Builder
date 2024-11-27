@@ -15,14 +15,19 @@ function useResize() {
       setHeight(`${window.innerHeight * 0.7}px`);
     };
     window.addEventListener("resize", handleResize);
-
   }, []);
 
   return { width, height };
 }
 
 // Creates array for week schedule display table
-function getWeekLayout(otherTimes: string[], currentDay: string, timeStart: string, timeEnd: string, locationShort: string): string[] {
+function getWeekLayout(
+  otherTimes: string[],
+  currentDay: string,
+  timeStart: string,
+  timeEnd: string,
+  locationShort: string,
+): string[] {
   // 10 strings for week display
   // 2 for each day: the time and location
   const weekInfo: string[] = ["", "", "", "", "", "", "", "", "", ""];
@@ -30,41 +35,40 @@ function getWeekLayout(otherTimes: string[], currentDay: string, timeStart: stri
 
   // Add the current day's time and location to the table
   for (var i = 0; i <= currentDay.length; i++) {
-    switch(currentDay[i]) {
+    switch (currentDay[i]) {
       case "M":
-        weekInfo[0] = (timeStart + " - " + timeEnd);
+        weekInfo[0] = timeStart + " - " + timeEnd;
         weekInfo[1] = locationShort;
         break;
 
       case "T":
-        weekInfo[2] = (timeStart + " - " + timeEnd);
+        weekInfo[2] = timeStart + " - " + timeEnd;
         weekInfo[3] = locationShort;
         break;
 
       case "W":
-        weekInfo[4] = (timeStart + " - " + timeEnd);
+        weekInfo[4] = timeStart + " - " + timeEnd;
         weekInfo[5] = locationShort;
         break;
 
       case "R":
-        weekInfo[6] = (timeStart + " - " + timeEnd);
+        weekInfo[6] = timeStart + " - " + timeEnd;
         weekInfo[7] = locationShort;
         break;
-  
+
       case "F":
-        weekInfo[8] = (timeStart + " - " + timeEnd);
+        weekInfo[8] = timeStart + " - " + timeEnd;
         weekInfo[9] = locationShort;
         break;
-    
+
       default:
         break;
     }
   }
-  
+
   // Add the other days the class has times on, if applicable
-  for (var i = 0; i <= otherDays.length; i++){
-    switch(otherDays[i])
-    {
+  for (var i = 0; i <= otherDays.length; i++) {
+    switch (otherDays[i]) {
       // Monday
       case "M":
         weekInfo[0] = otherTimes[1] ?? "";
@@ -119,91 +123,162 @@ function CourseInfo({
   currentDay,
   otherTimes,
 }: DayClassProps) {
-
   // Borders
   const outerBorder = `border-b-2 border-r-2 border-l-2 border-${bgColor} rounded-3xl`;
   const innerBorder = `border-r-2 border-${bgColor}`;
   // Dynamic dimensions based on browser window size
   const { width, height } = useResize();
   // Store class times and locations for the whole week
-  const weekInfo = getWeekLayout(otherTimes,currentDay,timeStart,timeEnd,locationShort);
+  const weekInfo = getWeekLayout(
+    otherTimes,
+    currentDay,
+    timeStart,
+    timeEnd,
+    locationShort,
+  );
 
   return (
-    <div className={`z-40 fixed inset-0 flex items-center justify-center bg-white bg-opacity-50`}>
+    <div
+      className={`fixed inset-0 z-40 flex items-center justify-center bg-white bg-opacity-50`}
+    >
       <div
-        className={`relative bg-white rounded-lg flex flex-col ${outerBorder}`}
+        className={`relative flex flex-col rounded-lg bg-white ${outerBorder}`}
         style={{
-          width, height, maxWidth: "90vw", maxHeight: "90vh",
-        }} 
+          width,
+          height,
+          maxWidth: "90vw",
+          maxHeight: "90vh",
+        }}
       >
         {/* Header: Course name and CRN */}
-        <div className={`z-50 relative bg-${bgColor} p-8 rounded-3xl`}>
+        <div className={`relative z-50 bg-${bgColor} rounded-3xl p-8`}>
           <div className="text-right font-bold text-white/90">
             <p>CRN: {crn}</p>
           </div>
-          <h2 className="font-bold text-3xl text-white">{classTitle}: {className}</h2>
+          <h2 className="text-3xl font-bold text-white">
+            {classTitle}: {className}
+          </h2>
         </div>
 
         {/* Content */}
         <div className="flex flex-1 overflow-hidden">
-
           {/* Course Info:
             Lists the course's essential attributes and a description at the bottom.*/}
-          <div className={`p-8 ${innerBorder} overflow-auto w-1/2`} >
-            <p> <b>Location:</b> {locationLong} </p>
-            <p> <b>Professor:</b> {professor} </p> <br></br>
-            <p> <b>Semester:</b> {semester} </p> 
-            <p> <b>Credit Hours:</b> {credits} </p> <br></br>
-            <p> <b>Prerequisites:</b> {prereq} </p>
-            <p> <b>Corequisites:</b> {coreq} </p> <br></br>
+          <div className={`p-8 ${innerBorder} w-1/2 overflow-auto`}>
+            <p>
+              {" "}
+              <b>Location:</b> {locationLong}{" "}
+            </p>
+            <p>
+              {" "}
+              <b>Professor:</b> {professor}{" "}
+            </p>{" "}
+            <br></br>
+            <p>
+              {" "}
+              <b>Semester:</b> {semester}{" "}
+            </p>
+            <p>
+              {" "}
+              <b>Credit Hours:</b> {credits}{" "}
+            </p>{" "}
+            <br></br>
+            <p>
+              {" "}
+              <b>Prerequisites:</b> {prereq}{" "}
+            </p>
+            <p>
+              {" "}
+              <b>Corequisites:</b> {coreq}{" "}
+            </p>{" "}
+            <br></br>
             <p> {description} </p>
           </div>
 
           {/* Weekly Schedule for Class:
               Right half of course block info window. Shows times and locations for the course throughout the entire week at a glance.*/}
-          <div className={`p-8 overflow-auto w-1/2`}> 
-            <p className="text-center font-bold underline text-2xl"> Weekly Schedule: </p>
+          <div className={`w-1/2 overflow-auto p-8`}>
+            <p className="text-center text-2xl font-bold underline">
+              {" "}
+              Weekly Schedule:{" "}
+            </p>
             <br></br>
-            <div className="overflow-x-auto items-center">
-              <table className="table-auto w-full border border-black">
+            <div className="items-center overflow-x-auto">
+              <table className="w-full table-auto border border-black">
                 <thead>
                   <tr>
-                    <th className="p-2 text-center underline border border-black">Day</th>
-                    <th className="p-2 text-center underline border border-black">Time</th>
-                    <th className="p-2 text-center underline border border-black">Location</th>
+                    <th className="border border-black p-2 text-center underline">
+                      Day
+                    </th>
+                    <th className="border border-black p-2 text-center underline">
+                      Time
+                    </th>
+                    <th className="border border-black p-2 text-center underline">
+                      Location
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="p-2 text-center font-bold border border-black">Monday</td>
-                    <td className="p-2 text-center border border-black">{weekInfo[0]}</td>
-                    <td className="p-2 text-center border border-black">{weekInfo[1]}</td>
+                    <td className="border border-black p-2 text-center font-bold">
+                      Monday
+                    </td>
+                    <td className="border border-black p-2 text-center">
+                      {weekInfo[0]}
+                    </td>
+                    <td className="border border-black p-2 text-center">
+                      {weekInfo[1]}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="p-2 text-center font-bold border border-black">Tuesday</td>
-                    <td className="p-2 text-center border border-black">{weekInfo[2]}</td>
-                    <td className="p-2 text-center border border-black">{weekInfo[3]}</td>
+                    <td className="border border-black p-2 text-center font-bold">
+                      Tuesday
+                    </td>
+                    <td className="border border-black p-2 text-center">
+                      {weekInfo[2]}
+                    </td>
+                    <td className="border border-black p-2 text-center">
+                      {weekInfo[3]}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="p-2 text-center font-bold border border-black">Wednesday</td>
-                    <td className="p-2 text-center border border-black">{weekInfo[4]}</td>
-                    <td className="p-2 text-center border border-black">{weekInfo[5]}</td>
+                    <td className="border border-black p-2 text-center font-bold">
+                      Wednesday
+                    </td>
+                    <td className="border border-black p-2 text-center">
+                      {weekInfo[4]}
+                    </td>
+                    <td className="border border-black p-2 text-center">
+                      {weekInfo[5]}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="p-2 text-center font-bold border border-black">Thursday</td>
-                    <td className="p-2 text-center border border-black">{weekInfo[6]}</td>
-                    <td className="p-2 text-center border border-black">{weekInfo[7]}</td>
+                    <td className="border border-black p-2 text-center font-bold">
+                      Thursday
+                    </td>
+                    <td className="border border-black p-2 text-center">
+                      {weekInfo[6]}
+                    </td>
+                    <td className="border border-black p-2 text-center">
+                      {weekInfo[7]}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="p-2 text-center font-bold border border-black">Friday</td>
-                    <td className="p-2 text-center border border-black">{weekInfo[8]}</td>
-                    <td className="p-2 text-center border border-black">{weekInfo[9]}</td>
+                    <td className="border border-black p-2 text-center font-bold">
+                      Friday
+                    </td>
+                    <td className="border border-black p-2 text-center">
+                      {weekInfo[8]}
+                    </td>
+                    <td className="border border-black p-2 text-center">
+                      {weekInfo[9]}
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-        </div> 
+        </div>
       </div>
     </div>
   );
@@ -231,12 +306,11 @@ export default function DayClass({
   currentDay,
   otherTimes,
 }: DayClassProps) {
-
   // Open course block info popup
   const [courseBlockClicked, setcourseBlockClicked] = useState(false);
   const courseBlockInfo = () => {
     setcourseBlockClicked(!courseBlockClicked);
-  }
+  };
 
   return (
     <div className={`relative ${className}`} onClick={courseBlockInfo}>
@@ -249,7 +323,9 @@ export default function DayClass({
       >
         <div className="">
           <h2 className="font-bold text-white">{classTitle}</h2>
-          {locationShort && <p className="text-sm text-white/90">{locationShort}</p>}
+          {locationShort && (
+            <p className="text-sm text-white/90">{locationShort}</p>
+          )}
         </div>
         <div className="text-right text-sm text-white/90">
           <p>{timeStart}</p>
@@ -257,9 +333,9 @@ export default function DayClass({
         </div>
       </div>
       {courseBlockClicked && (
-        <CourseInfo 
+        <CourseInfo
           classTitle={classTitle}
-          className={className} 
+          className={className}
           description={description}
           locationLong={locationLong}
           locationShort={locationShort}
