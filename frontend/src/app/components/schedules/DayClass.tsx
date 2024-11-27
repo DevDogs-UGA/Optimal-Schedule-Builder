@@ -2,7 +2,7 @@
 import { type ClassData } from "../../../types/scheduleTypes";
 import { useState, useEffect } from "react";
 
-interface DayClassProps extends ClassData {}
+type DayClassProps = ClassData;
 
 // Allows course block info window to resize itself relative to the screen size
 function useResize() {
@@ -31,10 +31,10 @@ function getWeekLayout(
   // 10 strings for week display
   // 2 for each day: the time and location
   const weekInfo: string[] = ["", "", "", "", "", "", "", "", "", ""];
-  let otherDays: string = otherTimes[0] ?? "";
+  const otherDays: string = otherTimes[0] ?? "";
 
   // Add the current day's time and location to the table
-  for (var i = 0; i <= currentDay.length; i++) {
+  for (let i = 0; i <= currentDay.length; i++) {
     switch (currentDay[i]) {
       case "M":
         weekInfo[0] = timeStart + " - " + timeEnd;
@@ -67,7 +67,7 @@ function getWeekLayout(
   }
 
   // Add the other days the class has times on, if applicable
-  for (var i = 0; i <= otherDays.length; i++) {
+  for (let i = 0; i <= otherDays.length; i++) {
     switch (otherDays[i]) {
       // Monday
       case "M":
