@@ -7,7 +7,8 @@ export default function SchedulePage() {
       {
         classTitle: "CSCI 3030",
         className: "Computing, Ethics, and Society",
-        description: "Introduction to social and ethical issues relating to computer science and information technology. Topics include privacy, intellectual property, open-source software, the digital divide, globalization, professional ethics, social justice issues, and current events. Students should have a working knowledge of personal computing.",
+        description:
+          "Introduction to social and ethical issues relating to computer science and information technology. Topics include privacy, intellectual property, open-source software, the digital divide, globalization, professional ethics, social justice issues, and current events. Students should have a working knowledge of personal computing.",
         locationLong: "Boyd Research and Education Center 100",
         locationShort: "Boyd 100",
         prereq: "ENGL 1102",
@@ -25,12 +26,7 @@ export default function SchedulePage() {
         bgColor: "bulldog-red",
 
         currentDay: "MW",
-        otherTimes: 
-        [
-          "F",
-          "8:00 - 8:50 am",
-          "Chemistry 100"
-        ],
+        otherTimes: ["F", "8:00 - 8:50 am", "Chemistry 100"],
       },
 
       {
@@ -54,13 +50,7 @@ export default function SchedulePage() {
         bgColor: "bulldog-red",
 
         currentDay: "M",
-        otherTimes: 
-        [
-          "TR",
-          "9:35 am - 10:50 am",
-          "Food Sci 100"
-        ],
-
+        otherTimes: ["TR", "9:35 am - 10:50 am", "Food Sci 100"],
       },
 
       {
@@ -84,8 +74,7 @@ export default function SchedulePage() {
         bgColor: "lake-herrick",
 
         currentDay: "MWF",
-        otherTimes: ["","",""]
-
+        otherTimes: ["", "", ""],
       },
     ],
 
@@ -111,19 +100,14 @@ export default function SchedulePage() {
         bgColor: "bulldog-red",
 
         currentDay: "TR",
-        otherTimes: 
-        [
-          "M",
-          "10:20 am - 11:10 am",
-          "Conner 100"
-        ],
-
+        otherTimes: ["M", "10:20 am - 11:10 am", "Conner 100"],
       },
 
       {
         classTitle: "MUSI 2300",
         className: "Music in Athens",
-        description: "Explores national and international musical and cultural trends. The course draws from Athens, Georgia’s diverse musical communities and their histories, exploring the rock, hip hop, and indie popular music scenes along with African-American traditions, folk and traditional musics, and the emergent Latin music scene.",
+        description:
+          "Explores national and international musical and cultural trends. The course draws from Athens, Georgia’s diverse musical communities and their histories, exploring the rock, hip hop, and indie popular music scenes along with African-American traditions, folk and traditional musics, and the emergent Latin music scene.",
         locationLong: "Hugh Hudgson School of Music 100",
         locationShort: "Hugh Hudgson 100",
         prereq: "",
@@ -141,10 +125,8 @@ export default function SchedulePage() {
         bgColor: "lake-herrick",
 
         currentDay: "TR",
-        otherTimes: ["","",""]
-
+        otherTimes: ["", "", ""],
       },
-
     ],
 
     Wednesday: [
@@ -169,13 +151,7 @@ export default function SchedulePage() {
         bgColor: "bulldog-red",
 
         currentDay: "MW",
-        otherTimes: 
-        [
-          "F",
-          "8:00 am - 8:50 am",
-          "Chemistry 100"
-        ],
-
+        otherTimes: ["F", "8:00 am - 8:50 am", "Chemistry 100"],
       },
 
       {
@@ -199,8 +175,7 @@ export default function SchedulePage() {
         bgColor: "lake-herrick",
 
         currentDay: "MWF",
-        otherTimes: ["","",""]
-
+        otherTimes: ["", "", ""],
       },
     ],
 
@@ -226,13 +201,7 @@ export default function SchedulePage() {
         bgColor: "bulldog-red",
 
         currentDay: "TR",
-        otherTimes: 
-        [
-          "M",
-          "10:20 am - 11:10 am",
-          "Conner 100"
-        ],
-
+        otherTimes: ["M", "10:20 am - 11:10 am", "Conner 100"],
       },
 
       {
@@ -256,8 +225,7 @@ export default function SchedulePage() {
         bgColor: "lake-herrick",
 
         currentDay: "TR",
-        otherTimes: ["","",""]
-
+        otherTimes: ["", "", ""],
       },
 
       {
@@ -281,8 +249,7 @@ export default function SchedulePage() {
         bgColor: "lake-herrick",
 
         currentDay: "R",
-        otherTimes: ["","",""]
-
+        otherTimes: ["", "", ""],
       },
     ],
 
@@ -308,13 +275,7 @@ export default function SchedulePage() {
         bgColor: "bulldog-red",
 
         currentDay: "F",
-        otherTimes: 
-        [
-          "MW",
-          "8:00 - 8:50 am",
-          "Boyd 100"
-        ],
-
+        otherTimes: ["MW", "8:00 - 8:50 am", "Boyd 100"],
       },
 
       {
@@ -338,8 +299,7 @@ export default function SchedulePage() {
         bgColor: "bulldog-red",
 
         currentDay: "MWF",
-        otherTimes: ["","",""]
-
+        otherTimes: ["", "", ""],
       },
     ],
 
