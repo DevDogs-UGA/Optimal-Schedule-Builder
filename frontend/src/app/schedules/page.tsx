@@ -7,110 +7,346 @@ export default function SchedulePage() {
       {
         classTitle: "CSCI 3030",
         className: "Computing, Ethics, and Society",
-        description: "",
-        location: "Park Hall",
-        timeStart: "8:00 am",
-        timeEnd: "9:15 am",
-        timeDifference: null,
+        description: "Introduction to social and ethical issues relating to computer science and information technology. Topics include privacy, intellectual property, open-source software, the digital divide, globalization, professional ethics, social justice issues, and current events. Students should have a working knowledge of personal computing.",
+        locationLong: "Boyd Research and Education Center 100",
+        locationShort: "Boyd 100",
+        prereq: "ENGL 1102",
+        coreq: "",
         professor: "John Doe",
-        semester: "Spring 2025",
+        semester: "Spring",
+        timeStart: "8:00 am",
+        timeEnd: "8:50 am",
+        timeDifference: null,
         credits: 3,
         crn: 26510,
-        color: "bg-bulldog-red",
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "bulldog-red",
+
+        currentDay: "MW",
+        otherTimes: 
+        [
+          "F",
+          "8:00 - 8:50 am",
+          "Chemistry 100"
+        ],
       },
+
+      {
+        classTitle: "CSCI 1302",
+        className: "Software Development",
+        description: "The course description will be displayed here.",
+        locationLong: "Conner Hall 100",
+        locationShort: "Conner 100",
+        prereq: "ENGL 1102",
+        coreq: "",
+        professor: "John Doe",
+        semester: "All",
+        timeStart: "10:20 am",
+        timeEnd: "11:10 am",
+        timeDifference: null,
+        credits: 4,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "bulldog-red",
+
+        currentDay: "M",
+        otherTimes: 
+        [
+          "TR",
+          "9:35 am - 10:50 am",
+          "Food Sci 100"
+        ],
+
+      },
+
       {
         classTitle: "BIOL 1103",
-        timeStart: "9:35 am",
-        timeEnd: "10:50 am",
-        color: "gray-600",
-      },
-      {
-        classTitle: "MUSIC 2300",
-        location: "Hugh Hodgson School of Music",
-        timeStart: "12:45 pm",
-        timeEnd: "2:00 pm",
-        color: "indigo-500",
+        className: "Topics in Biology",
+        description: "The course description will be displayed here.",
+        locationLong: "Science Learning Center 100",
+        locationShort: "SLC 100",
+        prereq: "",
+        coreq: "BIOL 1103L",
+        professor: "Jane Doe",
+        semester: "Spring/Fall",
+        timeStart: "1:30 pm",
+        timeEnd: "2:20 pm",
+        timeDifference: null,
+        credits: 3,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "lake-herrick",
+
+        currentDay: "MWF",
+        otherTimes: ["","",""]
+
       },
     ],
+
     Tuesday: [
       {
-        classTitle: "CSCI 1301",
-        timeStart: "8:35 am",
+        classTitle: "CSCI 1302",
+        className: "Software Development",
+        description: "The course description will be displayed here.",
+        locationLong: "Food Science 100",
+        locationShort: "Food Sci 100",
+        prereq: "ENGL 1102",
+        coreq: "",
+        professor: "John Doe",
+        semester: "All",
+        timeStart: "9:35 am",
         timeEnd: "10:50 am",
-        color: "green-600",
+        timeDifference: null,
+        credits: 4,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "bulldog-red",
+
+        currentDay: "TR",
+        otherTimes: 
+        [
+          "M",
+          "10:20 am - 11:10 am",
+          "Conner 100"
+        ],
+
       },
+
       {
-        classTitle: "PHYS 2000",
-        location: "Physics Building",
-        timeStart: "4:00 pm",
-        timeEnd: "5:00 pm",
-        color: "teal-500",
+        classTitle: "MUSI 2300",
+        className: "Music in Athens",
+        description: "Explores national and international musical and cultural trends. The course draws from Athens, Georgia’s diverse musical communities and their histories, exploring the rock, hip hop, and indie popular music scenes along with African-American traditions, folk and traditional musics, and the emergent Latin music scene.",
+        locationLong: "Hugh Hudgson School of Music 100",
+        locationShort: "Hugh Hudgson 100",
+        prereq: "",
+        coreq: "",
+        professor: "Jane Doe",
+        semester: "Spring",
+        timeStart: "12:45 pm",
+        timeEnd: "2:00 pm",
+        timeDifference: null,
+        credits: 3,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "lake-herrick",
+
+        currentDay: "TR",
+        otherTimes: ["","",""]
+
       },
+
     ],
+
     Wednesday: [
       {
         classTitle: "CSCI 3030",
-        location: "Park Hall",
+        className: "Computing, Ethics, and Society",
+        description: "The course description will be displayed here.",
+        locationLong: "Boyd Research and Education Center 100",
+        locationShort: "Boyd 100",
+        prereq: "ENGL 1102",
+        coreq: "",
+        professor: "John Doe",
+        semester: "Spring",
         timeStart: "8:00 am",
-        timeEnd: "9:15 am",
-        color: "red-600",
+        timeEnd: "8:50 am",
+        timeDifference: null,
+        credits: 3,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "bulldog-red",
+
+        currentDay: "MW",
+        otherTimes: 
+        [
+          "F",
+          "8:00 am - 8:50 am",
+          "Chemistry 100"
+        ],
+
       },
+
       {
         classTitle: "BIOL 1103",
-        timeStart: "9:35 am",
-        timeEnd: "10:50 am",
-        color: "gray-600",
-      },
-      {
-        classTitle: "MUSIC 2300",
-        location: "Hugh Hodgson School of Music",
-        timeStart: "12:45 pm",
-        timeEnd: "2:00 pm",
-        color: "indigo-500",
+        className: "Topics in Biology",
+        description: "The course description will be displayed here.",
+        locationLong: "Science Learning Center 100",
+        locationShort: "SLC 100",
+        prereq: "",
+        coreq: "BIOL 1103L",
+        professor: "Jane Doe",
+        semester: "Spring/Fall",
+        timeStart: "1:30 pm",
+        timeEnd: "2:20 pm",
+        timeDifference: null,
+        credits: 3,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "lake-herrick",
+
+        currentDay: "MWF",
+        otherTimes: ["","",""]
+
       },
     ],
+
     Thursday: [
       {
-        classTitle: "CSCI 1301",
-        timeStart: "8:35 am",
+        classTitle: "CSCI 1302",
+        className: "Software Development",
+        description: "The course description will be displayed here.",
+        locationLong: "Food Science 100",
+        locationShort: "Food Sci 100",
+        prereq: "ENGL 1102",
+        coreq: "",
+        professor: "John Doe",
+        semester: "Spring",
+        timeStart: "9:35 am",
         timeEnd: "10:50 am",
-        color: "green-600",
+        timeDifference: null,
+        credits: 4,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "bulldog-red",
+
+        currentDay: "TR",
+        otherTimes: 
+        [
+          "M",
+          "10:20 am - 11:10 am",
+          "Conner 100"
+        ],
+
       },
+
       {
-        classTitle: "PHYS 2000",
-        location: "Physics Building",
-        timeStart: "4:00 pm",
-        timeEnd: "5:00 pm",
-        color: "teal-500",
+        classTitle: "MUSI 2300",
+        className: "Music in Athens",
+        description: "The course description will be displayed here.",
+        locationLong: "Hugh Hudgson School of Music 100",
+        locationShort: "Hugh Hudgson 100",
+        prereq: "ENGL 1102",
+        coreq: "",
+        professor: "Jane Doe",
+        semester: "Spring",
+        timeStart: "12:45 pm",
+        timeEnd: "2:00 pm",
+        timeDifference: null,
+        credits: 3,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "lake-herrick",
+
+        currentDay: "TR",
+        otherTimes: ["","",""]
+
+      },
+
+      {
+        classTitle: "BIOL 1103L",
+        className: "Concepts in Biology Laboratory",
+        description: "The course description will be displayed here.",
+        locationLong: "Science Learning Center 100",
+        locationShort: "SLC 100",
+        prereq: "",
+        coreq: "BIOL 1103",
+        professor: "Jane Doe",
+        semester: "Spring/Fall",
+        timeStart: "2:20 pm",
+        timeEnd: "4:15 pm",
+        timeDifference: null,
+        credits: 1,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "lake-herrick",
+
+        currentDay: "R",
+        otherTimes: ["","",""]
+
       },
     ],
+
     Friday: [
       {
         classTitle: "CSCI 3030",
-        location: "Park Hall",
+        className: "Computing, Ethics, and Society",
+        description: "The course description will be displayed here.",
+        locationLong: "Boyd Research and Education Center 100",
+        locationShort: "Boyd 100",
+        prereq: "ENGL 1102",
+        coreq: "",
+        professor: "John Doe",
+        semester: "Spring",
         timeStart: "8:00 am",
-        timeEnd: "9:15 am",
-        color: "red-600",
+        timeEnd: "8:50 am",
+        timeDifference: null,
+        credits: 3,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "bulldog-red",
+
+        currentDay: "F",
+        otherTimes: 
+        [
+          "MW",
+          "8:00 - 8:50 am",
+          "Boyd 100"
+        ],
+
       },
+
       {
         classTitle: "BIOL 1103",
-        timeStart: "9:35 am",
-        timeEnd: "10:50 am",
-        color: "gray-600",
-      },
-      {
-        classTitle: "MUSIC 2300",
-        location: "Hugh Hodgson School of Music",
-        timeStart: "12:45 pm",
-        timeEnd: "2:00 pm",
-        color: "indigo-500",
+        className: "Topics in Biology",
+        description: "The course description will be displayed here.",
+        locationLong: "Science Learning Center 100",
+        locationShort: "SLC 100",
+        prereq: "",
+        coreq: "BIOL 1103L",
+        professor: "Jane Doe",
+        semester: "Spring/Fall",
+        timeStart: "1:30 pm",
+        timeEnd: "2:20 pm",
+        timeDifference: null,
+        credits: 3,
+        crn: 26510,
+        openSeats: 100,
+        maxSeats: 100,
+        waitlist: 0,
+        bgColor: "bulldog-red",
+
+        currentDay: "MWF",
+        otherTimes: ["","",""]
+
       },
     ],
 
     // Add more days as needed
   };
 
-  // Sorts the Classes by Start Time
+  // Sorts the classes by start time
   Object.keys(weekScheduleData).forEach((day) => {
     weekScheduleData[day]?.sort((a, b) => {
       const timeA = new Date(`1970/01/01 ${a.timeStart}`); // Any date can be used since we're only comparing times

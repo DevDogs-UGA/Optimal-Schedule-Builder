@@ -1,20 +1,30 @@
 import { useState } from "react";
 
-// TODO: Create an ARRAY of start and end times for each day. 
-
 interface ClassData {
   classTitle: string;
   className: string;
   description: string;
-  location: string;
+  locationLong: string;
+  locationShort: string;
+  prereq: string;
+  coreq: string;
+  professor: string;
+  semester: string;
+
+  credits: number;
+  crn: number;
+  openSeats: number;
+  maxSeats: number;
+  waitlist: number;
+
+  bgColor: string;
+
   timeStart: string;
   timeEnd: string;
   timeDifference: number | null; // Optional, can be number or null
-  professor: string;
-  semester: string;
-  credits: number;
-  crn: number;
-  color: string;
+
+  currentDay: string;
+  otherTimes: [string, string, string]; // Used to support classes with two or more locations/times
 }
 
 type DaySchedule = Record<string, ClassData[]>;
