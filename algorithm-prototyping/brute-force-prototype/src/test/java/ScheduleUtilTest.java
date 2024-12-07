@@ -154,6 +154,11 @@ public class ScheduleUtilTest {
     void testComputeAverageIdleTime() {
         // Compute the average idle time for each schedule within validTestSchedules by hand
         // Assert that ScheduleUtil.computeAverageIdleTime() returns the expected value for each schedule
+        assertEquals(20.0, ScheduleUtil.computeAverageIdleTime(validTestSchedules.get(0)), 0.1);
+        assertEquals(104.0, ScheduleUtil.computeAverageIdleTime(validTestSchedules.get(1)), 0.1);
+        assertEquals(83.3, ScheduleUtil.computeAverageIdleTime(validTestSchedules.get(2)), 0.1);
+        assertEquals(72.0, ScheduleUtil.computeAverageIdleTime(validTestSchedules.get(3)), 0.1);
+        assertEquals(60.0, ScheduleUtil.computeAverageIdleTime(validTestSchedules.get(4)), 0.1);
     }
 
     @Test
