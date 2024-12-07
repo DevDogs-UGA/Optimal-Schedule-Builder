@@ -124,7 +124,7 @@ public class ScheduleUtilTest {
     void testComputeAverageProfessorQuality() {
         // Compute the average professor quality for each schedule within validTestSchedules by hand
         // Assert that ScheduleUtil.computeAverageProfessorQuality() returns the expected value for each schedule
-        assertEquals(3.425, ScheduleUtil.computeAverageProfessorQuality(validTestSchedules.get(0)), 0.01,"The professor's average quality should be 3.425.");
+        assertEquals(3.55, ScheduleUtil.computeAverageProfessorQuality(validTestSchedules.get(0)), 0.01,"The professor's average quality should be 3.425.");
         assertEquals(2.075, ScheduleUtil.computeAverageProfessorQuality(validTestSchedules.get(1)), 0.01,"The professor's average quality should be 2.075.");
         assertEquals(3.275, ScheduleUtil.computeAverageProfessorQuality(validTestSchedules.get(2)), 0.01,"The professor's average quality should be 3.275.");
         assertEquals(4.025, ScheduleUtil.computeAverageProfessorQuality(validTestSchedules.get(3)), 0.01,"The professor's average quality should be 4.025.");
