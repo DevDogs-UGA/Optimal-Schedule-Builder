@@ -12,21 +12,18 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long>{
 
     //This will get a course by its unique ID
-    Course getById(Long id);
-
-    //@Query("select u from Course where u.title = ?1")
-    //Course getByTitle(String title);
+    Course findById(Long id);
 
     //This will get a list of Courses by their subject.
-    List<Course> findBySubject(String subject);
-    
-    // Find courses by Athena Name
-    List<Course> findByTitle(String title);
-
-    List<Course> findAllBySubject(String subject);   
+    List<Course> findAllBySubject(String subject); 
     
     //This will get a list of courses by the term they're offered in
     //The default findAll isn't compatible with a list as a parameter.
     @Query("SELECT c FROM Course c WHERE :semester MEMBER OF c.semesters")
     List<Course> findAllBySemester(@Param("semester") String semesters);
+
+    // Gets all courses by a certain credit hour
+    @Query("SELECT c FROM Course c JOIN c.courseSections cs WHERE cs.creditHoursLow <= :creditHours AND cs.creditHoursHigh >= :creditHours")
+    List<Course> findAllCoursesByCreditHours(double creditHours);
+
 }

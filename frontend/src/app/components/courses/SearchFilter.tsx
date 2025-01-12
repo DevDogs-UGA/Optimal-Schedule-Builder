@@ -1,17 +1,18 @@
+import { DropdownSearchInput } from "../ui/DropdownSearchInput";
+
 interface props {
   text?: string;
+  items?: string[];
+  className?: string;
 }
 
-export const SearchFilter = ({ text }: props) => {
+export const SearchFilter = ({ text, items, className }: props) => {
   return (
-    <div className="item-center flex flex-col sm:w-4/5 sm:flex-row sm:items-center sm:justify-between">
-      <label className="text-xl font-bold">{text}</label>
-      {/*TODO: replace placeholder w/ dropdown component*/}
-      <input
-        type="text"
-        className="border-2 border-dusty-pink sm:w-3/4"
-        placeholder="Dropdown Placeholder"
-      />
+    <div className={`sm:grid sm:grid-cols-5 sm:items-center ${className}`}>
+      <label className="col-start-1 text-xl font-bold">{text}</label>
+      <div className="col-span-3">
+        <DropdownSearchInput items={items} />
+      </div>
     </div>
   );
 };

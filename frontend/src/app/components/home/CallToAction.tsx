@@ -13,7 +13,7 @@ export function CallToAction() {
 
       {/* Right side button */}
       <Link
-        href="/schedules"
+        href="/manual-entry"
         className="OuterRingAnimation trasition relative right-8 flex items-center rounded-full bg-bulldog-red px-6 py-2 text-white duration-300 ease-in-out hover:bg-[#8b0923]"
       >
         <span className="mr-2 w-24 text-left font-bold md:w-40 md:p-2">
