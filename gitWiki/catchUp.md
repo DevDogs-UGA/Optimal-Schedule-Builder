@@ -21,7 +21,20 @@ The Optimal Schedule Builder is a collaborative project aimed at creating a self
   - All incomplete components should be added to the figma page and please follow these [Idenity Guidelines](https://cdn.discordapp.com/attachments/1284961011937579070/1293684841136521287/D-DevDogs_Identity_Guidelines-091024-212033.pdf?ex=6784db25&is=678389a5&hm=8ad78c2aff11663c1ad8223a0d3f60a8571b2855c0cb61adb77d136b979e101c&)
 - **Technologies**:  
   - Figma
-
+### Frontend Team
+- **Purpose**: Create components that the user can interact with. Be able to provide the user with data from the backend team.
+- **Key Accomplishments**:
+  - Created a variety of functions that builds the pages.
+  - Created Schedule View, Landing, Home page, ect. 
+  - Followed UI/UX team's designs and turned it into code. 
+- **Technologies** 
+  - Node.js
+  - React
+  - Next.js
+  - Tailwind
+  - npm
+  - HTML/CSS
+  - Add setup guide here!
 ### Backend/API Team
 - **Purpose**: Build and maintain the engine that connects the platform. Pull and manipulate data from various PDFs to supply data for users. 
 - **Key Accomplishments**:
@@ -61,7 +74,8 @@ The Optimal Schedule Builder is a collaborative project aimed at creating a self
 ## Getting Started
 
 ### 1. Set Up Your Environment
-- Clone the [GitHub Repository](https://github.com) and configure your local environment.
+- Create a fork of the [GitHub Repository](https://github.com)
+- Clone your new fork into your preferred IDE with Github desktop or your terminal.
 - Join the team’s [Discord](https://tr.ee/P6YXvatLRr) and follow the prompts to set it up.
 
 ### 2. Collaborate
@@ -82,6 +96,7 @@ The Optimal Schedule Builder is a collaborative project aimed at creating a self
    - [What can you do?](https://drive.google.com/drive/folders/12CMaCdlPhXakWvbCUI7aVio1-fjOjGXF?usp=drive_link)
 - **How you can help**
    - [Github Projects](https://github.com/orgs/DevDogs-UGA/projects/3/views/1)
+   - If you're new to github try out Kelsey's [Github tutorial!](https://youtu.be/qKFXYS6jzaI)
 - **Linktree**
    We use our Linktree to post any invitations, applications, our website link and more!  [click here](https://linktr.ee/devdogs)
 ---
