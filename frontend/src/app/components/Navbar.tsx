@@ -3,6 +3,48 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Notifications from "./Notifications";
+
+// Simulate request to backend.
+let notifications = [
+  {
+    id: "1",
+    content: (
+      <p className="flex flex-col gap-2">
+        A spot has opened up in one of your saved classes (&ldquo;class name
+        here&rdquo;)!{" "}
+        <Link
+          className="text-sky-600 underline"
+          href="https://athena.uga.edu"
+          target="_blank"
+        >
+          Register now on Athena
+        </Link>
+      </p>
+    ),
+  },
+  {
+    id: "2",
+    content: (
+      <p className="flex flex-col gap-2">
+        One of your saved classes is almost completely filled!
+        <Link
+          className="text-sky-600 underline"
+          href="https://athena.uga.edu"
+          target="_blank"
+        >
+          Register now on Athena
+        </Link>
+      </p>
+    ),
+  },
+];
+
+async function closeNotification(id: string) {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  notifications = notifications.filter((item) => item.id !== id);
+  return { success: true };
+}
 
 // Custom hook for scroll direction
 function useScrollDirection() {
@@ -97,6 +139,10 @@ export function Navbar() {
               Contact
             </button>
           </Link>
+          <Notifications
+            initialItems={notifications}
+            closeAction={closeNotification}
+          />
         </div>
 
         {/* Mobile Dropdown */}
@@ -117,6 +163,10 @@ export function Navbar() {
                 Contact
               </button>
             </Link>
+            <Notifications
+              initialItems={notifications}
+              closeAction={closeNotification}
+            />
           </div>
         )}
       </div>
