@@ -11,7 +11,12 @@ import {
   useReducer,
   useState,
 } from "react";
-import { PiBellFill, PiTrayDuotone, PiXBold } from "react-icons/pi";
+import {
+  PiBellBold,
+  PiBellFill,
+  PiTrayDuotone,
+  PiXBold
+} from "react-icons/pi";
 
 const MobileDisplay = {
   Root: Dialog.Root,
@@ -116,10 +121,11 @@ export default function Notifications({ initialItems, closeAction }: Props) {
 
   return (
     <Root>
-      <Trigger className="group relative mx-4 mb-3 mt-1.5 cursor-default rounded-full border-2 border-bulldog-red/30 p-1.5 text-xl text-black transition-colors hover:border-bulldog-red/60 hover:bg-glory-glory-red/10 data-[state=open]:border-bulldog-red/60 data-[state=open]:bg-glory-glory-red/10 sm:m-0">
-        <PiBellFill />
+      <Trigger className="group relative cursor-default rounded-full border-2 border-bulldog-red/30 p-1 text-lg sm:text-xl text-black transition-colors hover:border-bulldog-red/60 hover:bg-glory-glory-red/10 data-[state=open]:border-bulldog-red/60 data-[state=open]:bg-glory-glory-red/10 sm:p-1.5">
+        <PiBellFill className="hidden sm:block" />
+        <PiBellBold className="sm:hidden" />
         {items.length > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full bg-bulldog-red transition-transform group-data-[state=open]:scale-0" />
+          <span className="absolute -top-px -right-px sm:-right-0.5 sm:-top-0.5 size-2 sm:size-2.5 rounded-full bg-bulldog-red transition-transform group-data-[state=open]:scale-0" />
         )}
       </Trigger>
       <Content>
@@ -137,7 +143,7 @@ export default function Notifications({ initialItems, closeAction }: Props) {
             {items.map(({ id, content }) => (
               <Accordion.Item key={id} value={id}>
                 <Accordion.Content className="data-[state=closed]:animate-collapse -mt-0.5 overflow-hidden border-b-2 border-bulldog-red/30">
-                  <div className="flex gap-2 px-4 pb-4 pt-[1.125rem] items-start">
+                  <div className="flex items-start gap-2 px-4 pb-4 pt-[1.125rem]">
                     <div className="flex-1">{content}</div>
                     <button
                       className="rounded-full p-0.5 text-mud-gray transition-colors hover:bg-dusty-pink hover:text-black"
