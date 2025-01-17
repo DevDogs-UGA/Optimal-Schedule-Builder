@@ -19,7 +19,7 @@ const MobileDisplay = {
   Content: ({ children }: PropsWithChildren) => {
     return (
       <Dialog.Portal>
-        <Dialog.Overlay className="data-[state=open]:animate-fadeInOverlay fixed left-0 top-0 z-[999] flex h-[100lvh] w-[100lvw] flex-col justify-end bg-black/40">
+        <Dialog.Overlay className="fixed left-0 top-0 z-[999] flex h-[100lvh] w-[100lvw] flex-col justify-end bg-black/40 data-[state=open]:animate-fadeInOverlay">
           <Dialog.Content
             aria-describedby={undefined}
             className="shadow-x flex h-[60dvh] w-screen flex-col overflow-hidden rounded-t-xl border-2 border-b-0 border-bulldog-red/60 bg-zinc-100 focus:outline-none data-[state=open]:animate-slideUp"
@@ -43,7 +43,7 @@ const DesktopDisplay = {
           align="end"
           sideOffset={8}
           alignOffset={-8}
-          className="data-[state=open]:animate-slideUpAndFadeIn relative z-[9999] flex h-96 w-80 flex-col overflow-hidden rounded-md border-2 border-bulldog-red/60 bg-zinc-100 shadow-xl"
+          className="relative z-[9999] flex h-96 w-80 flex-col overflow-hidden rounded-md border-2 border-bulldog-red/60 bg-zinc-100 shadow-xl data-[state=open]:animate-slideUpAndFadeIn"
         >
           {children}
         </Popover.Content>
@@ -137,7 +137,7 @@ export default function Notifications({ initialItems, closeAction }: Props) {
           >
             {items.map(({ id, content }) => (
               <Accordion.Item key={id} value={id}>
-                <Accordion.Content className="data-[state=closed]:animate-collapse -mt-0.5 overflow-hidden border-b-2 border-bulldog-red/30">
+                <Accordion.Content className="-mt-0.5 overflow-hidden border-b-2 border-bulldog-red/30 data-[state=closed]:animate-collapse">
                   <div className="flex items-start gap-2 px-4 pb-4 pt-[1.125rem]">
                     <div className="flex-1">{content}</div>
                     <button
