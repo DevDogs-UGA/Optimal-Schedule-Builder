@@ -11,12 +11,7 @@ import {
   useReducer,
   useState,
 } from "react";
-import {
-  PiBellBold,
-  PiBellFill,
-  PiTrayDuotone,
-  PiXBold
-} from "react-icons/pi";
+import { PiBellBold, PiBellFill, PiTrayDuotone, PiXBold } from "react-icons/pi";
 
 const MobileDisplay = {
   Root: Dialog.Root,
@@ -121,11 +116,11 @@ export default function Notifications({ initialItems, closeAction }: Props) {
 
   return (
     <Root>
-      <Trigger className="group relative cursor-default rounded-full border-2 border-bulldog-red/30 p-1 text-lg sm:text-xl text-black transition-colors hover:border-bulldog-red/60 hover:bg-glory-glory-red/10 data-[state=open]:border-bulldog-red/60 data-[state=open]:bg-glory-glory-red/10 sm:p-1.5">
+      <Trigger className="group relative cursor-default rounded-full border-2 border-bulldog-red/30 p-1 text-lg text-black transition-colors hover:border-bulldog-red/60 hover:bg-glory-glory-red/10 data-[state=open]:border-bulldog-red/60 data-[state=open]:bg-glory-glory-red/10 sm:p-1.5 sm:text-xl">
         <PiBellFill className="hidden sm:block" />
         <PiBellBold className="sm:hidden" />
         {items.length > 0 && (
-          <span className="absolute -top-px -right-px sm:-right-0.5 sm:-top-0.5 size-2 sm:size-2.5 rounded-full bg-bulldog-red transition-transform group-data-[state=open]:scale-0" />
+          <span className="absolute -right-px -top-px size-2 rounded-full bg-bulldog-red transition-transform group-data-[state=open]:scale-0 sm:-right-0.5 sm:-top-0.5 sm:size-2.5" />
         )}
       </Trigger>
       <Content>
