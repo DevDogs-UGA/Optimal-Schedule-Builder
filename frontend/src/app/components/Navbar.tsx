@@ -83,7 +83,10 @@ export function Navbar() {
       data-state={isDropdownOpen ? "open" : "closed"}
     >
       {/* Logo and Title */}
-      <Link href="/" className="flex flex-1 items-center gap-4 bg-inherit py-3 sm:py-0">
+      <Link
+        href="/"
+        className="flex flex-1 items-center gap-4 bg-inherit py-3 sm:py-0"
+      >
         <Image
           className="block"
           src="/images/blackpaw.svg"
@@ -94,7 +97,7 @@ export function Navbar() {
         <h1 className="text-3xl font-bold">DogDays</h1>
       </Link>
 
-      <ul className="absolute left-0 top-full -z-10 flex w-full sm:w-auto -translate-y-full sm:translate-y-0 flex-col flex-nowrap border-[#F8E6EA]/40 bg-[#F8E6EA]/80 pb-3 text-xl font-bold opacity-0 shadow-lg backdrop-blur-[0.5rem] transition-all group-data-[state=open]:translate-y-0 group-data-[state=open]:opacity-100 sm:relative sm:z-auto sm:flex-row sm:gap-[inherit] sm:justify-end sm:p-0 sm:opacity-100 sm:shadow-none">
+      <ul className="absolute left-0 top-full -z-10 flex w-full -translate-y-full flex-col flex-nowrap border-[#F8E6EA]/40 bg-[#F8E6EA]/80 pb-3 text-xl font-bold opacity-0 shadow-lg backdrop-blur-[0.5rem] transition-all group-data-[state=open]:translate-y-0 group-data-[state=open]:opacity-100 sm:relative sm:z-auto sm:w-auto sm:translate-y-0 sm:flex-row sm:justify-end sm:gap-[inherit] sm:p-0 sm:opacity-100 sm:shadow-none">
         <li className="contents">
           <Link
             className="px-6 py-3 transition hover:bg-bulldog-red/40 sm:rounded-lg sm:py-1 md:px-4"
