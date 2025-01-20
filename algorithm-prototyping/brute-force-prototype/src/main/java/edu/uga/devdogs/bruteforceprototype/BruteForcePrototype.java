@@ -10,6 +10,18 @@ import java.util.*;
 public class BruteForcePrototype {
 
     /**
+     * Cleans the data being sent into the algorithm to account for certain hard constraints.
+     *
+     * @param inputCourses a set of courses given to be used in the user's algorithm.
+     * @return a set of courses cleaned per the user's specification
+     */
+    public static Set<Course> dataPreFilter(Set<Course> inputCourses) {
+
+
+        return inputCourses;
+    }
+
+    /**
      * Generates the optimal schedule based on the input courses, distances, and weights.
      * Iterates through each valid schedule from {@code generateValidSchedules(inputCourses)},
      * computes the overall objective score for each using
@@ -49,7 +61,7 @@ public class BruteForcePrototype {
      * @return the set of unique, valid schedules for the given set of courses
      */
     public static Set<Schedule> generateValidSchedules(Set<Course> inputCourses) {
-        List<Course> courseList = new ArrayList<>(inputCourses);
+        List<Course> courseList = new ArrayList<>(dataPreFilter(inputCourses));
         Set<Section> sectionList = new HashSet<>();
         HashSet<Schedule> validSchedules = new HashSet<>();
 
