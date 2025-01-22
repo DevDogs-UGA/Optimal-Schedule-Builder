@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import React, { useState } from "react";
 import RegisteredClass from "./RegisteredClass";
 import Image from "next/Image";
 
 //TODO: replace dummy courseData
-//Depending on how the data is stored and the way it is stored, this component will have to be adjusted
+//Depending on how the data is stored, this component will have to be adjusted
 
 //Dummy Data
 const courseData = [
@@ -37,18 +39,20 @@ const courseData = [
     courseNumber: "0",
     courseName: "Class Name",
   },
+  {
+    subject: "Sufdsafdsabject",
+    courseNumber: "0",
+    courseName: "Class Name",
+  },
 ];
 
 //Display lists of selected courses
 const CourseDisplay = () => {
-  useEffect(() => {
-    setCourseList(courseData);
-  }, [courseData]);
-
   const removeCourse = (index: number) => {
     setCourseList(courseList.filter((_, i) => i !== index));
   };
 
+  //State for the selected courses
   const [courseList, setCourseList] = useState(courseData);
 
   return (
@@ -59,9 +63,9 @@ const CourseDisplay = () => {
         {courseList.map((course, index) => (
           <RegisteredClass
             key={index}
-            coursePrefix={course.subject}
-            classNumber={course.courseNumber}
-            fullClassName={course.courseName}
+            subject={course.subject}
+            courseNumber={course.courseNumber}
+            courseName={course.courseName}
             onClick={() => removeCourse(index)}
           />
         ))}
