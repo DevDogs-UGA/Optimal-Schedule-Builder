@@ -53,6 +53,9 @@ public class BruteForcePrototype {
             sortedOverallObjectives.add(i, overallObjective);
         }
 
+        if (sortedSchedules.size() < 5){
+            return sortedSchedules;
+        }
         return sortedSchedules.subList(0,5);
     }
 
