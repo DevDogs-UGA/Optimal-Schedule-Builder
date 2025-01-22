@@ -1,37 +1,24 @@
-"use client";
-import React from "react";
-import Image from "next/Image";
+import RemoveElementButton from "../ui/RemoveElementButton";
 
 interface RegisteredClassProps {
-  classHeading: string;
+  coursePrefix: string;
   classNumber: string;
   fullClassName: string;
   onClick: () => void;
 }
 
+//Course component to show the class major, number, and name
 const RegisteredClass = ({
-  classHeading,
+  coursePrefix,
   classNumber,
   fullClassName,
   onClick,
 }: RegisteredClassProps) => {
   return (
     <div className="flex min-w-60 bg-white py-1 pl-8 hover:brightness-95">
-      <button
-        className="h-8 w-8 flex-shrink-0 rounded-sm"
-        title="Remove Course"
-        onClick={() => onClick()}
-      >
-        <Image
-          src="images/removeButton.svg"
-          alt="Remove Course"
-          width={20}
-          height={20}
-          className="rounded-sm"
-        />
-      </button>
+      <RemoveElementButton height={20} width={20} onClick={onClick} />
       <div className="overflow-hidden text-ellipsis">
-        <h1 className="font-bold">{`${classHeading} ${classNumber}`}</h1>
+        <h1 className="font-bold">{`${coursePrefix} ${classNumber}`}</h1>
         <span className="text-nowrap">{fullClassName}</span>
       </div>
     </div>
