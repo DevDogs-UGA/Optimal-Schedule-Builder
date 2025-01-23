@@ -58,7 +58,7 @@ const CourseDisplay = () => {
   return (
     <div className="relative">
       {/* Container for course list */}
-      <div className="no-scrollbar relative flex h-80 flex-1 flex-col overflow-y-scroll scroll-smooth border-4 border-dusty-pink bg-white py-4">
+      <div className="no-scrollbar relative flex h-80 flex-1 flex-col overflow-x-hidden overflow-y-scroll scroll-smooth border-4 border-dusty-pink bg-white py-4">
         {/*Course item */}
         {courseList.map((course, index) => (
           <RegisteredClass
