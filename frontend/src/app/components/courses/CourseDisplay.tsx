@@ -71,7 +71,7 @@ const CourseDisplay = () => {
         ))}
       </div>
       {/* Styling div to add spacing and hold down arrow notification in case there is more items */}
-      <div className="absolute bottom-0 left-0 flex h-6 w-full justify-center bg-white">
+      <div className="absolute bottom-0 left-0 flex h-6 w-full justify-center border-4 border-t-0 border-dusty-pink bg-white">
         {courseList.length > 5 && (
           <Image
             src="/images/downArrow.svg"

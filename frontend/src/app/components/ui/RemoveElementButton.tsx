@@ -19,6 +19,7 @@ const RemoveElementButton = ({ width, height, onClick }: buttonProps) => {
         width={width}
         height={height}
         className="rounded-sm"
+        draggable="false"
       />
     </button>
   );
