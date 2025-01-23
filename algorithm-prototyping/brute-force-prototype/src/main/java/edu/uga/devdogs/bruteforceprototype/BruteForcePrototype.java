@@ -83,6 +83,8 @@ public class BruteForcePrototype {
      * schedules with time conflicts.
      * Uses helper function {@code recurGenerateValidSchedules()} to generate schedules and record them
      *
+     * If the courses inputted do not pass the dataPreFilter, this function will return null.
+     *
      * @param inputCourses the set of courses to generate schedules from
      * @return the set of unique, valid schedules for the given set of courses
      */
