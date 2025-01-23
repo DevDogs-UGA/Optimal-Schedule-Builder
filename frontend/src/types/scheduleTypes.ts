@@ -18,6 +18,7 @@ interface ClassData {
   waitlist: number;
 
   bgColor: string;
+  borderColor: string;
 
   timeStart: string;
   timeEnd: string;
