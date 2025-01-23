@@ -78,7 +78,7 @@ const CourseDisplay = () => {
             width={30}
             height={30}
             alt="scroll down"
-            className="animate-bounce object-contain"
+            className="h-auto w-auto animate-bounce object-contain"
           ></Image>
         )}
       </div>

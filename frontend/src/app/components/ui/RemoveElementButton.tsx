@@ -18,7 +18,7 @@ const RemoveElementButton = ({ width, height, onClick }: buttonProps) => {
         alt="Remove Course"
         width={width}
         height={height}
-        className="rounded-sm"
+        className="h-auto w-auto rounded-sm"
         draggable="false"
       />
     </button>
