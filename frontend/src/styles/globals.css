@@ -43,6 +43,20 @@ h6 {
   TODO: Add the dark mode styles here
 } */
 
+/* For Safari and Chrome */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* For older Safari versions */
+.no-scrollbar::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+/* For Internet Explorer and Edge */
+.no-scrollbar {
+  -ms-overflow-style: none;
+}
+
 .OuterRingAnimation {
   /* background: black; */
   text-align: center;
