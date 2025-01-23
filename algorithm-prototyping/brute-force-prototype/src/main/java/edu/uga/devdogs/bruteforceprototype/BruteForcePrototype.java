@@ -5,58 +5,37 @@ import edu.uga.devdogs.bruteforceprototype.schedule.ScheduleUtil;
 import edu.uga.devdogs.sampledataparser.records.Course;
 import edu.uga.devdogs.sampledataparser.records.Section;
 
-import java.sql.Array;
 import java.util.*;
 
 public class BruteForcePrototype {
 
     /**
-     * Cleans the data being sent into the algorithm to account for certain hard constraints.
-     *
-     * @param inputCourses a set of courses given to be used in the user's algorithm.
-     * @return a set of courses cleaned per the user's specification
-     */
-    public static Set<Course> dataPreFilter(Set<Course> inputCourses) {
-
-
-        return inputCourses;
-    }
-
-    /**
      * Generates the optimal schedule based on the input courses, distances, and weights.
      * Iterates through each valid schedule from {@code generateValidSchedules(inputCourses)},
-     * Uses a makeshift priority queue to sort all the schedules that obey the hard constraints
-     * using the overall objective score for each schedule using
+     * computes the overall objective score for each using
      * {@code ScheduleUtil.computeOverallObjective(schedule, distances, weights)},
-     * and returns the first five items of the list.
+     * and returns the schedule with the highest score.
      *
      * @param inputCourses a set of courses to generate an optimal schedule from
      * @param distances a nested string map that represents distances between buildings on campus
      * @param weights an array of floats representing the weights for each objective
-     * @return the five schedules with the highest overall objective score based on the input courses and weights
+     * @return the schedule with the highest overall objective score based on the input courses and weights
      */
-    public static List<Schedule> optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights) {
+    public static Schedule optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights) {
         Set<Schedule> validSchedules = generateValidSchedules(inputCourses);
 
-        List<Schedule> sortedSchedules = new ArrayList<>();
-        List<Double> sortedOverallObjectives = new ArrayList<>();
-
+        Schedule optimalSchedule = null;
+        double optimalOverallObjective = 0;
 
         for (Schedule schedule : validSchedules) {
             double overallObjective = ScheduleUtil.computeOverallObjective(schedule, distances, weights);
-
-            int i = sortedSchedules.size();
-            while (i != 0 && overallObjective > sortedOverallObjectives.get(i-1)) {
-                i--;
+            if(overallObjective > optimalOverallObjective) {
+                optimalSchedule = schedule;
+                optimalOverallObjective = overallObjective;
             }
-            sortedSchedules.add(i, schedule);
-            sortedOverallObjectives.add(i, overallObjective);
         }
 
-        if (sortedSchedules.size() < 5){
-            return sortedSchedules;
-        }
-        return sortedSchedules.subList(0,5);
+        return optimalSchedule;
     }
 
 
@@ -70,7 +49,7 @@ public class BruteForcePrototype {
      * @return the set of unique, valid schedules for the given set of courses
      */
     public static Set<Schedule> generateValidSchedules(Set<Course> inputCourses) {
-        List<Course> courseList = new ArrayList<>(dataPreFilter(inputCourses));
+        List<Course> courseList = new ArrayList<>(inputCourses);
         Set<Section> sectionList = new HashSet<>();
         HashSet<Schedule> validSchedules = new HashSet<>();
 

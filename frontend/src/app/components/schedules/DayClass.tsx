@@ -118,15 +118,14 @@ function CourseInfo({
   maxSeats,
   waitlist,
   bgColor,
-  borderColor,
   timeStart,
   timeEnd,
   currentDay,
   otherTimes,
 }: DayClassProps) {
   // Borders
-  const outerBorder = `border-b-2 border-r-2 border-l-2 ${borderColor} rounded-3xl`;
-  const innerBorder = `border-r-2 ${borderColor}`;
+  const outerBorder = `border-b-2 border-r-2 border-l-2 border-${bgColor} rounded-3xl`;
+  const innerBorder = `border-r-2 border-${bgColor}`;
   // Dynamic dimensions based on browser window size
   const { width, height } = useResize();
   // Store class times and locations for the whole week
@@ -152,7 +151,7 @@ function CourseInfo({
         }}
       >
         {/* Header: Course name and CRN */}
-        <div className={`relative z-50 ${bgColor} rounded-3xl p-8`}>
+        <div className={`relative z-50 bg-${bgColor} rounded-3xl p-8`}>
           <div className="text-right font-bold text-white/90">
             <p>CRN: {crn}</p>
           </div>
@@ -301,7 +300,6 @@ export default function DayClass({
   maxSeats,
   waitlist,
   bgColor,
-  borderColor,
   timeStart,
   timeEnd,
   timeDifference,
@@ -317,7 +315,7 @@ export default function DayClass({
   return (
     <div className={`relative ${className}`} onClick={courseBlockInfo}>
       <div
-        className={`w-full rounded-lg p-4 transition duration-150 ease-in-out hover:bg-black ${bgColor} flex justify-between`}
+        className={`w-full rounded-lg p-4 transition duration-150 ease-in-out hover:bg-black bg-${bgColor} flex justify-between`}
         style={{
           position: "absolute",
           top: timeDifference ? `${timeDifference * 0.9}px` : "0px",
@@ -351,7 +349,6 @@ export default function DayClass({
           maxSeats={maxSeats}
           waitlist={waitlist}
           bgColor={bgColor}
-          borderColor={borderColor}
           timeStart={timeStart}
           timeEnd={timeEnd}
           timeDifference={timeDifference}

@@ -13,9 +13,9 @@ export default function SavedPlans() {
       <div className="flex h-[calc(100vh-5rem)] flex-grow flex-col items-center justify-center text-center">
         <div className="space-y-4">
           <h1 className="text-4xl font-bold md:text-6xl">Saved Plans Page</h1>
-          <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
+          <div className="text-blue-600">
             <Link href={"/schedules"}>Schedule View</Link>
-          </button>
+          </div>
         </div>
       </div>
     </div>
