@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import RegisteredClass from "./RegisteredClass";
-import Image from "next/Image";
+import Image from "next/image";
 
 //TODO: replace dummy courseData
 //Depending on how the data is stored, this component will have to be adjusted
