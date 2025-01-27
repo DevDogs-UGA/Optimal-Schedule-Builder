@@ -195,4 +195,20 @@ public class CourseInfoController {
         }
     }
 
+    @Operation(summary = "Get all buildings", description = "Retrieves a list of all building objects.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Buildings found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/buildings")
+    @Tag(name="course-information")
+    public ResponseEntity<List<Building>> getAllBuildings() {
+        try {
+            List<Building> buildings = courseInformationService.getAllBuildings();
+            return ResponseEntity.ok(buildings);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }
