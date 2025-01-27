@@ -3,6 +3,7 @@ package edu.uga.devdogs.bruteforceprototype;
 import edu.uga.devdogs.bruteforceprototype.schedule.Schedule;
 import edu.uga.devdogs.bruteforceprototype.schedule.ScheduleUtil;
 import edu.uga.devdogs.sampledataparser.records.Course;
+import edu.uga.devdogs.sampledataparser.records.SConstraints;
 import edu.uga.devdogs.sampledataparser.records.Section;
 
 import java.sql.Array;
@@ -14,10 +15,11 @@ public class BruteForcePrototype {
      * Cleans the data being sent into the algorithm to account for certain hard constraints.
      *
      * @param inputCourses a set of courses given to be used in the user's schedule.
+     * @param currentConstraints the constraints currently constraining schedule creation.
      * @throws Exception if {@code inputCourses} is not compliant with the filter.
      * @return a set of courses cleaned per the user's specification
      */
-    public static Set<Course> dataPreFilter(Set<Course> inputCourses) throws Exception {
+    public static Set<Course> dataPreFilter(Set<Course> inputCourses, SConstraints currentConstraints) throws Exception {
         if (inputCourses.size() > 10){
             throw new Exception("Input course list contains more than ten courses.");
         }
@@ -38,10 +40,11 @@ public class BruteForcePrototype {
      * @param inputCourses a set of courses to generate an optimal schedule from
      * @param distances a nested string map that represents distances between buildings on campus
      * @param weights an array of floats representing the weights for each objective
+     * @param constraints the soft constraints on the schedule
      * @return the five schedules with the highest overall objective score based on the input courses and weights
      */
-    public static List<Schedule> optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights) {
-        Set<Schedule> validSchedules = generateValidSchedules(inputCourses);
+    public static List<Schedule> optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights, SConstraints constraints) {
+        Set<Schedule> validSchedules = generateValidSchedules(inputCourses, constraints);
 
         if (validSchedules == null) {
             // If validSchedules is null, it means that there was an exception from dataPreFilter;
@@ -86,13 +89,14 @@ public class BruteForcePrototype {
      * If the courses inputted do not pass the dataPreFilter, this function will return null.
      *
      * @param inputCourses the set of courses to generate schedules from
+     * @param constraints the soft constraints on the schedule
      * @return the set of unique, valid schedules for the given set of courses
      */
-    public static Set<Schedule> generateValidSchedules(Set<Course> inputCourses) {
+    public static Set<Schedule> generateValidSchedules(Set<Course> inputCourses, SConstraints constraints) {
         List<Course> courseList;
 
         try{
-            courseList = new ArrayList<>(dataPreFilter(inputCourses));
+            courseList = new ArrayList<>(dataPreFilter(inputCourses, constraints));
         } catch (Exception e){
             // Boilerplate error handling; We can probably decide on a better method for handling errors later.
             System.out.println(e.getMessage());
