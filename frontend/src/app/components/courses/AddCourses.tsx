@@ -34,7 +34,7 @@ export const AddCourses = () => {
   const CRNData: string[] = [];
 
   return (
-    <div className="min-w-full">
+    <div className="min-w-full h-full">
       <div className="flex gap-2">
         {tabs.map((tab, index) => (
           <TabButton
@@ -49,7 +49,7 @@ export const AddCourses = () => {
           />
         ))}
       </div>
-      <main className="justify-between gap-4 border-2 border-dusty-pink bg-barely-pink px-12 py-8">
+      <main className="justify-between gap-4 border-4 border-dusty-pink bg-barely-pink px-12 py-11">
         <div className="items-center justify-center space-y-8 py-16">
           {currentTab === 0 && (
             <>
