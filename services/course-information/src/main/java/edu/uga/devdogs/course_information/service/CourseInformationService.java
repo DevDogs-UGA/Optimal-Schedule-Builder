@@ -192,4 +192,19 @@ public class CourseInformationService {
             throw new CourseNotFoundException("Course not found for Athena name: " + athenaName);
         }
     }
+
+     /**
+     * Retreives a list of all buildings
+     *
+     *  @return List of all building bojects
+     * @throws BuildingNotFoundException if no buildigns are found
+     */
+    public List<Building> getAllBuildings() {
+        List<Building> buildings = buildingRepository.findAll();
+        if (buildings != null) {
+            return buildings;
+        } else {
+            throw new BuildingNotFoundException("No Buildings Found");
+        }
+    }
 }
