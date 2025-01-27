@@ -16,11 +16,15 @@ export default function Courses() {
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-8 md:flex-row">
             <div className="w-full md:w-2/3">
-              <h1 className="p-2 pl-1 text-3xl font-black">Add Courses</h1>
+              <h1 className="p-2 pl-1 text-center text-3xl font-black md:text-left">
+                Add Courses
+              </h1>
               <AddCourses />
             </div>
             <div className="w-full md:w-1/3">
-              <h1 className="p-2 pl-1 text-3xl font-black">Courses</h1>
+              <h1 className="p-2 pl-1 text-center text-3xl font-black md:text-left">
+                Courses
+              </h1>
               <CourseDisplay />
             </div>
           </div>
