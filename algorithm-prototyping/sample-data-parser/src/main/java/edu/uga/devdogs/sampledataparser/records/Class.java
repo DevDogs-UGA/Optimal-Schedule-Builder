@@ -13,7 +13,7 @@ import java.util.List;
  * @param endTime      The end time of the class.
  * @param buildingName The name of the building where the class is held.
  */
-public record Class(String crn,
+public record Class(int crn,
                     List<DayOfWeek> days,
                     LocalTime startTime,
                     LocalTime endTime,
