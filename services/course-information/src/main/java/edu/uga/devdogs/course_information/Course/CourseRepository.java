@@ -19,4 +19,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     
     // Find courses by Athena Name
     List<Course> findByTitle(String Title);
+
+    // Gets course info by course ID
+    List<Course> getCourseInforById(Long id);
 }
