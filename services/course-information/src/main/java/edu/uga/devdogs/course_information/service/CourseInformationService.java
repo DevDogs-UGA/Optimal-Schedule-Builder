@@ -7,6 +7,8 @@ import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
 import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
+import edu.uga.devdogs.course_information.Building.Building;
+import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,13 +46,15 @@ public class CourseInformationService {
     private final CourseSectionRepository courseSectionRepository;
     private final ClassRepository classRepository;
     private final CourseRepository courseRepository;
+    private final BuildingRepository buildingRepository;
 
     //Use constructor to inject
     @Autowired
-    public CourseInformationService(CourseSectionRepository courseSectionRepository, ClassRepository classRepository, CourseRepository courseRepository) {
+    public CourseInformationService(CourseSectionRepository courseSectionRepository, ClassRepository classRepository, CourseRepository courseRepository, BuildingRepository buildingRepository) {
         this.courseSectionRepository = courseSectionRepository;
         this.classRepository = classRepository;
         this.courseRepository = courseRepository;
+        this.buildingRepository = buildingRepository;
     }
 
     /**
