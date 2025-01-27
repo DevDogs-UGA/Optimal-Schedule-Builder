@@ -34,7 +34,7 @@ export const AddCourses = () => {
   const CRNData: string[] = [];
 
   return (
-    <div className="min-w-full h-full">
+    <div className="h-full min-w-full">
       <div className="flex gap-2">
         {tabs.map((tab, index) => (
           <TabButton

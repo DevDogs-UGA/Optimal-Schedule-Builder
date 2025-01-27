@@ -1,5 +1,3 @@
-
-
 interface ClassData {
   classTitle: string;
   className: string;
