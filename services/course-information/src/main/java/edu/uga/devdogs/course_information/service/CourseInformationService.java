@@ -50,11 +50,11 @@ public class CourseInformationService {
 
     //Use constructor to inject
     @Autowired
-    public CourseInformationService(CourseSectionRepository courseSectionRepository, ClassRepository classRepository, CourseRepository courseRepository, BuildingRepository buildingRespRepository) {
+    public CourseInformationService(CourseSectionRepository courseSectionRepository, ClassRepository classRepository, CourseRepository courseRepository, BuildingRepository buildingRepository) {
         this.courseSectionRepository = courseSectionRepository;
         this.classRepository = classRepository;
         this.courseRepository = courseRepository;
-        this.buildingRepository = buildingRespRepository;
+        this.buildingRepository = buildingRepository;
     }
 
     /**
