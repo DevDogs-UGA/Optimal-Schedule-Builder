@@ -82,8 +82,8 @@ public class CourseInformationService {
             Set<String> seenTimes = new HashSet<>();
 
 
-            List<Class> timeStartReturnList = classRepository.findByStartTime(startTime);
-            List<Class> timeEndReturnList = classRepository.findByEndTimeBetween(endTime, endTime);
+            List<Class> timeStartReturnList = classRepository.findAllByStartTime(startTime);
+            List<Class> timeEndReturnList = classRepository.findAllByEndTimeBetween(endTime, endTime);
 
             // Create a map to store elements from timeEndReturnList by their time properties
             Map<String, Class> endTimeMap = new HashMap<>();
@@ -101,7 +101,6 @@ public class CourseInformationService {
                     seenTimes.add(key); // Mark as seen
                 }
             }
-
             if (timeReturnList != null)
                 return timeReturnList;
             else
@@ -120,8 +119,8 @@ public class CourseInformationService {
      */
     public CourseSection getSectionDetailsByCrn(String crn){
         CourseSection returnList;
-
-        returnList = SectionDetailsJPAFile.getSectionDetailsByCrn(crn);
+        int intcrn = Integer.parseInt(crn);
+        returnList = courseSectionRepository.findByCrn(intcrn);
 
         if (returnList != null)
             return returnList;
@@ -139,7 +138,7 @@ public class CourseInformationService {
     public List<Course> getCoursesByMajor(String major) {
         List<Course> returnList;
 
-        returnList = courseRepository.findBySubject(major);
+        returnList = courseRepository.findAllBySubject(major);
 
         if (returnList != null) {
             return returnList;
@@ -158,7 +157,7 @@ public class CourseInformationService {
     public List<CourseSection> getCourseSectionsByProfessor(String professorName) {
         
         // Fetch course sections by professor name
-        List<CourseSection> returnList = courseInfoJPAFile.getCourseSectionsByProfessor(professorName);
+        List<CourseSection> returnList = courseSectionRepository.findAllByInstructor(professorName);
 
         if (returnList != null) {
             return returnList;
@@ -184,7 +183,7 @@ public class CourseInformationService {
      * @throws CourseNotFoundException if no course is found for the specified Athena name
      */
     public List<Course> getCourseByAthenaName(String athenaName) {
-        List<Course> course = courseRepository.findByTitle(athenaName);
+        List<Course> course = courseRepository.findAllByTitle(athenaName);
 
         if (course != null) {
             return course;
