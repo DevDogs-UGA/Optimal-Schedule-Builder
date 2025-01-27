@@ -145,7 +145,7 @@ public class Pdf {
                     number,
                     title,
                     department,
-                    Integer.parseInt(contentList.getFirst()),
+                    Integer.parseInt(contentList.get(0)),
                     "",
                     contentList.get(1),
                     String.join("", contentList.subList(2, 5)),
@@ -161,7 +161,7 @@ public class Pdf {
         }
 
         //variables from content
-        int crn = Integer.parseInt(contentList.getFirst());
+        int crn = Integer.parseInt(contentList.get(0));
         String sec = contentList.get(1);
         String stat = contentList.get(2);
         String creditHours = String.join("", contentList.subList(3, 6));
@@ -173,7 +173,7 @@ public class Pdf {
         String professor = "";
         String partOfTerm = contentList.get(contentList.size() - 3); // sometimes can be replaced by a professors name if it overlaps in the pdf
         int classSize = Integer.parseInt(contentList.get(contentList.size() - 2));
-        int seatsAvailable = Integer.parseInt(contentList.getLast());
+        int seatsAvailable = Integer.parseInt(contentList.get(contentList.size() - 1).trim());
 
 
         //should now only contain meeting days, meeting time, building room number, campus and professor.
