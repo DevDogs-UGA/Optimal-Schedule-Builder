@@ -40,6 +40,7 @@ public class BruteForcePrototype {
      * @param inputCourses a set of courses to generate an optimal schedule from
      * @param distances a nested string map that represents distances between buildings on campus
      * @param weights an array of floats representing the weights for each objective
+     * @param constraints the soft constraints on the schedule
      * @return the five schedules with the highest overall objective score based on the input courses and weights
      */
     public static List<Schedule> optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights, SConstraints constraints) {
@@ -88,7 +89,7 @@ public class BruteForcePrototype {
      * If the courses inputted do not pass the dataPreFilter, this function will return null.
      *
      * @param inputCourses the set of courses to generate schedules from
-     * @param constraints the constraints on the schedule
+     * @param constraints the soft constraints on the schedule
      * @return the set of unique, valid schedules for the given set of courses
      */
     public static Set<Schedule> generateValidSchedules(Set<Course> inputCourses, SConstraints constraints) {
