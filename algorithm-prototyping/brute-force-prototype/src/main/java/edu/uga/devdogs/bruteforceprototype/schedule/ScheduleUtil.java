@@ -231,9 +231,9 @@ public class ScheduleUtil {
     }
 
     /**
-     * Converts various data structures containing Sections into arrays of ints for use of other teams.
+     * Converts Sets containing Sections into arrays of ints for use of other teams.
      *
-     * @param sections the iterable object containing the sections to convert.
+     * @param sections the set containing the sections to convert.
      * @return the array of CRNs that represent the sections.
      * */
     private static int[] sectionToInt(Set<Section> sections) {
