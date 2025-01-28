@@ -236,7 +236,7 @@ public class ScheduleUtil {
      * @param sections the set containing the sections to convert.
      * @return the array of CRNs that represent the sections.
      * */
-    private static int[] sectionToInt(Set<Section> sections) {
+    public static int[] sectionsToInts(Set<Section> sections) {
         int[] output = new int[sections.size()];
         int i = 0;
         for (Section section : sections) {
