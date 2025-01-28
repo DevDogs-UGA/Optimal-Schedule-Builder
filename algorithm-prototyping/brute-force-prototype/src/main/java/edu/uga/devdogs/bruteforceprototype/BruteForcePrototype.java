@@ -43,7 +43,7 @@ public class BruteForcePrototype {
      * @param constraints the soft constraints on the schedule
      * @return the five schedules with the highest overall objective score based on the input courses and weights
      */
-    public static List<Schedule> optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights, SConstraints constraints) {
+    public static int[][] optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights, SConstraints constraints) {
         Set<Schedule> validSchedules = generateValidSchedules(inputCourses, constraints);
 
         if (validSchedules == null) {
@@ -55,7 +55,7 @@ public class BruteForcePrototype {
             // This block can be expanded in the future to include other methods of handling a lack of
             // Hard-constraint compliant schedules.
             System.out.println("No valid schedules found.");
-            return new ArrayList<>();
+            return new int[0][];
         }
 
         List<Schedule> sortedSchedules = new ArrayList<>();
@@ -73,10 +73,15 @@ public class BruteForcePrototype {
             sortedOverallObjectives.add(i, overallObjective);
         }
 
-        if (sortedSchedules.size() < 5){
-            return sortedSchedules;
+
+        int size = Math.min(sortedSchedules.size(), 5);
+        int[][] output = new int[size][];
+
+        for (int i = 0; i < size; i++) {
+            output[i] = ScheduleUtil.sectionsToInts(sortedSchedules.get(i).sections());
         }
-        return sortedSchedules.subList(0,5);
+
+        return output;
     }
 
 
