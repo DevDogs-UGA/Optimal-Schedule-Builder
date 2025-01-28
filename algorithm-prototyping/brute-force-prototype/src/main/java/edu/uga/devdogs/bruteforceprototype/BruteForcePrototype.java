@@ -43,7 +43,7 @@ public class BruteForcePrototype {
      * @param constraints the soft constraints on the schedule
      * @return the five schedules with the highest overall objective score based on the input courses and weights
      */
-    public static List<Schedule> optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights, SConstraints constraints) {
+    public static int[][] optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights, SConstraints constraints) {
         Set<Schedule> validSchedules = generateValidSchedules(inputCourses, constraints);
 
         if (validSchedules == null) {
@@ -55,16 +55,22 @@ public class BruteForcePrototype {
             // This block can be expanded in the future to include other methods of handling a lack of
             // Hard-constraint compliant schedules.
             System.out.println("No valid schedules found.");
-            return new ArrayList<>();
+            return new int[0][];
         }
 
         List<Schedule> sortedSchedules = new ArrayList<>();
         List<Double> sortedOverallObjectives = new ArrayList<>();
 
-
+        
+        // Makeshift Priority Queue; An array sorted by a variable (in this case, overallObjective).
+        // Before an item is added, you find where it should be placed so that the List is still sorted correctly
+        // Without having to call a special sorting function.
+        // Insert time is O(n), so *technically* merge sort is faster, but this function is not called frequently so 
+        // Readibility matters much more than performance here.
         for (Schedule schedule : validSchedules) {
             double overallObjective = ScheduleUtil.computeOverallObjective(schedule, distances, weights);
 
+            // Starting from the back of the array, find where the new schedule belongs based on overallObjective.
             int i = sortedSchedules.size();
             while (i != 0 && overallObjective > sortedOverallObjectives.get(i-1)) {
                 i--;
@@ -73,10 +79,21 @@ public class BruteForcePrototype {
             sortedOverallObjectives.add(i, overallObjective);
         }
 
-        if (sortedSchedules.size() < 5){
-            return sortedSchedules;
+        // Ideally, we would like to output 5 schedules, but if there is less than 5 valid schedules, it will just return all of them.
+        // Accomplishing this is trivial if you use an if-else statement and write the whole code block twice, once for 5 and once for less than 5
+        // But that is both unnecessary and hard to read.
+        // Instead, if you use a size variable set to whichever is smaller between the number of valid schedules and 5 schedules
+        // You only have to write the code block once.
+        int size = Math.min(sortedSchedules.size(), 5);
+        int[][] output = new int[size][];
+
+        for (int i = 0; i < size; i++) {
+            // This line looks very convoluted, but really all it does is convert the (i)th best schedule into the list of CRNs
+            // Of its sections.
+            output[i] = ScheduleUtil.sectionsToInts(sortedSchedules.get(i).sections());
         }
-        return sortedSchedules.subList(0,5);
+
+        return output;
     }
 
 
