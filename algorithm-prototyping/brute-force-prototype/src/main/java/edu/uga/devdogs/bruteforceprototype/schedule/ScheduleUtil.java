@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.Set;
+
 
 /**
  * Utility class for performing operations and calculations related to a Schedule.
@@ -226,6 +228,22 @@ public class ScheduleUtil {
             // normalizes the values using min-max normalization
             return (value - min) / (max - min);
         }
+    }
+
+    /**
+     * Converts Sets containing Sections into arrays of ints for use of other teams.
+     *
+     * @param sections the set containing the sections to convert.
+     * @return the array of CRNs that represent the sections.
+     * */
+    public static int[] sectionsToInts(Set<Section> sections) {
+        int[] output = new int[sections.size()];
+        int i = 0;
+        for (Section section : sections) {
+            output[i] = section.crn();
+            i++;
+        }
+        return output;
     }
 
 }
