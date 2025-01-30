@@ -22,6 +22,7 @@ The Optimal Schedule Builder is a collaborative project aimed at creating a self
 - **Technologies**:  
   - Figma
 ### Frontend Team
+- [**Start Here!**](https://docs.google.com/document/d/1ixr21-bzMOL54u8c5l5mXHfmpS0sBkLneEVHq4MWtt4/edit?tab=t.0#heading=h.jdewz2vf3cgj)
 - **Purpose**: Create components that the user can interact with. Be able to provide the user with data from the backend team.
 - **Key Accomplishments**:
   - Created a variety of functions that builds the pages.
@@ -29,11 +30,11 @@ The Optimal Schedule Builder is a collaborative project aimed at creating a self
   - Followed UI/UX team's designs and turned it into code. 
 - **Technologies** 
   - Node.js
-  - React
   - Next.js
-  - Tailwind
-  - npm
-  - HTML/CSS
+  - pnpm
+  - React
+  - Tailwind CSS
+  - HTML5
   - Add setup guide here!
 ### Backend/API Team
 - **Purpose**: Build and maintain the engine that connects the platform. Pull and manipulate data from various PDFs to supply data for users. 
