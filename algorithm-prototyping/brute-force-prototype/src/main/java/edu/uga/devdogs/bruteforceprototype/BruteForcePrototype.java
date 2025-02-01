@@ -12,6 +12,22 @@ import java.util.*;
 public class BruteForcePrototype {
 
     /**
+     * Cleans the data being sent into the algorithm to account for certain hard constraints.
+     *
+     * @param inputCourses a set of courses given to be used in the user's schedule.
+     * @param currentConstraints the constraints currently constraining schedule creation.
+     * @throws Exception if {@code inputCourses} is not compliant with the filter.
+     * @return a set of courses cleaned per the user's specification
+     */
+    public static Set<Course> dataPreFilter(Set<Course> inputCourses, SConstraints currentConstraints) throws Exception {
+        if (inputCourses.size() > 10){
+            throw new Exception("Input course list contains more than ten courses.");
+        }
+
+        return inputCourses;
+    }
+
+    /**
      * Generates the optimal schedule based on the input courses, distances, and weights.
      * Iterates through each valid schedule from {@code generateValidSchedules(inputCourses)},
      * Uses a makeshift priority queue to sort all the schedules that obey the hard constraints
@@ -97,7 +113,7 @@ public class BruteForcePrototype {
         List<Course> courseList;
 
         try{
-            courseList = new ArrayList<>(BruteForceUtil.dataPreFilter(inputCourses, constraints));
+            courseList = new ArrayList<>(dataPreFilter(inputCourses, constraints));
         } catch (Exception e){
             // Boilerplate error handling; We can probably decide on a better method for handling errors later.
             System.out.println(e.getMessage());
