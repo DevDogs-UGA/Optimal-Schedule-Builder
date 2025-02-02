@@ -70,7 +70,7 @@ public class ScheduleUtil {
         // Used to create the summation of the quality of professors within the schedule.
         for (Section section : schedule.sections()) {
             // Ensures that only professors with data are included in calculation.
-            if (section.professor().quality() == 0.0) {
+            if (section.professor().quality() == (Double)null || section.professor().quality() == 0.0) {
                 // Decreases our professor count to prevent statistical misguidance.
                 includedProfessorCount--;
             } else {
