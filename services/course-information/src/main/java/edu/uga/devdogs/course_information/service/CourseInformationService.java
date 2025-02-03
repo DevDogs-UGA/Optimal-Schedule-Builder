@@ -206,4 +206,24 @@ public class CourseInformationService {
             throw new BuildingNotFoundException("No Buildings Found");
         }
     }
+
+    /**
+     *  Retreives a list of all academic courses.
+     * 
+     *  @return List of all available courses
+     *  @throws courseNotFoundException if no courses are found
+     */ 
+    public List<Courses> getAllCourses() {
+        List<Courses> courses = coursesRepository.findAll();
+        List<String> subjects = new ArrayList<>();
+        if (courses != null) {
+            for (Course course : courses) {
+                subjects.add(course.getSubject());
+            }
+            return subjects;
+        } else {
+            throw new courseNotFoundException("No Courses Found");
+        }
+    
+    }
 }
