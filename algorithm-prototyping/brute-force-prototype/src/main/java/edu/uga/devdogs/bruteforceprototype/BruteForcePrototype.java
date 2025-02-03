@@ -23,19 +23,18 @@ public class BruteForcePrototype {
      * @return the output of optimize()
      */
     public static int[][] algorithmDriver(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights, SConstraints constraints){
-        Set<Course> outputCourses;
+        Set<Course> outputCourses = new HashSet<>(inputCourses);
 
         try{
-            outputCourses = BruteForceUtil.dataPreFilter(inputCourses, constraints);
+            outputCourses = BruteForceUtil.dataPreFilter(outputCourses, constraints);
+            outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
+            return optimize(outputCourses, distances, weights, constraints);
         } catch (Exception e){
             // Boilerplate error handling; We can probably decide on a better method for handling errors later.
             System.out.println(e.getMessage());
-            outputCourses = inputCourses;
+            outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
+            return optimize(outputCourses, distances, weights, constraints);
         }
-
-        outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
-
-        return optimize(outputCourses, distances, weights, constraints);
     }
 
     /**
