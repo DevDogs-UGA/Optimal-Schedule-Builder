@@ -24,7 +24,11 @@ public class BruteForceUtil {
         Set<Course> output = new HashSet<>();
 
         if (inputCourses == null) {
-            throw new Exception("Input course list is null");
+            throw new Exception("Input course list is null.");
+        }
+
+        if (inputCourses.isEmpty()) {
+            throw new Exception("Input course list is empty.");
         }
 
         if (inputCourses.size() > 10){
@@ -62,6 +66,10 @@ public class BruteForceUtil {
 
                 output.add(copy);
             }
+        }
+
+        if (output.isEmpty()){
+            throw new Exception("All requested courses are invalid.");
         }
 
         return output;
