@@ -2,22 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap");
-
-* {
-  margin: 0;
-  font-family: myriad-pro, "Heebo", sans-serif;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Heebo", sans-serif;
-}
-
 :root {
   --background: 0 100% 99%;
 
@@ -38,10 +22,6 @@ h6 {
   --peach: 0 65% 69%;
   --wave: 184 52% 63%;
 }
-
-/* [data-theme="dark"] {
-  TODO: Add the dark mode styles here
-} */
 
 /* For Safari and Chrome */
 .no-scrollbar::-webkit-scrollbar {
