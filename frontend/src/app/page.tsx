@@ -2,13 +2,12 @@
 // New User: option(saved filter preferences, questionnaire page, saved plans)
 
 import Link from "next/link";
-import { Button } from "./components/ui/Button";
 
 import { CallToAction } from "./components/home/CallToAction";
-import { Minimap } from "./components/home/Minimap";
-import { ScheduleSave } from "./components/home/ScheduleSave";
 import { HomepageAlert } from "./components/home/HomepageAlert";
 import { LabPairingSystem } from "./components/home/LabPairingSystem";
+import { Minimap } from "./components/home/Minimap";
+import { ScheduleSave } from "./components/home/ScheduleSave";
 import { Navbar } from "./components/Navbar";
 
 export default function Home() {
