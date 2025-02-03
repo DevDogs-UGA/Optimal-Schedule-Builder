@@ -47,6 +47,7 @@ h6 {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 /* For older Safari versions */
 .no-scrollbar::-webkit-scrollbar {
   -webkit-appearance: none;
@@ -101,6 +102,7 @@ h6 {
   from {
     --angle: 0deg;
   }
+
   to {
     --angle: 360deg;
   }
