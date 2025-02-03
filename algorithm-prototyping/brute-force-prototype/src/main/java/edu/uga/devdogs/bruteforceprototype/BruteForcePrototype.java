@@ -30,7 +30,9 @@ public class BruteForcePrototype {
             outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
             return optimize(outputCourses, distances, weights, constraints);
         } catch (Exception e){
-            // Boilerplate error handling; We can probably decide on a better method for handling errors later.
+            // If an exception arises from dataPreFilter, we will call an overloaded version of optimize().
+            // The overloaded version is not written yet, so when it is actually implemented,
+            // this catch block will need updated accordingly.
             System.out.println(e.getMessage());
             outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
             return optimize(outputCourses, distances, weights, constraints);
