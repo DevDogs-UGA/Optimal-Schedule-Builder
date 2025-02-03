@@ -7,6 +7,8 @@ import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
 import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
+import edu.uga.devdogs.course_information.Building.Building;
+import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,13 +46,15 @@ public class CourseInformationService {
     private final CourseSectionRepository courseSectionRepository;
     private final ClassRepository classRepository;
     private final CourseRepository courseRepository;
+    private final BuildingRepository buildingRepository;
 
     //Use constructor to inject
     @Autowired
-    public CourseInformationService(CourseSectionRepository courseSectionRepository, ClassRepository classRepository, CourseRepository courseRepository) {
+    public CourseInformationService(CourseSectionRepository courseSectionRepository, ClassRepository classRepository, CourseRepository courseRepository, BuildingRepository buildingRepository) {
         this.courseSectionRepository = courseSectionRepository;
         this.classRepository = classRepository;
         this.courseRepository = courseRepository;
+        this.buildingRepository = buildingRepository;
     }
 
     /**
@@ -78,8 +82,8 @@ public class CourseInformationService {
             Set<String> seenTimes = new HashSet<>();
 
 
-            List<Class> timeStartReturnList = classRepository.findByStartTime(startTime);
-            List<Class> timeEndReturnList = classRepository.findByEndTimeBetween(endTime, endTime);
+            List<Class> timeStartReturnList = classRepository.findAllByStartTime(startTime);
+            List<Class> timeEndReturnList = classRepository.findAllByEndTimeBetween(endTime, endTime);
 
             // Create a map to store elements from timeEndReturnList by their time properties
             Map<String, Class> endTimeMap = new HashMap<>();
@@ -97,7 +101,6 @@ public class CourseInformationService {
                     seenTimes.add(key); // Mark as seen
                 }
             }
-
             if (timeReturnList != null)
                 return timeReturnList;
             else
@@ -116,8 +119,8 @@ public class CourseInformationService {
      */
     public CourseSection getSectionDetailsByCrn(String crn){
         CourseSection returnList;
-
-        returnList = SectionDetailsJPAFile.getSectionDetailsByCrn(crn);
+        int intcrn = Integer.parseInt(crn);
+        returnList = courseSectionRepository.findByCrn(intcrn);
 
         if (returnList != null)
             return returnList;
@@ -135,7 +138,7 @@ public class CourseInformationService {
     public List<Course> getCoursesByMajor(String major) {
         List<Course> returnList;
 
-        returnList = courseRepository.findBySubject(major);
+        returnList = courseRepository.findAllBySubject(major);
 
         if (returnList != null) {
             return returnList;
@@ -154,7 +157,7 @@ public class CourseInformationService {
     public List<CourseSection> getCourseSectionsByProfessor(String professorName) {
         
         // Fetch course sections by professor name
-        List<CourseSection> returnList = courseInfoJPAFile.getCourseSectionsByProfessor(professorName);
+        List<CourseSection> returnList = courseSectionRepository.findAllByInstructor(professorName);
 
         if (returnList != null) {
             return returnList;
@@ -180,12 +183,27 @@ public class CourseInformationService {
      * @throws CourseNotFoundException if no course is found for the specified Athena name
      */
     public List<Course> getCourseByAthenaName(String athenaName) {
-        List<Course> course = courseRepository.findByTitle(athenaName);
+        List<Course> course = courseRepository.findAllByTitle(athenaName);
 
         if (course != null) {
             return course;
         } else {
             throw new CourseNotFoundException("Course not found for Athena name: " + athenaName);
+        }
+    }
+
+     /**
+     * Retreives a list of all buildings
+     *
+     *  @return List of all building bojects
+     * @throws BuildingNotFoundException if no buildigns are found
+     */
+    public List<Building> getAllBuildings() {
+        List<Building> buildings = buildingRepository.findAll();
+        if (buildings != null) {
+            return buildings;
+        } else {
+            throw new BuildingNotFoundException("No Buildings Found");
         }
     }
 }

@@ -1,6 +1,7 @@
 package edu.uga.devdogs.sampledataparser.records;
 
 import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public record SConstraints(List<Course> excludedCourses,
                            List<Class> excludedClasses,
                            String campus,
                            DayOfWeek gapDay,
-                           int prefStartTime,
-                           int prefEndTime,
+                           LocalTime prefStartTime,
+                           LocalTime prefEndTime,
                            boolean walking) {
 }

@@ -33,7 +33,7 @@ const dropdownStyling = "border-pebble-gray";
 export const SearchFilter = ({}: props) => {
   return (
     <>
-      <div className="flex flex-col rounded-lg border-4 border-dusty-pink bg-barely-pink p-2">
+      <div className="flex flex-col border-4 border-dusty-pink bg-barely-pink p-2">
         {" "}
         {/* Div for Whole Filter Component*/}
         <h1 className="m-4 text-center text-lg font-extrabold sm:m-2 sm:ml-8 sm:mt-8 sm:w-full sm:text-left sm:text-2xl sm:font-extrabold">
