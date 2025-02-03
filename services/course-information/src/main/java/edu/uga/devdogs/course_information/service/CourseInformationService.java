@@ -208,12 +208,12 @@ public class CourseInformationService {
     }
 
     /**
-     *  Retreives a list of all academic courses.
+     *  Retreives a list of all academic subjects at UGA.
      * 
-     *  @return List of all available courses
+     *  @return List of all available subjects
      *  @throws courseNotFoundException if no courses are found
      */ 
-    public List<Courses> getAllCourses() {
+    public List<Courses> getAllSubjects() {
         List<Courses> courses = coursesRepository.findAll();
         List<String> subjects = new ArrayList<>();
         if (courses != null) {
