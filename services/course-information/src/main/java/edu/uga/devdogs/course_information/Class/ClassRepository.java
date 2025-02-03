@@ -4,11 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import edu.uga.devdogs.course_information.Building.Building;
+import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 
 import java.util.List;
 
 @Repository
-public interface ClassRepository extends JpaRepository<Class, Integer> {
+public interface ClassRepository extends JpaRepository<ClassEntity, Integer> {
 
     // Find all classes held on specific days (e.g., "MWF" or "TR")
     List<Class> findAllByDays(String days);
@@ -30,5 +31,8 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
 
     // Find a class by its ID
     List<Class> findAllByClassId(int classId);
-    
+
+    // Find all classes by course section ID (Correct Naming)
+    List<Class> findByCourseSectionId(int courseSectionId);
+
 }
