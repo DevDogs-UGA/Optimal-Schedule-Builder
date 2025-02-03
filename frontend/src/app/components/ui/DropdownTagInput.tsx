@@ -85,7 +85,7 @@ export default function DropdownTagInput({
         ref={searchBarRef}
         className={`flex h-12 w-full items-center overflow-x-auto overflow-y-hidden rounded-md border-2 bg-white p-1 hover:scroll-smooth ${className}`}
       >
-        <ul className="flex max-w-44 gap-2 p-1">
+        {/* <ul className="flex max-w-44 gap-2 p-1">
           {tags.length > 0 &&
             tags?.map((item, index) => (
               <li key={index}>
@@ -121,7 +121,7 @@ export default function DropdownTagInput({
             placeholder={placeholder}
             autoComplete="off"
           />
-        </ul>
+        </ul> */}
       </div>
       {isOpen && filteredData.length > 0 && (
         <ul

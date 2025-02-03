@@ -29,6 +29,6 @@ public class ClassComparator implements Comparator<Class> {
         }
 
         // If start times are the same, compare by CRN as a fallback
-        return class1.crn().compareTo(class2.crn());
+        return Integer.compare(class1.crn(), class2.crn());
     }
 }
