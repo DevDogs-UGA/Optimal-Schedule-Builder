@@ -234,7 +234,7 @@ public class CourseInfoController {
 
         try {
 
-            List<String> specialCourseTypes = fetchSpecialCourseTypes(crn); // Changed method name to fetchSpecialCourseTypes
+            List<String> specialCourseTypes = courseInformationService.fetchSpecialCourseTypes(crn); // Changed method name to fetchSpecialCourseTypes
 
             if (specialCourseTypes.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(specialCourseTypes);
