@@ -24,7 +24,11 @@ public class BruteForceUtil {
         Set<Course> output = new HashSet<>();
 
         if (inputCourses == null) {
-            throw new Exception("Input course list is null");
+            throw new Exception("Input course list is null.");
+        }
+
+        if (inputCourses.isEmpty()) {
+            throw new Exception("Input course list is empty.");
         }
 
         if (inputCourses.size() > 10){
@@ -64,6 +68,10 @@ public class BruteForceUtil {
             }
         }
 
+        if (output.isEmpty()){
+            throw new Exception("All requested courses are invalid.");
+        }
+
         return output;
     }
 
@@ -97,6 +105,28 @@ public class BruteForceUtil {
             }
         }
         return validSections;
+    }
+
+    /**
+     * Takes in a day string received from webscraping and returns
+     * the proper DayOfWeek based on the string.
+     * @param day day of the week received from webscraping.
+     * @return the DayOfWeek in algorithms format.
+     */
+    public static DayOfWeek daySwitch(String day) {
+        if (day.equals("M")) {
+            return DayOfWeek.MONDAY;
+        } else if (day.equals("T")) {
+            return DayOfWeek.TUESDAY;
+        } else if (day.equals("W")) {
+            return DayOfWeek.WEDNESDAY;
+        } else if (day.equals("R")) {
+            return DayOfWeek.THURSDAY;
+        } else if (day.equals("F")) {
+            return DayOfWeek.FRIDAY;
+        } else {
+            return null;
+        }
     }
 
 }
