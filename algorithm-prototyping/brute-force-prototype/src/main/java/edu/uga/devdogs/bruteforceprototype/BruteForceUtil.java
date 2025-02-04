@@ -107,4 +107,26 @@ public class BruteForceUtil {
         return validSections;
     }
 
+    /**
+     * Takes in a day string received from webscraping and returns
+     * the proper DayOfWeek based on the string.
+     * @param day day of the week received from webscraping.
+     * @return the DayOfWeek in algorithms format.
+     */
+    public static DayOfWeek daySwitch(String day) {
+        if (day.equals("M")) {
+            return DayOfWeek.MONDAY;
+        } else if (day.equals("T")) {
+            return DayOfWeek.TUESDAY;
+        } else if (day.equals("W")) {
+            return DayOfWeek.WEDNESDAY;
+        } else if (day.equals("R")) {
+            return DayOfWeek.THURSDAY;
+        } else if (day.equals("F")) {
+            return DayOfWeek.FRIDAY;
+        } else {
+            return null;
+        }
+    }
+
 }
