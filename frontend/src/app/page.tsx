@@ -14,7 +14,7 @@ export default function Home() {
       <div className="relative -mt-[3.625rem] flex flex-1 flex-col items-center justify-center gap-16 px-4 pt-24 text-center">
         <Image
           alt=""
-          className="absolute top-14 -z-10 w-screen sm:top-0 max-h-full object-cover"
+          className="absolute top-14 -z-10 max-h-full w-screen object-cover sm:top-0"
           sizes="100vw"
           src={background}
         />
