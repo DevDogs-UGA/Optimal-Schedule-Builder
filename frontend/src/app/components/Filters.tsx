@@ -23,7 +23,7 @@ const instructionlist = [
   "Independent Study",
   "Fieldwork",
 ];
-const campusList = ["Athens", "Griffin", "Tifton"];
+const campusList = ["Athens", "Buckhead", "Griffin", "Gwinnett", "Online", "Tifton"];
 const educationLevelList = ["Undergraduate", "Graduate"];
 const creditHourList: string[] = [];
 const buildingList: string[] = [];
