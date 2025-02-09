@@ -91,7 +91,7 @@ public class CourseInfoController {
     })
     @GetMapping("/coursesByMajor")
     @Tag(name="course-information")
-    public ResponseEntity<List<Course>> getCourseList(@RequestParam String major) {
+    public ResponseEntity<List<Course>> getCoursesByMajor(@RequestParam String major) {
 
         //return 400 for empty major
         if (major.isEmpty()) {
