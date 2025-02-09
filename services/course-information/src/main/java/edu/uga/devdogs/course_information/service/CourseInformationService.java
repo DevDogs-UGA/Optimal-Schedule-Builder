@@ -211,18 +211,21 @@ public class CourseInformationService {
      *  Retreives a list of all academic subjects at UGA.
      * 
      *  @return List of all available subjects
-     *  @throws courseNotFoundException if no courses are found
+     *  @throws CourseNotFoundException if no courses are found
      */ 
-    public List<Courses> getAllSubjects() {
-        List<Courses> courses = coursesRepository.findAll();
+    public List<String> getAllSubjects() {
+        List<Course> courses = courseRepository.findAll();
         List<String> subjects = new ArrayList<>();
         if (courses != null) {
             for (Course course : courses) {
-                subjects.add(course.getSubject());
+                //so we avoid duplicate subject names
+                if (!subjects.contains(course.getSubject())) {
+                    subjects.add(course.getSubject());
+                }
             }
             return subjects;
         } else {
-            throw new courseNotFoundException("No Courses Found");
+            throw new CourseNotFoundException("No Courses Found");
         }
     
     }
