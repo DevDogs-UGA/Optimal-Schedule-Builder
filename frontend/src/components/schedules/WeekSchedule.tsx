@@ -3,7 +3,7 @@
 import { differenceInMinutes } from "date-fns";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PiCaretDoubleRightBold } from "react-icons/pi";
-import { type WeekSchedule as WeekScheduleType } from "../../../types/scheduleTypes";
+import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import DayClass from "./DayClass";
 
 interface WeekScheduleProps {
