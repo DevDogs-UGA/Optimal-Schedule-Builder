@@ -165,6 +165,11 @@ public class ScheduleUtilTest {
     void testComputeOverallObjective() {
         // Compute the overall objective for each schedule within validTestSchedules by hand
         // Assert that ScheduleUtil.computeOverallObjective() returns the expected value for each schedule
-    }
+        assertEquals(.73781537911, ScheduleUtil.computeOverallObjective(validTestSchedules.get(0), distances, new double[]{.3, .3, .4}), 0.01);
+        assertEquals(.58161019538, ScheduleUtil.computeOverallObjective(validTestSchedules.get(1), distances, new double[]{.2, .5, .3}), 0.01);
+        assertEquals(.63009935897, ScheduleUtil.computeOverallObjective(validTestSchedules.get(2), distances, new double[]{.7, .1, .2}), 0.01);
+        assertEquals(.7799393625, ScheduleUtil.computeOverallObjective(validTestSchedules.get(3), distances, new double[]{.4, .3, .3}), 0.01);
+        assertEquals(.43219670438, ScheduleUtil.computeOverallObjective(validTestSchedules.get(4), distances, new double[]{.8, .1, .1}), 0.01);
+}
 
 }
