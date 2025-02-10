@@ -246,4 +246,32 @@ public class CourseInfoController {
         }
     }
 
+    /**
+     * Retrieves a list of all academic subjects at UGA .
+     *
+     * @return List of all available subjects as strings
+     */
+    @Operation(summary = "Get all subjects", description = "Retrieves a list of all academic subjects at UGA.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Subjects found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/subjects")
+    @Tag(name="course-information")
+    public ResponseEntity<List<String>> getAllSubjects() {
+
+        try {
+
+            List<String> subjects = courseInformationService.getAllSubjects();
+
+            // Return the list of subject strings if found
+            return ResponseEntity.ok(subjects);
+
+        } catch (Exception e) {
+
+            // Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }
