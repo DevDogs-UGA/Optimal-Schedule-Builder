@@ -42,7 +42,7 @@ export default function RootLayout({
         />
 
         <main className="min-h-screen">
-          {children}
+          <div className="mb-[18rem]">{children}</div>
           <Footer />
         </main>
       </body>

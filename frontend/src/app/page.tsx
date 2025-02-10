@@ -14,8 +14,13 @@ import { Navbar } from "./components/Navbar";
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <Navbar />
-      <div className="flex h-[calc(100vh-5rem)] flex-grow flex-col items-center justify-center text-center">
+      <div className="mb-[10.5rem]">
+        <Navbar />
+      </div>
+
+      <div className="mb-3 mt-3 flex h-[calc(100vh-5rem)] flex-grow flex-col items-center justify-center text-center">
+        <br></br>
+        <br></br>
         <div className="space-y-4">
           <h2 className="text-center text-xl font-semibold text-bulldog-red md:text-2xl">
             For Students, By Students
