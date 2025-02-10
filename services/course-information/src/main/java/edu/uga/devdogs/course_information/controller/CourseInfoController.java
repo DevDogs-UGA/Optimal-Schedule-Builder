@@ -1,5 +1,6 @@
 package edu.uga.devdogs.course_information.controller;
 
+import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.service.CourseInformationService;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -89,7 +91,7 @@ public class CourseInfoController {
     })
     @GetMapping("/coursesByMajor")
     @Tag(name="course-information")
-    public ResponseEntity<List<Course>> getCourseList(@RequestParam String major) {
+    public ResponseEntity<List<Course>> getCoursesByMajor(@RequestParam String major) {
 
         //return 400 for empty major
         if (major.isEmpty()) {
@@ -207,6 +209,67 @@ public class CourseInfoController {
             List<Building> buildings = courseInformationService.getAllBuildings();
             return ResponseEntity.ok(buildings);
         } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    /**
+     * Gets the special types of a course (honors/lab/online) from a CRN.
+     * @param crn The CRN of the course to find the special types.
+     * @return A list of Strings that correspond the the special types of that course.
+     */
+    @Operation(summary = "Get special course type by crn", description = "Retrieves if the section is honors, online, or lab based on given crn")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Course found"),
+            @ApiResponse(responseCode = "400", description = "Invalid course CRN"),
+            @ApiResponse(responseCode = "404", description = "Course not found")
+    })
+    @GetMapping("/course/specialCourseTypes")
+    public ResponseEntity<List<String>> getSpecialCourseTypesFromCRN(
+            @RequestParam(value = "crn", required = true) String crn
+    ) {
+        if (crn == null || crn.isEmpty()) { 
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+
+        try {
+
+            List<String> specialCourseTypes = courseInformationService.fetchSpecialCourseTypes(crn); // Changed method name to fetchSpecialCourseTypes
+
+            if (specialCourseTypes.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(specialCourseTypes);
+            }
+
+            return ResponseEntity.ok(specialCourseTypes);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course types."));
+        }
+    }
+
+    /**
+     * Retrieves a list of all academic subjects at UGA .
+     *
+     * @return List of all available subjects as strings
+     */
+    @Operation(summary = "Get all subjects", description = "Retrieves a list of all academic subjects at UGA.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Subjects found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/subjects")
+    @Tag(name="course-information")
+    public ResponseEntity<List<String>> getAllSubjects() {
+
+        try {
+
+            List<String> subjects = courseInformationService.getAllSubjects();
+
+            // Return the list of subject strings if found
+            return ResponseEntity.ok(subjects);
+
+        } catch (Exception e) {
+
+            // Return 500 if a server error occurs
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

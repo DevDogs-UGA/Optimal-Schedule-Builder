@@ -206,4 +206,27 @@ public class CourseInformationService {
             throw new BuildingNotFoundException("No Buildings Found");
         }
     }
+
+    /**
+     *  Retreives a list of all academic subjects at UGA.
+     * 
+     *  @return List of all available subjects
+     *  @throws CourseNotFoundException if no courses are found
+     */ 
+    public List<String> getAllSubjects() {
+        List<Course> courses = courseRepository.findAll();
+        List<String> subjects = new ArrayList<>();
+        if (courses != null) {
+            for (Course course : courses) {
+                //so we avoid duplicate subject names
+                if (!subjects.contains(course.getSubject())) {
+                    subjects.add(course.getSubject());
+                }
+            }
+            return subjects;
+        } else {
+            throw new CourseNotFoundException("No Courses Found");
+        }
+    
+    }
 }

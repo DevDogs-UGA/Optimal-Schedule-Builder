@@ -244,40 +244,6 @@ public class BulletinController {
         }
     }
 
-
-    /**
-     * Gets the special types of a course (honors/lab/online) from a CRN.
-     * @param crn The CRN of the course to find the special types.
-     * @return A list of Strings that correspond the the special types of that course.
-     */
-    @Operation(summary = "Get special course type by crn", description = "Retrieves if the section is honors, online, or lab based on given crn")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Course found"),
-            @ApiResponse(responseCode = "400", description = "Invalid course CRN"),
-            @ApiResponse(responseCode = "404", description = "Course not found")
-    })
-    @GetMapping("/course/specialCourseTypes")
-    public ResponseEntity<List<String>> getSpecialCourseTypesFromCRN(
-            @RequestParam(value = "crn", required = true) String crn
-    ) {
-        if (crn == null || crn.isEmpty()) {
-            return ResponseEntity.badRequest().body(Collections.emptyList());
-        }
-
-        try {
-
-            List<String> specialCourseTypes = fetchSpecialCourseTypes(crn); // Changed method name to fetchSpecialCourseTypes
-
-            if (specialCourseTypes.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(specialCourseTypes);
-            }
-
-            return ResponseEntity.ok(specialCourseTypes);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course types."));
-        }
-    }
-
     /**
      * Gets course sections from class time and optionally class name
      * @param timeSlot The timeslot range to use for this (10:00 AM - 11:15 AM)

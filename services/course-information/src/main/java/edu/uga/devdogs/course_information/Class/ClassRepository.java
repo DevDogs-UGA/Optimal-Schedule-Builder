@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import edu.uga.devdogs.course_information.Building.Building;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClassRepository extends JpaRepository<Class, Integer> {
@@ -31,4 +32,6 @@ public interface ClassRepository extends JpaRepository<Class, Integer> {
     // Find a class by its ID
     List<Class> findAllByClassId(int classId);
     
-}
+    // Find a class by its Course Section ID
+    List<Class> findByCourseSection_Id(int courseSectionId);
+} 

@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "../components/ui/ButtonRounded";
-import { Navbar } from "../components/Navbar";
-import { RecommendedCourses } from "../components/RecommendedCourses";
+import { Button } from "@/components/ui/ButtonRounded";
+import { Navbar } from "@/components/Navbar";
+import { RecommendedCourses } from "@/components/RecommendedCourses";
 import { AddCourses } from "@/components/courses/AddCourses";
-import { SearchFilter } from "../components/Filters";
+import { SearchFilter } from "@/components/Filters";
 import CourseDisplay from "@/components/courses/CourseDisplay";
 
 export default function Courses() {

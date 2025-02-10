@@ -1,5 +1,5 @@
 "use client";
-import { type ClassData } from "../../../types/scheduleTypes";
+import { type ClassData } from "@/types/scheduleTypes";
 import { useState, useEffect } from "react";
 
 type DayClassProps = ClassData;
