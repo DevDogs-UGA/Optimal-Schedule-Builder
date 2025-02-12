@@ -1,5 +1,5 @@
 import { QuestionnareForm } from "@/components/survey/QuestionnaireForm";
-import { Navbar } from "../components/Navbar";
+import { Navbar } from "@/components/Navbar";
 import Image from "next/image";
 
 export default function page() {

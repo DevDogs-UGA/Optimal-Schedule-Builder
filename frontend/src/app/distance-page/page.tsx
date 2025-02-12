@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Basemap from "../../../public/images/Basemap.png";
-import { Button } from "../components/ui/ButtonRounded";
-import { Navbar } from "../components/Navbar";
+import { Button } from "@/components/ui/ButtonRounded";
+import { Navbar } from "@/components/Navbar";
 
 export default function Home() {
   return (

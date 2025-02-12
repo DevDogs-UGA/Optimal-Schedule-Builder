@@ -1,7 +1,7 @@
 // Returning User: -> Saved Plans
 // New User: -> Saved Plans
 
-import { type WeekSchedule as WeekScheduleType } from "../../types/scheduleTypes";
+import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
 import Link from "next/link";
 

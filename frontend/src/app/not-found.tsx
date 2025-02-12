@@ -1,7 +1,7 @@
 // Custom 404 Page
 "use client";
 
-import { Button } from "./components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
 export default function NotFound() {
