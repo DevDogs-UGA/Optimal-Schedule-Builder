@@ -43,7 +43,7 @@ export function Navbar() {
       {/* Logo and Title */}
       <Link
         href="/"
-        className="flex tems-center gap-2 sm:gap-4 bg-inherit py-4 sm:py-0"
+        className="tems-center flex gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
       >
         <Image
           className="block fill-current invert"
@@ -51,15 +51,14 @@ export function Navbar() {
           width={40}
           height={40}
           alt="white paw"
-          
         />
         <h1 className="text-3xl font-bold text-white">DogDays</h1>
       </Link>
       <div className="flex-1"></div>
-      <ul className="absolute left-0 top-full -z-10 flex w-full -translate-y-full items-center flex-col flex-nowrap border-[#222233]/40 bg-[#222233]/80 pb-3 text-xl font-semibold opacity-0 shadow-lg backdrop-blur-[0.5rem] transition-all group-data-[state=open]:translate-y-0 group-data-[state=open]:opacity-100 sm:relative sm:z-auto sm:w-auto sm:translate-y-0 sm:flex-row sm:justify-end sm:gap-[inherit] sm:p-0 sm:opacity-100 sm:shadow-none">
+      <ul className="absolute left-0 top-full -z-10 flex w-full -translate-y-full flex-col flex-nowrap items-center border-[#222233]/40 bg-[#222233]/80 pb-3 text-xl font-semibold opacity-0 shadow-lg backdrop-blur-[0.5rem] transition-all group-data-[state=open]:translate-y-0 group-data-[state=open]:opacity-100 sm:relative sm:z-auto sm:w-auto sm:translate-y-0 sm:flex-row sm:justify-end sm:gap-[inherit] sm:p-0 sm:opacity-100 sm:shadow-none">
         <li className="contents">
           <Link
-            className="text-white px-6 py-3 transition text-center hover:text-[#e4212b] sm:rounded-lg sm:py-1 md:px-4"
+            className="px-6 py-3 text-center text-white transition hover:text-[#e4212b] sm:rounded-lg sm:py-1 md:px-4"
             href="/saved-plans"
           >
             My Plans
@@ -68,24 +67,29 @@ export function Navbar() {
 
         <li className="contents">
           <Link href="/settings">
-            <PiGear size={40} className="fill-white hover:fill-[#e4212b] transition"/>
+            <PiGear
+              size={40}
+              className="fill-white transition hover:fill-[#e4212b]"
+            />
           </Link>
         </li>
       </ul>
 
-          
-      <div className="relative flex flex-row-reverse items-center justify-around text-xl font-semibold sm:flex-row sm:hidden">
+      <div className="relative flex flex-row-reverse items-center justify-around text-xl font-semibold sm:hidden sm:flex-row">
         {/* Hamburger button for mobile */}
 
         <Link href="/settings">
-            <PiGear size={40} className="fill-white hover:fill-[#e4212b] transition"/>
+          <PiGear
+            size={40}
+            className="fill-white transition hover:fill-[#e4212b]"
+          />
         </Link>
 
         <Link
-            className="text-white px-2 py-3 transition text-center hover:text-[#e4212b] sm:rounded-lg sm:py-1 md:px-4 sm:hidden"
-            href="/saved-plans"
-          >
-            My Plans
+          className="px-2 py-3 text-center text-white transition hover:text-[#e4212b] sm:hidden sm:rounded-lg sm:py-1 md:px-4"
+          href="/saved-plans"
+        >
+          My Plans
         </Link>
       </div>
     </nav>
