@@ -30,18 +30,18 @@ public class ScheduleTest {
 
         // Add first section set for testing
         testSectionSets.add(Set.of(
-                courses.get("ENGL 1101").sections().getFirst(),
-                courses.get("CSCI 1302").sections().getFirst(),
-                courses.get("PHYS 1211").sections().getFirst(),
-                courses.get("PHYS 1211L").sections().getFirst()
+                courses.get("ENGL 1101").sections().get(0),
+                courses.get("CSCI 1302").sections().get(0),
+                courses.get("PHYS 1211").sections().get(0),
+                courses.get("PHYS 1211L").sections().get(0)
         ));
 
         // Add second section set for testing
         testSectionSets.add(Set.of(
-                courses.get("ENGL 1102").sections().getFirst(),
-                courses.get("PHYS 1212").sections().getFirst(),
-                courses.get("PHYS 1212L").sections().getFirst(),
-                courses.get("MATH 2250").sections().getFirst()
+                courses.get("ENGL 1102").sections().get(0),
+                courses.get("PHYS 1212").sections().get(0),
+                courses.get("PHYS 1212L").sections().get(0),
+                courses.get("MATH 2250").sections().get(0)
         ));
     }
 

@@ -1,4 +1,8 @@
+// Returning User: option(saved filter preferences, manual entry, saved plans)
+// New User: option(saved filter preferences, questionnaire page, saved plans)
+
 import Link from "next/link";
+import { Button } from "./components/ui/Button";
 
 import { CallToAction } from "./components/home/CallToAction";
 import { Minimap } from "./components/home/Minimap";
@@ -35,6 +39,16 @@ export default function Home() {
           <div className="flex flex-col items-center justify-end gap-4">
             <LabPairingSystem />
             <HomepageAlert />
+          </div>
+          <div className="text-blue-600">
+            <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
+              <Link href={"/past-credits"}>Past Credits</Link>
+            </button>
+          </div>
+          <div className="text-blue-600">
+            <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
+              <Link href={"/saved-plans"}>Saved Plans</Link>
+            </button>
           </div>
         </div>
       </div>

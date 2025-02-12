@@ -90,6 +90,7 @@ public class Course {
         this.availableSeats = availableSeats;
     }
 
+    //getters and setters for course
     public String getTitle()  {
         return this.title;
        }
