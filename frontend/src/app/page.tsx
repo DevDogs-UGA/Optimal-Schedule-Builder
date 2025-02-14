@@ -1,16 +1,20 @@
-// Returning User: option(saved filter preferences, manual entry, saved plans)
-// New User: option(saved filter preferences, questionnaire page, saved plans)
-
 import Image from "next/image";
 import Link from "next/link";
 import background from "../../public/images/background.png";
 import devdog from "../../public/images/devdog.png";
 import { Navbar } from "@/components/Navbar";
+import { CallToAction } from "@/components/CallToAction";
+import { Minimap } from "@/components/Minimap";
+import { ScheduleSave } from "@/components/ScheduleSave";
+import { LabPairingSystem } from "@/components/LabPairingSystem";
+import { HomepageAlert } from "@/components/HomepageAlert";
 
 export default function Home() {
   return (
     <>
       <Navbar />
+
+      {/* Background Images */}
       <div className="relative -mt-[3.625rem] flex flex-1 flex-col items-center justify-center gap-16 px-4 pt-24 text-center">
         <Image
           alt=""
@@ -25,6 +29,7 @@ export default function Home() {
           src={background}
         />
 
+        {/* Title and Branding */}
         <div className="flex flex-col items-center gap-20 rounded-md bg-gradient-to-bl from-white/50 to-pink-100/50 px-6 py-16 backdrop-blur-sm min-[480px]:px-12 sm:px-16 md:contents">
           <div className="flex gap-6 text-6xl md:text-7xl xl:text-8xl">
             <h2 className="font-extrabold text-slate-800">DogDays</h2>
@@ -38,6 +43,7 @@ export default function Home() {
             </figure>
           </div>
 
+          {/* Tagline */}
           <div className="flex flex-col gap-8 rounded-md from-white/50 to-pink-100/50 md:bg-gradient-to-bl md:px-16 md:py-8 md:backdrop-blur-sm">
             <p className="flex flex-col font-bold text-bulldog-red">
               <span className="text-xl sm:text-2xl xl:text-3xl">
@@ -48,6 +54,7 @@ export default function Home() {
               </span>
             </p>
 
+            {/* Call-to-Action */}
             <div className="flex items-center text-lg font-bold xl:text-xl">
               <p className="-mr-6 flex-1 cursor-default rounded-l-full bg-[#F8E6EA] bg-dusty-pink px-4 py-3 text-left text-neutral-600/40 shadow-inner">
                 Ready?
@@ -63,6 +70,26 @@ export default function Home() {
               </Link>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Additional Features (from `dev` branch) */}
+      <div className="mb-10 flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center justify-end gap-4">
+          <Minimap />
+          <ScheduleSave />
+        </div>
+        <Link href="/">
+          <div className="h-[10rem] w-[10rem] rounded-xl bg-[#F3EDED] transition duration-300 ease-in-out hover:bg-[#c3a5a5] sm:h-[10rem] sm:w-[20rem] md:h-[12rem] md:w-[25rem] lg:h-[15rem] lg:w-[30rem]"></div>
+        </Link>
+        <div className="flex flex-col items-center justify-end gap-4">
+          <LabPairingSystem />
+          <HomepageAlert />
+        </div>
+        <div className="text-blue-600">
+          <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
+            <Link href={"/past-credits"}>Past Credits</Link>
+          </button>
         </div>
       </div>
     </>
