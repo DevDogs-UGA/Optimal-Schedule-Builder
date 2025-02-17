@@ -2,7 +2,7 @@ package edu.uga.devdogs.bruteforceprototype.schedule;
 
 import edu.uga.devdogs.sampledataparser.records.Section;
 import edu.uga.devdogs.sampledataparser.records.Class;
-import edu.uga.devdogs.sampledataparser.records.SConstraints;
+import edu.uga.devdogs.sampledataparser.records.HConstraints;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +89,7 @@ public class ScheduleUtil {
      * @param schedule the schedule to validate
      * @param constraints the constraints to validate
      */
-    public static void validateHard(Schedule schedule, SConstraints constraints) {
+    public static void validateHard(Schedule schedule, HConstraints constraints) {
         if(schedule == null || constraints == null) {
             throw new IllegalArgumentException("Schedule and/or constraints cannot be null");
         }
