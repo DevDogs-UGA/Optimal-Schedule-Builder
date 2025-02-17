@@ -112,11 +112,33 @@ export const QuestionnareForm = ({ className }: Props) => {
     "Marketing/marketing management",
     "Finance",
   ];
+
   const semesterList = [
     `Fall ${new Date().getFullYear()}`,
     `Spring ${new Date().getFullYear() + 1}`,
     `Summer ${new Date().getFullYear() + 1}`,
   ];
+  
+  //This will change the semester list based on the current month
+  // For Janurary: (Srping of this year, Summer of this year, Fall of this year)
+  if ((new Date().getMonth() < 1)) {
+    semesterList[0] = `Spring ${new Date().getFullYear()}`;
+    semesterList[1] = `Summer ${new Date().getFullYear()}`;
+    semesterList[2] = `Fall ${new Date().getFullYear()}`;
+
+  // For Feburary - June: (Summer of this year, Fall of this year, Spring of next year)
+  } else if (new Date().getMonth() < 6 && new Date().getMonth() < 8) {
+    semesterList[0] = `Summer ${new Date().getFullYear()}`;
+    semesterList[1] = `Fall ${new Date().getFullYear()}`;
+    semesterList[2] = `Spring ${new Date().getFullYear() + 1}`;
+
+  // For August - December: (Spring of next year, Summer of next year, Fall of next year)
+  } else if (new Date().getMonth() > 8) {
+    semesterList[0] = `Spring ${new Date().getFullYear()} +1`;
+    semesterList[1] = `Summer ${new Date().getFullYear()} +1`;
+    semesterList[2] = `Fall ${new Date().getFullYear()} +1`;
+  }
+
   const creditHoursList = Array.from({ length: 18 }, (_, i) =>
     (i + 1).toString().padStart(2, "0"),
   );
