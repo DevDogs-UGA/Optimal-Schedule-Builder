@@ -119,6 +119,8 @@ export const QuestionnareForm = ({ className }: Props) => {
     `Summer ${new Date().getFullYear() + 1}`,
   ];
   
+
+
   //This will change the semester list based on the current month
   // For Janurary: (Srping of this year, Summer of this year, Fall of this year)
   if ((new Date().getMonth() < 1)) {
@@ -134,9 +136,9 @@ export const QuestionnareForm = ({ className }: Props) => {
 
   // For August - December: (Spring of next year, Summer of next year, Fall of next year)
   } else if (new Date().getMonth() > 8) {
-    semesterList[0] = `Spring ${new Date().getFullYear()} +1`;
-    semesterList[1] = `Summer ${new Date().getFullYear()} +1`;
-    semesterList[2] = `Fall ${new Date().getFullYear()} +1`;
+    semesterList[0] = `Spring ${new Date().getFullYear() +1}`;
+    semesterList[1] = `Summer ${new Date().getFullYear()+1}`;
+    semesterList[2] = `Fall ${new Date().getFullYear()+1}`;
   }
 
   const creditHoursList = Array.from({ length: 18 }, (_, i) =>
