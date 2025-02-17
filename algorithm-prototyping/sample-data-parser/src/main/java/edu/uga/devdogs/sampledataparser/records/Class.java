@@ -19,5 +19,6 @@ public record Class(int crn,
                     LocalTime startTime,
                     LocalTime endTime,
                     String buildingName,
-                    String campus) {
+                    String campus,
+                    String buildingNumber) {
 }
