@@ -3,6 +3,7 @@ package edu.uga.devdogs.bruteforceprototype;
 import edu.uga.devdogs.bruteforceprototype.schedule.Schedule;
 import edu.uga.devdogs.bruteforceprototype.schedule.ScheduleUtil;
 import edu.uga.devdogs.sampledataparser.records.Course;
+import edu.uga.devdogs.sampledataparser.records.HConstraints;
 import edu.uga.devdogs.sampledataparser.records.SConstraints;
 import edu.uga.devdogs.sampledataparser.records.Section;
 
@@ -19,23 +20,33 @@ public class BruteForcePrototype {
      * @param inputCourses a set of requested courses to generate an optimal schedule from
      * @param distances a nested string map that represents distances between buildings on campus
      * @param weights an array of floats representing the weights for each objective
-     * @param constraints the soft constraints on the schedule
+     * @param softConstraints the soft constraints on the schedule
+     * @param hardConstraints the hard constraints on the schedule
      * @return the output of optimize()
      */
-    public static int[][] algorithmDriver(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights, SConstraints constraints){
+    public static int[][] algorithmDriver(Set<Course> inputCourses, Map<String, Map<String, Double>> distances, double[] weights, SConstraints softConstraints, HConstraints hardConstraints){
         Set<Course> outputCourses = new HashSet<>(inputCourses);
 
-        try{
-            outputCourses = BruteForceUtil.dataPreFilter(outputCourses, constraints);
-            outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
-            return optimize(outputCourses, distances, weights, constraints);
+        try {
+            outputCourses = BruteForceUtil.dataPreHardFilter(outputCourses, hardConstraints);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            // If this try block is cought, that means there is an impossible schedule based on the hard constraints
+            // Therefore, the algorithmDriver resturns null instead of computing a schedule.
+            return null;
+        }
+
+        try {
+            outputCourses = BruteForceUtil.dataPreSoftFilter(outputCourses, softConstraints);
+            //outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
+            return optimize(outputCourses, distances, weights);
         } catch (Exception e){
-            // If an exception arises from dataPreFilter, we will call an overloaded version of optimize().
+            // If an exception arises from dataPreSoftFilter, we will call an overloaded version of optimize().
             // The overloaded version is not written yet, so when it is actually implemented,
             // this catch block will need updated accordingly.
             System.out.println(e.getMessage());
-            outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
-            return optimize(outputCourses, distances, weights, constraints);
+            //outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
+            return optimize(outputCourses, distances, weights, softConstraints);
         }
     }
 
@@ -50,11 +61,10 @@ public class BruteForcePrototype {
      * @param inputCourses a set of courses to generate an optimal schedule from
      * @param distances a nested string map that represents distances between buildings on campus
      * @param weights an array of floats representing the weights for each objective
-     * @param constraints the soft constraints on the schedule
      * @return the five schedules with the highest overall objective score based on the input courses and weights
      */
-    public static int[][] optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights, SConstraints constraints) {
-        Set<Schedule> validSchedules = generateValidSchedules(inputCourses, constraints);
+    public static int[][] optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights) {
+        Set<Schedule> validSchedules = generateValidSchedules(inputCourses);
 
         if (validSchedules.isEmpty()){
             // This block can be expanded in the future to include other methods of handling a lack of
@@ -109,10 +119,9 @@ public class BruteForcePrototype {
      * Uses helper function {@code recurGenerateValidSchedules()} to generate schedules and record them
      *
      * @param inputCourses the set of courses to generate schedules from
-     * @param constraints the soft constraints on the schedule
      * @return the set of unique, valid schedules for the given set of courses
      */
-    public static Set<Schedule> generateValidSchedules(Set<Course> inputCourses, SConstraints constraints) {
+    public static Set<Schedule> generateValidSchedules(Set<Course> inputCourses) {
         Set<Section> sectionList = new HashSet<>();
         HashSet<Schedule> validSchedules = new HashSet<>();
 
