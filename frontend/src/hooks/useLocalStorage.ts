@@ -54,7 +54,7 @@ export default function useLocalStorage<K extends keyof LocalStorageSchema>(
     });
 
     return () => controller.abort();
-  }, [key]);
+  }, [key, handleStorage, schema]);
 
   return [state, writeToStorage] as const;
 }
