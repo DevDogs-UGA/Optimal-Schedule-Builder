@@ -12,7 +12,7 @@ import java.util.Set;
 public class BruteForceUtil {
 
     /**
-     * Cleans the data being sent into the algorithm to account for certain hard constraints.
+     * Cleans the data being sent into the algorithm to account for certain soft constraints.
      *
      * @param inputCourses a set of courses given to be used in the user's schedule.
      * @param currentConstraints the constraints currently constraining schedule creation.
@@ -75,12 +75,12 @@ public class BruteForceUtil {
     }
 
     /**
+     * Cleans the data being sent into the algorithm to account for certain hard constraints.
      *
-     *
-     * @param inputCourses the courses needing to be checked if they satisfy the constraint
-     * @param currentConstraints The record containing all the hard constraints
-     * @return The finialized classes that can be outputted.
-     * @throws Exception
+     * @param inputCourses a set of courses given to be used in the user's schedule.
+     * @param currentConstraints the constraints currently constraining schedule creation.
+     * @throws Exception if {@code inputCourses} is not compliant with the filter.
+     * @return a set of courses cleaned per the user's specification
      */
     public static Set<Course> dataPreHardFilter(Set<Course> inputCourses, HConstraints currentConstraints) throws Exception {
 
