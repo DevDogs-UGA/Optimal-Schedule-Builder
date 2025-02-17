@@ -7,7 +7,7 @@ import * as z from "zod";
  * default or be nullable.
  */
 
-const queries = {
+const localStorage = {
   /**
    * Using `.catch(...)` on the schema gives a default value if there
    * is an error parsing the value in localStorage (or if the key is
@@ -32,4 +32,4 @@ const queries = {
     .nullable(),
 };
 
-export default queries;
+export default localStorage;
