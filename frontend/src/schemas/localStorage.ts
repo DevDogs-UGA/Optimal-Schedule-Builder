@@ -7,12 +7,26 @@ import * as z from "zod";
  * or be nullable.
  */
 
-export const test = z
+/**
+ * Using `.catch(...)` on the schema gives a default value if there 
+ * is an error parsing the value in localStorage (or if the key is 
+ * not present in localStorage). The default value passed to
+ * `.catch(...)` must match the original schema.
+ */
+export const example2 = z
   .object({
     foo: z.string(),
   })
   .catch({
-    foo: "caught",
+    foo: "defaultValue",
   });
 
-export const test2 = z.object({}).nullable();
+/**
+ * Using `.nullable()` is identical in behavior to `.catch(null)`, 
+ * except the schema does not necessarily have to match null.
+ */
+export const test2 = z
+  .object({
+    bar: z.string(),
+  })
+  .nullable();
