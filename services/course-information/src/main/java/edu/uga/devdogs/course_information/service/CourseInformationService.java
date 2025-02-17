@@ -466,5 +466,20 @@ public class CourseInformationService {
         }
     }
 
+    /**
+     * Method to get the coordinates of a building based on the building number
+     *
+     * @param number The number of specified building
+     * @return A string coordinate of the building
+     */
+    public String getCoordinatesByBuildingNumber(String number){
+        String coordinate = buildingRepository.getCoordinatesByBuildingNumber(number);
+        if (coordinate != null) {
+            return coordinate;
+        } else {
+            throw new BuildingNotFoundException("Building Not Found");
+        }
+    }
+
 }
 
