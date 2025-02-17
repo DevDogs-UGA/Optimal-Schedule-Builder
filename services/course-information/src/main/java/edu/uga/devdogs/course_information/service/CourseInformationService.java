@@ -229,4 +229,42 @@ public class CourseInformationService {
         }
     
     }
+
+    /**
+     * Retrieves the type of a class (e.g., Honors, Lab, Online) based on the given course ID.
+     *
+     * <p>
+     * This method queries the repository for a {@link Course} object with the specified ID
+     * and returns its type. If the course does not exist, it throws a {@link CourseNotFoundException}.
+     * </p>
+     *
+     * @param courseId the unique identifier for the course
+     * @return the type of the course as a string
+     * @throws CourseNotFoundException if no course with the specified ID is found
+     */
+    public String getCourseTypeById(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found for ID: " + courseId));
+        String id = course.getCourseNumber();
+        if (id.length() == 9) {
+            char type = id.charAt(8);
+            switch (type) {
+                case 'E':
+                    return "Online Learning";
+                case 'S':
+                    return "Service-Learning";
+                case 'H':
+                    return "Honors";
+                case 'I':
+                    return "Integrated Language";
+                case 'W':
+                    return "Writing Intensive";
+                case 'D':
+                    return "Non-Credit Discussion Group";
+                case 'L':
+                    return "Lab (Non-Credit and Credit)";
+            }
+        }
+        return "No Special Designation";
+    }
 }
