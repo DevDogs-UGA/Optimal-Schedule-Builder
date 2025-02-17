@@ -1,31 +1,41 @@
-import type { RouteMap } from "@/schemas";
-import * as serverQuerySchemas from "@/schemas/serverQueries";
+import serverQuerySchema from "@/schemas/serverQueries";
+import {
+  type UseQueryOptions,
+  useQuery as useReactQuery,
+} from "@tanstack/react-query";
 import type * as z from "zod";
-import { useQuery as useReactQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+
+interface Query {
+  route: string;
+  params: z.AnyZodObject | z.ZodUnion<[z.AnyZodObject, ...z.AnyZodObject[]]>;
+  result: z.ZodTypeAny;
+}
 
 function createUseQuery<
-  Services extends string,
   Queries extends string,
-  Map extends Record<Services, RouteMap<Queries>>,
->(map: Map) {
-  return function useQuery<S extends Services, Q extends Queries>(
-    serviceKey: S,
+  QueryRecord extends Record<Queries, Query>,
+>(queries: QueryRecord) {
+  /**
+   * This hook is a wrapper for react-query which provides typed
+   * parameters and responses for the course information backend 
+   * service. These types are defined in `@schema/serverQueries`.
+   * 
+   * @param queryKey The query to call on the backend.
+   * @param params The parameters associated with the provided query.
+   * @param options Options passed through to the underlying react-query hook.
+   * 
+   * @see https://tanstack.com/query/latest
+   */
+  return function useQuery<Q extends keyof QueryRecord>(
     queryKey: Q,
-    params: z.input<Map[S]["queries"][Q]["params"]>,
-    options?: { enabled: boolean },
+    params: z.input<QueryRecord[Q]["params"]>,
+    options: Omit<UseQueryOptions<z.output<QueryRecord[Q]["result"]>>, "queryKey" | "queryFn"> = {}
   ) {
-    const { service, query } = useMemo(
-      () => ({
-        service: map[serviceKey],
-        query: map[serviceKey].queries[queryKey],
-      }),
-      [serviceKey, queryKey],
-    );
+    const query = queries[queryKey];
 
-    return useReactQuery({
-      enabled: options?.enabled ?? true,
-      queryKey: ["getCoursesByTerm", params],
+    return useReactQuery<z.output<QueryRecord[Q]["result"]>>({
+      ...options,
+      queryKey: ["getCoursesByTerm", params], // TODO: params is an object and queryKey will has its reference, not its value(s).
       queryFn: () =>
         query.params
           .parseAsync(params)
@@ -33,7 +43,12 @@ function createUseQuery<
             fetch(
               new URL(
                 `${query.route}?${new URLSearchParams(obj)}`,
-                service.endpoint,
+                /**
+                 * TODO: when we can actually connect to the course
+                 * information service, we'll store the URL in an
+                 * environment variable, and it will be accessible here.
+                 */
+                // env.COURSE_INFORMATION_SERVICE,
               ),
             ),
           )
@@ -43,5 +58,5 @@ function createUseQuery<
   };
 }
 
-const useQuery = createUseQuery(serverQuerySchemas);
+const useQuery = createUseQuery(serverQuerySchema);
 export default useQuery;
