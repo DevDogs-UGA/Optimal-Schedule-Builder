@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { Heebo } from "next/font/google";
 import { type Metadata } from "next";
 import { Footer } from "@/components/Footer";
+import { ToastProvider } from "@/hooks/useToast";
 
 const heebo = Heebo({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -18,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={heebo.variable}>
       <body className="flex min-h-screen flex-col">
-        <main className="relative flex flex-1 flex-col">{children}</main>
-        <Footer />
+        <ToastProvider>
+          <main className="relative flex flex-1 flex-col">{children}</main>
+          <Footer />
+        </ToastProvider>
       </body>
     </html>
   );
