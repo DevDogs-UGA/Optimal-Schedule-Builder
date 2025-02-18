@@ -267,4 +267,219 @@ public class CourseInformationService {
         }
         return "No Special Designation";
     }
+
+    /**
+     * Service method for getting pre-requisites for a given course ID or CRN.
+     *
+     * @param courseID The ID of the course to retrieve pre-requisites for. (optional)
+     * @param crn The CRN of the course to retrieve pre-requisites for. (optional)
+     * @return A list of course objects that are pre-requisites for the given course.
+     */
+    public List<Course> getPreReqCourses(String courseID, String crn) {
+        String type = (courseID != null) ? courseID : crn;
+        // Returns all the pre-requisites for the given CRN or CourseID
+        return CourseRepository.getPreReqs(type);  // getPreReqs is not currently implemented
+    }
+
+    /**
+     * Service method for getting co-requisites for a given course ID or CRN.
+     *
+     * @param courseID The ID of the course to retrieve co-requisites for. (optional)
+     * @param crn The CRN of the course to retrieve co-requisites for. (optional)
+     * @return A list of course objects that are co-requisites for the given course.
+     */
+    public List<Course> getCoReqCourses(String courseID, String crn) {
+        String type;
+        if (courseID != null) {
+            type = courseID;
+        } else {
+            type = crn;
+        }
+        /* Returns all the coreqs for the given CRN or CourseID */
+        return CourseRepository.getCoReqs(type);  // getCoReqs is not currently implemented
+    }
+
+    /**
+     * Service method for receiving courses of a specified amount of credit hours
+     *
+     * @param creditHours the number of credit hours that a class needs to have
+     * @return list of "Courses" that have a specific number of credit hours.
+     */
+    public List<Course> getCoursesByCreditHours(int creditHours) {
+        List<Course> data = null;
+
+        if(creditHours < 1 || creditHours > 4) {
+            throw new IncorrectArguementsException("Credit hours must be between 1 and 5 inclusive!");
+        } else {
+            //Make sure Credit hours is greater than 0
+            /*Return list of courses that has the specific amount of credit hours */
+
+            data = CourseRepository.getCredits(creditHours);  // getCredits is not currently implemented
+
+            if(data.isEmpty()){
+                throw new CourseNotFoundException(String.format("Courses with %d Credit hours not found!", creditHours)); //Checks and returns 404 error if data information is empty
+            }
+
+            return data; //Returns course information if everything is correct
+        }
+    }
+
+    /**
+     * Retrieves a list of courses that match the specified type (e.g., honors, lab, or online).
+     *
+     * <p>
+     * The type parameter determines the category of courses to retrieve, such as "honors" for honors courses,
+     * "lab" for lab courses, or "online" for online courses. If no courses are found for the specified type,
+     * a {@link CourseNotFoundException} is thrown.
+     * </p>
+     *
+     * @param type the type of course to retrieve
+     * @return a list of {@link Course} objects that match the specified type
+     * @throws CourseNotFoundException if no courses of the specified type are found
+     */
+    public List<Course> getCoursesByType(String type) {
+        List<Course> returnList = switch (type) {
+            case "honors" ->
+                //we want to get a list of all honors courses from the database
+                    CourseRepository.getHonorsCourses();   // Not currently implemented
+            case "online" ->
+                //we want to get a list of all online courses from the database
+                    CourseRepository.getOnlineCourses();   // Not currently implemented
+            case "lab" ->
+                //we want to get a list of all lab courses from the database
+                    CourseRepository.getLabCourses();     // Not currently implemented
+            default -> null;
+        };
+
+        if (returnList != null) {
+            return returnList;
+        } else {
+            throw new CourseNotFoundException("Courses with the type " + type + " not found!");
+        }
+    }
+
+    /**
+     * Retrieves the prerequisites or requirements for a specified course.
+     *
+     * <p>
+     * Given a course identifier, this method queries the repository for a {@link Course} object
+     * with matching course code and returns its requirements. If the course does not exist, it throws
+     * a {@link CourseNotFoundException}.
+     * </p>
+     *
+     * @param courseName the unique identifier for the course (e.g., "CSCI1302")
+     * @return a list of requirement strings representing the prerequisites for the course
+     * @throws CourseNotFoundException if no course with the specified identifier is found
+     */
+    public List<String> getCourseRequirements(String courseName) {
+        // Find the course by courseCode (assuming courseCode is a field in the Course entity)
+        Course course = CourseRepository.findByCourseCode(courseName);   // Not implemented
+
+        // Return the course requirements (assuming requirements are stored as a List in Course entity)
+        if (course != null) {
+            return course.getRequirements();
+        } else {
+            throw new CourseNotFoundException("Course not found for code: " + courseName);
+        }
+    }
+
+    /**
+     * Retrieves a list of courses offered in a specified term (e.g., Fall, Spring, Summer).
+     *
+     * <p>
+     * The term parameter determines the academic term for which to retrieve courses.
+     * If no courses are found for the specified term, a {@link CourseNotFoundException} is thrown.
+     * </p>
+     *
+     * @param term the academic term to retrieve courses for
+     * @return a list of {@link Course} objects offered in the specified term
+     * @throws CourseNotFoundException if no courses are found for the specified term
+     */
+    public List<Course> getCoursesByTerm(String term) {
+        List<Course> courses = CourseRepository.findByTerm(term);   // findByTerm is not implemented
+
+        if (courses != null && !courses.isEmpty()) {
+            return courses;
+        } else {
+            throw new CourseNotFoundException("No courses found for term: " + term);
+        }
+    }
+
+    /**
+     * Service Method to get the List of Course Sections by timeslot, optionally CRN
+     * This method returns a list of courses by the timeslot, optionally crn
+     *
+     * @param timeSlot The timeslot to use e.g. ("10:00 AM - 11:15 AM")
+     * @param crn The crn to optionally use as well
+     * @return The list of applying Course Sections
+     * @throws SectionNotFoundException if no sections matching the parameters were found.
+     * */
+    public List<CourseSection> getSectionsByTimeAndOrCrn(String timeSlot, int crn) {
+        //Use our helper method to parse a start and end time for JPA calls
+        try {
+            Time startTime = parseTime(timeSlot.split(" - ")[0]);
+            Time endTime = parseTime(timeSlot.split(" - ")[1]);
+
+            //Make object to store returnList to make sure courses actually exist
+            List<CourseSection> timeReturnList = new ArrayList<>();
+            Set<String> seenTimes = new HashSet<>();
+
+
+            List<CourseSection> timeStartReturnList = CourseRepository.findByStartTime(startTime);  // Not implemented
+            List<CourseSection> timeEndReturnList = CourseRepository.findByEndTimeBetween(endTime, endTime);  // Not implemented
+
+            // Create a map to store elements from timeEndReturnList by their time properties
+            Map<String, CourseSection> endTimeMap = new HashMap<>();
+            for (CourseSection endSection : timeEndReturnList) {
+                String key = endSection.getStartTime().toString() + "-" + endSection.getEndTime().toString();
+                endTimeMap.put(key, endSection);
+            }
+
+            // Iterate through timeStartReturnList and check for matches in endTimeMap
+            for (CourseSection startSection : timeStartReturnList) {
+                String key = startSection.getStartTime().toString() + "-" + startSection.getEndTime().toString();
+
+                if (endTimeMap.containsKey(key) && !seenTimes.contains(key)) {
+                    timeReturnList.add(startSection); // Add to result list
+                    seenTimes.add(key); // Mark as seen
+                }
+            }
+
+            if (timeReturnList != null) {
+                if (crn != -1) { // if crn is provided
+                    List<CourseSection> finalReturnList = null;
+                    for (CourseSection section : timeReturnList) {
+                        if (section.getCrn() == crn) {
+                            finalReturnList.add(section);
+                            break;
+                        }
+                    }
+                    return finalReturnList;
+                }
+                return timeReturnList;
+            }
+            else {
+                throw new SectionNotFoundException("Class not found for timeSlot: " + timeSlot + " and CRN: " + crn);
+            }
+        } catch (ParseException e) {
+            System.err.println("Failed to parse time: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Method to get the coordinates of a building based on the building number
+     *
+     * @param number The number of specified building
+     * @return A string coordinate of the building
+     */
+    public String getCoordinatesByBuildingNumber(String number){
+        String coordinate = buildingRepository.getCoordinatesByBuildingNumber(number);
+        if (coordinate != null) {
+            return coordinate;
+        } else {
+            throw new BuildingNotFoundException("Building Not Found");
+        }
+    }
+
 }
+

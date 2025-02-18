@@ -50,7 +50,6 @@ public class CourseInfoController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Section found"),
         @ApiResponse(responseCode = "400", description = "Invalid CRN"),
-        @ApiResponse(responseCode = "404", description = "Section not found"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/professor")
@@ -63,11 +62,6 @@ public class CourseInfoController {
 
      try {
           List<CourseSection> courseInfo = courseInformationService.getCourseSectionsByProfessor(professor); //Fetches course information based on professor
-          
-          if(courseInfo.isEmpty()){
-               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseInfo); //Returns 404 error code is course info isn't found
-          }
-
           return ResponseEntity.ok(courseInfo);
      } catch (Exception e){
           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -86,7 +80,6 @@ public class CourseInfoController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Section found"),
         @ApiResponse(responseCode = "400", description = "Invalid CRN"),
-        @ApiResponse(responseCode = "404", description = "Section not found"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/coursesByMajor")
@@ -101,11 +94,6 @@ public class CourseInfoController {
         try {
             //Call method to get course list by major
             List<Course> courseList = courseInformationService.getCoursesByMajor(major);
-
-            //Check if the above method call returned null
-            if (courseList == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); //Return 404 if no courses are found
-            }
 
             //Return the courses if found
             return ResponseEntity.ok(courseList);
@@ -127,7 +115,6 @@ public class CourseInfoController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Section found"),
         @ApiResponse(responseCode = "400", description = "Invalid CRN"),
-        @ApiResponse(responseCode = "404", description = "Section not found"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/section-by-crn")
@@ -141,11 +128,6 @@ public class CourseInfoController {
         try {
             //Call method to get section details
             CourseSection sectionDetails = courseInformationService.getSectionDetailsByCrn(crn);
-
-            //Check if the above method call returned null
-            if (sectionDetails == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); //Return 404 if no courses are found
-            }
 
             //Return the section if found
             return ResponseEntity.ok(sectionDetails);
@@ -167,7 +149,6 @@ public class CourseInfoController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Section found"),
         @ApiResponse(responseCode = "400", description = "Invalid CRN"),
-        @ApiResponse(responseCode = "404", description = "Section not found"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/course-by-athena-name")
@@ -181,12 +162,7 @@ public class CourseInfoController {
 
         try {
             // Call a service method to fetch the course by Athena name
-            List<Course> courseDetails = courseInformationService.getCourseByAthenaName(athenaName);  // not yet implemented
-
-            // Check if the above method call returned null
-            if (courseDetails == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // return 404 if no course is found
-            }
+            List<Course> courseDetails = courseInformationService.getCourseByAthenaName(athenaName);
 
             // Return the course details if found
             return ResponseEntity.ok(courseDetails);
@@ -216,13 +192,13 @@ public class CourseInfoController {
     /**
      * Gets the special types of a course (honors/lab/online) from a CRN.
      * @param crn The CRN of the course to find the special types.
-     * @return A list of Strings that correspond the the special types of that course.
+     * @return A list of Strings that correspond to the special types of that course.
      */
     @Operation(summary = "Get special course type by crn", description = "Retrieves if the section is honors, online, or lab based on given crn")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Course found"),
             @ApiResponse(responseCode = "400", description = "Invalid course CRN"),
-            @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/course/specialCourseTypes")
     public ResponseEntity<List<String>> getSpecialCourseTypesFromCRN(
@@ -233,14 +209,10 @@ public class CourseInfoController {
         }
 
         try {
-
             List<String> specialCourseTypes = courseInformationService.fetchSpecialCourseTypes(crn); // Changed method name to fetchSpecialCourseTypes
 
-            if (specialCourseTypes.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(specialCourseTypes);
-            }
-
             return ResponseEntity.ok(specialCourseTypes);
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course types."));
         }
@@ -285,7 +257,6 @@ public class CourseInfoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Course found"),
             @ApiResponse(responseCode = "400", description = "Invalid term"),
-            @ApiResponse(responseCode = "404",description = "Course not found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping("/term")
@@ -299,11 +270,8 @@ public class CourseInfoController {
         try {
             List<Course> courseList = bulletinCourseService.getCoursesByTerm(term); //fetches the courses based on term
 
-            if(courseList.isEmpty()){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseList); //Checks and returns 404 error if courseList information is empty
-            }
-
             return ResponseEntity.ok(courseList); //Returns course information if everything is correct
+
         } catch (Exception e) {
             //Catches any server problems or exceptions
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -314,14 +282,14 @@ public class CourseInfoController {
     /**
      * Retrieves course information based on the provided course ID.
      *
-     * @param courseId The ID of the course to retrieve. (e.g., "CSCI-1301")
+     * @param courseId The ID of the course to retrieve. (e.g., "CSCI1301")
      * @return A "Course" List containing the course information (ID, title, description, semester).
      */
     @Operation(summary = "Get course information by course ID", description = "Retrieves course information based on the provided course ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Course found"),
             @ApiResponse(responseCode = "400", description = "Invalid course ID"),
-            @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/getCourseById")
     public ResponseEntity<Course> getCourseInfo(@RequestParam(value = "courseId") String courseId) {
@@ -334,11 +302,6 @@ public class CourseInfoController {
         try {
             // Call method to get course by ID
             Course course = getCourseByID(courseId);
-
-            // Check if the course is not found (null)
-            if (course == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return 404 if no course is found
-            }
 
             // Return the course if found
             return ResponseEntity.ok(course);
@@ -354,6 +317,8 @@ public class CourseInfoController {
      * Retrieves a list of courses based on the specified parameters. For example, you can edit this function to query
      * with your required parameters such as credit Hours and add on additional optional ones like,
      * "Give me all the 4 credit hours CSCI classes"
+     * NOTE: This endpoint will probably be removed, and if not, it will be split up into multiple endpoints
+     * -Jack Harrington, 2/17/24
      *
      * @author Raghav Vikramprabhu
      *
@@ -366,7 +331,7 @@ public class CourseInfoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Courses found"),
             @ApiResponse(responseCode = "400", description = "Invalid major code"),
-            @ApiResponse(responseCode = "404", description = "Courses not found")
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/courses")
     public ResponseEntity<List<Course>> getCourses(
@@ -381,12 +346,7 @@ public class CourseInfoController {
 
         try {
             // Fetch the courses based on provided filters
-            List<Course> courses = bulletinCourseService.getCoursesByType(type);
-
-            // Check if no courses are found
-            if (courses.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courses); // Return 404 if no courses found
-            }
+            List<Course> courses = courseInformationService.getCourses(creditHours, majorCode, classLevel);
 
             // Return the list of courses with a 200 OK response
             return ResponseEntity.ok(courses);
@@ -411,7 +371,7 @@ public class CourseInfoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Course found"),
             @ApiResponse(responseCode = "400", description = "Invalid course ID"),
-            @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/course/coreqs")
     public ResponseEntity<List<Course>> getCoReqs(
@@ -425,12 +385,7 @@ public class CourseInfoController {
 
         try {
             // Fetch co-requisite courses using the courseId or crn
-            List<Course> coReqs = bulletinCourseService.getCoReqCourses(courseId, crn); // Replace with actual method to fetch co-requisites
-
-            // If no co-requisites found, return 404
-            if (coReqs.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(coReqs);
-            }
+            List<Course> coReqs = courseInformationService.getCoReqCourses(courseId, crn); // Replace with actual method to fetch co-requisites
 
             // Return the list of co-requisite courses
             return ResponseEntity.ok(coReqs);
@@ -452,7 +407,7 @@ public class CourseInfoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Course found"),
             @ApiResponse(responseCode = "400", description = "Invalid course ID"),
-            @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/course/prereqs")
     public ResponseEntity<List<Course>> getPreReqs(
@@ -466,12 +421,7 @@ public class CourseInfoController {
 
         try {
             // Fetch pre-requisite courses using the courseId or crn
-            List<Course> preReqs = fetchPreReqs(courseId, crn); // Replace with actual method to fetch pre-requisites
-
-            // If no pre-requisites found, return 404
-            if (preReqs.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(preReqs);
-            }
+            List<Course> preReqs = courseInformationService.fetchPreReqs(courseId, crn);
 
             // Return the list of pre-requisite courses
             return ResponseEntity.ok(preReqs);
@@ -483,13 +433,20 @@ public class CourseInfoController {
     }
 
     /**
-     * Gets course sections from class time and optionally class name
+     * Gets course sections from class time and optionally class name.
+     *
      * @param timeSlot The timeslot range to use for this (10:00 AM - 11:15 AM)
      * @param crn The crn course to retrieve course sections (optional)
-     * @return A list of Strings that correspond the the special types of that course.
+     * @return A list of Strings that correspond to the special types of that course.
      */
+    @Operation(summary = "Get sections by time", description = "Retrieves class sections based on the provided time and, optionally, class name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Course found"),
+            @ApiResponse(responseCode = "400", description = "Invalid course ID"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/course/sections")
-    public ResponseEntity<List<Section>> getCourseSections(
+    public ResponseEntity<List<CourseSection>> getCourseSections(
             @RequestParam(value = "timeSlot", required = true) String timeSlot,
             @RequestParam(value = "crn", required = false) String crn
     ) {
@@ -498,11 +455,7 @@ public class CourseInfoController {
         }
 
         try {
-            List<Section> courseSections = fetchCourseSection(timeSlot, crn);
-
-            if (courseSections.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(courseSections);
-            }
+            List<CourseSection> courseSections = fetchCourseSection(timeSlot, crn);
 
             return ResponseEntity.ok(courseSections);
 
@@ -524,7 +477,7 @@ public class CourseInfoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Course found"),
             @ApiResponse(responseCode = "400", description = "Invalid requirement"),
-            @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/requirement")
     @Tag(name = "bulletin")
@@ -534,14 +487,72 @@ public class CourseInfoController {
             return ResponseEntity.badRequest().body(null);
         }
         try {
-            List<Course> courses = getCoursesByRequirement(requirement);
-            if (courses.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-                // Return 404 if no courses are found
-            }
+            List<Course> courses = courseInformationService.getCoursesByRequirement(requirement);
+            
             // Return courses if found
             return ResponseEntity.ok(courses);
         } catch (Exception e) {
+            // Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    /**
+     * Retrieves a list of all CRNs for classes at UGA.
+     *
+     * @return List of all available crns as integers
+     */
+    @Operation(summary = "Get all CRNs", description = "Retrieves a list of all CRNs for classes at UGA.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "CRNs found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/getAllCRNs")
+    @Tag(name="course-information")
+    public ResponseEntity<List<Integer>> getAllCRNs() {
+
+        try {
+
+            List<Integer> CRNs = courseInformationService.getAllCRns();
+
+            // Return the list of subject strings if found
+            return ResponseEntity.ok(CRNs);
+
+        } catch (Exception e) {
+
+            // Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    /**
+     * Retrieves coordinates associated with a particular building code of a building at UGA.
+     *
+     * @param buildingNumber Building number stored as a string
+     * @return List of all available subjects as strings
+     */
+    @Operation(summary = "Get coordinates based on building numbers", description = "Retrieves coordinates associated with a particular building code.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Coordinates found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/coordinates")
+    @Tag(name="course-information")
+    public ResponseEntity<List<String>> getCoordinatesByBuildingNumber(@RequestParam(value="buildingNumber",
+            required = true) String buildingNumber) {
+        if (buildingNumber == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        try {
+            // Coordinates of a building number as a string
+            List<String> coordinates = CourseInformationService.getCoordinatesByBuildingNumber(buildingNumber);
+
+            // Return the list of subject strings if found
+            return ResponseEntity.ok(coordinates);
+
+        } catch (Exception e) {
+
             // Return 500 if a server error occurs
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
