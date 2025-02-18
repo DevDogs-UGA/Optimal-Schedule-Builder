@@ -1,8 +1,28 @@
-import { useCallback, useEffect, useState } from "react";
 import localStorageSchema from "@/schemas/localStorage";
-import type * as z from "zod";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
+import * as z from "zod";
 
 type LocalStorageSchema = typeof localStorageSchema;
+
+const json = z
+  .string()
+  .transform((str, ctx) => {
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      ctx.addIssue({ code: "custom", message: "Invalid JSON" });
+      return z.NEVER;
+    }
+  })
+  .catch(null);
 
 /**
  * This hook is similar to `useState()`, except that the data
@@ -15,16 +35,29 @@ type LocalStorageSchema = typeof localStorageSchema;
 export default function useLocalStorage<K extends keyof LocalStorageSchema>(
   key: K,
 ) {
-  const schema = localStorageSchema[key];
-  type Schema = LocalStorageSchema[K];
-
-  if (!schema.isNullable() && !("removeCatch" in schema)) {
+  if (
+    !localStorageSchema[key].isNullable() &&
+    !("removeCatch" in localStorageSchema[key])
+  ) {
     throw new Error(
       "Local storage schema must end in `.nullable()` or `.catch({...})`.",
     );
   }
 
-  const [state, setState] = useState<z.infer<Schema>>(schema.parse(null));
+  const schema = useMemo(() => json.pipe(localStorageSchema[key]), [key]);
+  type Schema = LocalStorageSchema[K];
+
+  const [state, setState] = useReducer(
+    (prevState: z.infer<Schema>, action: SetStateAction<z.infer<Schema>>) => {
+      const newState =
+        typeof action === "function" ? action(prevState) : action;
+
+      window.localStorage.setItem(key, JSON.stringify(newState));
+
+      return newState;
+    },
+    schema.parse(null),
+  );
 
   const handleStorage = useCallback(
     (e: StorageEvent) => {
@@ -32,59 +65,19 @@ export default function useLocalStorage<K extends keyof LocalStorageSchema>(
         return;
       }
 
-      try {
-        setState(schema.parse(e.newValue));
-      } catch {
-        setState(null as z.infer<LocalStorageSchema[K]>);
-      }
+      setState(schema.parse(e.newValue));
     },
     [key, schema],
-  );
-
-  /**
-   * Dispatches a state update with the provided value while
-   * saving the provided value in local storage.
-   *
-   * @param value The value to store.
-   */
-  const writeToStorage = useCallback(
-    (
-      value:
-        | z.infer<Schema>
-        | ((previousValue: z.infer<Schema>) => z.infer<Schema>),
-    ) => {
-      if (typeof value !== "function") {
-        window.localStorage.setItem(key, JSON.stringify(value));
-        return;
-      }
-
-      try {
-        window.localStorage.setItem(
-          key,
-          JSON.stringify(value(schema.parse(window.localStorage.getItem(key)))),
-        );
-      } catch {
-        window.localStorage.removeItem(key);
-      }
-    },
-    [key],
   );
 
   useEffect(() => {
     const controller = new AbortController();
 
-    try {
-      setState(schema.parse(window.localStorage.getItem(key)));
-    } catch {
-      setState(null as z.infer<LocalStorageSchema[K]>);
-    }
-
-    window.addEventListener("storage", handleStorage, {
-      signal: controller.signal,
-    });
+    setState(schema.parse(window.localStorage.getItem(key)));
+    window.addEventListener("storage", handleStorage);
 
     return () => controller.abort();
-  }, [key, handleStorage, schema]);
+  }, [key, setState, handleStorage]);
 
-  return [state, writeToStorage] as const;
+  return [state, setState] as const;
 }
