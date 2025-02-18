@@ -48,16 +48,11 @@ export function ToastProvider({ children }: React.PropsWithChildren) {
             onOpenChange={createCleanup(id)}
           >
             <motion.li
+              animate={{ x: 0 }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragTransition={{ bounceStiffness: 500, bounceDamping: 15 }}
               dragElastic={{ left: 0, right: 0.5 }}
-              whileDrag={{ cursor: "grabbing" }}
-              layout
-              initial={{
-                x: 24 + 512,
-              }}
-              animate={{ x: 0 }}
               exit={{
                 opacity: 0,
                 zIndex: -1,
@@ -68,12 +63,17 @@ export function ToastProvider({ children }: React.PropsWithChildren) {
                 },
                 x: 24 + 512,
               }}
+              initial={{
+                x: 24 + 512,
+              }}
+              layout
               transition={{
                 type: "spring",
                 mass: 1,
                 damping: 30,
                 stiffness: 200,
               }}
+              whileDrag={{ cursor: "grabbing" }}
             >
               {children}
             </motion.li>
@@ -107,9 +107,10 @@ export default function useToast<P extends object>(Component: React.FC<P>) {
    */
   const publish = useCallback(
     (props: P, duration?: number) => {
-      appendToast([crypto.randomUUID(), duration, <Component {...props} />]);
+      const renderedComponent = <Component {...props} />;
+      appendToast([crypto.randomUUID(), duration, renderedComponent]);
     },
-    [appendToast],
+    [appendToast, Component],
   );
 
   return publish;

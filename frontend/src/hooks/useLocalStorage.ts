@@ -1,28 +1,8 @@
 import localStorageSchema from "@/schemas/localStorage";
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useState,
-} from "react";
-import * as z from "zod";
+import { type SetStateAction, useCallback, useEffect, useReducer } from "react";
+import type * as z from "zod";
 
 type LocalStorageSchema = typeof localStorageSchema;
-
-const json = z
-  .string()
-  .transform((str, ctx) => {
-    try {
-      return JSON.parse(str);
-    } catch (e) {
-      ctx.addIssue({ code: "custom", message: "Invalid JSON" });
-      return z.NEVER;
-    }
-  })
-  .catch(null);
 
 /**
  * This hook is similar to `useState()`, except that the data
@@ -44,11 +24,11 @@ export default function useLocalStorage<K extends keyof LocalStorageSchema>(
     );
   }
 
-  const schema = useMemo(() => json.pipe(localStorageSchema[key]), [key]);
-  type Schema = LocalStorageSchema[K];
+  const schema = localStorageSchema[key];
+  type Schema = z.infer<typeof schema>;
 
   const [state, setState] = useReducer(
-    (prevState: z.infer<Schema>, action: SetStateAction<z.infer<Schema>>) => {
+    (prevState: Schema, action: SetStateAction<Schema>) => {
       const newState =
         typeof action === "function" ? action(prevState) : action;
 
@@ -65,7 +45,11 @@ export default function useLocalStorage<K extends keyof LocalStorageSchema>(
         return;
       }
 
-      setState(schema.parse(e.newValue));
+      try {
+        setState(schema.parse(JSON.parse(e.newValue ?? "")));
+      } catch {
+        setState(null);
+      }
     },
     [key, schema],
   );
@@ -73,11 +57,18 @@ export default function useLocalStorage<K extends keyof LocalStorageSchema>(
   useEffect(() => {
     const controller = new AbortController();
 
-    setState(schema.parse(window.localStorage.getItem(key)));
+    try {
+      setState(
+        schema.parse(JSON.parse(window.localStorage.getItem(key) ?? "")),
+      );
+    } catch {
+      setState(null);
+    }
+
     window.addEventListener("storage", handleStorage);
 
     return () => controller.abort();
-  }, [key, setState, handleStorage]);
+  }, [key, schema, setState, handleStorage]);
 
   return [state, setState] as const;
 }
