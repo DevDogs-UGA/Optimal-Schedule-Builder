@@ -30,9 +30,6 @@ const localStorage = {
       bar: z.string(),
     })
     .nullable(),
-  storage: z.object({
-    count: z.number()
-  }).catch({ count: 0 })
 };
 
 export default localStorage;

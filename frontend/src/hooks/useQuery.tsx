@@ -7,6 +7,7 @@ import {
   type UseQueryOptions,
   useQuery as useReactQuery,
 } from "@tanstack/react-query";
+import { useMemo } from "react";
 import type * as z from "zod";
 
 interface Query {
@@ -39,26 +40,26 @@ function createUseQuery<
     > = {},
   ) {
     const query = queries[queryKey];
+    const searchParams = useMemo(
+      () => new URLSearchParams(query.params.parse(params)).toString(),
+      [query, params],
+    );
 
     return useReactQuery<z.output<QueryRecord[Q]["result"]>>({
       ...options,
-      queryKey: ["getCoursesByTerm", params], // TODO: params is an object and queryKey will has its reference, not its value(s).
+      queryKey: ["getCoursesByTerm", searchParams],
       queryFn: () =>
-        query.params
-          .parseAsync(params)
-          .then((obj) =>
-            fetch(
-              new URL(
-                `${query.route}?${new URLSearchParams(obj)}`,
-                /**
-                 * TODO: when we can actually connect to the course
-                 * information service, we'll store the URL in an
-                 * environment variable, and it will be accessible here.
-                 */
-                // env.NEXT_PUBLIC_COURSE_INFORMATION_SERVICE
-              ),
-            ),
-          )
+        fetch(
+          new URL(
+            `${query.route}?${searchParams}`,
+            /**
+             * TODO: when we can actually connect to the course
+             * information service, we'll store the URL in an
+             * environment variable, and it will be accessible here.
+             */
+            // env.NEXT_PUBLIC_COURSE_INFORMATION_SERVICE
+          ),
+        )
           .then((res) => res.json())
           .then((data) => query.result.parseAsync(data)),
     });
