@@ -13,6 +13,8 @@ import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
 import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import java.sql.Time;
+import java.util.List;
+import java.util.stream.Stream;
 
 
 @SpringBootApplication
@@ -57,15 +59,23 @@ public class CourseInformationApplication {
 						"Mary Francis early education",
 						null
 					);
-
+					course1.setSemesters(Stream.of("Spring", "Summer").toList());
 					courseRepository.save(course1);
 
+
+					Course course2 = new Course (
+						"math", 
+						"1101", 
+						"intro", 
+						"Department of Mathematics",
+						null
+					);
+					courseRepository.save(course2);
 					System.out.println(courseRepository.findBySubject("physiology"));
 					// TESTED 
 					// Output:
 					// [Course [courseId=1, subject=physiology, courseNumber=420, title=pain, department=Mary Francis early education]]
-
-
+          
 					//Building interface objects
 					Building building1 = new Building (2438, "CAGTECH", "F - 6", null);
 					buildingRepository.save(building1);
@@ -123,6 +133,8 @@ public class CourseInformationApplication {
 
 				classRepository.save(class1);
 				classRepository.save(class2);
+				List<Course> springCourses = courseRepository.findAllBySemester("Spring");
+				System.out.println("All courses with spring semesters: " + springCourses.toString());
 			};
 		}
 
