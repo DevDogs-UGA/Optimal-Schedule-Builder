@@ -117,25 +117,25 @@ export const QuestionnareForm = ({ className }: Props) => {
     `Spring ${new Date().getFullYear() + 1}`,
     `Summer ${new Date().getFullYear() + 1}`,
   ];
-  
+
   //This will change the semester list based on the current month
   // For Janurary: (Spring of this year, Summer of this year, Fall of this year)
-  if ((new Date().getMonth() == 0)) {
+  if (new Date().getMonth() == 0) {
     semesterList[0] = `Spring ${new Date().getFullYear()}`;
     semesterList[1] = `Summer ${new Date().getFullYear()}`;
     semesterList[2] = `Fall ${new Date().getFullYear()}`;
 
-  // For Feburary - May: (Summer of this year, Fall of this year, Spring of next year)
+    // For Feburary - May: (Summer of this year, Fall of this year, Spring of next year)
   } else if (new Date().getMonth() < 5) {
     semesterList[0] = `Summer ${new Date().getFullYear()}`;
     semesterList[1] = `Fall ${new Date().getFullYear()}`;
     semesterList[2] = `Spring ${new Date().getFullYear() + 1}`;
 
-  // For September - December: (Spring of next year, Summer of next year, Fall of next year)
+    // For September - December: (Spring of next year, Summer of next year, Fall of next year)
   } else if (new Date().getMonth() > 7) {
-    semesterList[0] = `Spring ${new Date().getFullYear() +1}`;
-    semesterList[1] = `Summer ${new Date().getFullYear()+1}`;
-    semesterList[2] = `Fall ${new Date().getFullYear()+1}`;
+    semesterList[0] = `Spring ${new Date().getFullYear() + 1}`;
+    semesterList[1] = `Summer ${new Date().getFullYear() + 1}`;
+    semesterList[2] = `Fall ${new Date().getFullYear() + 1}`;
     //alert(`the month is ${testDay.getMonth()}`);
   }
 
