@@ -119,6 +119,7 @@ export const QuestionnareForm = ({ className }: Props) => {
     `Summer ${new Date().getFullYear() + 1}`,
   ];
   
+  //changes:
   //This will change the semester list based on the current month
   // For Janurary: (Spring of this year, Summer of this year, Fall of this year)
   if ((new Date().getMonth() == 0)) {
