@@ -2,6 +2,8 @@ package edu.uga.devdogs.course_information.Building;
 
 import edu.uga.devdogs.course_information.Class.Class;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
@@ -20,7 +22,13 @@ public class Building implements Serializable {
 
     // serves as the id.
     @Id
-    private long buildingNumber;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long buildingId;
+
+    /* This can't serve as the id, because many 
+    classes show the building number as NCRR or TBA/
+    */
+    private String buildingNumber;
 
     private String name;
 
@@ -42,21 +50,13 @@ public class Building implements Serializable {
     }
 
     // Constructor w/o buildingNumber
-    public Building(String name, String grid, List<Class> classes) {
-        this.name = name;
-        this.grid = grid;
-        this.classes = classes;
-    }
-
-    // Constructor w/o class list
-    public Building(int buildingNumber, String name, String grid) {
-        this.buildingNumber = buildingNumber;
+    public Building(String name, String grid) {
         this.name = name;
         this.grid = grid;
     }
 
     // Constructor w/ buildingNumber
-    public Building(int buildingNumber, String name, String grid, List<Class> classes) {
+    public Building(String buildingNumber, String name, String grid) {
         this.buildingNumber = buildingNumber;
         this.name = name;
         this.grid = grid;
@@ -68,11 +68,15 @@ public class Building implements Serializable {
      * Getters and Setters
      */
 
-    public long getBuildingNumber() {
+    public String getBuildingNumber() {
         return buildingNumber;
     }
 
-    public void setBuildingNumber(int buildingNumber) {
+    public long getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingNumber(String buildingNumber) {
         this.buildingNumber = buildingNumber;
     }
 
