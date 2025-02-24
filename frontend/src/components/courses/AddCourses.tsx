@@ -2,6 +2,7 @@
 import { Button } from "../ui/Button";
 import { SearchFilter } from "./SearchFilter";
 import { useState } from "react";
+import useQuery from "@/hooks/useQuery";
 
 interface TabProps {
   label: string;
@@ -21,6 +22,11 @@ const TabButton = ({ label, onClick, className }: TabProps) => {
 };
 
 export const AddCourses = () => {
+
+  const querySubjects = useQuery("getAllSubjects", { });
+  // Dummy data for testing
+  const subjectsDummyData: string[] = ["Math", "Science", "History"];
+
   const [currentTab, setCurrentTab] = useState(0);
   const tabs = ["section", "instructor", "crn"];
   const handleTabChange = (index: number) => {
@@ -28,7 +34,8 @@ export const AddCourses = () => {
   };
 
   //TODO: Replace all dummy data with their respective items
-  const subjectData: string[] = [];
+  // Replace '[]' with "subjectsDummyData" for testing
+  const subjectData: string[] = (querySubjects.data == undefined) ? [] : querySubjects.data;
   const courseData: string[] = [];
   const instructorData: string[] = [];
   const CRNData: string[] = [];
