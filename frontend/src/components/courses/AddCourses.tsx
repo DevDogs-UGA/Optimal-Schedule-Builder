@@ -22,8 +22,7 @@ const TabButton = ({ label, onClick, className }: TabProps) => {
 };
 
 export const AddCourses = () => {
-
-  const querySubjects = useQuery("getAllSubjects", { });
+  const querySubjects = useQuery("getAllSubjects", {});
   // Dummy data for testing
   const subjectsDummyData: string[] = ["Math", "Science", "History"];
 
@@ -35,7 +34,8 @@ export const AddCourses = () => {
 
   //TODO: Replace all dummy data with their respective items
   // Replace '[]' with "subjectsDummyData" for testing
-  const subjectData: string[] = (querySubjects.data == undefined) ? [] : querySubjects.data;
+  const subjectData: string[] =
+    querySubjects.data == undefined ? [] : querySubjects.data;
   const courseData: string[] = [];
   const instructorData: string[] = [];
   const CRNData: string[] = [];
