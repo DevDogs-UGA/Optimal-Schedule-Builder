@@ -83,8 +83,16 @@ public class BruteForceUtil {
      * @return a set of courses cleaned per the user's specification
      */
     public static Set<Course> dataPreHardFilter(Set<Course> inputCourses, HConstraints currentConstraints) throws Exception {
-
-
+        if(inputCourses == null || currentConstraints == null){     // Throws exception if parameter is null
+            throw new IllegalArgumentException("inputCourses and currentConstraints cannot be null");
+        }
+        Set<Course> validCourses  = new HashSet<>();
+        for (Course course : inputCourses) {   // Checks if course is in excluded courses and adds to return if isn't.
+            if(!currentConstraints.excludedCourses().contains(course)){
+                validCourses.add(course);
+            }
+        }
+        return validCourses;
     }
 
 
