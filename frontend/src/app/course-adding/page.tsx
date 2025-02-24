@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/ButtonRounded";
+import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/Navbar";
 import { RecommendedCourses } from "@/components/RecommendedCourses";
 import { AddCourses } from "@/components/courses/AddCourses";
@@ -31,6 +31,9 @@ export default function Courses() {
           <div>
             <SearchFilter />
           </div>
+          <section className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <Button text="Generate Schedule" className="mt-2 text-white" />
+          </section>
         </div>
       </div>
     </div>
