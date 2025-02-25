@@ -142,4 +142,31 @@ public class BruteForceUtil {
         }
     }
 
+    /**
+     * Ensures every class requested by the user makes it into the schedule.
+     * If any of the courses in {@code inputCourses} are not in a particular
+     * schedule of {@code validSchedules} an exception is thrown.
+     *
+     * @param inputCourses user inputted courses.
+     * @param validSchedules a set of valid generated schedules
+     */
+    public static void ensureInitialCourses(Set<Course> inputCourses, Set<Schedules> validSchedules) {
+        boolean courseInSchedule = false;
+        // for every user inputted course
+        for (Course c : inputCourses) {
+            // for every valid schedule
+            for (Schedule s : validSchedules) {
+                // for every section in said schedule
+                for (Section sect : s.sections()) {
+                    // if the course the user inputted, c, is in the schedule, s
+                    if (c.courseCode == sect.courseCode) {
+                        courseInSchedule = true;
+                    } // if
+                } // for
+                if (!courseInSchedule) {
+                    throw new Exception("Schedule does not contain specified course.")
+                } // if
+            } // for
+        } // for
+    } // ensureInitialCourse
 }
