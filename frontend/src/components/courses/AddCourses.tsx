@@ -33,9 +33,9 @@ export const AddCourses = () => {
   };
 
   //TODO: Replace all dummy data with their respective items
-  // Replace '[]' with "subjectsDummyData" for testing
-  const subjectData: string[] =
-    querySubjects.data == undefined ? [] : querySubjects.data;
+  // Replace '[]' with "subjectsDummyData" to test dropdown
+  const subjectData: string[] | undefined = [];
+  subjectData ?? querySubjects.data;
   const courseData: string[] = [];
   const instructorData: string[] = [];
   const CRNData: string[] = [];
