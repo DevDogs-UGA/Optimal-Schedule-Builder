@@ -1,127 +1,110 @@
 "use client";
 
-import React, { useEffect, useState, useRef, forwardRef } from "react";
-import { type z } from "zod";
+import React, { useState, useEffect, useRef } from "react";
 
-interface DropdownProps {
+interface searchFilterProps {
+  name?: string;
   items?: string[];
   type?: string;
-  name?: string;
-  min?: string;
-  className?: string;
-  isFormSubmitted?: boolean;
-  errorList?: z.ZodIssue[];
   placeholder?: string;
-  readOnly?: boolean;
+  className?: string;
+  clearState?: boolean;
 }
 
-//Uses forwardRef to get the input field props to the parent
-export const DropdownSearchInput = forwardRef<HTMLInputElement, DropdownProps>(
-  (
-    {
-      items = [],
-      type = "text",
-      name,
-      min,
-      className,
-      isFormSubmitted,
-      errorList,
-      placeholder,
-      readOnly,
-    },
-    ref,
-  ) => {
-    //Handles Dropdown
-    const [isOpen, setIsOpen] = useState(false);
-    const [query, setQuery] = useState("");
-    const [filteredData, setFilteredData] = useState<string[]>(items);
-    const dropdownRef = useRef<HTMLUListElement>(null);
+//Dropdown Search Input component that contains a search input and dropdown feature
+export const DropdownSearchInput = ({
+  name = "",
+  items = [],
+  type = "text",
+  placeholder = "",
+  className = "",
+  clearState,
+}: searchFilterProps) => {
+  const dropdownRef = useRef<HTMLUListElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [filteredData, setFilteredData] = useState<string[]>(items);
 
-    //Handles errors
-    const [error, setError] = useState<z.ZodIssue>();
+  //Handles filtering the search input
+  const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.currentTarget.value);
+    const regex = new RegExp("^" + e.currentTarget.value, "i");
+    const filter = items.filter((item) => regex.test(item));
+    setFilteredData(filter);
+  };
 
-    //Handles closing dropdown menu when clicking off of it
-    useEffect(() => {
-      const handleClose = (e: MouseEvent) => {
-        if (!dropdownRef.current?.contains(e.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      document.addEventListener("mousedown", handleClose);
-      return () => {
-        document.removeEventListener("mousedown", handleClose);
-      };
-    }, [isOpen]);
+  //Handles clicking on a dropdown item
+  const handleClick = (e: React.MouseEvent) => {
+    setQuery(e.currentTarget.textContent ?? "");
+    setIsOpen((prev) => !prev);
+  };
 
-    //Filters dropdown data using the current search query with regex
-    const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const regex = new RegExp("^" + e.currentTarget.value, "i");
-      const filter = items.filter((item) => regex.test(item));
-      setFilteredData(filter);
-    };
-
-    //Handles clearing inputs
-    useEffect(() => {
-      setQuery("");
-    }, [isFormSubmitted]);
-
-    useEffect(() => {
-      if (errorList) {
-        setError(errorList.find((err) => err.path[0] === name));
+  //Handles Enter Keypress
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const activeItem = document.activeElement;
+      if (activeItem?.textContent) {
+        setQuery(activeItem.textContent);
       }
-    }, [errorList, name]);
+      setIsOpen((prev) => !prev);
+    }
+  };
 
-    const sharedStyling = "w-full rounded-md border-2 ";
+  //Handles closing dropdown menu when clicked off
+  useEffect(() => {
+    const handleClose = (e: MouseEvent) => {
+      if (!dropdownRef.current?.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClose);
+    return () => {
+      document.removeEventListener("mousedown", handleClose);
+    };
+  }, [isOpen]);
 
-    return (
-      <div className="relative">
-        <input
-          ref={ref}
-          id="input"
-          onClick={() => setIsOpen(true)}
-          onInput={(e) => {
-            setIsOpen(true);
-            setQuery(e.currentTarget.value);
-            setError(undefined);
-          }}
-          onChange={handleQuery}
-          value={query}
-          type={type}
-          name={name}
-          className={`h-12 px-2 py-1 focus:outline-none ${sharedStyling} ${error ? "border-red-600" : " "} ${className}`}
-          min={min}
-          placeholder={placeholder}
-          autoComplete="off"
-          readOnly={readOnly}
-        />
-        {error && (
-          <div className="absolute font-thin text-bulldog-red">
-            {"* " + error.message}
-          </div>
-        )}
-        {isOpen && filteredData.length > 0 && (
-          <ul
-            ref={dropdownRef}
-            className={`absolute z-50 max-h-44 overflow-y-scroll bg-white text-black ${sharedStyling} ${className} scroll-smooth`}
-          >
-            {filteredData.map((item, index) => (
-              <li
-                className="px-2 py-1 text-left transition ease-in-out hover:bg-limestone"
-                onClick={(e) => {
-                  setQuery(e.currentTarget.textContent ?? "");
-                  setIsOpen(false);
-                  setError(undefined);
-                }}
-                key={index}
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    );
-  },
-);
+  //This useEffect is to handle clearing the input when the form is submitted or cleared
+  useEffect(() => {
+    if (clearState && query !== "") {
+      setQuery("");
+    }
+  }, [clearState, query]);
 
-DropdownSearchInput.displayName = "DropdownSearchInput";
+  return (
+    <div className={`relative w-full min-w-32`}>
+      <input
+        name={name}
+        value={query}
+        type={type}
+        min={0}
+        onChange={handleQuery}
+        onClick={() => setIsOpen((prev) => !prev)}
+        placeholder={placeholder}
+        className={`w-full rounded-md border-2 border-pebble-gray p-2 outline-none before:${className}`}
+        autoComplete="off"
+        onKeyDown={handleKeyPress}
+      />
+      {/* DROPDOWN MENU */}
+      {isOpen && filteredData.length !== 0 && (
+        <ul
+          ref={dropdownRef}
+          className={`absolute max-h-52 w-full overflow-y-scroll scroll-smooth rounded-md border-2 border-pebble-gray bg-white ${className} z-10 px-0`}
+        >
+          {/* DROPDOWN ITEMS */}
+          {filteredData.map((item, index) => (
+            <li
+              key={index}
+              onClick={(e) => handleClick(e)}
+              className="bg-inherit px-2 py-1 hover:brightness-75"
+              tabIndex={0}
+              onKeyDown={handleKeyPress}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
