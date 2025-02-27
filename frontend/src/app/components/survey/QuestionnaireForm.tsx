@@ -133,14 +133,14 @@ export const QuestionnareForm = ({ className }: Props) => {
       >
         <div>
           <h1>What&apos;s your major?</h1>
-          <DropdownSearchInput
+          {/* <DropdownSearchInput
             name="major"
             items={dummyData}
             className={dropdownStyling}
             // isFormSubmitted={isFormSubmitted}
             placeholder="Enter your major"
             // errorList={errorList}
-          />
+          /> */}
         </div>
         <div>
           <h1>Select preferred days</h1>
