@@ -40,30 +40,30 @@ export const TimeSelector = ({
   return (
     <div className="flex items-center">
       <DropdownSearchInput
-        ref={hourRef}
+        // ref={hourRef}
         className={`rounded-r-none ${sharedStyling} min-w-full text-center md:max-w-14`}
         items={hourList}
-        min="1"
-        isFormSubmitted={isFormSubmitted}
-        readOnly={true}
+        // min="1"
+        // isFormSubmitted={isFormSubmitted}
+        // readOnly={true}
       />
       <h1 className="mx-2 text-xl">:</h1>
       <DropdownSearchInput
-        ref={minuteRef}
+        // ref={minuteRef}
         className={`rounded-none ${sharedStyling} min-w-full text-center md:max-w-14`}
         items={minuteList}
-        min="1"
-        isFormSubmitted={isFormSubmitted}
-        readOnly={true}
+        // min="1"
+        // isFormSubmitted={isFormSubmitted}
+        // readOnly={true}
       />
       <DropdownSearchInput
-        ref={meridianRef}
+        // ref={meridianRef}
         className={`rounded-l-none ${sharedStyling} min-w-full text-center md:max-w-16`}
         items={["AM", "PM"]}
-        min="1"
-        isFormSubmitted={isFormSubmitted}
+        // min="1"
+        // isFormSubmitted={isFormSubmitted}
         placeholder={placeholder}
-        readOnly={true}
+        // readOnly={true}
       />
     </div>
   );
