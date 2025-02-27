@@ -1,42 +1,53 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 
-interface ToggleButtonProps {
+interface toggleButtonData {
+  key?: number;
   text?: string;
+  data?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  className?: string;
-  isFormSubmitted?: boolean;
+  clearState?: boolean;
 }
 
-export const ToggleButton = ({
-  text,
-  className,
+interface toggleButtonProps {
+  toggledText?: string;
+  toggledStyle?: string;
+  untoggledStyle?: string;
+  className?: string;
+}
+
+const ToggleButton = ({
+  text = "",
+  data = "",
   onClick,
-  isFormSubmitted,
-}: ToggleButtonProps) => {
-  const [isToggled, setIsToggled] = useState(false);
-  const sharedStyling =
-    "text-xl border-r-0 border-2 sm:border-2 px-[8%] py-[5%] duration-300 ease-in-out ";
+  clearState = false,
+  toggledText = text,
+  className = "",
+  toggledStyle = className,
+  untoggledStyle = className,
+}: toggleButtonProps & toggleButtonData) => {
+  const [toggled, setToggled] = useState(false);
+
   useEffect(() => {
-    if (isFormSubmitted) {
-      setIsToggled(false);
+    if (clearState) {
+      setToggled(false);
     }
-  }, [isFormSubmitted]);
+  }, [clearState]);
+
   return (
     <button
-      className={
-        !isToggled
-          ? `bg-white text-nearly-black hover:border-pink-200 hover:bg-dusty-pink ${sharedStyling} ${className}`
-          : `border-bulldog-red bg-bulldog-red text-white duration-300 ease-in-out hover:border-dusty-pink hover:bg-red-800 ${sharedStyling} ${className}`
-      }
-      onClick={(e) => {
+      className={`duration-300 ease-in-out ${className} ${toggled ? toggledStyle : untoggledStyle}`}
+      data-value={data}
+      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        setIsToggled(!isToggled);
         if (onClick) {
           onClick(e);
         }
+        setToggled((prev) => !prev);
       }}
     >
-      {text}
+      {toggled ? toggledText : text}
     </button>
   );
 };
+
+export default ToggleButton;
