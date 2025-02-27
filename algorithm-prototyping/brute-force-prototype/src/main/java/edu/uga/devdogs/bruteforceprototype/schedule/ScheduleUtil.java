@@ -251,7 +251,7 @@ public class ScheduleUtil {
             possSConstraintsCount++;
         }
         if (softConstraints.prefStartTime() != null) {
-            possSConstraintScore += normalizeValue(computeStartTime(schedule), prefTimeMinimum, prefTimeMaximum);;
+            possSConstraintScore += normalizeValue(computeStartTime(schedule), prefTimeMinimum, prefTimeMaximum);
             possSConstraintsCount++;
         }
         if (softConstraints.prefEndTime() != null) {

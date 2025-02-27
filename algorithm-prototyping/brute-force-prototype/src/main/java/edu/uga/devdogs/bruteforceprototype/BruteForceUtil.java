@@ -83,7 +83,7 @@ public class BruteForceUtil {
      * @return a set of courses cleaned per the user's specification
      */
     public static Set<Course> dataPreHardFilter(Set<Course> inputCourses, HConstraints currentConstraints) throws Exception {
-
+        return null;
 
     }
 
