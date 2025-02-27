@@ -1,12 +1,16 @@
 package edu.uga.devdogs.bruteforceprototype.schedule;
 
+import edu.uga.devdogs.sampledataparser.records.SConstraints;
 import edu.uga.devdogs.sampledataparser.records.Section;
 import edu.uga.devdogs.sampledataparser.records.Class;
+import edu.uga.devdogs.sampledataparser.records.HConstraints;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.Set;
+
 
 /**
  * Utility class for performing operations and calculations related to a Schedule.
@@ -68,7 +72,7 @@ public class ScheduleUtil {
         // Used to create the summation of the quality of professors within the schedule.
         for (Section section : schedule.sections()) {
             // Ensures that only professors with data are included in calculation.
-            if (section.professor().quality() == 0.0) {
+            if (section.professor().quality() == (Double)null || section.professor().quality() == 0.0) {
                 // Decreases our professor count to prevent statistical misguidance.
                 includedProfessorCount--;
             } else {
@@ -78,6 +82,18 @@ public class ScheduleUtil {
         }
 
         return professorQualitySum / includedProfessorCount;
+    }
+
+    /**
+     * Checks if schedule or constraints is null and throws an exception if it is.
+     * 
+     * @param schedule the schedule to validate
+     * @param constraints the constraints to validate
+     */
+    public static void validateHard(Schedule schedule, HConstraints constraints) {
+        if(schedule == null || constraints == null) {
+            throw new IllegalArgumentException("Schedule and/or constraints cannot be null");
+        }
     }
 
     /**
@@ -165,22 +181,13 @@ public class ScheduleUtil {
      *
      * @param schedule the schedule to evaluate
      * @param distances a nested string map that represents distances between buildings on campus
-     * @param weights an array of floats representing the weights for each objective;
-     *                must be of length 3 and add to 1.0
-     *                weights[0] corresponds to averageProfessorQuality
-     *                weights[1] corresponds to maxDistance
-     *                weights[2] corresponds to averageIdleTime
      *
      * @return the overall objective score for the schedule
      */
-    public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances, double[] weights) {
+    public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances) {
        // Checks if the parameters are valid
-       if (schedule == null || distances == null || weights == null) {
+       if (schedule == null || distances == null) {
            throw new IllegalArgumentException("Parameters cannot be null");
-       } else if (weights.length != 3) {
-           throw new IllegalArgumentException("Number of weights must be 3");
-       } else if (Math.abs(weights[0] + weights[1] + weights[2] - 1) > 1e-6) {
-           throw new IllegalArgumentException("The sum of the weights must be equal to 1");
        }
 
         // The minimum rating on rate my professor is 1.0(if they have ratings).
@@ -203,8 +210,67 @@ public class ScheduleUtil {
 
         // computes the weighted sum. normalizedMaxDistance and normalizedAverageIdleTime are being subtracted from 1 since
         // the higher the value, the worse the schedule.
-        return normalizedProfessorQuality * weights[0] + (1 - normalizedMaxDistance) * weights[1] + (1 - normalizedAverageIdleTime) * weights[2];
+        return normalizedProfessorQuality / 3 + (1 - normalizedMaxDistance) / 3 + (1 - normalizedAverageIdleTime) / 3;
     }
+
+    public static double computeOverallObjectiveExtended(Schedule schedule, Map<String, Map<String, Double>> distances, SConstraints softConstraints) {
+        // Checks if the parameters are valid
+        if (schedule == null || distances == null) {
+            throw new IllegalArgumentException("Parameters cannot be null");
+        }
+
+        // The minimum rating on rate my professor is 1.0(if they have ratings).
+        final double professorQualityMinimum = 1.0;
+        // The maximum rating on rate my professor is 5.0
+        final double professorQualityMaximum = 5.0;
+        // The minimum distance between classes is 0.0 if they are in the same building.
+        final double maxDistanceMinimum = 0.0;
+        // The highest distance shown in the document is 22.1, so 30 should be a good maximum for calculations.
+        final double maxDistanceMaximum = 30.0;
+        // The minimum average idle time is 0 which should only happen if the person has one class a day.
+        final double averageIdleTimeMinimum = 0;
+        // The earliest a class can start is 8:00 a.m. and latest a class can go is 9:00 p.m. which is 780 minutes between those times.
+        final double averageIdleTimeMaximum = 780;
+
+        // The Earliest a class can start is 8 am and the latest a class can start is 9 pm.
+        final double prefTimeMinimum = 8.0;
+        final double prefTimeMaximum = 21.0;
+
+
+        // finds the values and then plugs them into the normalize function with the minimum and maximum.
+        double normalizedProfessorQuality = normalizeValue(computeAverageProfessorQuality(schedule), professorQualityMinimum, professorQualityMaximum);
+        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule, distances), maxDistanceMinimum, maxDistanceMaximum);
+        double normalizedAverageIdleTime = normalizeValue(computeAverageIdleTime(schedule), averageIdleTimeMinimum, averageIdleTimeMaximum);
+
+        // Taking an average of all the optional softConstraints and then multiply the average by 0.25.
+        double possSConstraintScore = 0;
+        int possSConstraintsCount = 0;
+
+        if (softConstraints.gapDay() != null) {
+            possSConstraintScore += computeGapDay(schedule, softConstraints.gapDay()) ? 1 : 0;
+            possSConstraintsCount++;
+        }
+        if (softConstraints.prefStartTime() != null) {
+            possSConstraintScore += normalizeValue(computeStartTime(schedule), prefTimeMinimum, prefTimeMaximum);;
+            possSConstraintsCount++;
+        }
+        if (softConstraints.prefEndTime() != null) {
+            possSConstraintScore += 1 - normalizeValue(computeEndTime(schedule), prefTimeMinimum, prefTimeMaximum);
+            possSConstraintsCount++;
+        }
+
+        // Takes the sum and divides it by number of summed values, checks for when count = 0 so we don't divide by 0
+        possSConstraintScore = possSConstraintsCount == 0 ? 0 : possSConstraintScore / possSConstraintsCount;
+
+        // computes the weighted sum. normalizedMaxDistance and normalizedAverageIdleTime are being subtracted from 1 since
+        // the higher the value, the worse the schedule.
+        double output = normalizedProfessorQuality / 4 + (1 - normalizedMaxDistance) / 4;
+        output += (1 - normalizedAverageIdleTime) / 4;
+        output += (possSConstraintScore / 4);
+
+        return output;
+    }
+
 
     /**
      * Normalizes the values using min-max normalization and clips outliers
@@ -226,6 +292,22 @@ public class ScheduleUtil {
             // normalizes the values using min-max normalization
             return (value - min) / (max - min);
         }
+    }
+
+    /**
+     * Converts Sets containing Sections into arrays of ints for use of other teams.
+     *
+     * @param sections the set containing the sections to convert.
+     * @return the array of CRNs that represent the sections.
+     * */
+    public static int[] sectionsToInts(Set<Section> sections) {
+        int[] output = new int[sections.size()];
+        int i = 0;
+        for (Section section : sections) {
+            output[i] = section.crn();
+            i++;
+        }
+        return output;
     }
 
 }

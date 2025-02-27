@@ -1,5 +1,5 @@
 "use client";
-import { type ClassData } from "../../../types/scheduleTypes";
+import { type ClassData } from "@/types/scheduleTypes";
 import { useState, useEffect } from "react";
 
 type DayClassProps = ClassData;
@@ -152,7 +152,7 @@ function CourseInfo({
         }}
       >
         {/* Header: Course name and CRN */}
-        <div className={`relative z-50 ${bgColor} rounded-3xl p-8`}>
+        <div className={`relative z-50 ${bgColor} rounded-lg p-8`}>
           <div className="text-right font-bold text-white/90">
             <p>CRN: {crn}</p>
           </div>

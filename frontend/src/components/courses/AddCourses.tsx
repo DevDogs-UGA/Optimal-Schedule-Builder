@@ -2,6 +2,7 @@
 import { Button } from "../ui/Button";
 import { SearchFilter } from "./SearchFilter";
 import { useState } from "react";
+import useQuery from "@/hooks/useQuery";
 
 interface TabProps {
   label: string;
@@ -21,6 +22,10 @@ const TabButton = ({ label, onClick, className }: TabProps) => {
 };
 
 export const AddCourses = () => {
+  const querySubjects = useQuery("getAllSubjects", {});
+  // Dummy data for testing
+  const subjectsDummyData: string[] = ["Math", "Science", "History"];
+
   const [currentTab, setCurrentTab] = useState(0);
   const tabs = ["section", "instructor", "crn"];
   const handleTabChange = (index: number) => {
@@ -28,13 +33,14 @@ export const AddCourses = () => {
   };
 
   //TODO: Replace all dummy data with their respective items
-  const subjectData: string[] = [];
+  // Replace '[]' with "subjectsDummyData" in statement below to test dropdown
+  const subjectData: string[] | undefined = querySubjects.data ?? [];
   const courseData: string[] = [];
   const instructorData: string[] = [];
   const CRNData: string[] = [];
 
   return (
-    <div className="min-w-full">
+    <div className="h-full min-w-full">
       <div className="flex gap-2">
         {tabs.map((tab, index) => (
           <TabButton
@@ -49,7 +55,7 @@ export const AddCourses = () => {
           />
         ))}
       </div>
-      <main className="justify-between gap-4 border-2 border-dusty-pink bg-barely-pink px-12 py-8">
+      <main className="justify-between gap-4 border-4 border-dusty-pink bg-barely-pink px-12 py-11">
         <div className="items-center justify-center space-y-8 py-16">
           {currentTab === 0 && (
             <>

@@ -1,57 +1,72 @@
+"use client";
+
 // Returning User: option(saved filter preferences, manual entry, saved plans)
 // New User: option(saved filter preferences, questionnaire page, saved plans)
 
+import { Navbar } from "@/components/Navbar";
+import Image from "next/image";
 import Link from "next/link";
-import { Button } from "./components/ui/Button";
-
-import { CallToAction } from "./components/home/CallToAction";
-import { Minimap } from "./components/home/Minimap";
-import { ScheduleSave } from "./components/home/ScheduleSave";
-import { HomepageAlert } from "./components/home/HomepageAlert";
-import { LabPairingSystem } from "./components/home/LabPairingSystem";
-import { Navbar } from "./components/Navbar";
+import background from "../../public/images/background.png";
+import devdog from "../../public/images/devdog.png";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <>
       <Navbar />
-      <div className="flex h-[calc(100vh-5rem)] flex-grow flex-col items-center justify-center text-center">
-        <div className="space-y-4">
-          <h2 className="text-center text-xl font-semibold text-bulldog-red md:text-2xl">
-            For Students, By Students
-          </h2>
-          <h1 className="text-4xl font-bold md:text-6xl">
-            An Optimized 🚀 Schedule Builder
-          </h1>
-          <h3 className="md:text-lg">Developed by UGA DevDogs ©</h3>
-        </div>
-        <div className="pt-10">
-          <CallToAction />
-        </div>
-        <div className="mt-[8rem] flex items-center gap-4">
-          <div className="flex flex-col items-center justify-end gap-4">
-            <Minimap />
-            <ScheduleSave />
+      <div className="relative -mt-[3.625rem] flex flex-1 flex-col items-center justify-center gap-16 px-4 pt-24 text-center">
+        <Image
+          alt=""
+          className="absolute top-14 -z-10 max-h-full w-screen object-cover sm:top-0"
+          sizes="100vw"
+          src={background}
+        />
+        <Image
+          alt=""
+          className="absolute -bottom-36 -z-10 w-screen rotate-180 sm:hidden"
+          sizes="100vw"
+          src={background}
+        />
+
+        <div className="flex flex-col items-center gap-20 rounded-md bg-gradient-to-bl from-white/50 to-pink-100/50 px-6 py-16 backdrop-blur-sm min-[480px]:px-12 sm:px-16 md:contents">
+          <div className="flex gap-6 text-6xl md:text-7xl xl:text-8xl">
+            <h2 className="font-extrabold text-slate-800">DogDays</h2>
+            <figure className="size-[1em]">
+              <Image
+                alt="UGA Dev Dogs logo"
+                className=""
+                height={128}
+                src={devdog}
+              />
+            </figure>
           </div>
-          <Link href="/">
-            <div className="h-[10rem] w-[10rem] rounded-xl bg-[#F3EDED] transition duration-300 ease-in-out hover:bg-[#c3a5a5] sm:h-[10rem] sm:w-[20rem] md:h-[12rem] md:w-[25rem] lg:h-[15rem] lg:w-[30rem]"></div>
-          </Link>
-          <div className="flex flex-col items-center justify-end gap-4">
-            <LabPairingSystem />
-            <HomepageAlert />
-          </div>
-          <div className="text-blue-600">
-            <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
-              <Link href={"/past-credits"}>Past Credits</Link>
-            </button>
-          </div>
-          <div className="text-blue-600">
-            <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
-              <Link href={"/saved-plans"}>Saved Plans</Link>
-            </button>
+
+          <div className="flex flex-col gap-8 rounded-md from-white/50 to-pink-100/50 md:bg-gradient-to-bl md:px-16 md:py-8 md:backdrop-blur-sm">
+            <p className="flex flex-col font-bold text-bulldog-red">
+              <span className="text-xl sm:text-2xl xl:text-3xl">
+                An Optimized Schedule Builder
+              </span>
+              <span className="sm:text-lg xl:text-2xl">
+                For Students, By Students
+              </span>
+            </p>
+
+            <div className="flex items-center text-lg font-bold xl:text-xl">
+              <p className="-mr-6 flex-1 cursor-default rounded-l-full bg-[#F8E6EA] bg-dusty-pink px-4 py-3 text-left text-neutral-600/40 shadow-inner">
+                Ready?
+              </p>
+              <Link
+                className="flex items-center gap-10 rounded-full border-2 border-red-900 bg-bulldog-red py-2.5 pl-4 pr-1.5 text-white shadow-md"
+                href="/"
+              >
+                Join Now!{" "}
+                <span className="-my-2 flex size-10 items-center justify-center rounded-full border-2 border-red-900 bg-white pt-0.5 text-[1.5rem] leading-none shadow-sm">
+                  🚀
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
