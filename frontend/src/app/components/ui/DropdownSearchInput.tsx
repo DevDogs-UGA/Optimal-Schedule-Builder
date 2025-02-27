@@ -81,7 +81,7 @@ export const DropdownSearchInput = ({
         onChange={handleQuery}
         onClick={() => setIsOpen((prev) => !prev)}
         placeholder={placeholder}
-        className={`w-full rounded-md border-2 border-pebble-gray p-2 outline-none before:${className}`}
+        className={`w-full rounded-md border-2 p-2 outline-none hover:border-pebble-gray ${className}`}
         autoComplete="off"
         onKeyDown={handleKeyPress}
       />
@@ -89,7 +89,7 @@ export const DropdownSearchInput = ({
       {isOpen && filteredData.length !== 0 && (
         <ul
           ref={dropdownRef}
-          className={`absolute max-h-52 w-full overflow-y-scroll scroll-smooth rounded-md border-2 border-pebble-gray bg-white ${className} z-10 px-0`}
+          className={`absolute max-h-52 w-full overflow-y-scroll scroll-smooth rounded-md border-2 bg-white ${className} z-10 px-[0]`}
         >
           {/* DROPDOWN ITEMS */}
           {filteredData.map((item, index) => (

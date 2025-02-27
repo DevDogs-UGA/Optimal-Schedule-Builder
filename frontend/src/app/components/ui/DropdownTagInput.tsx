@@ -100,11 +100,11 @@ export const DropdownTagInput = ({
     // CONTAINER FOR ENTIRE COMPONENT
     <div className="relative min-w-full">
       <div
-        className={`rounded-md border-2 border-pebble-gray ${className} lg:flex`}
+        className={`rounded-md border-2 hover:border-pebble-gray ${className} lg:flex`}
       >
         {/* //CONTAINER FOR TAGS */}
         <div
-          className={`border-pebble-gray bg-white ${className} no-scrollbar flex-shrink-1 flex items-center gap-7 overflow-x-scroll border-none lg:gap-4 ${tags.length !== 0 ? "px-2 py-1" : ""} ${tags.length === 1 ? "min-w-fit" : ""} lg:max-w-28`}
+          className={`rounded-md border-pebble-gray bg-white ${className} no-scrollbar flex-shrink-1 flex items-center gap-7 overflow-x-scroll border-none lg:gap-4 ${tags.length !== 0 ? "px-2 py-1" : ""} ${tags.length === 1 ? "min-w-fit" : ""} lg:max-w-28`}
         >
           {/* INDIVIDUAL TAGS */}
           {tags.length !== 0 &&
@@ -151,7 +151,7 @@ export const DropdownTagInput = ({
       {isOpen && filteredData.length !== 0 && (
         <ul
           ref={dropdownRef}
-          className={`absolute max-h-52 w-full overflow-y-scroll scroll-smooth rounded-md border-2 border-pebble-gray bg-white ${className} z-10 px-0`}
+          className={`absolute max-h-52 w-full overflow-y-scroll scroll-smooth rounded-md border-2 bg-white ${className} z-10 px-0`}
         >
           {/* DROPDOWN ITEMS */}
           {filteredData.map((item, index) => (
