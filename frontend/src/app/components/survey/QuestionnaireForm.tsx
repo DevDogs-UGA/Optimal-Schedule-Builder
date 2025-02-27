@@ -137,9 +137,9 @@ export const QuestionnareForm = ({ className }: Props) => {
             name="major"
             items={dummyData}
             className={dropdownStyling}
-            isFormSubmitted={isFormSubmitted}
+            // isFormSubmitted={isFormSubmitted}
             placeholder="Enter your major"
-            errorList={errorList}
+            // errorList={errorList}
           />
         </div>
         <div>
@@ -185,20 +185,20 @@ export const QuestionnareForm = ({ className }: Props) => {
               type="number"
               name="minDistance"
               className={"select-none text-black"}
-              isFormSubmitted={isFormSubmitted}
+              // isFormSubmitted={isFormSubmitted}
               placeholder="Min"
-              min="0"
-              errorList={errorList}
+              // min="0"
+              // errorList={errorList}
             />
             <h1>-</h1>
             <DropdownSearchInput
               type="number"
               name="maxDistance"
               className={"select-none text-black"}
-              isFormSubmitted={isFormSubmitted}
+              // isFormSubmitted={isFormSubmitted}
               placeholder="Max"
-              min="0"
-              errorList={errorList}
+              // min="0"
+              // errorList={errorList}
             />
           </div>
         </div>
@@ -209,22 +209,22 @@ export const QuestionnareForm = ({ className }: Props) => {
               type="number"
               name="minCreditHours"
               className={dropdownStyling}
-              isFormSubmitted={isFormSubmitted}
+              // isFormSubmitted={isFormSubmitted}
               placeholder="Min"
-              min="0"
+              // min="0"
               items={creditHoursList}
-              errorList={errorList}
+              // errorList={errorList}
             />
             <h1>-</h1>
             <DropdownSearchInput
               type="number"
               name="maxCreditHours"
               className={dropdownStyling}
-              isFormSubmitted={isFormSubmitted}
+              // isFormSubmitted={isFormSubmitted}
               placeholder="Max"
-              min="0"
+              // min="0"
               items={creditHoursList}
-              errorList={errorList}
+              // errorList={errorList}
             />
           </div>
         </div>
@@ -234,9 +234,9 @@ export const QuestionnareForm = ({ className }: Props) => {
             name="term"
             items={semesterList}
             className={dropdownStyling}
-            isFormSubmitted={isFormSubmitted}
+            // isFormSubmitted={isFormSubmitted}
             placeholder="Enter term"
-            errorList={errorList}
+            // errorList={errorList}
           />
         </div>
         <section className="mt-4 flex h-12 gap-5">
