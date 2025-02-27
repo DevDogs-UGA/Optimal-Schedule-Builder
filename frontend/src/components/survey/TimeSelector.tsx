@@ -43,7 +43,6 @@ const Timeselector = ({
     if (text) {
       setMeridian(text);
     }
-    console.log(meridian);
   };
 
   //handles quick input using "enter" key to skip to seconds
