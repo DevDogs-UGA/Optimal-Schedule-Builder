@@ -76,7 +76,6 @@ export const AddCourses = () => {
           )}
         </div>
         <section className="flex flex-col gap-4 sm:flex-row sm:justify-end">
-          <Button text="Search" className="text-white" />
           <Button text="Add" className="text-white" />
         </section>
       </main>
