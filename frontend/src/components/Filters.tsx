@@ -1,5 +1,5 @@
 import { DropdownSearchInput } from "./ui/DropdownSearchInput";
-import DropdownTagInput from "./ui/DropdownTagInput";
+import { DropdownTagInput } from "./ui/DropdownTagInput";
 
 interface props {
   text?: string;
@@ -35,11 +35,9 @@ const educationLevelList = ["Undergraduate", "Graduate"];
 const creditHourList: string[] = [];
 const buildingList: string[] = [];
 
-const dropdownStyling = "border-pebble-gray";
-
 export const SearchFilter = ({}: props) => {
   return (
-    <>
+    <div>
       <div className="flex flex-col border-4 border-dusty-pink bg-barely-pink p-2">
         {" "}
         {/* Div for Whole Filter Component*/}
@@ -50,10 +48,10 @@ export const SearchFilter = ({}: props) => {
         <div className="sm:flex sm:flex-row sm:justify-around sm:px-8 sm:py-4">
           {" "}
           {/* Div for filters*/}
-          <div className="m-4 grid grid-cols-2 gap-4 sm:flex">
+          <div className="m-4 grid grid-cols-2 justify-center gap-4 sm:flex sm:flex-col lg:grid lg:grid-cols-2">
             {" "}
             {/* Div For Column 1*/}
-            <div className="text-right">
+            <div className="text-right md:text-left">
               {" "}
               {/* Course Status Label */}
               <label htmlFor="open" className="text-right font-extrabold">
@@ -65,6 +63,7 @@ export const SearchFilter = ({}: props) => {
               {/* Div For Checkboxes */}
               <div className="font-bold sm:flex sm:items-center sm:space-x-3">
                 <input
+                  title="open"
                   type="checkbox"
                   id="open"
                   name="open"
@@ -76,6 +75,7 @@ export const SearchFilter = ({}: props) => {
               </div>
               <div className="font-bold sm:flex sm:items-center sm:space-x-3">
                 <input
+                  title="waitlist"
                   type="checkbox"
                   id="waitlist"
                   name="waitlist"
@@ -87,6 +87,7 @@ export const SearchFilter = ({}: props) => {
               </div>
               <div className="font-bold sm:flex sm:items-center sm:space-x-3">
                 <input
+                  title="closed"
                   type="checkbox"
                   id="closed"
                   name="closed"
@@ -108,23 +109,17 @@ export const SearchFilter = ({}: props) => {
               <label className="text-right font-extrabold">Instruction:</label>
               <label className="text-right font-extrabold">Campus:</label>
             </div>
-            <div className="grid grid-rows-3 gap-4">
+            <div className="grid max-w-56 grid-rows-3 gap-4">
               {" "}
               {/* Div For Dropdowns */}
-              <DropdownSearchInput
-                items={termList}
-                placeholder="Enter Term"
-                className={dropdownStyling}
-              />
+              <DropdownSearchInput items={termList} placeholder="Enter Term" />
               <DropdownTagInput
                 items={instructionlist}
                 placeholder="Enter Instruction"
-                className={dropdownStyling}
               />
               <DropdownSearchInput
                 items={campusList}
                 placeholder="Enter Campus"
-                className={dropdownStyling}
               />
             </div>
           </div>
@@ -138,28 +133,25 @@ export const SearchFilter = ({}: props) => {
               <label className="text-right font-extrabold">Credit Hours:</label>
               <label className="text-right font-extrabold">Building:</label>
             </div>
-            <div className="grid grid-rows-3 gap-4">
+            <div className="grid max-w-56 grid-rows-3 gap-4">
               {" "}
               {/* Div For Dropdowns */}
               <DropdownSearchInput
                 items={educationLevelList}
                 placeholder="Enter Level"
-                className={dropdownStyling}
               />
               <DropdownTagInput
                 items={creditHourList}
                 placeholder="Enter Credit Hours"
-                className={dropdownStyling}
               />
               <DropdownSearchInput
                 items={buildingList}
                 placeholder="Enter Building"
-                className={dropdownStyling}
               />
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

@@ -1,40 +1,82 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
-interface DropdownTagInputProps {
+interface searchFilterProps {
+  name?: string;
   items?: string[];
   type?: string;
-  name?: string;
-  min?: string;
-  className?: string;
-  formStatus?: boolean;
   placeholder?: string;
+  className?: string;
+  clearState?: boolean;
 }
 
-export default function DropdownTagInput({
+//Dropdown Tag Input component that contains a search input and dropdown feature
+export const DropdownTagInput = ({
+  name = "",
   items = [],
   type = "text",
-  name,
-  className,
-  min,
-  placeholder,
-  formStatus,
-}: DropdownTagInputProps) {
+  placeholder = "",
+  className = "",
+  clearState,
+}: searchFilterProps) => {
+  const dropdownRef = useRef<HTMLUListElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState<string[]>(items);
   const [tags, setTags] = useState<string[]>([]);
-  const dropdownRef = useRef<HTMLUListElement>(null);
-  const searchBarRef = useRef<HTMLDivElement>(null);
 
-  //Hanldles input clears when a form is submitted
-  useEffect(() => {
-    setQuery("");
-  }, [formStatus]);
+  //Handles filtering the search input
+  const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.currentTarget.value);
+    const regex = new RegExp("^" + e.currentTarget.value, "i");
+    const filter = items.filter((item) => regex.test(item));
+    setFilteredData(filter);
+  };
 
-  //Handles closing dropdown menu when clicking off of it
+  //Handles clicking on a dropdown item
+  const addTag = (e: React.MouseEvent) => {
+    const text = e.currentTarget.textContent ?? "";
+    setTags((prev) => [...prev, text]);
+    setIsOpen((prev) => !prev);
+  };
+
+  //Handles removing tag
+  //The e.detail returns the number of times the event is triggered.
+  //Keyboard events will always be 0. This is to prevent the "enter" key from triggering the remove tag button on accident. --> This is just for using keyboard to select choices instead of clicking.
+  const removeTag = (
+    e:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) => {
+    e.preventDefault();
+
+    if (e.detail > 0) {
+      setTags(tags.filter((_, i) => i !== index));
+    }
+  };
+
+  //Handles Enter Keypress
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement.tagName === "INPUT" && query !== "") {
+        setTags((prev) => [...prev, query]);
+        setIsOpen((prev) => !prev);
+        setQuery("");
+      } else if (activeElement.tagName === "LI") {
+        const text = activeElement.textContent ?? "";
+        setTags((prev) => [...prev, text]);
+        setIsOpen((prev) => !prev);
+        setQuery("");
+      }
+    }
+  };
+
+  //Handles closing dropdown menu when clicked off
   useEffect(() => {
     const handleClose = (e: MouseEvent) => {
       if (!dropdownRef.current?.contains(e.target as Node)) {
@@ -42,100 +84,83 @@ export default function DropdownTagInput({
       }
     };
     document.addEventListener("mousedown", handleClose);
-    return () => document.removeEventListener("mousedown", handleClose);
+    return () => {
+      document.removeEventListener("mousedown", handleClose);
+    };
   }, [isOpen]);
 
-  //Handles horizontal scrolling using the scrollwheel on tag container
+  //This useEffect is to handle clearing the input when the form is submitted or cleared
   useEffect(() => {
-    const scroll = searchBarRef.current;
-    if (scroll) {
-      const onWheel = (e: WheelEvent) => {
-        e.preventDefault();
-        scroll.scrollBy(e.deltaY, 0);
-      };
-      scroll.addEventListener("wheel", onWheel);
-      return () => scroll.removeEventListener("wheel", onWheel);
-    }
-  }, []);
-
-  //Filters dropdown data using the current search query with regex
-  const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const regex = new RegExp("^" + e.currentTarget.value, "i");
-    const filter = items.filter((item) => regex.test(item));
-    setFilteredData(filter);
-  };
-
-  //Adding tags
-  const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const input = e.target as HTMLInputElement;
-      setTags([...tags, input.value]);
+    if (clearState && query !== "") {
       setQuery("");
     }
-  };
-
-  //Removing tags
-  const removeTag = (index: number) => {
-    setTags([...tags.filter((_, i) => i !== index)]);
-  };
+  }, [clearState, query]);
 
   return (
-    <div id="dropdown-container" className="relative">
+    // CONTAINER FOR ENTIRE COMPONENT
+    <div className="relative min-w-full">
       <div
-        ref={searchBarRef}
-        className={`flex h-12 w-full items-center overflow-x-auto overflow-y-hidden rounded-md border-2 bg-white p-1 hover:scroll-smooth ${className}`}
+        className={`rounded-md border-2 hover:border-pebble-gray ${className} lg:flex`}
       >
-        {/* <ul className="flex max-w-44 gap-2 p-1">
-          {tags.length > 0 &&
-            tags?.map((item, index) => (
-              <li key={index}>
-                <span className="flex items-center justify-center gap-2 rounded-md bg-bulldog-red px-2 py-1 text-white">
-                  {item}
-                  <button
-                    onClick={() => removeTag(index)}
-                    className="flex h-4 w-4 items-center justify-center text-black"
-                  >
-                    <Image
-                      height={20}
-                      width={20}
-                      src="/images/removeTagButton.svg"
-                      alt="Button to remove tabs"
-                    />
-                  </button>
-                </span>
-              </li>
+        {/* //CONTAINER FOR TAGS */}
+        <div
+          className={`rounded-md border-pebble-gray bg-white ${className} no-scrollbar flex-shrink-1 flex items-center gap-7 overflow-x-scroll border-none lg:gap-4 ${tags.length !== 0 ? "px-2 py-1" : ""} ${tags.length === 1 ? "min-w-fit" : ""} lg:max-w-28`}
+        >
+          {/* INDIVIDUAL TAGS */}
+          {tags.length !== 0 &&
+            tags.map((index, key) => (
+              <div
+                key={key}
+                className="relative h-6 rounded-l-md bg-bulldog-red px-2 lg:mr-3"
+              >
+                {index}
+                {/* REMOVE BUTTON */}
+                <button
+                  type="button"
+                  title="Remove Tag"
+                  className="absolute -right-5 z-10 h-6 w-6 rounded-r-md bg-bulldog-red"
+                  onClick={(e) => removeTag(e, key)}
+                >
+                  <Image
+                    src="./images/removeButton.svg"
+                    layout="fixed"
+                    height={20}
+                    width={20}
+                    alt="Remove Tag"
+                    objectFit="contain"
+                    draggable="false"
+                  />
+                </button>
+              </div>
             ))}
-          <input
-            onClick={() => setIsOpen(true)}
-            onInput={(e) => {
-              setIsOpen(true);
-              setQuery(e.currentTarget.value);
-            }}
-            onChange={handleQuery}
-            value={query}
-            type={type}
-            name={name}
-            className={`rounded-md focus:outline-none ${tags.length > 0 ? "w-24" : "w-100%"} ${className}`}
-            min={min}
-            onKeyUp={addTag}
-            placeholder={placeholder}
-            autoComplete="off"
-          />
-        </ul> */}
+        </div>
+        <input
+          name={name}
+          value={query}
+          type={type}
+          min={0}
+          onChange={handleQuery}
+          onClick={() => setIsOpen((prev) => !prev)}
+          placeholder={placeholder}
+          className={`${className} relative w-full rounded-md border-none p-2 outline-none lg:flex-shrink`}
+          autoComplete="off"
+          onKeyDown={handleKeyPress}
+        />
       </div>
-      {isOpen && filteredData.length > 0 && (
+      {/* DROPDOWN MENU */}
+      {isOpen && filteredData.length !== 0 && (
         <ul
           ref={dropdownRef}
-          className={`absolute z-50 max-h-44 w-full overflow-y-scroll rounded-md border-2 bg-white text-black ${className}`}
+          className={`absolute max-h-52 w-full overflow-y-scroll scroll-smooth rounded-md border-2 bg-white ${className} z-10 px-0`}
         >
+          {/* DROPDOWN ITEMS */}
           {filteredData.map((item, index) => (
             <li
-              className="px-2 py-1 text-left transition ease-in-out hover:bg-limestone"
-              onClick={(e) => {
-                setTags([...tags, e.currentTarget.textContent ?? ""]);
-                setIsOpen(false);
-              }}
               key={index}
+              onClick={(e) => addTag(e)}
+              onKeyDown={handleKeyPress}
+              className="bg-inherit px-2 py-1 hover:brightness-75"
+              tabIndex={0}
             >
               {item}
             </li>
@@ -144,4 +169,4 @@ export default function DropdownTagInput({
       )}
     </div>
   );
-}
+};
