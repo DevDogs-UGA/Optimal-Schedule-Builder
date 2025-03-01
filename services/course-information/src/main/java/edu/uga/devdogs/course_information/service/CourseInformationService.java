@@ -11,7 +11,7 @@ import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import edu.uga.devdogs.course_information.exceptions.BuildingNotFoundException;
 import edu.uga.devdogs.course_information.exceptions.CourseNotFoundException;
 
 
