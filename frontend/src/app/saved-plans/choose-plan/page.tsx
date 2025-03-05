@@ -1,11 +1,29 @@
-// Returning User: -> Saved Plans
-// New User: -> Saved Plans
+"use client";
+// Returning User: -> Schedule View (\schedules)
+// New User: -> Schedule View (\schedules)
 
+// make class blocks clickable to access more
+import { Navbar } from "@/components/Navbar";
+import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
-import Link from "next/link";
+import { useState, useEffect } from "react";
+import SavedPlan from "@/components/saved-plans/SavedPlan";
 
-export default function SchedulePage() {
+export default function ChoosePlan() {
+
+  const savedPlansList = [
+    {
+      href: "/schedules",
+      text: "Plan 1"
+    },
+    {
+      href: "/saved-plans",
+      text: "Plan 2"
+    }
+  ];
+
   const weekScheduleData: WeekScheduleType = {
     Monday: [
       {
@@ -311,23 +329,34 @@ export default function SchedulePage() {
     // Add more days as needed
   };
 
-  // Sorts the classes by start time
-  Object.keys(weekScheduleData).forEach((day) => {
-    weekScheduleData[day]?.sort((a, b) => {
-      const timeA = new Date(`1970/01/01 ${a.timeStart}`); // Any date can be used since we're only comparing times
-      const timeB = new Date(`1970/01/01 ${b.timeStart}`);
-      return timeA.getTime() - timeB.getTime();
-    });
-  });
-
   return (
-    <div className="mx-auto min-h-screen w-[100%]">
-      <div className="p-7 text-center text-blue-600">
-        <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
-          <Link href={"/route-map"}>Route Map</Link>
-        </button>
+    <div className="min-h-screen">
+      <Navbar />
+      {/* Options for creating and modifying saved plans */}
+      <div className="flex flex-row mt-12 justify-between flex-nowrap gap-1 text-center">
+          <h1 className="font-bold text-2xl ml-8 ">Select a plan or create a new one.</h1>
+          <div className="flex mr-8 flex-row gap-1">
+            <Button className="m-2 border-2 border-nearly-black rounded-lg bg-bulldog-red hover:bg-glory-glory-red px-4 py-2 font-semibold text-black" text="Delete"> 
+            </Button>
+            <Button className="m-2 border-2 border-pebble-gray rounded-lg bg-dusty-pink hover:bg-barely-pink px-4 py-2 font-semibold text-black" text="Edit"> 
+            </Button>
+            <Button className="m-2 border-2 border-pebble-gray rounded-lg bg-dusty-pink hover:bg-barely-pink px-4 py-2 font-semibold text-black" text="Save"> 
+            </Button>
+            <Button className="m-2 border-2 border-pebble-gray rounded-lg bg-dusty-pink hover:bg-barely-pink px-4 py-2 font-semibold text-black" text="Create"> 
+            </Button>
+          </div>
       </div>
-      <WeekSchedule weekData={weekScheduleData} />
+    
+      {/* List of saved plans (placeholder list of 2): We can add more when the saving functionality is actually implemented.
+      Should this be an array? */}
+      <div className="flex flex-col mt-10 justify-center items-center flex-nowrap gap-1"> 
+          <SavedPlan 
+            className="m-10 border-2 border-pebble-gray !rounded-3xl bg-dusty-pink hover:bg-barely-pink w-[80vw] h-[20vh] font-semibold text-black text-3xl onClick={selectSavedPlan}" planTitle="Plan 1" plan={weekScheduleData} >
+          </SavedPlan>
+          <SavedPlan 
+            className="m-10 border-2 border-pebble-gray !rounded-3xl bg-dusty-pink hover:bg-barely-pink w-[80vw] h-[20vh] font-semibold text-black text-3xl" planTitle="Plan 2" plan={weekScheduleData}>
+          </SavedPlan>
+      </div>
     </div>
   );
 }
