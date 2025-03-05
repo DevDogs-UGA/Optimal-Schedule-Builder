@@ -1,31 +1,37 @@
-import { QuestionnareForm } from "@/components/survey/QuestionnaireForm";
-import { Navbar } from "../components/Navbar";
 import Image from "next/image";
-
-export default function page() {
+import { QuestionnareForm } from "@/components/survey/QuestionnaireForm";
+import { Navbar } from "@/components/Navbar";
+const page = () => {
   return (
+    // PAGE CONTAINER
     <>
       <Navbar />
-      <div className="min-w-screen flex min-h-screen items-center justify-center">
-        <main className="flex flex-col justify-center border-dusty-pink sm:m-20 sm:mx-8 sm:mb-40 sm:flex-row sm:overflow-hidden sm:rounded-xl sm:border-4 sm:shadow-2xl">
-          <div className="flex items-center justify-center text-wrap border-4 border-b-0 border-barely-pink bg-white p-5 text-7xl font-bold sm:border-0 sm:bg-barely-pink sm:pb-[30%] sm:pl-14 md:w-1/2">
-            <div className="flex flex-col">
-              <h1 className="sm:text-nearly-black">
-                Let&apos;s Get <br />
-                You <br /> Started!
-              </h1>
-              <Image
-                className="absolute rotate-45"
-                width={400}
-                height={400}
-                src="/images/paws.svg"
-                alt={"paws overlay"}
-              />
-            </div>
+      <div className="min-w-screen flex min-h-screen items-center justify-center overflow-x-hidden pb-32">
+        {/* MODAL CONTAINER */}
+        <main className="lg:mx-34 flex w-full flex-col rounded-lg sm:my-20 sm:flex-row sm:border-4 sm:border-dusty-pink sm:bg-barely-pink sm:shadow-2xl lg:max-w-5xl">
+          {/* LEFT SECTION */}
+          <div className="flex min-w-min justify-center sm:w-2/5 sm:p-8 sm:pb-60 sm:pt-32 md:px-12">
+            <Image
+              className="absolute"
+              width={400}
+              height={400}
+              src="/images/paws.svg"
+              alt={"paws overlay"}
+              draggable="false"
+            />
+            <h1 className="z-10 text-7xl font-bold text-nearly-black">
+              Let&apos;s Get <br />
+              You <br /> Started!
+            </h1>
           </div>
-          <QuestionnareForm className="border-4 border-t-0 border-barely-pink bg-white pb-20 shadow-md sm:border-0 sm:pb-5 sm:shadow-none lg:w-2/3" />
+          {/* RIGHT SECTION */}
+          <div className="flex flex-1 items-center justify-center p-8 sm:bg-white lg:p-20">
+            <QuestionnareForm />
+          </div>
         </main>
       </div>
     </>
   );
-}
+};
+
+export default page;

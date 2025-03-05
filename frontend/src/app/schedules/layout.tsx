@@ -1,7 +1,6 @@
-import "../../styles/globals.css";
 import { type Metadata } from "next";
 
-import { ScheduleViewNavBar } from "@/components/home/ScheduleViewNavBar";
+import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Generated Schedule",
@@ -15,7 +14,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
-      <ScheduleViewNavBar />
+      <Navbar keyword={"schedules"} />
       {children}
     </>
   );

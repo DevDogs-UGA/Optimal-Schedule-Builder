@@ -85,3 +85,18 @@ This directory contains the sample data to be used in our prototypes.
   ...
 }
 ```
+
+- `./buildingData/AthensBuildingData.json`, `./buildingData/GriffinBuildingData.json`, `./buildingData/TiftonBuildingData.json`: JSON files that generally ties the "Building Code", "Longitude", and "Latitude" of UGA buildings together. Some of the "Address" and "Name" sections may a bit off. All coordinate data comes from [ArcGIS](https://www.arcgis.com/apps/webappviewer/index.html?id=10832e7927124404a7119df52872af84&marker=-83.36976500828429,33.942891604835,,,,&markertemplate=%7B%22title%22:%22Building+2130%22,%22longitude%22:-83.36976500828429,%22latitude)
+
+```json
+[
+    {
+        "Address": "45 BAXTER ST",
+        "Name": "Tate Student Center",
+        "Longitude": -83.37499668,
+        "Latitude": 33.95043103,
+        "Building Code": 672
+    },
+    ...
+]
+```

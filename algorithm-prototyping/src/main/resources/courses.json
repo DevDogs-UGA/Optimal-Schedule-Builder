@@ -4,11 +4,11 @@
     "sections": [
       {
         "course_code": "ENGL 1101",
-        "crn": "16043",
+        "crn": 16043,
         "professor_name": "Ahmet Keser",
         "classes": [
           {
-            "crn": "16043",
+            "crn": 16043,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "08:00",
             "end_time": "08:50",
@@ -18,11 +18,11 @@
       },
       {
         "course_code": "ENGL 1101",
-        "crn": "25013",
+        "crn": 25013,
         "professor_name": "Daniel Barnum",
         "classes": [
           {
-            "crn": "25013",
+            "crn": 25013,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "12:40",
             "end_time": "13:30",
@@ -32,11 +32,11 @@
       },
       {
         "course_code": "ENGL 1101",
-        "crn": "25108",
+        "crn": 25108,
         "professor_name": "John Kuligowski",
         "classes": [
           {
-            "crn": "25108",
+            "crn": 25108,
             "days": ["Tuesday", "Thursday"],
             "start_time": "11:10",
             "end_time": "12:25",
@@ -51,11 +51,11 @@
     "sections": [
       {
         "course_code": "ENGL 1102",
-        "crn": "16559",
+        "crn": 16559,
         "professor_name": "James Howard",
         "classes": [
           {
-            "crn": "16559",
+            "crn": 16559,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "08:00",
             "end_time": "08:50",
@@ -65,11 +65,11 @@
       },
       {
         "course_code": "ENGL 1102",
-        "crn": "26599",
+        "crn": 26599,
         "professor_name": "Anthony Galli",
         "classes": [
           {
-            "crn": "26599",
+            "crn": 26599,
             "days": ["Tuesday", "Thursday"],
             "start_time": "12:45",
             "end_time": "14:00",
@@ -79,11 +79,11 @@
       },
       {
         "course_code": "ENGL 1102",
-        "crn": "25184",
+        "crn": 25184,
         "professor_name": "James Wilson",
         "classes": [
           {
-            "crn": "25184",
+            "crn": 25184,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "12:40",
             "end_time": "13:30",
@@ -98,11 +98,11 @@
     "sections": [
       {
         "course_code": "CSCI 1301",
-        "crn": "15032",
+        "crn": 15032,
         "professor_name": "Jonathan Vance",
         "classes": [
           {
-            "crn": "15032",
+            "crn": 15032,
             "days": ["Tuesday", "Thursday"],
             "start_time": "09:35",
             "end_time": "10:50",
@@ -112,11 +112,11 @@
       },
       {
         "course_code": "CSCI 1301",
-        "crn": "16242",
+        "crn": 16242,
         "professor_name": "Yiheng Liang",
         "classes": [
           {
-            "crn": "16242",
+            "crn": 16242,
             "days": ["Tuesday", "Thursday"],
             "start_time": "12:45",
             "end_time": "14:00",
@@ -126,11 +126,11 @@
       },
       {
         "course_code": "CSCI 1301",
-        "crn": "60269",
+        "crn": 60269,
         "professor_name": "Salvatore Lamarca",
         "classes": [
           {
-            "crn": "60269",
+            "crn": 60269,
             "days": ["Tuesday", "Thursday"],
             "start_time": "11:10",
             "end_time": "12:25",
@@ -145,18 +145,18 @@
     "sections": [
       {
         "course_code": "CSCI 1302",
-        "crn": "69400",
+        "crn": 69400,
         "professor_name": "Brad Barnes",
         "classes": [
           {
-            "crn": "69400",
+            "crn": 69400,
             "days": ["Monday"],
             "start_time": "15:00",
             "end_time": "15:50",
             "building_name": "Boyd"
           },
           {
-            "crn": "69400",
+            "crn": 69400,
             "days": ["Tuesday", "Thursday"],
             "start_time": "14:20",
             "end_time": "15:35",
@@ -166,18 +166,18 @@
       },
       {
         "course_code": "CSCI 1302",
-        "crn": "36424",
+        "crn": 36424,
         "professor_name": "Jack Bass",
         "classes": [
           {
-            "crn": "36424",
+            "crn": 36424,
             "days": ["Monday"],
             "start_time": "11:30",
             "end_time": "12:20",
             "building_name": "Boyd"
           },
           {
-            "crn": "36424",
+            "crn": 36424,
             "days": ["Tuesday", "Thursday"],
             "start_time": "11:10",
             "end_time": "12:25",
@@ -187,18 +187,18 @@
       },
       {
         "course_code": "CSCI 1302",
-        "crn": "26311",
+        "crn": 26311,
         "professor_name": "Michael Cotterell",
         "classes": [
           {
-            "crn": "26311",
+            "crn": 26311,
             "days": ["Monday"],
             "start_time": "12:40",
             "end_time": "13:30",
             "building_name": "Dawson Hall"
           },
           {
-            "crn": "26311",
+            "crn": 26311,
             "days": ["Tuesday", "Thursday"],
             "start_time": "12:45",
             "end_time": "14:00",
@@ -213,11 +213,11 @@
     "sections": [
       {
         "course_code": "PHYS 1211",
-        "crn": "27165",
+        "crn": 27165,
         "professor_name": "Adithya Kuchibhotla",
         "classes": [
           {
-            "crn": "27165",
+            "crn": 27165,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "13:50",
             "end_time": "14:40",
@@ -227,11 +227,11 @@
       },
       {
         "course_code": "PHYS 1211",
-        "crn": "41058",
+        "crn": 41058,
         "professor_name": "Adithya Kuchibhotla",
         "classes": [
           {
-            "crn": "41058",
+            "crn": 41058,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "12:40",
             "end_time": "13:30",
@@ -241,11 +241,11 @@
       },
       {
         "course_code": "PHYS 1211",
-        "crn": "41060",
+        "crn": 41060,
         "professor_name": "Michael Geller",
         "classes": [
           {
-            "crn": "41060",
+            "crn": 41060,
             "days": ["Tuesday", "Thursday"],
             "start_time": "09:35",
             "end_time": "10:50",
@@ -260,11 +260,11 @@
     "sections": [
       {
         "course_code": "PHYS 1211L",
-        "crn": "27484",
+        "crn": 27484,
         "professor_name": "Henning Meyer",
         "classes": [
           {
-            "crn": "27484",
+            "crn": 27484,
             "days": ["Monday"],
             "start_time": "10:20",
             "end_time": "12:20",
@@ -274,11 +274,11 @@
       },
       {
         "course_code": "PHYS 1211L",
-        "crn": "27487",
+        "crn": 27487,
         "professor_name": "Henning Meyer",
         "classes": [
           {
-            "crn": "27487",
+            "crn": 27487,
             "days": ["Wednesday"],
             "start_time": "10:20",
             "end_time": "12:20",
@@ -288,11 +288,11 @@
       },
       {
         "course_code": "PHYS 1211L",
-        "crn": "27488",
+        "crn": 27488,
         "professor_name": "Eric Goetz",
         "classes": [
           {
-            "crn": "27488",
+            "crn": 27488,
             "days": ["Thursday"],
             "start_time": "17:30",
             "end_time": "19:30",
@@ -307,11 +307,11 @@
     "sections": [
       {
         "course_code": "PHYS 1212",
-        "crn": "27173",
+        "crn": 27173,
         "professor_name": "Hina Shaikh",
         "classes": [
           {
-            "crn": "27173",
+            "crn": 27173,
             "days": ["Tuesday", "Thursday"],
             "start_time": "14:20",
             "end_time": "15:35",
@@ -326,11 +326,11 @@
     "sections": [
       {
         "course_code": "PHYS 1212L",
-        "crn": "32873",
+        "crn": 32873,
         "professor_name": "Henning Meyer",
         "classes": [
           {
-            "crn": "32873",
+            "crn": 32873,
             "days": ["Wednesday"],
             "start_time": "13:50",
             "end_time": "15:50",
@@ -340,11 +340,11 @@
       },
       {
         "course_code": "PHYS 1212L",
-        "crn": "27516",
+        "crn": 27516,
         "professor_name": "Henning Meyer",
         "classes": [
           {
-            "crn": "27516",
+            "crn": 27516,
             "days": ["Monday"],
             "start_time": "13:50",
             "end_time": "15:50",
@@ -354,11 +354,11 @@
       },
       {
         "course_code": "PHYS 1212L",
-        "crn": "27514",
+        "crn": 27514,
         "professor_name": "Henning Meyer",
         "classes": [
           {
-            "crn": "27514",
+            "crn": 27514,
             "days": ["Monday"],
             "start_time": "09:10",
             "end_time": "11:10",
@@ -373,11 +373,11 @@
     "sections": [
       {
         "course_code": "CHEM 1211",
-        "crn": "13069",
+        "crn": 13069,
         "professor_name": "Eric Dornshuld",
         "classes": [
           {
-            "crn": "13069",
+            "crn": 13069,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "09:10",
             "end_time": "10:00",
@@ -387,11 +387,11 @@
       },
       {
         "course_code": "CHEM 1211",
-        "crn": "54119",
+        "crn": 54119,
         "professor_name": "Harshani Rathnaweera",
         "classes": [
           {
-            "crn": "54119",
+            "crn": 54119,
             "days": ["Tuesday", "Thursday"],
             "start_time": "11:10",
             "end_time": "12:25",
@@ -401,11 +401,11 @@
       },
       {
         "course_code": "CHEM 1211",
-        "crn": "50431",
+        "crn": 50431,
         "professor_name": "Alexandra Heide",
         "classes": [
           {
-            "crn": "50431",
+            "crn": 50431,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "09:10",
             "end_time": "10:00",
@@ -420,11 +420,11 @@
     "sections": [
       {
         "course_code": "CHEM 1211L",
-        "crn": "13532",
+        "crn": 13532,
         "professor_name": "Daphne Norton",
         "classes": [
           {
-            "crn": "13532",
+            "crn": 13532,
             "days": ["Monday"],
             "start_time": "08:00",
             "end_time": "11:10",
@@ -434,11 +434,11 @@
       },
       {
         "course_code": "CHEM 1211L",
-        "crn": "13552",
+        "crn": 13552,
         "professor_name": "Daphne Norton",
         "classes": [
           {
-            "crn": "13552",
+            "crn": 13552,
             "days": ["Wednesday"],
             "start_time": "16:10",
             "end_time": "19:20",
@@ -448,11 +448,11 @@
       },
       {
         "course_code": "CHEM 1211L",
-        "crn": "13543",
+        "crn": 13543,
         "professor_name": "Daphne Norton",
         "classes": [
           {
-            "crn": "13543",
+            "crn": 13543,
             "days": ["Tuesday"],
             "start_time": "15:55",
             "end_time": "18:45",
@@ -467,18 +467,18 @@
     "sections": [
       {
         "course_code": "MATH 2250",
-        "crn": "15428",
+        "crn": 15428,
         "professor_name": "Wojciech Slomian",
         "classes": [
           {
-            "crn": "15428",
+            "crn": 15428,
             "days": ["Tuesday"],
             "start_time": "09:35",
             "end_time": "10:50",
             "building_name": "Aderhold Hall"
           },
           {
-            "crn": "15428",
+            "crn": 15428,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "11:30",
             "end_time": "12:20",
@@ -488,18 +488,18 @@
       },
       {
         "course_code": "MATH 2250",
-        "crn": "15611",
+        "crn": 15611,
         "professor_name": "Akash Roy",
         "classes": [
           {
-            "crn": "15611",
+            "crn": 15611,
             "days": ["Tuesday"],
             "start_time": "15:55",
             "end_time": "17:10",
             "building_name": "Forest Resources"
           },
           {
-            "crn": "15611",
+            "crn": 15611,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "13:50",
             "end_time": "14:40",
@@ -509,18 +509,18 @@
       },
       {
         "course_code": "MATH 2250",
-        "crn": "15619",
+        "crn": 15619,
         "professor_name": "Carlo Adajar",
         "classes": [
           {
-            "crn": "15619",
+            "crn": 15619,
             "days": ["Monday"],
             "start_time": "08:00",
             "end_time": "08:50",
             "building_name": "Forest Resources"
           },
           {
-            "crn": "15619",
+            "crn": 15619,
             "days": ["Tuesday", "Thursday"],
             "start_time": "08:00",
             "end_time": "09:15",
@@ -535,18 +535,18 @@
     "sections": [
       {
         "course_code": "MATH 2260",
-        "crn": "15679",
+        "crn": 15679,
         "professor_name": "Georgios Petridis",
         "classes": [
           {
-            "crn": "15679",
+            "crn": 15679,
             "days": ["Tuesday", "Thursday"],
             "start_time": "09:35",
             "end_time": "10:50",
             "building_name": "Dawson Hall"
           },
           {
-            "crn": "15679",
+            "crn": 15679,
             "days": ["Monday"],
             "start_time": "11:30",
             "end_time": "12:20",
@@ -556,18 +556,18 @@
       },
       {
         "course_code": "MATH 2260",
-        "crn": "15683",
+        "crn": 15683,
         "professor_name": "Daniel Adu",
         "classes": [
           {
-            "crn": "15683",
+            "crn": 15683,
             "days": ["Thursday"],
             "start_time": "09:35",
             "end_time": "10:50",
             "building_name": "Dawson Hall"
           },
           {
-            "crn": "15683",
+            "crn": 15683,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "09:10",
             "end_time": "10:00",
@@ -582,11 +582,11 @@
     "sections": [
       {
         "course_code": "MATH 2700",
-        "crn": "15977",
+        "crn": 15977,
         "professor_name": "Pierrick Bousseau",
         "classes": [
           {
-            "crn": "15977",
+            "crn": 15977,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "09:10",
             "end_time": "10:00",
@@ -596,11 +596,11 @@
       },
       {
         "course_code": "MATH 2700",
-        "crn": "15979",
+        "crn": 15979,
         "professor_name": "Lin Mu",
         "classes": [
           {
-            "crn": "15979",
+            "crn": 15979,
             "days": ["Monday", "Wednesday", "Friday"],
             "start_time": "10:20",
             "end_time": "11:10",
@@ -610,11 +610,11 @@
       },
       {
         "course_code": "MATH 2700",
-        "crn": "15996",
+        "crn": 15996,
         "professor_name": "Tomasz Szarek",
         "classes": [
           {
-            "crn": "15996",
+            "crn": 15996,
             "days": ["Tuesday", "Thursday"],
             "start_time": "08:00",
             "end_time": "09:15",
