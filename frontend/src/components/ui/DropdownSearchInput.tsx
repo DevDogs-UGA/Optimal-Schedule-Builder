@@ -30,7 +30,7 @@ export const DropdownSearchInput = ({
   const [filteredData, setFilteredData] = useState<string[]>(items);
 
   useEffect(() => {
-    if (selectedItem !== null) {
+    if (selectedItem !== undefined) {
       setQuery(selectedItem);
     }
   }, [selectedItem]);

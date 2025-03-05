@@ -171,14 +171,14 @@ export const SearchFilter = ({}: props) => {
               <DropdownSearchInput
                 items={minmHourList}
                 placeholder="Enter Min Credit Hours"
-                selectedItem={minmHours}
+                selectedItem={minmHours ?? undefined}
                 onSelect={(value) => setSelectedMinmHours(value)} 
               />
               <DropdownSearchInput
                 key={maxmHourList.length}
                 items={maxmHourList}
                 placeholder="Enter Max Credit Hours"
-                selectedItem={maxmHours}
+                selectedItem={maxmHours ?? undefined}
                 onSelect={(value) => setSelectedMaxmHours(value)} 
               />
             </div>
