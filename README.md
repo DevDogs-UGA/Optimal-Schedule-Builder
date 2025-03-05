@@ -2,7 +2,7 @@
 DevDogs' inaugural, 2024-2025 project: an optimal schedule-building website for UGA students.
 ## Welcome to the DevDogs Optimal Schedule Builder project!
 
-We’re excited to have you here! If you’re interested in contributing to our project, please request to join the 2024-2025 Project Contributers team [here](https://github.com/orgs/DevDogs-UGA/teams/24-25-project-contributors) and join our [Discord server](https://discord.com/invite/MuyJ4f5xKE).
+We’re excited to have you here! If you’re interested in contributing to our project, please request to join the 2024-2025 Project Contributers team [here](https://github.com/orgs/DevDogs-UGA/teams/24-25-project-contributors) and join our [Discord server](https://discord.com/invite/MuyJ4f5xKE). If you're a new member or want a refresher check out our [catch up article!](/gitWiki/catchUp.md). 
 
 ## Getting Started
 
