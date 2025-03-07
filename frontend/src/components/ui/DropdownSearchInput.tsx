@@ -9,6 +9,8 @@ interface searchFilterProps {
   placeholder?: string;
   className?: string;
   clearState?: boolean;
+  selectedItem?: string | undefined;
+  onSelect?: (selectedItem: string) => void;
 }
 
 //Dropdown Search Input component that contains a search input and dropdown feature
@@ -19,11 +21,19 @@ export const DropdownSearchInput = ({
   placeholder = "",
   className = "",
   clearState,
+  selectedItem,
+  onSelect,
 }: searchFilterProps) => {
   const dropdownRef = useRef<HTMLUListElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState<string[]>(items);
+
+  useEffect(() => {
+    if (selectedItem !== undefined) {
+      setQuery(selectedItem);
+    }
+  }, [selectedItem]);
 
   //Handles filtering the search input
   const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,9 +44,13 @@ export const DropdownSearchInput = ({
   };
 
   //Handles clicking on a dropdown item
-  const handleClick = (e: React.MouseEvent) => {
-    setQuery(e.currentTarget.textContent ?? "");
+  const handleClick = (e: React.MouseEvent, index: number) => {
+    const selectedValue = e.currentTarget.textContent ?? "";
+    setQuery(selectedValue);
     setIsOpen((prev) => !prev);
+    if (onSelect) {
+      onSelect(selectedValue);
+    }
   };
 
   //Handles Enter Keypress
@@ -45,7 +59,11 @@ export const DropdownSearchInput = ({
       e.preventDefault();
       const activeItem = document.activeElement;
       if (activeItem?.textContent) {
-        setQuery(activeItem.textContent);
+        const selectedValue = activeItem.textContent;
+        setQuery(selectedValue);
+        if (onSelect) {
+          onSelect(selectedValue);
+        }
       }
       setIsOpen((prev) => !prev);
     }
@@ -95,7 +113,7 @@ export const DropdownSearchInput = ({
           {filteredData.map((item, index) => (
             <li
               key={index}
-              onClick={(e) => handleClick(e)}
+              onClick={(e) => handleClick(e, index)}
               className="bg-inherit px-2 py-1 hover:brightness-75"
               tabIndex={0}
               onKeyDown={handleKeyPress}

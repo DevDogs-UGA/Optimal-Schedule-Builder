@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { DropdownSearchInput } from "./ui/DropdownSearchInput";
 import { DropdownTagInput } from "./ui/DropdownTagInput";
 
@@ -32,10 +33,63 @@ const campusList = [
   "Tifton",
 ];
 const educationLevelList = ["Undergraduate", "Graduate"];
-const creditHourList: string[] = [];
-const buildingList: string[] = [];
+let minmHourList: string[];
+let maxmHourList: string[];
+const hours = [
+  "1 hour",
+  "2 hours",
+  "3 hours",
+  "4 hours",
+  "5 hours",
+  "6 hours",
+  "7 hours",
+  "8 hours",
+  "9 hours",
+  "10 hours",
+  "11 hours",
+  "12 hours",
+  "13 hours",
+  "14 hours",
+  "15 hours",
+  "16 hours",
+  "17 hours",
+  "18 hours",
+  "19 hours",
+  "20 hours",
+  "21 hours",
+  "22 hours",
+  "23 hours",
+  "24 hours",
+];
 
 export const SearchFilter = ({}: props) => {
+  const [minmHours, setSelectedMinmHours] = useState<string | null>();
+  const [maxmHours, setSelectedMaxmHours] = useState<string | null>();
+
+  // State for filtered dropdown lists
+  const [minmHourList, setMinmHourList] = useState<string[]>(hours);
+  const [maxmHourList, setMaxmHourList] = useState<string[]>(hours);
+
+  // Update dropdown lists when minmHours changes
+  useEffect(() => {
+    if (minmHours !== null) {
+      setMaxmHourList((prev) => [
+        ...hours.slice(Number(minmHours?.split(" ")[0])),
+      ]);
+    } else {
+      setMaxmHourList(hours);
+    }
+  }, [minmHours]);
+
+  // Update dropdown lists when maxmHours changes
+  useEffect(() => {
+    if (maxmHours !== null) {
+      setMinmHourList([...hours.slice(0, Number(maxmHours?.split(" ")[0]))]);
+    } else {
+      setMinmHourList(hours);
+    }
+  }, [maxmHours]);
+
   return (
     <div>
       <div className="flex flex-col border-4 border-dusty-pink bg-barely-pink p-2">
@@ -130,8 +184,12 @@ export const SearchFilter = ({}: props) => {
               {" "}
               {/* Div For Labels */}
               <label className="text-right font-extrabold">Levels:</label>
-              <label className="text-right font-extrabold">Credit Hours:</label>
-              <label className="text-right font-extrabold">Building:</label>
+              <label className="text-right font-extrabold">
+                Min Credit Hours:
+              </label>
+              <label className="text-right font-extrabold">
+                Max Credit Hours:
+              </label>
             </div>
             <div className="grid max-w-56 grid-rows-3 gap-4">
               {" "}
@@ -140,13 +198,18 @@ export const SearchFilter = ({}: props) => {
                 items={educationLevelList}
                 placeholder="Enter Level"
               />
-              <DropdownTagInput
-                items={creditHourList}
-                placeholder="Enter Credit Hours"
+              <DropdownSearchInput
+                items={minmHourList}
+                placeholder="Enter Min Credit Hours"
+                selectedItem={minmHours ?? undefined}
+                onSelect={(value) => setSelectedMinmHours(value)}
               />
               <DropdownSearchInput
-                items={buildingList}
-                placeholder="Enter Building"
+                key={maxmHourList.length}
+                items={maxmHourList}
+                placeholder="Enter Max Credit Hours"
+                selectedItem={maxmHours ?? undefined}
+                onSelect={(value) => setSelectedMaxmHours(value)}
               />
             </div>
           </div>
