@@ -557,5 +557,28 @@ public class CourseInfoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    /**
+     * Retrives a list of all instructors at UGA
+     * 
+     * @return a list of all intrsuctor names as a String
+     */ 
+    @Operation(summary = "Gets a list of all the instructors", description = "Retrieves a list of all instructors at UGA")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Instructors Found"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    @GetMapping("/instructors")
+    @Tag(name = "course-information")
+    public ResponseEntity<List<String>> getAllInstructors() {
+        try {
+            // Fetch all the instructors at UGA
+            List<String> instructors = courseInformationService.getAllInstructors();
+            // Returns the list of instructors if found
+            return ResponseEntity.ok(instructors);
+        }catch (Exception e) {
+            // return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
 } // CourseInfoController

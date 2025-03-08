@@ -11,8 +11,9 @@ import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import edu.uga.devdogs.course_information.exceptions.BuildingNotFoundException;
 import edu.uga.devdogs.course_information.exceptions.CourseNotFoundException;
+
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -228,6 +229,29 @@ public class CourseInformationService {
             throw new CourseNotFoundException("No Courses Found");
         }
     
+    }
+
+    /**
+     * Retrives a list of all Instructors
+     * 
+     * @return a String list of all instructors
+     * @throws ProfessorNotFoundException if there are no professors found
+     */
+    public List<String> getAllInstructors() {
+        List<CourseSection> sections = courseSectionRepository.findAll();
+        List<String> instructors = new ArrayList<>();
+        // checks if there are sections before continuing
+        if (sections == null) {
+            throw new ProfessorNotFoundException("No Professors Found");
+        }
+        // iterates through all the sections
+        for(int i = 0; i < sections.size(); i++) {
+            // avoids duplicate instructor names
+            if(!instructors.contains(sections.get(i).getInstructor())) {
+                instructors.add(sections.get(i).getInstructor());
+            }    
+        }
+        return instructors;
     }
 
     /**
