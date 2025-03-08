@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -546,7 +547,8 @@ public class CourseInfoController {
         }
         try {
             // Coordinates of a building number as a string
-            List<String> coordinates = CourseInformationService.getCoordinatesByBuildingNumber(buildingNumber);
+            List<String> coordinates = new ArrayList<String>();
+            coordinates.add(courseInformationService.getCoordinatesByBuildingNumber(buildingNumber));
 
             // Return the list of subject strings if found
             return ResponseEntity.ok(coordinates);
