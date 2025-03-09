@@ -19,6 +19,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Service class that handles business logic for managing course information.
@@ -503,6 +504,21 @@ public class CourseInformationService {
         } else {
             throw new BuildingNotFoundException("Building Not Found");
         }
+    }
+
+    /**
+    * Retrieves a list of all CRNs (Course Registration Numbers) from the database.
+    *
+    * @return a list of CRNs as integers
+    */
+    public List<Integer> getAllCRNs() {
+        // Fetch all courses from the database
+        List<Course> courses = courseRepository.findAll();
+    
+        // Extract CRNs from the courses
+        return courses.stream()
+                    .map(Course::getCrn) 
+                    .collect(Collectors.toList());
     }
 
 }
