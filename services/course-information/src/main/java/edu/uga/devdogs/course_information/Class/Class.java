@@ -27,9 +27,9 @@ public class Class implements Serializable{
 
     private String days;
 
-    private  java.sql.Time startTime;
+    private  String startTime;
 
-    private  java.sql.Time endTime;
+    private  String endTime;
 
     private String room;
 
@@ -56,7 +56,7 @@ public class Class implements Serializable{
      }
 
      // Constructor w/o classID
-     public Class(String days, java.sql.Time startTime, java.sql.Time endTime, Building building, String room, String campus, CourseSection courseSection) {
+     public Class(String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
          this.days = days;
          this.startTime = startTime;
          this.endTime = endTime;
@@ -67,7 +67,7 @@ public class Class implements Serializable{
      }
 
      // Constructor w/ classID
-     public Class(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, Building building, String room, String campus, CourseSection courseSection) {
+     public Class(int classId, String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
          this.classId = classId;
          this.days = days;
          this.startTime = startTime;
@@ -98,19 +98,19 @@ public class Class implements Serializable{
         this.days = days;
     }
 
-    public java.sql.Time getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(java.sql.Time startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public java.sql.Time getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(java.sql.Time endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
