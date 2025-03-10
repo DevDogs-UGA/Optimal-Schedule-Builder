@@ -1,18 +1,23 @@
 package edu.uga.devdogs.course_information;
 
+import java.sql.Time;
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import edu.uga.devdogs.course_information.Building.Building;
+import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import edu.uga.devdogs.course_information.Class.Class;
 import edu.uga.devdogs.course_information.Class.ClassRepository;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
-import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
-import edu.uga.devdogs.course_information.Building.BuildingRepository;
-import java.sql.Time;
+import edu.uga.devdogs.course_information.webscraping.Course2;
+import edu.uga.devdogs.course_information.webscraping.Pdf;
 
 
 @SpringBootApplication
@@ -29,6 +34,8 @@ public class CourseInformationApplication {
 			ClassRepository classRepository,
 			BuildingRepository buildingRepository) {
 				return args -> {
+
+					List<Course2> test = Pdf.parsePdf("fall", "C:\\Users\\d\\Desktop");
 					//CourseSection interface objects
 					CourseSection section1 = new CourseSection (
 						123456,
@@ -60,7 +67,7 @@ public class CourseInformationApplication {
 
 					courseRepository.save(course1);
 
-					System.out.println(courseRepository.findBySubject("physiology"));
+					System.out.println(courseRepository.findAllBySubject("physiology"));
 					// TESTED 
 					// Output:
 					// [Course [courseId=1, subject=physiology, courseNumber=420, title=pain, department=Mary Francis early education]]
@@ -97,7 +104,7 @@ public class CourseInformationApplication {
 					Building building10 = new Building(178, "Central Campus Mech. Building", "C - 2", null);
 					buildingRepository.save(building10);
 
-					System.out.println("\n\n\n\n\n"+buildingRepository.getById(178));
+					System.out.println("\n\n\n\n\n"+buildingRepository.findById(178));
 
 
 					//Class interface objects

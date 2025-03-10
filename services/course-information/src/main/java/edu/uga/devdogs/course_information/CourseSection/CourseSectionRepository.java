@@ -13,9 +13,9 @@ public interface CourseSectionRepository extends JpaRepository<CourseSection, Lo
     List<CourseSection> findAllByInstructor(String instructor);
     
     // This will get a list of course sections that match the time range
-    @Query("SELECT cs FROM CourseSection cs JOIN cs.Classes c " + 
-            "WHERE c.startTime <= :time AND c.endTime >= :time")
-    List<CourseSection> findAllCourseSectionsByTime(java.sql.Time time);
+    //@Query("SELECT cs FROM CourseSection cs JOIN cs.Classes c " + 
+    //        "WHERE c.startTime <= :time AND c.endTime >= :time")
+    //List<CourseSection> findAllCourseSectionsByTime(java.sql.Time time);
 
     // This will find a course by its CRN
     //@Query("SELECT crn from courseSection cs WHERE cs.crn = ?1")
