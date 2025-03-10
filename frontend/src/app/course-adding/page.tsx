@@ -1,8 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/Navbar";
-import { RecommendedCourses } from "@/components/RecommendedCourses";
 import { AddCourses } from "@/components/courses/AddCourses";
 import { SearchFilter } from "@/components/Filters";
 import CourseDisplay from "@/components/courses/CourseDisplay";
