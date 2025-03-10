@@ -39,6 +39,16 @@ public class CourseSection implements Serializable {
 
     private int year;
 
+    private String daysOfTheWeek;
+
+    public String getDaysOfTheWeek() {
+        return daysOfTheWeek;
+    }
+
+    public void setDaysOfTheWeek(String daysOfTheWeek) {
+        this.daysOfTheWeek = daysOfTheWeek;
+    }
+
     // Relationships
     @ManyToOne
     @JoinColumn(name = "courseId")

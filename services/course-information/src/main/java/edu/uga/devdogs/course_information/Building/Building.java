@@ -60,7 +60,6 @@ public class Building implements Serializable {
         this.buildingNumber = buildingNumber;
         this.name = name;
         this.grid = grid;
-        this.classes = classes;
     }
 
     
