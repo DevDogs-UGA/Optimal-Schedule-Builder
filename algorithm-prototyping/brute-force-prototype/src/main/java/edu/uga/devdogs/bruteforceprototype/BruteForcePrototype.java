@@ -19,34 +19,34 @@ public class BruteForcePrototype {
      *
      * @param inputCourses a set of requested courses to generate an optimal schedule from
      * @param distances a nested string map that represents distances between buildings on campus
-     * @param weights an array of floats representing the weights for each objective
      * @param softConstraints the soft constraints on the schedule
      * @param hardConstraints the hard constraints on the schedule
      * @return the output of optimize()
      */
-    public static int[][] algorithmDriver(Set<Course> inputCourses, Map<String, Map<String, Double>> distances, double[] weights, SConstraints softConstraints, HConstraints hardConstraints){
+    public static int[][] algorithmDriver(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,
+                                          SConstraints softConstraints, HConstraints hardConstraints){
         Set<Course> outputCourses = new HashSet<>(inputCourses);
 
         try {
             outputCourses = BruteForceUtil.dataPreHardFilter(outputCourses, hardConstraints);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            // If this try block is cought, that means there is an impossible schedule based on the hard constraints
-            // Therefore, the algorithmDriver resturns null instead of computing a schedule.
+            // If this try block is caught, that means there is an impossible schedule based on the hard constraints
+            // Therefore, the algorithmDriver returns null instead of computing a schedule.
             return null;
         }
 
         try {
             outputCourses = BruteForceUtil.dataPreSoftFilter(outputCourses, softConstraints);
             //outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
-            return optimize(outputCourses, distances, weights);
+            return optimize(outputCourses, distances, softConstraints,false);
         } catch (Exception e){
             // If an exception arises from dataPreSoftFilter, we will call an overloaded version of optimize().
             // The overloaded version is not written yet, so when it is actually implemented,
             // this catch block will need updated accordingly.
             System.out.println(e.getMessage());
             //outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
-            return optimize(outputCourses, distances, weights, softConstraints);
+            return optimize(outputCourses, distances, softConstraints, true);
         }
     }
 
@@ -60,10 +60,10 @@ public class BruteForcePrototype {
      *
      * @param inputCourses a set of courses to generate an optimal schedule from
      * @param distances a nested string map that represents distances between buildings on campus
-     * @param weights an array of floats representing the weights for each objective
      * @return the five schedules with the highest overall objective score based on the input courses and weights
      */
-    public static int[][] optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,  double[] weights) {
+    public static int[][] optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,
+                                   SConstraints soft, boolean usesSoft) {
         Set<Schedule> validSchedules = generateValidSchedules(inputCourses);
 
         if (validSchedules.isEmpty()){
@@ -83,8 +83,12 @@ public class BruteForcePrototype {
         // Insert time is O(n), so *technically* merge sort is faster, but this function is not called frequently, so
         // Readability matters much more than performance here.
         for (Schedule schedule : validSchedules) {
-            double overallObjective = ScheduleUtil.computeOverallObjective(schedule, distances, weights);
-
+            double overallObjective = 0;
+            if (usesSoft) {
+                overallObjective = ScheduleUtil.computeOverallObjectiveExtended(schedule, distances, soft);
+            } else {
+                overallObjective = ScheduleUtil.computeOverallObjective(schedule, distances);
+            }
             // Starting from the back of the array, find where the new schedule belongs based on overallObjective.
             int i = sortedSchedules.size();
             while (i != 0 && overallObjective > sortedOverallObjectives.get(i-1)) {

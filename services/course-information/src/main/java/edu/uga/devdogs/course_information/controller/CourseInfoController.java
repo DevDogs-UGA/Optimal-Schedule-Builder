@@ -497,4 +497,65 @@ public class CourseInfoController {
         }
     }
 
+    /**
+     * Retrieves a list of all CRNs for classes at UGA.
+     *
+     * @return List of all available crns as integers
+     */
+    @Operation(summary = "Get all CRNs", description = "Retrieves a list of all CRNs for classes at UGA.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "CRNs found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/getAllCRNs")
+    @Tag(name="course-information")
+    public ResponseEntity<List<Integer>> getAllCRNs() {
+
+        try {
+
+            List<Integer> CRNs = courseInformationService.getAllCRns();
+
+            // Return the list of subject strings if found
+            return ResponseEntity.ok(CRNs);
+
+        } catch (Exception e) {
+
+            // Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    /**
+     * Retrieves coordinates associated with a particular building code of a building at UGA.
+     *
+     * @param buildingNumber Building number stored as a string
+     * @return List of all available subjects as strings
+     */
+    @Operation(summary = "Get coordinates based on building numbers", description = "Retrieves coordinates associated with a particular building code.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Coordinates found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/coordinates")
+    @Tag(name="course-information")
+    public ResponseEntity<List<String>> getCoordinatesByBuildingNumber(@RequestParam(value="buildingNumber",
+            required = true) String buildingNumber) {
+        if (buildingNumber == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        try {
+            // Coordinates of a building number as a string
+            List<String> coordinates = CourseInformationService.getCoordinatesByBuildingNumber(buildingNumber);
+
+            // Return the list of subject strings if found
+            return ResponseEntity.ok(coordinates);
+
+        } catch (Exception e) {
+
+            // Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 } // CourseInfoController
