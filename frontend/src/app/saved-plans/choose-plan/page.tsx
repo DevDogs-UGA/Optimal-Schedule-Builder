@@ -12,16 +12,15 @@ import { useState, useEffect } from "react";
 import SavedPlan from "@/components/saved-plans/SavedPlan";
 
 export default function ChoosePlan() {
-
   const savedPlansList = [
     {
       href: "/schedules",
-      text: "Plan 1"
+      text: "Plan 1",
     },
     {
       href: "/saved-plans",
-      text: "Plan 2"
-    }
+      text: "Plan 2",
+    },
   ];
 
   const weekScheduleData: WeekScheduleType = {
@@ -333,29 +332,43 @@ export default function ChoosePlan() {
     <div className="min-h-screen">
       <Navbar />
       {/* Options for creating and modifying saved plans */}
-      <div className="flex flex-row mt-12 justify-between flex-nowrap gap-1 text-center">
-          <h1 className="font-bold text-2xl ml-8 ">Select a plan or create a new one.</h1>
-          <div className="flex mr-8 flex-row gap-1">
-            <Button className="m-2 border-2 border-nearly-black rounded-lg bg-bulldog-red hover:bg-glory-glory-red px-4 py-2 font-semibold text-black" text="Delete"> 
-            </Button>
-            <Button className="m-2 border-2 border-pebble-gray rounded-lg bg-dusty-pink hover:bg-barely-pink px-4 py-2 font-semibold text-black" text="Edit"> 
-            </Button>
-            <Button className="m-2 border-2 border-pebble-gray rounded-lg bg-dusty-pink hover:bg-barely-pink px-4 py-2 font-semibold text-black" text="Save"> 
-            </Button>
-            <Button className="m-2 border-2 border-pebble-gray rounded-lg bg-dusty-pink hover:bg-barely-pink px-4 py-2 font-semibold text-black" text="Create"> 
-            </Button>
-          </div>
+      <div className="mt-12 flex flex-row flex-nowrap justify-between gap-1 text-center">
+        <h1 className="ml-8 text-2xl font-bold">
+          Select a plan or create a new one.
+        </h1>
+        <div className="mr-8 flex flex-row gap-1">
+          <Button
+            className="m-2 rounded-lg border-2 border-nearly-black bg-bulldog-red px-4 py-2 font-semibold text-black hover:bg-glory-glory-red"
+            text="Delete"
+          ></Button>
+          <Button
+            className="m-2 rounded-lg border-2 border-pebble-gray bg-dusty-pink px-4 py-2 font-semibold text-black hover:bg-barely-pink"
+            text="Edit"
+          ></Button>
+          <Button
+            className="m-2 rounded-lg border-2 border-pebble-gray bg-dusty-pink px-4 py-2 font-semibold text-black hover:bg-barely-pink"
+            text="Save"
+          ></Button>
+          <Button
+            className="m-2 rounded-lg border-2 border-pebble-gray bg-dusty-pink px-4 py-2 font-semibold text-black hover:bg-barely-pink"
+            text="Create"
+          ></Button>
+        </div>
       </div>
-    
+
       {/* List of saved plans (placeholder list of 2): We can add more when the saving functionality is actually implemented.
       Should this be an array? */}
-      <div className="flex flex-col mt-10 justify-center items-center flex-nowrap gap-1"> 
-          <SavedPlan 
-            className="m-10 border-2 border-pebble-gray !rounded-3xl bg-dusty-pink hover:bg-barely-pink w-[80vw] h-[20vh] font-semibold text-black text-3xl onClick={selectSavedPlan}" planTitle="Plan 1" plan={weekScheduleData} >
-          </SavedPlan>
-          <SavedPlan 
-            className="m-10 border-2 border-pebble-gray !rounded-3xl bg-dusty-pink hover:bg-barely-pink w-[80vw] h-[20vh] font-semibold text-black text-3xl" planTitle="Plan 2" plan={weekScheduleData}>
-          </SavedPlan>
+      <div className="mt-10 flex flex-col flex-nowrap items-center justify-center gap-1">
+        <SavedPlan
+          className="onClick={selectSavedPlan} m-10 h-[20vh] w-[80vw] !rounded-3xl border-2 border-pebble-gray bg-dusty-pink text-3xl font-semibold text-black hover:bg-barely-pink"
+          planTitle="Plan 1"
+          plan={weekScheduleData}
+        ></SavedPlan>
+        <SavedPlan
+          className="m-10 h-[20vh] w-[80vw] !rounded-3xl border-2 border-pebble-gray bg-dusty-pink text-3xl font-semibold text-black hover:bg-barely-pink"
+          planTitle="Plan 2"
+          plan={weekScheduleData}
+        ></SavedPlan>
       </div>
     </div>
   );
