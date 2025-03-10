@@ -13,7 +13,7 @@ export default function Courses() {
     <div className="min-h-screen">
       <Navbar />
       {/* Wrapper for the two headings, Add Courses, Couse Display, and Search Filter components */}
-      <div className="px-4 pb-32 pt-8 md:px-12 lg:px-24">
+      <div className="px-4 pb-4 pt-8 md:px-12 lg:px-24">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-8 md:flex-row">
             <div className="w-full md:w-2/3">
