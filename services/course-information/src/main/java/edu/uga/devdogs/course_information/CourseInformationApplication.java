@@ -13,6 +13,8 @@ import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
 import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import java.sql.Time;
+import java.util.List;
+import java.util.stream.Stream;
 
 
 @SpringBootApplication
@@ -57,54 +59,62 @@ public class CourseInformationApplication {
 						"Mary Francis early education",
 						null
 					);
-
+					course1.setSemesters(Stream.of("Spring", "Summer").toList());
 					courseRepository.save(course1);
 
-					System.out.println(courseRepository.findBySubject("physiology"));
+
+					Course course2 = new Course (
+						"math", 
+						"1101", 
+						"intro", 
+						"Department of Mathematics",
+						null
+					);
+					courseRepository.save(course2);
+					System.out.println(courseRepository.findAllBySubject("physiology"));
 					// TESTED 
 					// Output:
 					// [Course [courseId=1, subject=physiology, courseNumber=420, title=pain, department=Mary Francis early education]]
-
-
+          
 					//Building interface objects
-					Building building1 = new Building (2438, "CAGTECH", "F - 6", null);
+					Building building1 = new Building ("2438", "CAGTECH", "F - 6");
 					buildingRepository.save(building1);
 					
-					Building building2 = new Building(46, "Caldwell Hall", "C - 1", null);
+					Building building2 = new Building("46", "Caldwell Hall", "C - 1");
 					buildingRepository.save(building2);
 					
-					Building building3 = new Building(2118, "Campus Mail/Environmental Safety", "E - 6", null);
+					Building building3 = new Building("2118", "Campus Mail/Environmental Safety", "E - 6");
 					buildingRepository.save(building3);
 					
-					Building building4 = new Building(1637, "Campus Transit Facility", "D - 8", null);
+					Building building4 = new Building("1637", "Campus Transit Facility", "D - 8");
 					buildingRepository.save(building4);
 					
-					Building building5 = new Building(31, "Candler Hall", "C - 1", null);
+					Building building5 = new Building("31", "Candler Hall", "C - 1");
 					buildingRepository.save(building5);
 					
-					Building building6 = new Building(1110, "Carlton Street Deck", "B - 4", null);
+					Building building6 = new Building("1110", "Carlton Street Deck", "B - 4");
 					buildingRepository.save(building6);
 					
-					Building building7 = new Building(2419, "CCRC", "E - 7", null);
+					Building building7 = new Building("2419", "CCRC", "E - 7");
 					buildingRepository.save(building7);
 					
-					Building building8 = new Building(2127, "Center for Applied Isotope Study", "E - 6", null);
+					Building building8 = new Building("2127", "Center for Applied Isotope Study", "E - 6");
 					buildingRepository.save(building8);
 					
-					Building building9 = new Building(2395, "Center for Molecular Medicine", "E - 7", null);
+					Building building9 = new Building("2395", "Center for Molecular Medicine", "E - 7");
 					buildingRepository.save(building9);
 					
-					Building building10 = new Building(178, "Central Campus Mech. Building", "C - 2", null);
+					Building building10 = new Building("178", "Central Campus Mech. Building", "C - 2");
 					buildingRepository.save(building10);
 
-					System.out.println("\n\n\n\n\n"+buildingRepository.getById(178));
+					System.out.println("\n\n\n\n\n"+buildingRepository.findById("178"));
 
 
 					//Class interface objects
 					Class class1 = new Class(
 							"MWF", 
-							Time.valueOf("08:00:00"), 
-							Time.valueOf("09:15:00"), 
+							"08:00:00",
+							"09:15:00",
 							building10, 
 							"101", 
 							"Main Campus" ,
@@ -113,8 +123,8 @@ public class CourseInformationApplication {
 
 					Class class2 = new Class(
 							"TR", 
-							Time.valueOf("13:00:00"), 
-							Time.valueOf("14:15:00"), 
+							"13:00:00", 
+							"14:15:00", 
 							building6,  
 							"205", 
 							"North Campus",
@@ -123,6 +133,8 @@ public class CourseInformationApplication {
 
 				classRepository.save(class1);
 				classRepository.save(class2);
+				List<Course> springCourses = courseRepository.findAllBySemester("Spring");
+				System.out.println("All courses with spring semesters: " + springCourses.toString());
 			};
 		}
 
