@@ -33,8 +33,9 @@ const campusList = [
   "Tifton",
 ];
 const educationLevelList = ["Undergraduate", "Graduate"];
-let minmHourList: string[];
-let maxmHourList: string[];
+// Variables for min and max hours
+// let minmHourList: string[];
+// let maxmHourList: string[];
 const hours = [
   "1 hour",
   "2 hours",
@@ -73,9 +74,7 @@ export const SearchFilter = ({}: props) => {
   // Update dropdown lists when minmHours changes
   useEffect(() => {
     if (minmHours !== null) {
-      setMaxmHourList((prev) => [
-        ...hours.slice(Number(minmHours?.split(" ")[0])),
-      ]);
+      setMaxmHourList(() => [...hours.slice(Number(minmHours?.split(" ")[0]))]);
     } else {
       setMaxmHourList(hours);
     }
