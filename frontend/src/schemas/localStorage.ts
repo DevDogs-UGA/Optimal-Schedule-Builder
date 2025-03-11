@@ -7,29 +7,27 @@ import * as z from "zod";
  * default or be nullable.
  */
 
+/**
+ * Using `.catch(...)` on the schema gives a default value if there
+ * is an error parsing the value in localStorage (or if the key is
+ * not present in localStorage). The default value passed to
+ * `.catch(...)` must match the original schema.
+ */
+
+/**
+ * Using `.nullable()` is identical in behavior to `.catch(null)`,
+ * except the schema does not necessarily have to match null.
+ */
+
 const localStorage = {
-  /**
-   * Using `.catch(...)` on the schema gives a default value if there
-   * is an error parsing the value in localStorage (or if the key is
-   * not present in localStorage). The default value passed to
-   * `.catch(...)` must match the original schema.
-   */
-  example: z
+  test: z
     .object({
       foo: z.string(),
     })
     .catch({
-      foo: "defaultValue",
+      foo: "caught",
     }),
-  /**
-   * Using `.nullable()` is identical in behavior to `.catch(null)`,
-   * except the schema does not necessarily have to match null.
-   */
-  example2: z
-    .object({
-      bar: z.string(),
-    })
-    .nullable(),
+  test2: z.object({}).nullable(),
 };
 
 export default localStorage;

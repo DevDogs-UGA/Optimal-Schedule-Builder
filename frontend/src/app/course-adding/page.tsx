@@ -1,13 +1,28 @@
 "use client";
 
-import { Button } from "@/components/ui/ButtonRounded";
-import { Navbar } from "@/components/Navbar";
-import { RecommendedCourses } from "@/components/RecommendedCourses";
-import { AddCourses } from "@/components/courses/AddCourses";
 import { SearchFilter } from "@/components/Filters";
+import { Navbar } from "@/components/Navbar";
+import { AddCourses } from "@/components/courses/AddCourses";
 import CourseDisplay from "@/components/courses/CourseDisplay";
+import type { Course } from "@/schemas/serverQueries";
+import { useCallback, useState } from "react";
 
 export default function Courses() {
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  const handleAddCourse = useCallback((course: Course) => {
+    setCourses((courses) => [
+      ...courses.filter((c) => c.courseId !== course.courseId),
+      course,
+    ]);
+  }, []);
+
+  const handleRemoveCourse = useCallback((course: Course) => {
+    setCourses((courses) =>
+      courses.filter((c) => c.courseId !== course.courseId),
+    );
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -19,13 +34,16 @@ export default function Courses() {
               <h1 className="p-2 pl-1 text-center text-3xl font-black md:text-left">
                 Add Courses
               </h1>
-              <AddCourses />
+              <AddCourses onAddCourse={handleAddCourse} />
             </div>
             <div className="w-full md:w-1/3">
               <h1 className="p-2 pl-1 text-center text-3xl font-black md:text-left">
                 Courses
               </h1>
-              <CourseDisplay />
+              <CourseDisplay
+                courses={courses}
+                onRemoveCourse={handleRemoveCourse}
+              />
             </div>
           </div>
           <div>

@@ -1,8 +1,20 @@
 import localStorageSchema from "@/schemas/localStorage";
-import { type SetStateAction, useCallback, useEffect, useReducer } from "react";
+import { usePathname } from "next/navigation";
+import { type Reducer, useCallback, useEffect, useId, useReducer } from "react";
 import type * as z from "zod";
 
 type LocalStorageSchema = typeof localStorageSchema;
+
+interface Options {
+  /**
+   * Sets the "scope" for the locally stored state.
+   * - `"global"` State is accessible from anywhere on the same website (default).
+   * - `"page"` The current pathname is appended to the key, meaning state is only accesible from the same page.
+   * - `"component"` The current pathname and component ID are appended to the key, meaning state is only accessible from an individual rendering of a component.
+   * @see https://react.dev/reference/react/useId
+   */
+  scope: "global" | "page" | "component";
+}
 
 /**
  * This hook is similar to `useState()`, except that the data
@@ -11,9 +23,11 @@ type LocalStorageSchema = typeof localStorageSchema;
  * every schema must be associated with a key.
  *
  * @param key The key to store/fetch the data to/from.
+ * @param options Micro-mange the hook's behavior.
  */
 export default function useLocalStorage<K extends keyof LocalStorageSchema>(
   key: K,
+  options?: Options,
 ) {
   if (
     !localStorageSchema[key].isNullable() &&
@@ -24,20 +38,36 @@ export default function useLocalStorage<K extends keyof LocalStorageSchema>(
     );
   }
 
+  const pathname = usePathname();
+  const id = useId();
+
   const schema = localStorageSchema[key];
-  type Schema = z.infer<typeof schema>;
+  type OutputSchema = z.output<typeof schema>;
+  type InputSchema = z.input<typeof schema>;
 
-  const [state, setState] = useReducer(
-    (prevState: Schema, action: SetStateAction<Schema>) => {
-      const newState =
-        typeof action === "function" ? action(prevState) : action;
+  const itemKey =
+    key +
+    (options?.scope === "component"
+      ? `@${id}@${pathname}`
+      : options?.scope === "page"
+        ? `@${id}`
+        : "");
 
-      window.localStorage.setItem(key, JSON.stringify(newState));
+  const [state, setState] = useReducer<
+    Reducer<
+      OutputSchema,
+      InputSchema | ((prevState: OutputSchema) => InputSchema)
+    >
+  >((prevState, action) => {
+    const newState = schema.parse(
+      action instanceof Function ? action(prevState) : action,
+    );
+    console.log({ newState });
 
-      return newState;
-    },
-    schema.parse(null),
-  );
+    window.localStorage.setItem(itemKey, JSON.stringify(newState));
+
+    return newState;
+  }, schema.parse(null));
 
   const handleStorage = useCallback(
     (e: StorageEvent) => {
