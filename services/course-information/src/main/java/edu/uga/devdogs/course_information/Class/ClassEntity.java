@@ -10,12 +10,13 @@ import java.io.Serializable;
 
 import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
+import edu.uga.devdogs.course_information.Professor.Professor;
 
 /*
  * Java JPA entity represention for Class
  */
 @Entity
-public class Class implements Serializable{
+public class ClassEntity implements Serializable{
     
     /*
      * Variables
@@ -37,26 +38,30 @@ public class Class implements Serializable{
 
     /*
      * Relationships
-     * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
 
     @ManyToOne
-    @JoinColumn(name = "courseSectionId")
+    @JoinColumn(name = "course_section_id")
     private CourseSection courseSection;
 
     @ManyToOne
     @JoinColumn(name = "buildingNumber")
     private Building building;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;  
+
      /*
       * Constructors
       */
     
      // Default constructor
-     public Class() {
+     public ClassEntity() {
      }
 
      // Constructor w/o classID
-     public Class(String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
+     public ClassEntity(String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
          this.days = days;
          this.startTime = startTime;
          this.endTime = endTime;
@@ -67,7 +72,7 @@ public class Class implements Serializable{
      }
 
      // Constructor w/ classID
-     public Class(int classId, String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
+     public ClassEntity(int classId, String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
          this.classId = classId;
          this.days = days;
          this.startTime = startTime;
