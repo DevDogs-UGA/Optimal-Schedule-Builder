@@ -143,16 +143,16 @@ public class BruteForcePrototype {
      * @param validSchedules is the set of all discovered full valid schedules, every iteration uses the same
      *                       validSchedule object.
      * */
-    private static void generateValidSchedulesRecursive(Set<Section> sections, List<Course> currCoursesToAdd, Set<Schedule> validSchedules){
+    private static void generateValidSchedulesRecursive(Set<Section> sections, List<Course> currCoursesToAdd, Set<Schedule> validSchedules) {
         Schedule currSchedule = new Schedule(sections);
 
         // Gets rid of invalid schedules as soon as they become invalid instead of continuing to recurse
-        if (!ScheduleUtil.validate(currSchedule)){
+        if (!ScheduleUtil.validate(currSchedule)) {
             return;
         }
 
         // If there are no more courses to add, then it is a full valid schedule
-        if (currCoursesToAdd.isEmpty()){
+        if (currCoursesToAdd.isEmpty()) {
             validSchedules.add(currSchedule);
             return;
         }
@@ -162,51 +162,12 @@ public class BruteForcePrototype {
         nextCoursesToAdd.remove(0);
 
         // Iterates over all sections for the next course and recurses
-        for (Section sectionToAdd: currCoursesToAdd.get(0).sections()){
+        for (Section sectionToAdd : currCoursesToAdd.get(0).sections()) {
             // Instantiates the set of sections for the next iteration
             HashSet<Section> nextSections = new HashSet<>(sections);
             nextSections.add(sectionToAdd);
-            
+
             generateValidSchedulesRecursive(nextSections, nextCoursesToAdd, validSchedules);
         }
-    }
-
-
-
-
-    /**
-     * Checks every possible course for the substring {@code String blanketSearch} and adds it to {@code Set<Course> validCourses}.
-     * If a user wanted to search for all CSCI 4000-level classes, {@code String blanketSearch} would be "CSCI 4".
-     * Then the function uses {@code generateValidSchedulesRecursive(sections, courseInList, validSchedulesWithBlanketSearch)}
-     * to try to add just one of the valid courses to the schedule and generate all valid schedules for that.
-     * It does this for all valid courses for all valid schedules.
-     * @param allCourses every possible course you can take at UGA
-     * @param blanketSearch the string pattern that is used to search. Ex: "CSCI 4"
-     * @param validSchedulesWithoutBlanketSearch the set of all valid schedules generated without the blanket search (output of {@code generateValidSchedules(inputCourses)}).
-     * @return the set of all valid schedules with the blanket search
-     * */
-    public static Set<Schedule>  generateValidSchedulesWithBlanketSearch(List<Course> allCourses, String blanketSearch, Set<Schedule> validSchedulesWithoutBlanketSearch) {
-        //generates a set of all valid courses matching the blanketSearch substring
-        Set<Course> validCourses = new HashSet<>();
-        for (Course currCourse : allCourses) {
-            String courseCode = currCourse.courseCode();
-            if (courseCode.contains(blanketSearch)) {
-                validCourses.add(currCourse);
-            }
-        }
-
-        //loops through every valid course for every valid schedule and generates
-        //new valid schedules based on adding just one valid course to the valid schedule.
-        //all new valid schedules are added to validSchedulesWithBlanketSearch inside the method generateValidSchedulesRecursive.
-        Set<Schedule> validSchedulesWithBlanketSearch = new HashSet<>();
-        for (Schedule schedule : validSchedulesWithoutBlanketSearch) {
-            Set<Section> sections = schedule.sections();
-            for (Course course : validCourses) {
-                List<Course> courseInList = new ArrayList<>();
-                courseInList.add(course);
-                generateValidSchedulesRecursive(sections, courseInList, validSchedulesWithBlanketSearch);
-            }
-        }
-        return validSchedulesWithBlanketSearch;
     }
 }
