@@ -25,7 +25,7 @@ public class Pdf {
      * @param semester fall, spring, summer
      * @return
      */
-    public static List<Course> parsePdf(String semester, String downloadDirectory) {
+    public static List<Course2> parsePdf(String semester, String downloadDirectory) {
         String pdfLocation = downloadDirectory + semester + ".pdf";
         try {
             Files.createFile(Paths.get(pdfLocation)); //creates the file if doesnt already exist
@@ -39,7 +39,7 @@ public class Pdf {
             e.printStackTrace();
         }
 
-        List<Course> courses = new ArrayList<>();
+        List<Course2> courses = new ArrayList<>();
         try {
             // Load the PDF document
             PDDocument doc = Loader.loadPDF(new File(pdfLocation)); // loads the pdf
@@ -68,7 +68,7 @@ public class Pdf {
                     bottomOffset = (int) text.lines().count() - 4;
                 }
 
-                List<Course> c = parsePage(text, topOffset, bottomOffset);
+                List<Course2> c = parsePage(text, topOffset, bottomOffset);
 
                 courses.addAll(c);
                 //System.out.println(text);
@@ -92,14 +92,14 @@ public class Pdf {
      * @param bottomOffset the amount of lines to take off the bottom of the page
      * @return List of Course objects
     */
-    public static List<Course> parsePage(String page, int topOffset, int bottomOffset) {
+    public static List<Course2> parsePage(String page, int topOffset, int bottomOffset) {
         List<String> pageList = new ArrayList<String>(Arrays.asList(page.split("\n")));
         pageList = pageList.subList(topOffset, bottomOffset); //strips unnecessary data
 
         String header = ""; // subject, course number, course title, department
         String prevContent = "";
         String currContent = ""; // crn, sec, stat, credit hours, days, time, building, room, campus, instructor, part of term, class size, seats available
-        List<Course> courseList = new ArrayList<>();
+        List<Course2> courseList = new ArrayList<>();
 
         for (var elem : pageList) {
             prevContent = currContent; //some cases the current line is missing data so keep memory of last line
@@ -113,7 +113,7 @@ public class Pdf {
                 currContent = prevContent.substring(0, prevContent.indexOf(".")) + currContent.substring(currContent.indexOf("."));
             }
 
-            Course c = parseCourseString(header, currContent);
+            Course2 c = parseCourseString(header, currContent);
             courseList.add(c);
         }
         return courseList;
@@ -126,7 +126,7 @@ public class Pdf {
      * @param content a string containing crn, sec, stat, credit hours, days, time, building, room, campus, instructor, part of term, class size, seats available
      * @return a course object
      */
-    public static Course parseCourseString(String header, String content) {
+    public static Course2 parseCourseString(String header, String content) {
         List<String> headerList = new ArrayList<String>(Arrays.asList(header.split(" ")));
         List<String> contentList = new ArrayList<String>(Arrays.asList(content.split(" ")));
 
@@ -141,7 +141,7 @@ public class Pdf {
         if (contentList.get(1).equalsIgnoreCase("A") || contentList.get(1).equalsIgnoreCase("X")) {
             //SEC (Section):  This is an optional field used by departments to uniquely identify individual sections of the same course. <-- from https://reg.uga.edu/enrollment-and-registration/schedule-of-classes/
             //found in testing that when sec is missing it should mean that the course is TBA
-            return new Course(subject,
+            return new Course2(subject,
                     number,
                     title,
                     department,
@@ -230,7 +230,7 @@ public class Pdf {
         } //for
 
 
-        return new Course(subject,
+        return new Course2(subject,
                 number,
                 title,
                 department,

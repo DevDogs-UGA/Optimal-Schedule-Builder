@@ -7,28 +7,19 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CourseSectionRepository extends JpaRepository<CourseSection, Long>{
+public interface CourseSectionRepository extends JpaRepository<CourseSection, Long> {
 
-    //This will get a list of courses by their major
+    // Get a list of course sections by their subject
     @Query("SELECT cs FROM CourseSection cs WHERE cs.course.subject = :subject")
     List<CourseSection> getCoursesBySubject(@Param("subject") String subject);
 
-    // This will find a course by its CRN
-    // @Query("SELECT crn from courseSection cs WHERE cd.course.suject = ?1")
-    // List<Course> getCourseByCrn(int crn);
-
-    // This will get a list of courseSections by the instructor
-    // @Query("SELECT cs FROM courseSection cs WHERE cs.instructor = ?1")
+    // Get a list of course sections by the instructor
     List<CourseSection> findAllByInstructor(String instructor);
-    
-    // This will get a list of course sections that match the time range
+
+    // Get a list of course sections that match the time range
     @Query("SELECT cs FROM CourseSection cs JOIN cs.classEntity c WHERE c.startTime <= :time AND c.endTime >= :time")
     List<CourseSection> findAllCourseSectionsByTime(@Param("time") String time);
 
-    // This will find a course by its CRN
-    //@Query("SELECT crn from courseSection cs WHERE cs.crn = ?1")
-    CourseSection findByCrn(int crn);
-
-
+    // Find a course section by its CRN
+    CourseSection findByCrn(Integer crn);
 }
-
