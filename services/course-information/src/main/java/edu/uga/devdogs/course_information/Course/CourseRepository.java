@@ -13,7 +13,7 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long>{
 
     //This will get a course by its unique ID
-    Optional<Course> findById(Long id);
+    Optional<Course> findByCourseId(Long courseid);
 
     //This will get a list of Courses by their subject.
     List<Course> findBySubject(String subject);
@@ -38,11 +38,11 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
     List<Course> findAllByTitle(String title);
 
     // Gets course info by course ID
-    List<Course> getCourseInfoById(Long id);
+    List<Course> getCourseInfoByCourseId(Long courseId);
 
     // Gets prerequisites by course ID
-    List<Course> getPrerequisites(Long id);
+    public List<Course> findPrerequisitesByCourseId(Long courseId);
 
     // Gets corequisites by course ID
-    List<Course> getCorequisites(Long id);
+    public List<Course> findCorequisitesByCourseId(Long courseId);
 }

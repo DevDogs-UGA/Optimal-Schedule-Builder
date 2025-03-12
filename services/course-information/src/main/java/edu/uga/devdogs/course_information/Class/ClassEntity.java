@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
+import edu.uga.devdogs.course_information.Professor.Professor;
 
 /*
  * Java JPA entity represention for Class
@@ -37,16 +38,20 @@ public class ClassEntity implements Serializable{
 
     /*
      * Relationships
-     * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
 
     @ManyToOne
-    @JoinColumn(name = "courseSectionId")
+    @JoinColumn(name = "course_section_id")
     private CourseSection courseSection;
 
     @ManyToOne
     @JoinColumn(name = "buildingNumber")
     private Building building;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;  
+
      /*
       * Constructors
       */

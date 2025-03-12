@@ -14,10 +14,7 @@ public interface ClassRepository extends JpaRepository<ClassEntity, Integer> {
     List<ClassEntity> findAllByDays(String days);
 
     // Find classes that start at a specific time
-    List<ClassEntity> findAllByStartTime(java.sql.Time startTime);
-
-    // Find classes that end between two times
-    List<ClassEntity> findAllByEndTimeBetween(java.sql.Time startTime, java.sql.Time endTime);
+    List<ClassEntity> findAllByStartTime(String startTime);
 
     // Find classes in a specific building
     List<ClassEntity> findAllByBuilding(Building building);
