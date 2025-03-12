@@ -170,3 +170,4 @@ public class BruteForcePrototype {
             generateValidSchedulesRecursive(nextSections, nextCoursesToAdd, validSchedules);
         }
     }
+}
