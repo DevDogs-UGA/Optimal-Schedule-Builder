@@ -2,11 +2,7 @@
 
 import type { Course } from "@/schemas/serverQueries";
 import Link from "next/link";
-import {
-  ReadonlyURLSearchParams,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PiPlusBold } from "react-icons/pi";
 import * as z from "zod";
@@ -15,38 +11,39 @@ import SearchBySubject from "./search/SearchBySubject";
 import SearchByCRN from "./search/SearchByCRN";
 
 const searchParamsState = z
-  .instanceof(ReadonlyURLSearchParams)
-  .transform((sp) => Object.fromEntries(sp.entries()))
-  .pipe(
-    z.union([
-      z.object({
-        view: z.literal("subject"),
-        subject: z.string(),
-        course: z.string().optional(),
-      }),
-      z.object({
-        view: z.literal("subject"),
-        subject: z.string().optional(),
-      }),
-      z.object({
-        view: z.literal("instructor"),
-        instructor: z.string(),
-        course: z.string().optional(),
-      }),
-      z.object({
-        view: z.literal("instructor"),
-        instructor: z.string().optional(),
-      }),
-      z.object({
-        view: z.literal("crn"),
-        crn: z.string().optional(),
-      }),
-    ]),
-  )
+  .union([
+    z.object({
+      view: z.literal("subject"),
+      subject: z.string(),
+      course: z.string().optional(),
+    }),
+    z.object({
+      view: z.literal("subject"),
+      subject: z.string().optional(),
+    }),
+    z.object({
+      view: z.literal("instructor"),
+      instructor: z.string(),
+      course: z.string().optional(),
+    }),
+    z.object({
+      view: z.literal("instructor"),
+      instructor: z.string().optional(),
+    }),
+    z.object({
+      view: z.literal("crn"),
+      crn: z.string().optional(),
+    }),
+  ])
   .catch({
     view: "subject",
   });
 
+/**
+ *
+ * @param view
+ * @param state
+ */
 function useTab<T extends z.infer<typeof searchParamsState>["view"]>(
   view: T,
   state: z.infer<typeof searchParamsState>,
@@ -88,14 +85,17 @@ function useTab<T extends z.infer<typeof searchParamsState>["view"]>(
 
 interface Props {
   /**
+   * The current URL search params.
+   */
+  searchParams: Record<string, string | string[] | undefined>;
+  /**
    * Fires the provided event handler when a course is selected and the "Add Course" button is clicked.
    * @param course The selected course.
    */
   onAddCourse?: (course: Course) => void;
 }
 
-export function AddCourses({ onAddCourse }: Props) {
-  const searchParams = useSearchParams();
+export function AddCourses({ onAddCourse, searchParams }: Props) {
   const state = useMemo(
     () => searchParamsState.parse(searchParams),
     [searchParams],

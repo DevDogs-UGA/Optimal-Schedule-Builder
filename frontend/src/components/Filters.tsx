@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { DropdownSearchInput } from "./ui/DropdownSearchInput";
 import { DropdownTagInput } from "./ui/DropdownTagInput";
@@ -91,7 +93,7 @@ export const SearchFilter = ({}: props) => {
   }, [maxmHours]);
 
   return (
-    <div>
+    <section>
       <div className="flex flex-col border-4 border-dusty-pink bg-barely-pink p-2">
         {" "}
         {/* Div for Whole Filter Component*/}
@@ -215,6 +217,6 @@ export const SearchFilter = ({}: props) => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

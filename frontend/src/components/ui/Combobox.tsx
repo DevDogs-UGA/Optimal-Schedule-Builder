@@ -89,25 +89,19 @@ export default function Combobox({
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("");
 
-  /**
-   * Finds the option in `options` associated with the provided
-   * `value`. This will be `undefined` if the value cannot be
-   * found.
-   * @param _prevState This parameter is ignored.
-   * @param action The `value` to search for in `options`.
-   * @return The associated `Option`.
-   */
-  const reducer = useCallback(
+  const [selected, setSelectedId] = useReducer(
+    /**
+     * Finds the option in `options` associated with the provided
+     * `value`. This will be `undefined` if the value cannot be
+     * found.
+     * @param _prevState This parameter is ignored.
+     * @param action The `value` to search for in `options`.
+     * @return The associated `Option`.
+     */
     (_prevState: Option | undefined, action: string | undefined) => {
       return options?.find((item) => item.value === action);
     },
-    [options],
-  );
-
-  const [selected, setSelectedId] = useReducer(
-    reducer,
-    defaultValue,
-    reducer.bind(null, undefined),
+    undefined,
   );
 
   const [highlighted, setHighlighted] = useState(
@@ -180,6 +174,14 @@ export default function Combobox({
     setSelectedId(undefined);
     onChange?.(undefined);
   }, [options, onChange]);
+
+  /**
+   * Update the selected option when the default value
+   * changes.
+   */
+  useEffect(() => {
+    setSelectedId(defaultValue);
+  }, [defaultValue]);
 
   /**
    * Reset the option filter when the popover is closed.
