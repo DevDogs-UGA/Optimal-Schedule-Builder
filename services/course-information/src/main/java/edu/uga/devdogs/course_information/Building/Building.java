@@ -1,6 +1,6 @@
 package edu.uga.devdogs.course_information.Building;
 
-import edu.uga.devdogs.course_information.Class.Class;
+import edu.uga.devdogs.course_information.Class.ClassEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,7 +39,7 @@ public class Building implements Serializable {
      * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
     @OneToMany(mappedBy = "building")
-    private List<Class> classes;
+    private List<ClassEntity> classes;
 
     /*
      * Constructors
@@ -95,11 +95,11 @@ public class Building implements Serializable {
         this.grid = grid;
     }
 
-    public List<Class> getClasses() {
+    public List<ClassEntity> getClasses() {
         return classes;
     }
 
-    public void setClasses(List<Class> classes) {
+    public void setClasses(List<ClassEntity> classes) {
         this.classes = classes;
     }
 
