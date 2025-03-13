@@ -67,7 +67,7 @@ function useTab<T extends z.infer<typeof searchParamsState>["view"]>(
   );
 
   /**
-   * When a new tab is selected, or the content in one of the 
+   * When a new tab is selected, or the content in one of the
    * search fields changes, we update the search params of the
    * page to reflect said changes.
    */

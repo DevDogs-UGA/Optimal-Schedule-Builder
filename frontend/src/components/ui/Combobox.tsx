@@ -91,7 +91,7 @@ export default function Combobox({
 
   /**
    * Finds the option in `options` associated with the provided
-   * `value`. This will be `undefined` if the value cannot be 
+   * `value`. This will be `undefined` if the value cannot be
    * found.
    * @param _prevState This parameter is ignored.
    * @param action The `value` to search for in `options`.

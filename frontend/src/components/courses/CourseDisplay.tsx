@@ -34,7 +34,7 @@ export default function CourseDisplay({ courses, onRemoveCourse }: Props) {
       {/* Styling div to add spacing and hold down arrow notification in case there is more items */}
       <div className="absolute bottom-0 left-0 flex h-6 w-full justify-center border-4 border-t-0 border-dusty-pink bg-white">
         {courses.length > 5 && (
-          <PiCaretDownBold className="h-auto w-auto animate-bounce size-30" />
+          <PiCaretDownBold className="size-30 h-auto w-auto animate-bounce" />
         )}
       </div>
     </div>

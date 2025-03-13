@@ -49,9 +49,9 @@ export default function SearchBySubject({
   const subjectsQuery = useQuery(
     "getAllSubjects",
     {},
-    { 
+    {
       // TODO: Remove dummy data once a connection can be made to the course information service
-      initialData: ["CSCI", "MATH", "ARTI", "PHYS", "PHIL", "ENGR", "STAT"] 
+      initialData: ["CSCI", "MATH", "ARTI", "PHYS", "PHIL", "ENGR", "STAT"],
     },
   );
 
