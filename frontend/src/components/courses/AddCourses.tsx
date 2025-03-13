@@ -76,7 +76,7 @@ function useTab<T extends z.infer<typeof searchParamsState>["view"]>(
       router.replace(href);
     }
   }, [state.view, view, router, href]);
-
+    
   return {
     onChange: setSelectedCourse,
     onInput: setDefaultValue,

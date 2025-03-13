@@ -114,10 +114,9 @@ function CourseInfo({
   semester,
   credits,
   crn,
-  // Uncomment to use parameters, currently unused
-  // openSeats,
-  // maxSeats,
-  // waitlist,
+  openSeats,
+  maxSeats,
+  waitlist,
   bgColor,
   borderColor,
   timeStart,

@@ -4,9 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import edu.uga.devdogs.course_information.Course.Course;
-import edu.uga.devdogs.course_information.Class.Class;
+import edu.uga.devdogs.course_information.Class.ClassEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -16,7 +20,8 @@ import jakarta.persistence.OneToMany;
 public class CourseSection implements Serializable {
     // Variables
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "course_section_id")
     private long courseSectionId;
 
     private int crn;
@@ -51,46 +56,36 @@ public class CourseSection implements Serializable {
 
     // Relationships
     @ManyToOne
-    @JoinColumn(name = "courseId")
+    @JoinColumn(name = "course_Id", nullable = false)
     private Course course;
-    @OneToMany(mappedBy = "courseSection")
-    private List<Class> classes;
+
+    @OneToMany(mappedBy = "courseSection", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ClassEntity> classes;
+
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private ClassEntity classEntity;
+
+
 
     // Constructors, getters, setters, and toString 
     public CourseSection() {}
 
-    public CourseSection(long courseSectionId, int crn, int sec, char stat, double creditHoursLow,
-            double creditHoursHigh, String instructor, int term, int classSize, int seatsAvailable, int year, Course course, List<Class> classes) {
-        this.courseSectionId = courseSectionId;
-        this.crn = crn;
-        this.sec = sec;
-        this.stat = stat;
-        this.creditHoursLow = creditHoursLow;
-        this.creditHoursHigh = creditHoursHigh;
-        this.instructor = instructor;
-        this.term = term;
-        this.classSize = classSize;
-        this.seatsAvailable = seatsAvailable;
-        this.year = year;
-        this.course = course;
-        this.classes = classes;
-    }
-
     public CourseSection(int crn, int sec, char stat, double creditHoursLow, double creditHoursHigh, String instructor,
-            int term, int classSize, int seatsAvailable, int year, Course course, List<Class> classes) {
-        this.crn = crn;
-        this.sec = sec;
-        this.stat = stat;
-        this.creditHoursLow = creditHoursLow;
-        this.creditHoursHigh = creditHoursHigh;
-        this.instructor = instructor;
-        this.term = term;
-        this.classSize = classSize;
-        this.seatsAvailable = seatsAvailable;
-        this.year = year;
-        this.course = course;
-        this.classes = classes;
-    }
+        int term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes) {
+    this.crn = crn;
+    this.sec = sec;
+    this.stat = stat;
+    this.creditHoursLow = creditHoursLow;
+    this.creditHoursHigh = creditHoursHigh;
+    this.instructor = instructor;
+    this.term = term;
+    this.classSize = classSize;
+    this.seatsAvailable = seatsAvailable;
+    this.year = year;
+    this.course = course;
+    this.classes = classes;
+}
 
     public long getId() {
         return courseSectionId;
@@ -188,11 +183,11 @@ public class CourseSection implements Serializable {
         this.course = course;
     }
 
-    public List<Class> getClasses() {
+    public List<ClassEntity> getClasses() {
         return classes;
     }
 
-    public void setClasses(List<Class> classes) {
+    public void setClasses(List<ClassEntity> classes) {
         this.classes = classes;
     }
 

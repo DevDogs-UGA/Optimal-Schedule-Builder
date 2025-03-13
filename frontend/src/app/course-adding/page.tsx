@@ -2,6 +2,7 @@
 
 import { SearchFilter } from "@/components/Filters";
 import { Navbar } from "@/components/Navbar";
+import { RecommendedCourses } from "@/components/RecommendedCourses";
 import { AddCourses } from "@/components/courses/AddCourses";
 import CourseDisplay from "@/components/courses/CourseDisplay";
 import type { Course } from "@/schemas/serverQueries";
