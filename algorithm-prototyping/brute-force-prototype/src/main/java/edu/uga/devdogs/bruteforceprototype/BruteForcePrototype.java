@@ -7,6 +7,7 @@ import edu.uga.devdogs.sampledataparser.records.HConstraints;
 import edu.uga.devdogs.sampledataparser.records.SConstraints;
 import edu.uga.devdogs.sampledataparser.records.Section;
 
+import java.sql.Array;
 import java.util.*;
 
 public class BruteForcePrototype {
@@ -75,7 +76,7 @@ public class BruteForcePrototype {
         List<Schedule> sortedSchedules = new ArrayList<>();
         List<Double> sortedOverallObjectives = new ArrayList<>();
 
-        
+
         // Makeshift Priority Queue; An array sorted by a variable (in this case, overallObjective).
         // Before an item is added, you find where it should be placed so that the List is still sorted correctly
         // Without having to call a special sorting function.
@@ -143,16 +144,16 @@ public class BruteForcePrototype {
      * @param validSchedules is the set of all discovered full valid schedules, every iteration uses the same
      *                       validSchedule object.
      * */
-    private static void generateValidSchedulesRecursive(Set<Section> sections, List<Course> currCoursesToAdd, Set<Schedule> validSchedules) {
+    private static void generateValidSchedulesRecursive(Set<Section> sections, List<Course> currCoursesToAdd, Set<Schedule> validSchedules){
         Schedule currSchedule = new Schedule(sections);
 
         // Gets rid of invalid schedules as soon as they become invalid instead of continuing to recurse
-        if (!ScheduleUtil.validate(currSchedule)) {
+        if (!ScheduleUtil.validate(currSchedule)){
             return;
         }
 
         // If there are no more courses to add, then it is a full valid schedule
-        if (currCoursesToAdd.isEmpty()) {
+        if (currCoursesToAdd.isEmpty()){
             validSchedules.add(currSchedule);
             return;
         }
@@ -162,7 +163,7 @@ public class BruteForcePrototype {
         nextCoursesToAdd.remove(0);
 
         // Iterates over all sections for the next course and recurses
-        for (Section sectionToAdd : currCoursesToAdd.get(0).sections()) {
+        for (Section sectionToAdd: currCoursesToAdd.get(0).sections()){
             // Instantiates the set of sections for the next iteration
             HashSet<Section> nextSections = new HashSet<>(sections);
             nextSections.add(sectionToAdd);

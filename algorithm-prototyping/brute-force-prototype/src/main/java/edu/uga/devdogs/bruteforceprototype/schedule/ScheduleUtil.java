@@ -10,10 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.Set;
-import java.util.EnumMap;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 
 /**
  * Utility class for performing operations and calculations related to a Schedule.
@@ -89,7 +86,7 @@ public class ScheduleUtil {
 
     /**
      * Checks if schedule or constraints is null and throws an exception if it is.
-     * 
+     *
      * @param schedule the schedule to validate
      * @param constraints the constraints to validate
      */
@@ -177,63 +174,6 @@ public class ScheduleUtil {
         return (double) sumOfTimeGaps / countOfClassGaps;
     }
 
-
-
-    /**
-     * Computes the earliest start time of all classes in a schedule
-     *
-     * @param schedule the schedule for which to compute the earliest start time
-     * @return the earliest start time (in hours) as a double. For example, 4:30 pm would be represented as 16.5
-     */
-    private static double computeStartTime(Schedule schedule) {
-        LocalTime earliestStartTime = LocalTime.of(23,59,59);
-        for (Section eachSection : schedule.sections()) {
-            for (Class eachClass : eachSection.classes()) {
-                if (eachClass.startTime().isBefore(earliestStartTime)) {
-                    earliestStartTime = eachClass.startTime();
-                }
-            }
-        }
-        return earliestStartTime.getHour() + (double) earliestStartTime.getMinute() / 60;
-    }
-
-
-
-    /**
-     * Computes the latest start time of all classes in a schedule
-     *
-     * @param schedule the schedule for which to compute the latest start time
-     * @return the latest start time (in hours) as a double. For example, 4:30 pm would be represented as 16.5
-     */
-    private static double computeEndTime(Schedule schedule) {
-        LocalTime latestStartTime = LocalTime.of(0,0,0);
-        for (Section eachSection : schedule.sections()) {
-            for (Class eachClass : eachSection.classes()) {
-                if (eachClass.startTime().isAfter(latestStartTime)) {
-                    latestStartTime = eachClass.startTime();
-                }
-            }
-        }
-        return latestStartTime.getHour() + (double) latestStartTime.getMinute() / 60;
-    }
-
-
-
-    /**
-     * Determines whether a given schedule has zero classes on a given day
-     *
-     * @param schedule the schedule for which to compute whether it has a gap day or not
-     * @param gapDay the day that is being checked as a gap day or not
-     * @return {@code true} if the given schedule has no classes on the given day, {@code false} if it has at least one class
-     */
-    private static boolean computeGapDay(Schedule schedule, DayOfWeek gapDay) {
-        EnumMap<DayOfWeek, TreeSet<Class>> days = schedule.days();
-        TreeSet<Class> classes = days.get(gapDay);
-        return classes.isEmpty();
-    }
-
-
-
     /**
      * Computes the overall objective score for the given schedule based on weighted objectives.
      * This method computes each objective, normalizes their values using min-max normalization, and computes a weighted sum.
@@ -245,10 +185,10 @@ public class ScheduleUtil {
      * @return the overall objective score for the schedule
      */
     public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances) {
-       // Checks if the parameters are valid
-       if (schedule == null || distances == null) {
-           throw new IllegalArgumentException("Parameters cannot be null");
-       }
+        // Checks if the parameters are valid
+        if (schedule == null || distances == null) {
+            throw new IllegalArgumentException("Parameters cannot be null");
+        }
 
         // The minimum rating on rate my professor is 1.0(if they have ratings).
         final double professorQualityMinimum = 1.0;
@@ -311,7 +251,7 @@ public class ScheduleUtil {
             possSConstraintsCount++;
         }
         if (softConstraints.prefStartTime() != null) {
-            possSConstraintScore += normalizeValue(computeStartTime(schedule), prefTimeMinimum, prefTimeMaximum);
+            possSConstraintScore += normalizeValue(computeStartTime(schedule), prefTimeMinimum, prefTimeMaximum);;
             possSConstraintsCount++;
         }
         if (softConstraints.prefEndTime() != null) {
