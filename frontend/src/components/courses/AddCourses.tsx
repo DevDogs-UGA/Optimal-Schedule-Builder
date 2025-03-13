@@ -66,6 +66,11 @@ function useTab<T extends z.infer<typeof searchParamsState>["view"]>(
     [view, defaultValue],
   );
 
+  /**
+   * When a new tab is selected, or the content in one of the 
+   * search fields changes, we update the search params of the
+   * page to reflect said changes.
+   */
   useEffect(() => {
     if (state.view === view) {
       router.replace(href);
@@ -82,6 +87,10 @@ function useTab<T extends z.infer<typeof searchParamsState>["view"]>(
 }
 
 interface Props {
+  /**
+   * Fires the provided event handler when a course is selected and the "Add Course" button is clicked.
+   * @param course The selected course.
+   */
   onAddCourse?: (course: Course) => void;
 }
 

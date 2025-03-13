@@ -10,7 +10,7 @@ interface Options {
    * Sets the "scope" for the locally stored state.
    * - `"global"` State is accessible from anywhere on the same website (default).
    * - `"page"` The current pathname is appended to the key, meaning state is only accesible from the same page.
-   * - `"component"` The current pathname and component ID are appended to the key, meaning state is only accessible from an individual rendering of a component.
+   * - `"component"` The current pathname and component ID (as determined by `useId()`) are appended to the key, meaning state is only accessible from an individual rendering of a component.
    * @see https://react.dev/reference/react/useId
    */
   scope: "global" | "page" | "component";

@@ -6,6 +6,12 @@ import RegisteredClass from "./RegisteredClass";
 
 interface Props {
   courses: Course[];
+  /**
+   * Fires when the remove button is clicked
+   * on a course item. This should update the
+   * state associated with the `courses` prop.
+   * @param course The course to remove.
+   */
   onRemoveCourse?: (course: Course) => void;
 }
 

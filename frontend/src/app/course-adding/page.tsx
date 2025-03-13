@@ -1,17 +1,19 @@
 "use client";
 
+import { SearchFilter } from "@/components/Filters";
 import { Navbar } from "@/components/Navbar";
 import { AddCourses } from "@/components/courses/AddCourses";
 import CourseDisplay from "@/components/courses/CourseDisplay";
 import type { Course } from "@/schemas/serverQueries";
-import { useCallback, useState } from "react";
 import Link from "next/link";
+import { useCallback, useState } from "react";
 
 export default function Courses() {
   const [courses, setCourses] = useState<Course[]>([]);
 
   const handleAddCourse = useCallback((course: Course) => {
     setCourses((courses) => [
+      // Forbid more than one of the same course
       ...courses.filter((c) => c.courseId !== course.courseId),
       course,
     ]);

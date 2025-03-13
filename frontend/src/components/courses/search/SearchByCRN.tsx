@@ -13,11 +13,27 @@ type InputState =
     };
 
 interface Props {
+  /**
+   * The input state for the initial search query.
+   */
   defaultValue?: InputState;
+  /**
+   * An event listener which fires when a course is selected.
+   * @param course The selected course.
+   */
   onChange?: (course: Course | null) => void;
+  /**
+   * An event listener which fires when the search query is
+   * updates.
+   * @param value The input state associated for the search query.
+   */
   onInput?: (value: InputState) => void;
 }
 
+/**
+ * Search for courses by CRN. When a valid CRN is selected,
+ * a small preview is displayed.
+ */
 export default function SearchByCRN({
   defaultValue,
   onChange,
@@ -26,14 +42,20 @@ export default function SearchByCRN({
   const [crn, setCRN] = useState(defaultValue?.crn);
   const dispatchError = useToast(Error);
 
-  const crnsQuery = useQuery("getAllCRNs", {}, { initialData: [123456] });
+  const crnsQuery = useQuery(
+    "getAllCRNs",
+    {},
+    {
+      // TODO: Remove dummy data once a connection can be made to the course information service
+      initialData: [123456],
+    },
+  );
 
   const courseSectionsQuery = useQuery(
     "getCourseEntity",
     { crn: crn ?? "" },
     {
       enabled: crn !== undefined,
-      // TODO: update with better dummy data
       initialData: [
         {
           crn: 123456,
@@ -73,13 +95,16 @@ export default function SearchByCRN({
     [setCRN, onInput],
   );
 
+  /**
+   * If the provided `defaultValue` is invalid,
+   * reset the input state and selected course.
+   */
   useEffect(() => {
     if (
       !(
         defaultValue &&
         "crn" in defaultValue &&
-        crnsQuery.data &&
-        crnsQuery.data.includes(Number(defaultValue.crn))
+        crnsQuery.data?.includes(Number(defaultValue.crn))
       )
     ) {
       return;
@@ -96,10 +121,13 @@ export default function SearchByCRN({
     onInput,
   ]);
 
+  /**
+   * When a course is selected, trigger the `onChange`
+   * event handler, if it exists.
+   */
   useEffect(() => {
-    console.log(course);
     onChange?.(course ?? null);
-  }, [course]);
+  }, [onChange, course]);
 
   useEffect(() => {
     if (crnsQuery.isError) {
@@ -125,7 +153,7 @@ export default function SearchByCRN({
         <span className="text-lg font-bold">CRN:</span>
         <Combobox
           defaultValue={defaultValue?.crn}
-          items={crns}
+          options={crns}
           searchPlaceholder="Search CRNs..."
           selectPlaceholder="Select a CRN"
           onChange={handleCrnChange}

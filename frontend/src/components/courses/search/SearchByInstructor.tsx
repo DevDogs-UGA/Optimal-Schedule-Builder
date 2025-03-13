@@ -17,11 +17,28 @@ type InputState =
     };
 
 interface Props {
+  /**
+   * The input state for the initial search query.
+   */
   defaultValue?: InputState;
+  /**
+   * An event listener which fires when a course is selected.
+   * @param course The selected course.
+   */
   onChange?: (course: Course | null) => void;
+  /**
+   * An event listener which fires when the search query is
+   * updates.
+   * @param value The input state associated for the search query.
+   */
   onInput?: (value: InputState) => void;
 }
 
+/**
+ * Search for instructors by name. Then, once an instructor
+ * is selected, search for courses taught by the selected
+ * instructor.
+ */
 export default function SearchByInstructor({
   defaultValue,
   onChange,
@@ -34,6 +51,7 @@ export default function SearchByInstructor({
     "getAllInstructors",
     {},
     {
+      // TODO: Remove dummy data once a connection can be made to the course information service
       initialData: [
         "Brad Barnes",
         "Michael Cotterell",
@@ -49,6 +67,7 @@ export default function SearchByInstructor({
     { professor: instructor ?? "" },
     {
       enabled: instructor !== undefined,
+      // TODO: Remove dummy data once a connection can be made to the course information service
       //@ts-expect-error Dummy data
       initialData:
         instructor === "Sachin Meena"
@@ -114,6 +133,10 @@ export default function SearchByInstructor({
     [onChange, coursesQuery.data, instructor, onInput],
   );
 
+  /**
+   * If the provided `defaultValue` is invalid,
+   * reset the input state and selected course.
+   */
   useEffect(() => {
     if (
       !(defaultValue && "instructor" in defaultValue && instructorsQuery.data)
@@ -174,7 +197,7 @@ export default function SearchByInstructor({
         <span className="text-lg font-bold">Instructor:</span>
         <Combobox
           defaultValue={defaultValue?.instructor}
-          items={instructors}
+          options={instructors}
           searchPlaceholder="Search instructors..."
           selectPlaceholder="Select an Instructor"
           onChange={handleInstructorChange}
@@ -190,7 +213,7 @@ export default function SearchByInstructor({
               : undefined
           }
           disabled={instructor === undefined}
-          items={courses}
+          options={courses}
           onChange={handleCourseChange}
           searchPlaceholder={`Search ${instructor?.split(" ")[1] ?? ""} courses...`}
           selectPlaceholder={

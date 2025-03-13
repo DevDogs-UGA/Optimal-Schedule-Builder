@@ -13,28 +13,72 @@ import {
 } from "react";
 import { PiCaretUpDown, PiCheckBold, PiMagnifyingGlass } from "react-icons/pi";
 
-interface Item {
+interface Option {
+  /**
+   * A unique identifier for this option.
+   */
   value: string;
+  /**
+   * The text content displayed for this option. This text is used to
+   * filter the visible options when the user types in the combobox.
+   */
   content: string;
 }
 
 interface Props {
+  /**
+   * The value for the initially selected option.
+   */
   defaultValue?: string;
+  /**
+   * Prevents user input if `true`. The Combobox will display as
+   * translucent and use the `not-allowed` cursor when hovered.
+   */
   disabled?: boolean;
-  items?: Item[];
+  /**
+   * An array of items to render as options.
+   */
+  options?: Option[];
+  /**
+   * The name passed to the underlying `<select />` element.
+   */
   name?: string;
+  /**
+   * An event handler which fires when a new item is selected.
+   * @param value The `value` of the selected item. This may be `undefined` if the form is reset.
+   */
   onChange?: (value: string | undefined) => void;
+  /**
+   * Indicates whether the current
+   */
   required?: boolean;
+  /**
+   * The placeholder text displayed when no item is selected.
+   */
   selectPlaceholder?: string;
+  /**
+   * The placeholder text displayed in the search input when the
+   * popover is open.
+   */
   searchPlaceholder?: string;
 }
 
+/**
+ * A wrapper for `<select />` which displays a popover
+ * on top of the original element. This popover has a
+ * search input, allowing for the user to filter the
+ * visible options for selection. Keyboard nagivation
+ * and selection of the visible options is supported.
+ * Options are NOT rendered in a virtual list; this may
+ * result in performance issues for excessively long
+ * lists of items.
+ */
 export default function Combobox({
   defaultValue,
   disabled,
-  items,
   name,
   onChange,
+  options,
   required,
   searchPlaceholder,
   selectPlaceholder,
@@ -44,11 +88,20 @@ export default function Combobox({
   const select = useRef<HTMLSelectElement>(null);
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("");
+
+  /**
+   * Finds the option in `options` associated with the provided
+   * `value`. This will be `undefined` if the value cannot be 
+   * found.
+   * @param _prevState This parameter is ignored.
+   * @param action The `value` to search for in `options`.
+   * @return The associated `Option`.
+   */
   const reducer = useCallback(
-    (_prevState: Item | undefined, action: string | undefined) => {
-      return items?.find((item) => item.value === action);
+    (_prevState: Option | undefined, action: string | undefined) => {
+      return options?.find((item) => item.value === action);
     },
-    [items],
+    [options],
   );
 
   const [selected, setSelectedId] = useReducer(
@@ -58,18 +111,22 @@ export default function Combobox({
   );
 
   const [highlighted, setHighlighted] = useState(
-    (selected ?? items?.[0])?.value,
+    (selected ?? options?.[0])?.value,
   );
 
-  const filteredItems = useMemo(
-    () => (items ? matchSorter(items, filter, { keys: ["content"] }) : []),
-    [items, filter],
+  const filteredOptions = useMemo(
+    () => (options ? matchSorter(options, filter, { keys: ["content"] }) : []),
+    [options, filter],
   );
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value);
   }, []);
 
+  /**
+   * Add functionality when the enter or up/down arrow keys are
+   * pressed.
+   */
   const handleKeydown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
@@ -84,11 +141,11 @@ export default function Combobox({
         e.preventDefault();
         setHighlighted(
           (h) =>
-            filteredItems[
-              (((filteredItems.findIndex((item) => item.value === h) - 1) %
-                filteredItems.length) +
-                filteredItems.length) %
-                filteredItems.length
+            filteredOptions[
+              (((filteredOptions.findIndex((item) => item.value === h) - 1) %
+                filteredOptions.length) +
+                filteredOptions.length) %
+                filteredOptions.length
             ]?.value,
         );
         return;
@@ -98,29 +155,35 @@ export default function Combobox({
         e.preventDefault();
         setHighlighted(
           (h) =>
-            filteredItems[
-              (((filteredItems.findIndex((item) => item.value === h) + 1) %
-                filteredItems.length) +
-                filteredItems.length) %
-                filteredItems.length
+            filteredOptions[
+              (((filteredOptions.findIndex((item) => item.value === h) + 1) %
+                filteredOptions.length) +
+                filteredOptions.length) %
+                filteredOptions.length
             ]?.value,
         );
         return;
       }
 
-      setHighlighted(filteredItems[0]?.value);
+      setHighlighted(filteredOptions[0]?.value);
     },
-    [highlighted, filteredItems],
+    [highlighted, filteredOptions, onChange],
   );
 
+  /**
+   * Resets the Combobox to the initial state.
+   */
   const handleReset = useCallback(() => {
     setOpen(false);
     setFilter("");
-    setHighlighted(items?.[0]?.value);
+    setHighlighted(options?.[0]?.value);
     setSelectedId(undefined);
     onChange?.(undefined);
-  }, [items, onChange]);
+  }, [options, onChange]);
 
+  /**
+   * Reset the option filter when the popover is closed.
+   */
   useEffect(() => {
     if (!open) {
       setFilter("");
@@ -129,6 +192,11 @@ export default function Combobox({
     }
   }, [open, selected]);
 
+  /**
+   * When `highlighted` changes, we make sure that the popover
+   * is scrolled such that the currently highlighted option is
+   * visible in the scrollport.
+   */
   useEffect(() => {
     if (highlighted === undefined) {
       return;
@@ -159,6 +227,9 @@ export default function Combobox({
     });
   }, [highlighted, id, name, open]);
 
+  /**
+   * Trigger `handleReset(...)` when the parent form is reset.
+   */
   useEffect(() => {
     if (!select.current?.form) {
       return;
@@ -172,8 +243,8 @@ export default function Combobox({
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
       <Popover.Trigger
-        disabled={disabled === true || items === undefined}
-        data-loading={disabled !== true && items === undefined}
+        disabled={disabled === true || options === undefined}
+        data-loading={disabled !== true && options === undefined}
         asChild
       >
         <button className="flex w-full cursor-default items-center gap-6 rounded-md border-2 border-limestone bg-white px-3 py-1.5 transition-[box-shadow,border-color] disabled:cursor-not-allowed disabled:opacity-60 data-[state=open]:pointer-events-none data-[loading=true]:cursor-wait [&:not(:disabled):hover]:border-pebble-gray [&:not(:disabled):hover]:shadow-sm">
@@ -191,7 +262,7 @@ export default function Combobox({
             )}
           </select>
           <span className="flex-1 text-left text-neutral-600 peer-has-[option:checked]:hidden">
-            {disabled !== true && items === undefined
+            {disabled !== true && options === undefined
               ? "Loading..."
               : (defaultValue ?? selectPlaceholder ?? "Select one")}
           </span>
@@ -208,6 +279,7 @@ export default function Combobox({
               onChange={handleChange}
               onKeyDown={handleKeydown}
               placeholder={searchPlaceholder ?? "Search items..."}
+              value={filter}
             />
           </label>
 
@@ -215,7 +287,7 @@ export default function Combobox({
             className="relative flex flex-1 snap-y snap-mandatory flex-col gap-1 overflow-y-auto"
             ref={fieldset}
           >
-            {filteredItems.map(({ value, content }) => (
+            {filteredOptions.map(({ value, content }) => (
               <label
                 className="flex snap-start items-center gap-2 rounded-sm py-1 pr-2 has-[:checked]:font-medium data-[active=true]:bg-limestone"
                 data-active={highlighted === value}
@@ -240,7 +312,7 @@ export default function Combobox({
               </label>
             ))}
 
-            {filteredItems.length === 0 && (
+            {filteredOptions.length === 0 && (
               <p className="px-2 py-1 text-sm italic text-neutral-700">
                 No results.
               </p>

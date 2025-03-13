@@ -17,11 +17,27 @@ type InputState =
     };
 
 interface Props {
+  /**
+   * The input state for the initial search query.
+   */
   defaultValue?: InputState;
+  /**
+   * An event listener which fires when a course is selected.
+   * @param course The selected course.
+   */
   onChange?: (course: Course | null) => void;
+  /**
+   * An event listener which fires when the search query is
+   * updates.
+   * @param value The input state associated for the search query.
+   */
   onInput?: (value: InputState) => void;
 }
 
+/**
+ * Search for subjects by code. Then, once a subject is
+ * selected, search for listed under the selected subject.
+ */
 export default function SearchBySubject({
   defaultValue,
   onChange,
@@ -33,7 +49,10 @@ export default function SearchBySubject({
   const subjectsQuery = useQuery(
     "getAllSubjects",
     {},
-    { initialData: ["CSCI", "MATH", "ARTI", "PHYS", "PHIL", "ENGR", "STAT"] },
+    { 
+      // TODO: Remove dummy data once a connection can be made to the course information service
+      initialData: ["CSCI", "MATH", "ARTI", "PHYS", "PHIL", "ENGR", "STAT"] 
+    },
   );
 
   const coursesQuery = useQuery(
@@ -41,6 +60,7 @@ export default function SearchBySubject({
     { major: subject ?? "" },
     {
       enabled: subject !== undefined,
+      // TODO: Remove dummy data once a connection can be made to the course information service
       //@ts-expect-error Dummy data
       initialData:
         subject === "CSCI"
@@ -118,6 +138,10 @@ export default function SearchBySubject({
     [onChange, coursesQuery.data, subject, onInput],
   );
 
+  /**
+   * If the provided `defaultValue` is invalid,
+   * reset the input state and selected course.
+   */
   useEffect(() => {
     if (!(defaultValue && "subject" in defaultValue && subjectsQuery.data)) {
       return;
@@ -170,7 +194,7 @@ export default function SearchBySubject({
         <span className="text-lg font-bold">Subject:</span>
         <Combobox
           defaultValue={defaultValue?.subject}
-          items={subjects}
+          options={subjects}
           searchPlaceholder="Search subjects..."
           selectPlaceholder="Select a Subject"
           onChange={handleSubjectChange}
@@ -186,7 +210,7 @@ export default function SearchBySubject({
               : undefined
           }
           disabled={subject === undefined}
-          items={courses}
+          options={courses}
           onChange={handleCourseChange}
           searchPlaceholder={`Search ${subject} courses...`}
           selectPlaceholder={
