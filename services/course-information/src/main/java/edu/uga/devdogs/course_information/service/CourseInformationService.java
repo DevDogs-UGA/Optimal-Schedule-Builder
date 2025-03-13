@@ -1,7 +1,7 @@
 package edu.uga.devdogs.course_information.service;
 
 import edu.uga.devdogs.course_information.Class.ClassRepository;
-import edu.uga.devdogs.course_information.Class.Class;
+import edu.uga.devdogs.course_information.Class.ClassEntity;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
@@ -203,12 +203,12 @@ public class CourseInformationService {
      */
     public String getCourseTypeById(String courseId) {
         Long courseIdLong = Long.parseLong(courseId);
-        Course course = courseRepository.findById(courseIdLong);
-        if (course == null) {
+        List<Course> courseList = courseRepository.getCourseInfoByCourseId(courseIdLong);
+        if (courseList == null) {
             return null;
         }
-        //String courseNumber = course.getCourseNumber(); //should work, JPA issue -- commenting for now though
-        String courseNumber = "abcdefghi"; //fictitious course number
+
+        String courseNumber = courseList.get(0).getCourseNumber();
         if (courseNumber.length() == 9) {
             char type = courseNumber.charAt(8);
             switch (type) {
@@ -240,7 +240,7 @@ public class CourseInformationService {
      */
     public List<Course> getPreReqCourses(String courseID, String crn) {
         Long courseIdLong = Long.parseLong(courseID);
-        return courseRepository.getPrerequisites(courseIdLong);
+        return courseRepository.findPrerequisitesByCourseId(courseIdLong);
     }
 
     /**
@@ -251,7 +251,7 @@ public class CourseInformationService {
      */
     public List<Course> getCoReqCourses(String courseID) {
         Long courseIdLong = Long.parseLong(courseID);
-        return courseRepository.getCorequisites(courseIdLong);
+        return courseRepository.findCorequisitesByCourseId(courseIdLong);
     }
 
     /**

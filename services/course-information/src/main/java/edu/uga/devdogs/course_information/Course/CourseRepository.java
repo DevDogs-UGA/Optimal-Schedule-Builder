@@ -7,42 +7,34 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+public interface CourseRepository extends JpaRepository<Course, Long> {
 
-import java.util.List;
+    // Find a course by its courseId
+    Optional<Course> findByCourseId(Long courseid);
+  
+    // Find all courses by their title
+    List<Course> findAllByTitle(String title);
 
-public interface CourseRepository extends JpaRepository<Course, Long>{
+    // Find courses by subject
+    List<Course> findAllBySubject(String subject);
 
-    //This will get a course by its unique ID
-    Optional<Course> findById(Long id);
-
-    //This will get a list of Courses by their subject.
-    List<Course> findBySubject(String subject);
-
-    // This will get a list of courses by their course number
-    List<Course> findByCourseNumber(String courseNumber);
-
-    // Find course by department
+    // Find courses by department
     List<Course> findByDepartment(String department);
-    List<Course> findAllBySubject(String subject); 
-    
-    //This will get a list of courses by the term they're offered in
-    //The default findAll isn't compatible with a list as a parameter.
-    @Query("SELECT c FROM Course c WHERE :semester MEMBER OF c.semesters")
-    List<Course> findAllBySemester(@Param("semester") String semesters);
 
-    // Gets all courses by a certain credit hour
+    // Find all courses by a certain credit hour
     @Query("SELECT c FROM Course c JOIN c.courseSections cs WHERE cs.creditHoursLow <= :creditHours AND cs.creditHoursHigh >= :creditHours")
     List<Course> findAllCoursesByCreditHours(double creditHours);
 
-    //finds all courses by a given title. 
-    List<Course> findAllByTitle(String title);
+    // Find all courses by the term they're offered in
+    @Query("SELECT c FROM Course c WHERE :semester MEMBER OF c.semesters")
+    List<Course> findAllBySemester(@Param("semester") String semesters);
 
-    // Gets course info by course ID
-    List<Course> getCourseInfoById(Long id);
+    // Get course info by course ID
+    List<Course> getCourseInfoByCourseId(Long courseId);
 
-    // Gets prerequisites by course ID
-    List<Course> getPrerequisites(Long id);
+    // Find prerequisites by course ID
+    List<Course> findPrerequisitesByCourseId(Long courseId);
 
-    // Gets corequisites by course ID
-    List<Course> getCorequisites(Long id);
+    // Find corequisites by course ID
+    List<Course> findCorequisitesByCourseId(Long courseId);
 }

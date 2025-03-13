@@ -1,6 +1,7 @@
 package edu.uga.devdogs.course_information.Professor;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -8,6 +9,8 @@ import jakarta.persistence.OneToMany;
 
 import java.io.Serializable;
 import java.util.List;
+
+import edu.uga.devdogs.course_information.Class.ClassEntity;
 
 @Entity
 public class Professor implements Serializable {
@@ -23,14 +26,16 @@ public class Professor implements Serializable {
     private float difficultyRating = 0.0f;
     private int wouldTakeAgainRating;
 
-    @OneToMany(mappedBy = "professor")
-    private List<Class> classes;
+    @OneToMany(mappedBy = "professor",
+    fetch = FetchType.LAZY
+    )
+    private List<ClassEntity> classes;
 
     // Default constructor
     public Professor() {}
 
     // Constructor without ID
-    public Professor(String firstName, String lastName, int totalReviews, float averageRating, float difficultyRating, int wouldTakeAgainRating, List<Class> classes) {
+    public Professor(String firstName, String lastName, int totalReviews, float averageRating, float difficultyRating, int wouldTakeAgainRating, List<ClassEntity> classes) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.totalReviews = totalReviews;
@@ -41,7 +46,7 @@ public class Professor implements Serializable {
     }
 
     // Constructor with ID
-    public Professor(int professorId, String firstName, String lastName, int totalReviews, float averageRating, float difficultyRating, int wouldTakeAgainRating, List<Class> classes) {
+    public Professor(int professorId, String firstName, String lastName, int totalReviews, float averageRating, float difficultyRating, int wouldTakeAgainRating, List<ClassEntity> classes) {
         this.professorId = professorId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -108,11 +113,11 @@ public void setProfessorId(int professorId) {
         this.wouldTakeAgainRating = wouldTakeAgainRating;
     }
 
-    public List<Class> getClasses() {
+    public List<ClassEntity> getClasses() {
         return classes;
     }
 
-    public void setClasses(List<Class> classes) {
+    public void setClasses(List<ClassEntity> classes) {
         this.classes = classes;
     }
 }
