@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import edu.uga.devdogs.course_information.exceptions.BuildingNotFoundException;
 import edu.uga.devdogs.course_information.exceptions.CourseNotFoundException;
 
+import edu.uga.devdogs.course_information.Professor.Professor;
+import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
+
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,16 +49,18 @@ public class CourseInformationService {
     private final ClassRepository classRepository;
     private final CourseRepository courseRepository;
     private final BuildingRepository buildingRepository;
+    private final ProfessorRepository professorRepository;
 
     @Autowired
     public CourseInformationService(CourseSectionRepository courseSectionRepository,
                                     ClassRepository classRepository,
                                     CourseRepository courseRepository,
-                                    BuildingRepository buildingRepository) {
+                                    BuildingRepository buildingRepository, ProfessorRepository professorRepository) {
         this.courseSectionRepository = courseSectionRepository;
         this.classRepository = classRepository;
         this.courseRepository = courseRepository;
         this.buildingRepository = buildingRepository;
+        this.professorRepository = professorRepository;
     }
 
     // The rest of your methods follow...
@@ -311,8 +316,42 @@ public class CourseInformationService {
         return crns;
     }
 
+    /**
+     * Retrieves the average RateMyProfessors rating for a given professor.
+     * 
+     * @param lastName  the professor's last name
+     * @param firstName the professor's first name
+     * @return the average rating as a float
+     * @throws ProfessorNotFoundException if the professor is not found
+     */
+    public float getProfessorAverageRating(String lastName, String firstName) {
+        Professor professor = professorRepository.findByLastNameAndFirstNameIgnoreCase(lastName, firstName);
+
+        if (professor == null) {
+            throw new ProfessorNotFoundException("Professor " + firstName + " " + lastName + " not found");
+        }
+
+        return professor.getAverageRating();
+    }
 
 
+    /**
+     * Retrieves the total number of RateMyProfessors reviews for a given professor.
+     * 
+     * @param lastName  the professor's last name
+     * @param firstName the professor's first name
+     * @return the total number of reviews as an int
+     * @throws ProfessorNotFoundException if the professor is not found
+     */
+    public int getProfessorTotalReviews(String lastName, String firstName) {
+        Professor professor = professorRepository.findByLastNameAndFirstNameIgnoreCase(lastName, firstName);
+
+        if (professor == null) {
+            throw new ProfessorNotFoundException("Professor " + firstName + " " + lastName + " not found");
+        }
+
+        return professor.getTotalReviews(); // Assuming totalReviews is an int field in Professor entity
+    }
 
 
 
