@@ -5,7 +5,6 @@ import WeekSchedule from "@/components/schedules/WeekSchedule";
 import { useState, useEffect } from "react";
 
 interface PlanDisplayProps {
-  className?: string;
   planTitle?: string;
   plan?: WeekScheduleType;
 }
@@ -29,22 +28,26 @@ function PlanDisplay({ plan, planTitle }: PlanDisplayProps) {
 }
 
 export default function SavedPlan({
-  className,
   planTitle,
   plan,
 }: PlanDisplayProps) {
+
   const [planButtonClicked, setplanButtonClicked] = useState(false);
   const savedPlanDisplay = () => {
     setplanButtonClicked(!planButtonClicked);
   };
+  const buttonStyle="m-10 h-[10vh] w-[70vw] !rounded-3xl border-2 border-pebble-gray bg-dusty-pink text-3xl font-semibold text-black hover:bg-barely-pink";
+
   return (
     <div>
+      <div >
       <Button
-        className={className}
+        className={buttonStyle}
         onClick={savedPlanDisplay}
         text={planTitle}
       ></Button>
       {planButtonClicked && <PlanDisplay plan={plan} planTitle={planTitle} />}
+      </div>
     </div>
   );
 }
