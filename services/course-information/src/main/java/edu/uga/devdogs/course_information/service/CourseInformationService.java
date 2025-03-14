@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.uga.devdogs.course_information.exceptions.BuildingNotFoundException;
 import edu.uga.devdogs.course_information.exceptions.CourseNotFoundException;
+import edu.uga.devdogs.course_information.Professor.Professor;
+import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
+
 
 
 import java.sql.Time;
@@ -49,14 +52,17 @@ public class CourseInformationService {
     private final ClassRepository classRepository;
     private final CourseRepository courseRepository;
     private final BuildingRepository buildingRepository;
+    private final ProfessorRepository professorRepository;
+
 
     //Use constructor to inject
     @Autowired
-    public CourseInformationService(CourseSectionRepository courseSectionRepository, ClassRepository classRepository, CourseRepository courseRepository, BuildingRepository buildingRepository) {
+    public CourseInformationService(CourseSectionRepository courseSectionRepository, ClassRepository classRepository, CourseRepository courseRepository, BuildingRepository buildingRepository, ProfessorRepository professorRepository) {
         this.courseSectionRepository = courseSectionRepository;
         this.classRepository = classRepository;
         this.courseRepository = courseRepository;
         this.buildingRepository = buildingRepository;
+        this.professorRepository = professorRepository;
     }
 
     /**
@@ -308,6 +314,29 @@ public class CourseInformationService {
         }
         return crns;
     }
+
+    /**
+     * Retrieves the average RateMyProfessors rating of a professor using first and last name.
+     *
+     * @param firstName The professor's first name
+     * @param lastName  The professor's last name
+     * @return The professor's average rating
+     * @throws IllegalArgumentException if the professor is not found
+     */
+    public float getProfessorAverageRating(String firstName, String lastName) {
+        Professor professor = professorRepository.findByLastName(lastName);
+
+        // Handle null result or mismatched first name
+        if (professor == null || !professor.getFirstName().equalsIgnoreCase(firstName)) {
+            throw new IllegalArgumentException("Professor " + firstName + " " + lastName + " not found.");
+        }
+
+        return professor.getAverageRating();
+    }
+
+
+
+
 
 }
 
