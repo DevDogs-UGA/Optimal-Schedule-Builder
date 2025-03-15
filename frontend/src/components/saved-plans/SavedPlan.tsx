@@ -7,15 +7,11 @@ import { useState, useEffect } from "react";
 interface PlanDisplayProps {
   planTitle?: string;
   plan?: WeekScheduleType;
+  index?: number;
 }
 
+// Saved plan display popup (major WIP)
 function PlanDisplay({ plan, planTitle }: PlanDisplayProps) {
-  // create some className variables to be used with both return statements.
-  // we need a popup to hold the schedule component and its associated plan title
-  // <WeekSchedule weekData={plan} />
-
-  const planContainer =
-    "fixed inset-0 z-40 flex items-center justify-center bg-white bg-opacity-50";
 
   if (!plan) {
     return <div></div>;
@@ -36,17 +32,45 @@ export default function SavedPlan({
   const savedPlanDisplay = () => {
     setplanButtonClicked(!planButtonClicked);
   };
-  const buttonStyle="m-10 h-[10vh] w-[70vw] !rounded-3xl border-2 border-pebble-gray bg-dusty-pink text-3xl font-semibold text-black hover:bg-barely-pink";
 
+  /* TO DO HERE:
+  * Figure out where to get the icons
+  * Figure out how to make icons function as buttons
+  * Make the schedule popup actually work
+  */
   return (
-    <div>
-      <div >
-      <Button
-        className={buttonStyle}
-        onClick={savedPlanDisplay}
-        text={planTitle}
-      ></Button>
-      {planButtonClicked && <PlanDisplay plan={plan} planTitle={planTitle} />}
+    <div className="relative">
+      <div className="flex flex-row items-center m-5 w-[70vw] h-24 rounded-xl bg-glory-glory-red">
+      </div>
+      {/* Saved plan container */}
+      <div className="absolute top-0 flex flex-row items-center m-5 w-[70vw] h-20 z-10 rounded-xl border-2 border-black bg-white">
+        {/* Paw icon */}
+        <img src="/images/blackpaw.svg" alt="black paw" className="h-12 w-12 m-4" />
+        {/* Plan title */}
+        <h1 className="text-3xl"> 
+          {planTitle} 
+        </h1>
+        {/* Buttons container */}
+        <div className="flex items-center justify-end ml-auto">
+          {/* Rename button */}
+          <Button
+            className="m-2"
+            text="Rename"
+          ></Button>
+          {/* Save button */}
+          <Button
+            className="m-2"
+            text="Save"
+          ></Button>
+          {/* Edit button */}
+          <Button
+            className="m-2"
+            onClick={savedPlanDisplay}
+            text="Edit"
+          ></Button>
+          {planButtonClicked && <PlanDisplay plan={plan} planTitle={planTitle} />}
+        </div>
+
       </div>
     </div>
   );

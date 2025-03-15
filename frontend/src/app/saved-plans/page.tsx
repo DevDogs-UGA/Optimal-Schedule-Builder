@@ -1,8 +1,4 @@
 "use client";
-// Returning User: -> Schedule View (\schedules)
-// New User: -> Schedule View (\schedules)
-
-// make class blocks clickable to access more
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
@@ -13,6 +9,7 @@ import SavedPlan from "@/components/saved-plans/SavedPlan";
 
 export default function ChoosePlan() {
 
+  // This is a dummy schedule; replace this with fetching from local storage whenever possible 
   const weekScheduleData: WeekScheduleType = {
     Monday: [
       {
@@ -314,49 +311,33 @@ export default function ChoosePlan() {
         otherTimes: ["", "", ""],
       },
     ],
-
-    // Add more days as needed
   };
 
+  /* Array of saved plans:
+  * Full of dummy data at the moment
+  * Add a loop to dynamically populate array from local storage when possible */
   const savedPlans = [
     { title: "Schedule 1", data: weekScheduleData},
     { title: "Schedule 2", data: weekScheduleData},
     { title: "Schedule 3"},
     { title: "Schedule 4", data: weekScheduleData},
     { title: "Schedule 5", data: weekScheduleData},
+    { title: "Schedule 6", data: weekScheduleData},
+    { title: "Schedule 7", data: weekScheduleData},
+    { title: "Schedule 1", data: weekScheduleData},
+    { title: "Schedule 2", data: weekScheduleData},
+    { title: "Schedule 3"},
+    { title: "Schedule 4", data: weekScheduleData},
+    { title: "Schedule 5", data: weekScheduleData},
+    { title: "Schedule 6", data: weekScheduleData},
+    { title: "Schedule 7", data: weekScheduleData},
   ]
 
     return (
       <div className="min-h-screen">
         <Navbar />
 
-        {/* Options for creating and modifying saved plans */}
-        <div className="mt-12 flex flex-row flex-nowrap justify-between gap-1 text-center">
-          <h1 className="ml-8 text-2xl font-bold">
-            Select a plan or create a new one.
-          </h1>
-          <div className="mr-8 flex flex-row gap-1">
-            <Button
-              className="m-2 rounded-lg border-2 border-nearly-black bg-bulldog-red px-4 py-2 font-semibold text-black hover:bg-glory-glory-red"
-              text="Delete">
-            </Button>
-            <Button
-              className="m-2 rounded-lg border-2 border-pebble-gray bg-dusty-pink px-4 py-2 font-semibold text-black hover:bg-barely-pink"
-              text="Edit">
-            </Button>
-            <Button
-              className="m-2 rounded-lg border-2 border-pebble-gray bg-dusty-pink px-4 py-2 font-semibold text-black hover:bg-barely-pink"
-              text="Save">
-            </Button>
-            <Button
-              className="m-2 rounded-lg border-2 border-pebble-gray bg-dusty-pink px-4 py-2 font-semibold text-black hover:bg-barely-pink"
-              text="Create">
-            </Button>
-          </div>
-        </div>
-
-        {/* List of saved plans */}
-        <div className="mt-10 flex flex-col flex-nowrap items-center justify-center gap-1 border-2 w-4/5 mx-auto">
+        <div className="flex flex-col flex-nowrap items-center bg-barely-pink border-black border-2 rounded-xl w-4/5 h-[85vh] ml-auto mr-auto mt-20 mb-10 overflow-y-auto">
           {savedPlans.map((plan,index) => (
             <SavedPlan
               key={index}
