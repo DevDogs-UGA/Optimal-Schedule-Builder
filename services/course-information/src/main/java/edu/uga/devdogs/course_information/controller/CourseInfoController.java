@@ -4,6 +4,9 @@ import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.service.CourseInformationService;
+import edu.uga.devdogs.course_information.Professor.Professor;
+import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -19,6 +23,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
 
 
 /**
@@ -404,6 +410,39 @@ public class CourseInfoController {
         }catch (Exception e) {
             // return 500 if a server error occurs
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    /**
+     * Retrieves a Professor's Average Rating on RateMyProfessor.
+     * 
+     * @param lname A String of the professor's last name
+     * @param fname A String of the professor's first name
+     * @return A {@code ResponseEntity<float>} with the average rating.
+     */
+    @Operation(summary = "Gets the average of a Professor's RateMyProfessor Ratings", description = "Retrieves a float containing the mean of a Professor's ratings")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Ratings Found"),
+        @ApiResponse(responseCode= = "204", description = "Professor not found"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        
+    })
+    @GetMapping("/avgRating")
+    @Tag(name = "course-information")
+    public ResponseEntity<Float> getAvgProfessorRating(String lname, String fname) {
+        try {
+            // Retrieving value from service method
+            float avgRating = courseInformationService.getProfessorAverageRating(lname, fname);
+            // Returns average rating if found
+            return ResponseEntity.ok(avgRating);
+        } catch (Exception e) {
+            if (e instanceof ProfessorNotFoundException) {  // Thrown by getProfessorAverageRating()
+                // return 500 and -1 (body)
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1f);
+            } else {
+                // return 500 for server error
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
         }
     }
 
