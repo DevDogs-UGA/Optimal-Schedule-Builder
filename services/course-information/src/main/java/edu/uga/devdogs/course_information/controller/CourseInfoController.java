@@ -6,6 +6,8 @@ import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.service.CourseInformationService;
 import edu.uga.devdogs.course_information.Professor.Professor;
 import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
+import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +25,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
 
 
 /**
@@ -389,6 +389,7 @@ public class CourseInfoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
     /**
      * Retrieves a list of all instructors at UGA
      * 
@@ -423,7 +424,7 @@ public class CourseInfoController {
     @Operation(summary = "Gets the average of a Professor's RateMyProfessor Ratings", description = "Retrieves a float containing the mean of a Professor's ratings")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Ratings Found"),
-        @ApiResponse(responseCode= = "204", description = "Professor not found"),
+        @ApiResponse(responseCode = "204", description = "Professor not found"),
         @ApiResponse(responseCode = "500", description = "Internal Server Error")
         
     })
@@ -433,13 +434,52 @@ public class CourseInfoController {
         try {
             // Retrieving value from service method
             float avgRating = courseInformationService.getProfessorAverageRating(lname, fname);
+
             // Returns average rating if found
             return ResponseEntity.ok(avgRating);
         } catch (Exception e) {
             if (e instanceof ProfessorNotFoundException) {  // Thrown by getProfessorAverageRating()
-                // return 500 and -1 (body)
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(-1f);
+
+                // return 204 (Professor not found)
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);        
             } else {
+
+                // return 500 for server error
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        }
+    }
+
+    /**
+     * Retrieves the number of RateMyProfessor reviews of a professor
+     * 
+     * @param lname A String of the professor's last name
+     * @param fname A String of the professor's first name
+     * @return {@code ResponseEntity<Integer>} with the number of reviews.
+     */
+    @Operation(summary = "Gets the number of ratings for a professor", description = "Retrieves an int containing the total number of professor ratings")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Ratings Found"),
+        @ApiResponse(responseCode = "204", description = "Professor not found"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        
+    })
+    @GetMapping("/numRatings")
+    @Tag(name = "course-information")
+    public ResponseEntity<Integer> getNumProfessorRatings(String lname, String fname) {
+        try {
+            // Retrieving value from service method
+            int totalRatings = courseInformationService.getProfessorTotalReviews(lname, fname);
+
+            // Returns num of ratings if found
+            return ResponseEntity.ok(totalRatings);
+        } catch (Exception e) {
+            if (e instanceof ProfessorNotFoundException) {  // Thrown by getProfessorTotalRatings()
+
+                // return 204 (Professor not found)
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);        
+            } else {
+
                 // return 500 for server error
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }
