@@ -12,4 +12,7 @@ public interface ProfessorRepository extends JpaRepository<Professor, Integer> {
 
     @Query("SELECT p FROM Professor p WHERE p.lastName = ?1")
     Professor findByLastName(String lastName);
+
+    Professor findByLastNameAndFirstNameIgnoreCase(String lastName, String firstName);
+    
 }
