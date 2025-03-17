@@ -424,7 +424,7 @@ public class CourseInfoController {
     @Operation(summary = "Gets the average of a Professor's RateMyProfessor Ratings", description = "Retrieves a float containing the mean of a Professor's ratings")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Ratings Found"),
-        @ApiResponse(responseCode = "204", description = "Professor not found"),
+        @ApiResponse(responseCode = "200", description = "Professor not found"),
         @ApiResponse(responseCode = "500", description = "Internal Server Error")
         
     })
@@ -440,8 +440,8 @@ public class CourseInfoController {
         } catch (Exception e) {
             if (e instanceof ProfessorNotFoundException) {  // Thrown by getProfessorAverageRating()
 
-                // return 204 (Professor not found)
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);        
+                // return 200 if Professor not found)
+                return ResponseEntity.status(HttpStatus.OK).body(null);        
             } else {
 
                 // return 500 for server error
@@ -460,7 +460,7 @@ public class CourseInfoController {
     @Operation(summary = "Gets the number of ratings for a professor", description = "Retrieves an int containing the total number of professor ratings")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Ratings Found"),
-        @ApiResponse(responseCode = "204", description = "Professor not found"),
+        @ApiResponse(responseCode = "200", description = "Professor not found"),
         @ApiResponse(responseCode = "500", description = "Internal Server Error")
         
     })
@@ -476,8 +476,8 @@ public class CourseInfoController {
         } catch (Exception e) {
             if (e instanceof ProfessorNotFoundException) {  // Thrown by getProfessorTotalRatings()
 
-                // return 204 (Professor not found)
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);        
+                // return 200 if Professor not found)
+                return ResponseEntity.status(HttpStatus.OK).body(null);        
             } else {
 
                 // return 500 for server error
