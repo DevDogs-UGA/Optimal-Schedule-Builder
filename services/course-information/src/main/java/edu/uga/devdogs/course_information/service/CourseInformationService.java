@@ -1,26 +1,27 @@
 package edu.uga.devdogs.course_information.service;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import edu.uga.devdogs.course_information.Building.Building;
+import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import edu.uga.devdogs.course_information.Class.ClassRepository;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
-import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
-import edu.uga.devdogs.course_information.Building.Building;
-import edu.uga.devdogs.course_information.Building.BuildingRepository;
-import edu.uga.devdogs.course_information.exceptions.SectionDetailsNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import edu.uga.devdogs.course_information.exceptions.BuildingNotFoundException;
-import edu.uga.devdogs.course_information.exceptions.CourseNotFoundException;
-
 import edu.uga.devdogs.course_information.Professor.Professor;
 import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
-
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import edu.uga.devdogs.course_information.exceptions.BuildingNotFoundException;
+import edu.uga.devdogs.course_information.exceptions.CourseNotFoundException;
+import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
 
 /**
  * Service class that handles business logic for managing course information.
