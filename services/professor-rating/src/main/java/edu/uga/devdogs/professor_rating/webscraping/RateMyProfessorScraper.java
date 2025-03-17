@@ -128,7 +128,9 @@ public class RateMyProfessorScraper {
 
     }
     public static void main(String[] args) {
+
         int id = getRateMyProfessorId("Jessica Tripp");
+        
         int percentage = getWouldTakeAgainPercentage(id);
         System.out.println(percentage);
 
