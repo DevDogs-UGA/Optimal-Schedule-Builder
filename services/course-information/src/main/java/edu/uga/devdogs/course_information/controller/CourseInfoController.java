@@ -423,8 +423,7 @@ public class CourseInfoController {
      */
     @Operation(summary = "Gets the average of a Professor's RateMyProfessor Ratings", description = "Retrieves a float containing the mean of a Professor's ratings")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Ratings Found"),
-        @ApiResponse(responseCode = "200", description = "Professor not found"),
+        @ApiResponse(responseCode = "200", description = "Ratings Found/Professor Not Found"),
         @ApiResponse(responseCode = "500", description = "Internal Server Error")
         
     })
@@ -459,8 +458,7 @@ public class CourseInfoController {
      */
     @Operation(summary = "Gets the number of ratings for a professor", description = "Retrieves an int containing the total number of professor ratings")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Ratings Found"),
-        @ApiResponse(responseCode = "200", description = "Professor not found"),
+        @ApiResponse(responseCode = "200", description = "Ratings Found/Professor Not Found"),
         @ApiResponse(responseCode = "500", description = "Internal Server Error")
         
     })
