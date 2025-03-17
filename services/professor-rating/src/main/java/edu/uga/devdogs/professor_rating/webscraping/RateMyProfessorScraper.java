@@ -2,8 +2,13 @@ package edu.uga.devdogs.professor_rating.webscraping;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -54,9 +59,85 @@ public class RateMyProfessorScraper {
         }
         return Integer.parseInt(null);
     }
+
+    private static String getStyledFeedbackItem(int id, int index) {
+        String apiUrl = "https://www.ratemyprofessors.com/professor/" + id;
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .GET()
+                .build();
+
+
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        String html = response.body();
+
+        Document doc = Jsoup.parse(html);
+
+        Elements elements = doc.select("[class*=StyledFeedbackItem]");
+
+        // Print out the matching elements
+        Element targetElement = elements.get(index).child(0);
+        return targetElement.text();
+    }
+
+    public static int getWouldTakeAgainPercentage(int id) {
+        String percentage = getStyledFeedbackItem(id, 0);
+        String cleaned = percentage.replace("%", "");
+
+        return Integer.parseInt(cleaned);
+
+
+
+    }
+
+    public static int getDifficultyLevel(int id) {
+        String difficultyLevel = getStyledFeedbackItem(id, 1);
+
+        return Integer.parseInt(difficultyLevel);
+    }
+
+    private static double getRating(int id) {
+        String apiUrl = "https://www.ratemyprofessors.com/professor/" + id;
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .GET()
+                .build();
+
+
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        String html = response.body();
+
+        Document doc = Jsoup.parse(html);
+
+        // Select elements with a class name containing "StyledFeedbackItem"
+        Elements elements = doc.select("[class*=RatingValue__Numerator]");
+        String text = elements.first().text();
+        return Double.parseDouble(text);
+
+    }
     public static void main(String[] args) {
         int id = getRateMyProfessorId("Jessica Tripp");
-        System.out.println(id);
+        int percentage = getWouldTakeAgainPercentage(id);
+        System.out.println(percentage);
+
+        int difficulty = getDifficultyLevel(id);
+        System.out.println(difficulty);
+
+        double rating = getRating(id);
+        System.out.println(rating);
+
 
     }
 }
