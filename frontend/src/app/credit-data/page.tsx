@@ -1,7 +1,6 @@
 // Returning User: -> Past Credit Data
 // New User: -> Past Credit Data page -> option(Home or Schedule Generaton(\schedules))
 import { Navbar } from "@/components/Navbar";
-import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
 export default function CreditData() {
