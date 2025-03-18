@@ -126,7 +126,29 @@ public class ScheduleUtil {
             for (int i = 0; i < dayList.size() - 1; i++) {
                 Class currClass = dayList.get(i);
                 Class nextClass = dayList.get(i + 1);
-                double distance = distances.get(currClass.buildingName()).get(nextClass.buildingName());
+                double lat1 = distances.get(currClass.buildingNumber()).get("Latitude");
+                double lon1 = distances.get(currClass.buildingNumber()).get("Longitude");
+                double lon2 = distances.get(nextClass.buildingNumber()).get("Latitude");
+                double lat2 = distances.get(nextClass.buildingNumber()).get("Longitude");
+
+                // distance between latitudes and longitudes
+                double dLat = Math.toRadians(lat2 - lat1);
+                double dLon = Math.toRadians(lon2 - lon1);
+
+                // convert to radians
+                lat1 = Math.toRadians(lat1);
+                lat2 = Math.toRadians(lat2);
+
+                // apply Haversine formula
+                double a = Math.pow(Math.sin(dLat / 2), 2) +
+                        Math.pow(Math.sin(dLon / 2), 2) *
+                                Math.cos(lat1) *
+                                Math.cos(lat2);
+
+                // Earth's radius in miles
+                double rad = 3960;
+                double c = 2 * Math.asin(Math.sqrt(a));
+                double distance = rad * c;
 
                 if (distance > maxDistance) {
                     maxDistance = distance;
@@ -134,7 +156,9 @@ public class ScheduleUtil {
             }
         }
 
-        return maxDistance;
+        // dimensional analysis. Average human walking speed is 3 miles per hour.
+        // miles * (hours/miles) * (minutes/hours)
+        return maxDistance * (1/3) * (60);
     }
 
     /**
