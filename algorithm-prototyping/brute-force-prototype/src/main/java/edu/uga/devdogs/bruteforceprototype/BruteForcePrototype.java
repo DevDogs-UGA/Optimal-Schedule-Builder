@@ -7,7 +7,6 @@ import edu.uga.devdogs.sampledataparser.records.HConstraints;
 import edu.uga.devdogs.sampledataparser.records.SConstraints;
 import edu.uga.devdogs.sampledataparser.records.Section;
 
-import java.sql.Array;
 import java.util.*;
 
 public class BruteForcePrototype {
@@ -42,9 +41,6 @@ public class BruteForcePrototype {
             return optimize(outputCourses, distances, softConstraints,false);
         } catch (Exception e){
             // If an exception arises from dataPreSoftFilter, we will call an overloaded version of optimize().
-            // The overloaded version is not written yet, so when it is actually implemented,
-            // this catch block will need updated accordingly.
-            System.out.println(e.getMessage());
             //outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
             return optimize(outputCourses, distances, softConstraints, true);
         }

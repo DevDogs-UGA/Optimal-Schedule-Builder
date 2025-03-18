@@ -120,7 +120,6 @@ public class ScheduleUtil {
         // Iterates over each day in the schedule
         for (TreeSet<Class> day : schedule.days().values()) {
             // Converts the TreeSet to List for direct indexing
-            // TODO: Replace TreeSet with a sorted List for days in Schedule
             List<Class> dayList = new ArrayList<>(day);
 
             // Iterates over consecutive class pairs
