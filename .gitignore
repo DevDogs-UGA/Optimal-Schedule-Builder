@@ -1,0 +1,25 @@
+# IntelliJ IDEA specific
+.idea/
+*.iml
+*.iws
+out/
+target/
+
+# VSCode specific
+.vscode/
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+
+# Node modules (for JS/TS projects)
+node_modules/
+
+# Log files
+*.log
+
+# Environment variables
+.env
+.env.*

@@ -1,0 +1,107 @@
+[
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "Agricultural Research Building",
+    "Longitude": -83.52510878,
+    "Latitude": 31.47600912,
+    "Building Code": 4603
+  },
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "Horticulture Building",
+    "Longitude": -83.52453825,
+    "Latitude": 31.475779,
+    "Building Code": 4604
+  },
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "General Research Z-24",
+    "Longitude": -83.5258781,
+    "Latitude": 31.4757433,
+    "Building Code": 4607
+  },
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "Ag Engineering Field Lab",
+    "Longitude": -83.52837931,
+    "Latitude": 31.47551223,
+    "Building Code": 4636
+  },
+  {
+    "Address": "122 S ENTOMOLOGY DR",
+    "Name": "Entomology Building",
+    "Longitude": -83.52891708,
+    "Latitude": 31.4734168,
+    "Building Code": 4640
+  },
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "Entomology Lab",
+    "Longitude": -83.52901276,
+    "Latitude": 31.47387114,
+    "Building Code": 4643
+  },
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "Pesticide Building",
+    "Longitude": -83.52701783,
+    "Latitude": 31.47569831,
+    "Building Code": 4734
+  },
+  {
+    "Address": "105 ENGINEERING DR",
+    "Name": "Entomology Annex",
+    "Longitude": -83.52836396,
+    "Latitude": 31.47591797,
+    "Building Code": 4740
+  },
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "Plant Science Annex",
+    "Longitude": -83.52836428,
+    "Latitude": 31.47627041,
+    "Building Code": 4754
+  },
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "Weed Science Laboratory",
+    "Longitude": -83.52836209,
+    "Latitude": 31.47654266,
+    "Building Code": 4765
+  },
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "Vidalia Onion Research lab",
+    "Longitude": -83.52780963,
+    "Latitude": 31.4734695,
+    "Building Code": 4773
+  },
+  {
+    "Address": "2353 RAINWATER RD",
+    "Name": "NESPAL Main Building",
+    "Longitude": -83.53024701,
+    "Latitude": 31.4763689,
+    "Building Code": 4791
+  },
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "Natural Products Lab",
+    "Longitude": -83.52657758,
+    "Latitude": 31.4760234,
+    "Building Code": 4793
+  },
+  {
+    "Address": "43 BRIGHTON RD",
+    "Name": "Main Animal Diagnostic Laboratory",
+    "Longitude": -83.51769651,
+    "Latitude": 31.50772613,
+    "Building Code": 4901
+  },
+  {
+    "Address": "2360 RAINWATER RD",
+    "Name": "Vidalia",
+    "Longitude": -83.52780963,
+    "Latitude": 31.4734695,
+    "Building Code": 4774
+  }
+]
