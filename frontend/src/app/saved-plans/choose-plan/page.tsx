@@ -5,13 +5,12 @@
 // make class blocks clickable to access more
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/Button";
-import Link from "next/link";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
-import WeekSchedule from "@/components/schedules/WeekSchedule";
-import { useState, useEffect } from "react";
 import SavedPlan from "@/components/saved-plans/SavedPlan";
 
 export default function ChoosePlan() {
+  // Unused dummy data, uncomment to use
+  /*
   const savedPlansList = [
     {
       href: "/schedules",
@@ -22,6 +21,7 @@ export default function ChoosePlan() {
       text: "Plan 2",
     },
   ];
+  */
 
   const weekScheduleData: WeekScheduleType = {
     Monday: [

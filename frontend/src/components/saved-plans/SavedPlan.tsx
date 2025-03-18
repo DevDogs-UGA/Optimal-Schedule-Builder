@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/Button";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface PlanDisplayProps {
   className?: string;
@@ -10,13 +10,14 @@ interface PlanDisplayProps {
   plan?: WeekScheduleType;
 }
 
-function PlanDisplay({ plan, planTitle }: PlanDisplayProps) {
+// "planTitle" parameter never used
+function PlanDisplay({ plan }: PlanDisplayProps) {
   // create some className variables to be used with both return statements.
   // we need a popup to hold the schedule component and its associated plan title
   // <WeekSchedule weekData={plan} />
 
-  const planContainer =
-    "fixed inset-0 z-40 flex items-center justify-center bg-white bg-opacity-50";
+  // Unused planContainer const
+  //const planContainer = "fixed inset-0 z-40 flex items-center justify-center bg-white bg-opacity-50";
 
   if (!plan) {
     return <div></div>;

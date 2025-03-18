@@ -3,8 +3,8 @@ package edu.uga.devdogs.course_information.CourseSection;
 import java.io.Serializable;
 import java.util.List;
 
-import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Class.ClassEntity;
+import edu.uga.devdogs.course_information.Course.Course;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,6 +46,8 @@ public class CourseSection implements Serializable {
 
     private String daysOfTheWeek;
 
+
+
     public String getDaysOfTheWeek() {
         return daysOfTheWeek;
     }
@@ -85,6 +87,8 @@ public class CourseSection implements Serializable {
     this.year = year;
     this.course = course;
     this.classes = classes;
+
+
 }
 
     public long getId() {

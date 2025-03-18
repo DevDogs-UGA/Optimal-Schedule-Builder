@@ -25,7 +25,7 @@ const RegisteredClass = ({
   };
 
   return (
-    <div
+    <article
       className={`flex min-w-60 bg-white py-1 pl-8 duration-100 ease-out hover:translate-x-1 hover:brightness-95 ${removeElement ? "opacity-0" : ""}`}
     >
       <RemoveElementButton height={20} width={20} onClick={removeAnimation} />
@@ -33,7 +33,7 @@ const RegisteredClass = ({
         <h1 className="font-bold">{`${subject} ${courseNumber}`}</h1>
         <span className="text-nowrap">{courseName}</span>
       </div>
-    </div>
+    </article>
   );
 };
 

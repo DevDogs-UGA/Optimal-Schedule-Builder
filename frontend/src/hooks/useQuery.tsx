@@ -47,7 +47,7 @@ function createUseQuery<
 
     return useReactQuery<z.output<QueryRecord[Q]["result"]>>({
       ...options,
-      queryKey: ["getCoursesByTerm", searchParams],
+      queryKey: [queryKey, searchParams],
       queryFn: () =>
         fetch(
           new URL(
