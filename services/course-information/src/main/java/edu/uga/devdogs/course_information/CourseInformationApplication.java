@@ -31,19 +31,22 @@ public class CourseInformationApplication {
         BuildingRepository buildingRepository) {
         
         return args -> {
-            List<Course2> courses = Pdf.parsePdf("spring", "C:\\Users\\d\\Desktop");
+            List<Course2> courses = Pdf.parsePdf("spring", "C:\\Users\\bryan\\OneDrive\\Desktop"); // change this to your computer specifc path
             for(Course2 course : courses) {
+                System.out.println(course.toString());
+
                 Course courseEntity = new Course(
                     course.getSubject(), course.getCourseNumber(), course.getTitle(), course.getDepartment(), null );
                 CourseSection courseSection = new CourseSection(
-                course.getCrn(), Integer.valueOf(course.getSec()), 'Z',  99, 99, course.getProfessor(), 99, course.getClassSize(), course.getAvailableSeats(), 99, courseEntity, null);                                //     654321, 3, 'B', 2.0, 3.5, "Smith", 1, 30, 30, 2024, course2, null
+                course.getCrn(), 1, 'Z',  99, 99, course.getProfessor(), 99, course.getClassSize(), course.getAvailableSeats(), 99, courseEntity, null);       
             //     654321, 3, 'B', 2.0, 3.5, "Smith", 1, 30, 30, 2024, course2, null
 
                //System.out.println("\n\n" + courseEntity.getSubject() + "\n\n");
-                courseSectionRepository.save(courseSection);
                 courseRepository.save(courseEntity);
+                courseSectionRepository.save(courseSection);
+
             }
-            System.out.println("\n\n\n " + courseSectionRepository.findByCrn(61010) + "\n\n\n");
+          //  System.out.println("\n\n\n " + courseSectionRepository.findByCrn(61010) + "\n\n\n");
             // Create Buildings
             // Building building1 = new Building("2438", "CAGTECH", "F - 6");
             // Building building2 = new Building("46", "Caldwell Hall", "C - 1");
