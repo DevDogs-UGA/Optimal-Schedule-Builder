@@ -1,6 +1,8 @@
 package edu.uga.devdogs.course_information;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
@@ -41,7 +43,7 @@ public class CourseInformationApplication {
     }
 
     @Bean
-    @Order(1)
+    @Order(2)
     CommandLineRunner courseSecCommandLineRunner(
         CourseSectionRepository courseSectionRepository,
         CourseRepository courseRepository,
@@ -49,38 +51,40 @@ public class CourseInformationApplication {
         BuildingRepository buildingRepository) {
         
         return args -> {
-            List<Course2> courses = Pdf.parsePdf("spring", "C:\\Users\\kadestyron\\OneDrive\\Desktop"); // change this to your computer specifc path
+            List<Course2> courses = Pdf.parsePdf("spring", "C:\\Users\\d\\Desktop"); // change this to your computer specifc path
+            List<Course> courseEntities = new ArrayList<>();
+            List<CourseSection> courseSections = new ArrayList<>();
+            
             for(Course2 course : courses) {
-                System.out.println(course.toString());
+                // if(course.getSec().equals("C")) {
+                //     continue;
+                // }
+
+                System.out.print(course.getCrn() + " " + course.getSec() + " " +course.getCreditHours() + "  | ");
 
                 Course courseEntity = new Course(
                     course.getSubject(), course.getCourseNumber(), course.getTitle(), course.getDepartment(), null );
                 CourseSection courseSection = new CourseSection(
-                course.getCrn(), 1, 'Z',  99, 99, course.getProfessor(), 99, course.getClassSize(), course.getAvailableSeats(), 99, courseEntity, null);       
-            //     654321, 3, 'B', 2.0, 3.5, "Smith", 1, 30, 30, 2024, course2, null
-
-                courseRepository.save(courseEntity);
-                //only save if it has a seat available
-                if(courseSection.getSeatsAvailable() > 0) {
-                    courseSectionRepository.save(courseSection);
+                course.getCrn(), course.getSec(), (course.getStat()).charAt(0),  course.getCreditHours(), course.getCreditHours(), course.getProfessor(), course.getPartOfTerm(), course.getClassSize(), course.getAvailableSeats(), courseEntity, null);   
+                System.out.println(courseSection.getTerm()); 
+                
+                courseEntities.add(courseEntity);
+                
+                if (courseSection.getSeatsAvailable() > 0) {
+                    courseSections.add(courseSection);
                 }
 
-            }
-          //  System.out.println("\n\n\n " + courseSectionRepository.findByCrn(61010) + "\n\n\n");
-            // Create Buildings
-            // Building building1 = new Building("2438", "CAGTECH", "F - 6");
-            // Building building2 = new Building("46", "Caldwell Hall", "C - 1");
-            // Building building3 = new Building("2118", "Campus Mail/Environmental Safety", "E - 6");
-            // Building building4 = new Building("1637", "Campus Transit Facility", "D - 8");
-            // Building building5 = new Building("31", "Candler Hall", "C - 1");
-            // Building building6 = new Building("1110", "Carlton Street Deck", "B - 4");
-            // Building building7 = new Building("2419", "CCRC", "E - 7");
-            // Building building8 = new Building("2127", "Center for Applied Isotope Study", "E - 6");
-            // Building building9 = new Building("2395", "Center for Molecular Medicine", "E - 7");
-            // Building building10 = new Building("178", "Central Campus Mech. Building", "C - 2");
+                // courseRepository.save(courseEntity);
+                // //only save if it has a seat available
+                // if(courseSection.getSeatsAvailable() > 0) {
+                //     courseSectionRepository.save(courseSection);
+                // }
 
-            // buildingRepository.saveAll(List.of(building1, building2, building3, building4, building5, 
-            //                                    building6, building7, building8, building9, building10));
+            }
+            System.out.println("Saving to database...");
+            courseRepository.saveAll(courseEntities);
+            courseSectionRepository.saveAll(courseSections);
+            System.out.println("Saved to database");
 
             // // Create Courses
             // Course course1 = new Course("physiology", "420", "pain", "Mary Francis early education", null);
@@ -144,17 +148,26 @@ public class CourseInformationApplication {
         };
     }
     @Bean
-    @Order(2)
+    @Order(1)
     CommandLineRunner buildingCommandLineRunner (BuildingRepository buildingRepository) {
         return args -> {
             ObjectMapper objectMapper = new ObjectMapper();
-            String buildingsJsonPath = "C:\\algorithm-prototyping\\src\\main\\resources\\buildingData\\AthensBuildingData.json"; 
-            try {
+            String buildingsJsonPath = "edu/uga/devdogs/course_information/buildingData/AthensBuildingData.json";
+            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(buildingsJsonPath)) {
+
+                if (inputStream == null) {
+                    System.err.println("File not found in classpath: " + buildingsJsonPath);
+                    return;
+                }
+
                 CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, Building.class);
-                List<Building> buildings = objectMapper.readValue(Files.readAllBytes(Paths.get(buildingsJsonPath)), listType);
+                List<Building> buildings = objectMapper.readValue(inputStream, listType);
+
                 buildingRepository.saveAll(buildings);
                 System.out.println("Buildings saved successfully.");
-
+                for(int i = 0; i <20; i++){
+                    System.out.println("");
+                }
             } catch (IOException e) {
                 System.err.println("Failed to read or parse buildings.json: " + e.getMessage());
             }
