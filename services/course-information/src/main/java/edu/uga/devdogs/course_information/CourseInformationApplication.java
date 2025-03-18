@@ -1,5 +1,6 @@
 package edu.uga.devdogs.course_information;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
@@ -31,21 +32,37 @@ public class CourseInformationApplication {
         BuildingRepository buildingRepository) {
         
         return args -> {
-            List<Course2> courses = Pdf.parsePdf("spring", "C:\\Users\\bryan\\OneDrive\\Desktop"); // change this to your computer specifc path
+            List<Course2> courses = Pdf.parsePdf("spring", "C:\\Users\\d\\Desktop"); // change this to your computer specifc path
+            List<Course> courseEntities = new ArrayList<>();
+            List<CourseSection> courseSections = new ArrayList<>();
+            
             for(Course2 course : courses) {
-                System.out.println(course.toString());
+                // if(course.getSec().equals("C")) {
+                //     continue;
+                // }
+
+                System.out.print(course.getCrn() + " " + course.getSec() + " " +course.getCreditHours() + "  | ");
 
                 Course courseEntity = new Course(
                     course.getSubject(), course.getCourseNumber(), course.getTitle(), course.getDepartment(), null );
                 CourseSection courseSection = new CourseSection(
-                course.getCrn(), 1, 'Z',  99, 99, course.getProfessor(), 99, course.getClassSize(), course.getAvailableSeats(), 99, courseEntity, null);       
+                course.getCrn(), course.getSec(), (course.getStat()).charAt(0),  course.getCreditHours(), course.getCreditHours(), course.getProfessor(), course.getPartOfTerm(), course.getClassSize(), course.getAvailableSeats(), courseEntity, null);   
+                System.out.println(courseSection.getTerm()); 
+                
+                courseEntities.add(courseEntity);
+                courseSections.add(courseSection);
             //     654321, 3, 'B', 2.0, 3.5, "Smith", 1, 30, 30, 2024, course2, null
 
                //System.out.println("\n\n" + courseEntity.getSubject() + "\n\n");
-                courseRepository.save(courseEntity);
-                courseSectionRepository.save(courseSection);
+             //   courseRepository.save(courseEntity);
+             //   courseSectionRepository.save(courseSection);
 
             }
+            System.out.println("Saving to database...");
+            courseRepository.saveAll(courseEntities);
+            courseSectionRepository.saveAll(courseSections);
+            System.out.println("Saved to database");
+           // System.out.println("\n\n\n\nWE MADE IT HERE \n\n\n\n");
           //  System.out.println("\n\n\n " + courseSectionRepository.findByCrn(61010) + "\n\n\n");
             // Create Buildings
             // Building building1 = new Building("2438", "CAGTECH", "F - 6");
