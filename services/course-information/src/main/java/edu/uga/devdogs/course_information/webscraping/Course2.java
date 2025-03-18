@@ -335,4 +335,29 @@ public class Course2 {
     public void setCrn(int crn) {
         this.crn = crn;
     } // setCrn
+
+
+ @Override
+public String toString() {
+    return "Course2{" +
+            "subject='" + subject + '\'' +
+            ", courseNumber='" + courseNumber + '\'' +
+            ", title='" + title + '\'' +
+            ", department='" + department + '\'' +
+            ", crn=" + crn +
+            ", sec='" + sec + '\'' +
+            ", stat='" + stat + '\'' +
+            ", creditHours='" + creditHours + '\'' +
+            ", meetingDays='" + meetingDays + '\'' +
+            ", meetingTimes='" + meetingTimes + '\'' +
+            ", building='" + building + '\'' +
+            ", roomNumber='" + roomNumber + '\'' +
+            ", campus='" + campus + '\'' +
+            ", professor='" + professor + '\'' +
+            ", partOfTerm='" + partOfTerm + '\'' +
+            ", classSize=" + classSize +
+            ", availableSeats=" + availableSeats +
+            '}';
+}
+
 } // Course
