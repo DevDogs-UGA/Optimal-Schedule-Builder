@@ -76,7 +76,7 @@ public class BruteForcePrototype {
         List<Schedule> sortedSchedules = new ArrayList<>();
         List<Double> sortedOverallObjectives = new ArrayList<>();
 
-        
+
         // Makeshift Priority Queue; An array sorted by a variable (in this case, overallObjective).
         // Before an item is added, you find where it should be placed so that the List is still sorted correctly
         // Without having to call a special sorting function.
@@ -167,7 +167,7 @@ public class BruteForcePrototype {
             // Instantiates the set of sections for the next iteration
             HashSet<Section> nextSections = new HashSet<>(sections);
             nextSections.add(sectionToAdd);
-            
+
             generateValidSchedulesRecursive(nextSections, nextCoursesToAdd, validSchedules);
         }
     }
