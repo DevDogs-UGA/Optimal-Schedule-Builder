@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { DropdownSearchInput } from "./ui/DropdownSearchInput";
 import { DropdownTagInput } from "./ui/DropdownTagInput";
@@ -33,8 +35,9 @@ const campusList = [
   "Tifton",
 ];
 const educationLevelList = ["Undergraduate", "Graduate"];
-let minmHourList: string[];
-let maxmHourList: string[];
+// Uncomment to use data (currently unused)
+// let minmHourList: string[];
+// let maxmHourList: string[];
 const hours = [
   "1 hour",
   "2 hours",
@@ -73,9 +76,7 @@ export const SearchFilter = ({}: props) => {
   // Update dropdown lists when minmHours changes
   useEffect(() => {
     if (minmHours !== null) {
-      setMaxmHourList((prev) => [
-        ...hours.slice(Number(minmHours?.split(" ")[0])),
-      ]);
+      setMaxmHourList(() => [...hours.slice(Number(minmHours?.split(" ")[0]))]);
     } else {
       setMaxmHourList(hours);
     }
@@ -91,7 +92,7 @@ export const SearchFilter = ({}: props) => {
   }, [maxmHours]);
 
   return (
-    <div>
+    <section>
       <div className="flex flex-col border-4 border-dusty-pink bg-barely-pink p-2">
         {" "}
         {/* Div for Whole Filter Component*/}
@@ -215,6 +216,6 @@ export const SearchFilter = ({}: props) => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

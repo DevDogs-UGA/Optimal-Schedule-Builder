@@ -1,25 +1,27 @@
 package edu.uga.devdogs.course_information.service;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import edu.uga.devdogs.course_information.Building.Building;
+import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import edu.uga.devdogs.course_information.Class.ClassRepository;
-import edu.uga.devdogs.course_information.Class.ClassEntity;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
-import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
-import edu.uga.devdogs.course_information.Building.Building;
-import edu.uga.devdogs.course_information.Building.BuildingRepository;
-import edu.uga.devdogs.course_information.exceptions.SectionDetailsNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import edu.uga.devdogs.course_information.Professor.Professor;
+import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
 import edu.uga.devdogs.course_information.exceptions.BuildingNotFoundException;
 import edu.uga.devdogs.course_information.exceptions.CourseNotFoundException;
-
-
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
 
 /**
  * Service class that handles business logic for managing course information.
@@ -42,22 +44,28 @@ import java.util.*;
  */
 @Service
 public class CourseInformationService {
-    // Methods go here
 
-    //Inject our JPA repository interfaces
+    // Inject our JPA repository interfaces
     private final CourseSectionRepository courseSectionRepository;
     private final ClassRepository classRepository;
     private final CourseRepository courseRepository;
     private final BuildingRepository buildingRepository;
+    private final ProfessorRepository professorRepository;
 
-    //Use constructor to inject
     @Autowired
-    public CourseInformationService(CourseSectionRepository courseSectionRepository, ClassRepository classRepository, CourseRepository courseRepository, BuildingRepository buildingRepository) {
+    public CourseInformationService(CourseSectionRepository courseSectionRepository,
+                                    ClassRepository classRepository,
+                                    CourseRepository courseRepository,
+                                    BuildingRepository buildingRepository, ProfessorRepository professorRepository) {
         this.courseSectionRepository = courseSectionRepository;
         this.classRepository = classRepository;
         this.courseRepository = courseRepository;
         this.buildingRepository = buildingRepository;
+        this.professorRepository = professorRepository;
     }
+
+    // The rest of your methods follow...
+
 
     /**
      * Method to get a list of section details (tiemslot) matching the given CRN. The method
@@ -308,6 +316,46 @@ public class CourseInformationService {
         }
         return crns;
     }
+
+    /**
+     * Retrieves the average RateMyProfessors rating for a given professor.
+     * 
+     * @param lastName  the professor's last name
+     * @param firstName the professor's first name
+     * @return the average rating as a float
+     * @throws ProfessorNotFoundException if the professor is not found
+     */
+    public float getProfessorAverageRating(String lastName, String firstName) {
+        Professor professor = professorRepository.findByLastNameAndFirstNameIgnoreCase(lastName, firstName);
+
+        if (professor == null) {
+            throw new ProfessorNotFoundException("Professor " + firstName + " " + lastName + " not found");
+        }
+
+        return professor.getAverageRating();
+    }
+
+
+    /**
+     * Retrieves the total number of RateMyProfessors reviews for a given professor.
+     * 
+     * @param lastName  the professor's last name
+     * @param firstName the professor's first name
+     * @return the total number of reviews as an int
+     * @throws ProfessorNotFoundException if the professor is not found
+     */
+    public int getProfessorTotalReviews(String lastName, String firstName) {
+        Professor professor = professorRepository.findByLastNameAndFirstNameIgnoreCase(lastName, firstName);
+
+        if (professor == null) {
+            throw new ProfessorNotFoundException("Professor " + firstName + " " + lastName + " not found");
+        }
+
+        return professor.getTotalReviews(); // Assuming totalReviews is an int field in Professor entity
+    }
+
+
+
 
 }
 
