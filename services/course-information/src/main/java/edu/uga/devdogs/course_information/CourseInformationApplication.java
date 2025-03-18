@@ -1,12 +1,19 @@
 package edu.uga.devdogs.course_information;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import edu.uga.devdogs.course_information.Building.Building;
+import aj.org.objectweb.asm.TypeReference;
 import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import edu.uga.devdogs.course_information.Class.ClassRepository;
 import edu.uga.devdogs.course_information.Course.Course;
@@ -15,15 +22,26 @@ import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
 import edu.uga.devdogs.course_information.webscraping.Course2;
 import edu.uga.devdogs.course_information.webscraping.Pdf;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import edu.uga.devdogs.course_information.webscraping.Pdf;
 
 @SpringBootApplication
 public class CourseInformationApplication {
+
+
+    private final BuildingRepository buildingRepository;
+
+    CourseInformationApplication(BuildingRepository buildingRepository) {
+        this.buildingRepository = buildingRepository;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(CourseInformationApplication.class, args);
     }
 
     @Bean
+    @Order(1)
     CommandLineRunner courseSecCommandLineRunner(
         CourseSectionRepository courseSectionRepository,
         CourseRepository courseRepository,
@@ -31,7 +49,7 @@ public class CourseInformationApplication {
         BuildingRepository buildingRepository) {
         
         return args -> {
-            List<Course2> courses = Pdf.parsePdf("spring", "C:\\Users\\bryan\\OneDrive\\Desktop"); // change this to your computer specifc path
+            List<Course2> courses = Pdf.parsePdf("spring", "C:\\Users\\kadestyron\\OneDrive\\Desktop"); // change this to your computer specifc path
             for(Course2 course : courses) {
                 System.out.println(course.toString());
 
@@ -41,9 +59,11 @@ public class CourseInformationApplication {
                 course.getCrn(), 1, 'Z',  99, 99, course.getProfessor(), 99, course.getClassSize(), course.getAvailableSeats(), 99, courseEntity, null);       
             //     654321, 3, 'B', 2.0, 3.5, "Smith", 1, 30, 30, 2024, course2, null
 
-               //System.out.println("\n\n" + courseEntity.getSubject() + "\n\n");
                 courseRepository.save(courseEntity);
-                courseSectionRepository.save(courseSection);
+                //only save if it has a seat available
+                if(courseSection.getSeatsAvailable() > 0) {
+                    courseSectionRepository.save(courseSection);
+                }
 
             }
           //  System.out.println("\n\n\n " + courseSectionRepository.findByCrn(61010) + "\n\n\n");
@@ -121,6 +141,23 @@ public class CourseInformationApplication {
 
             // System.out.println("\nAll Courses with Spring Semester:");
             // System.out.println(courseRepository.findAllBySemester("Spring"));
+        };
+    }
+    @Bean
+    @Order(2)
+    CommandLineRunner buildingCommandLineRunner (BuildingRepository buildingRepository) {
+        return args -> {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String buildingsJsonPath = "C:\\algorithm-prototyping\\src\\main\\resources\\buildingData\\AthensBuildingData.json"; 
+            try {
+                CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, Building.class);
+                List<Building> buildings = objectMapper.readValue(Files.readAllBytes(Paths.get(buildingsJsonPath)), listType);
+                buildingRepository.saveAll(buildings);
+                System.out.println("Buildings saved successfully.");
+
+            } catch (IOException e) {
+                System.err.println("Failed to read or parse buildings.json: " + e.getMessage());
+            }
         };
     }
 }

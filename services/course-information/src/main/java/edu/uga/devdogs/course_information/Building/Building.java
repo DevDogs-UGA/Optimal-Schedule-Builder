@@ -34,6 +34,10 @@ public class Building implements Serializable {
 
     private String grid;
 
+    private double latidude;
+
+    private double longitude;
+
     /*
      * Relationships
      * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
