@@ -26,17 +26,17 @@ public class CourseSection implements Serializable {
 
     private int crn;
 
-    private int sec;
+    private String sec;
 
     private char stat;
 
-    private double creditHoursLow;
+    private String creditHoursLow;
 
-    private double creditHoursHigh;
+    private String creditHoursHigh;
 
     private String instructor;
 
-    private int term;
+    private String term;
 
     private int classSize;
 
@@ -73,8 +73,8 @@ public class CourseSection implements Serializable {
     // Constructors, getters, setters, and toString 
     public CourseSection() {}
 
-    public CourseSection(int crn, int sec, char stat, double creditHoursLow, double creditHoursHigh, String instructor,
-        int term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes) {
+    public CourseSection(int crn, String sec, char stat, String creditHoursLow, String creditHoursHigh, String instructor,
+        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes) {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
@@ -87,8 +87,21 @@ public class CourseSection implements Serializable {
     this.year = year;
     this.course = course;
     this.classes = classes;
+}
 
-
+public CourseSection(int crn, String sec, char stat, String creditHoursLow, String creditHoursHigh, String instructor,
+String term, int classSize, int seatsAvailable, Course course, List<ClassEntity> classes) {
+this.crn = crn;
+this.sec = sec;
+this.stat = stat;
+this.creditHoursLow = creditHoursLow;
+this.creditHoursHigh = creditHoursHigh;
+this.instructor = instructor;
+this.term = term;
+this.classSize = classSize;
+this.seatsAvailable = seatsAvailable;
+this.course = course;
+this.classes = classes;
 }
 
     public long getId() {
@@ -107,11 +120,11 @@ public class CourseSection implements Serializable {
         this.crn = crn;
     }
 
-    public int getSec() {
+    public String getSec() {
         return sec;
     }
 
-    public void setSec(int sec) {
+    public void setSec(String sec) {
         this.sec = sec;
     }
 
@@ -123,19 +136,19 @@ public class CourseSection implements Serializable {
         this.stat = stat;
     }
 
-    public double getCreditHoursLow() {
+    public String getCreditHoursLow() {
         return creditHoursLow;
     }
 
-    public void setCreditHoursLow(double creditHoursLow) {
+    public void setCreditHoursLow(String creditHoursLow) {
         this.creditHoursLow = creditHoursLow;
     }
 
-    public double getCreditHoursHigh() {
+    public String getCreditHoursHigh() {
         return creditHoursHigh;
     }
 
-    public void setCreditHoursHigh(double creditHoursHigh) {
+    public void setCreditHoursHigh(String creditHoursHigh) {
         this.creditHoursHigh = creditHoursHigh;
     }
 
@@ -147,11 +160,11 @@ public class CourseSection implements Serializable {
         this.instructor = instructor;
     }
 
-    public int getTerm() {
+    public String getTerm() {
         return term;
     }
 
-    public void setTerm(int term) {
+    public void setTerm(String term) {
         this.term = term;
     }
 
