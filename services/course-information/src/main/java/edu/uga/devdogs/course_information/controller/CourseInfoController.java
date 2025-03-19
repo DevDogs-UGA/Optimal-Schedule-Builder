@@ -45,6 +45,40 @@ public class CourseInfoController {
         this.courseInformationService = courseInformationService;
     }
 
+    /**
+     * Returns the details of a specified CRN.
+     *
+     * @param crn The CRN of the section
+     * @return returns a section object for the CRN
+     */
+    @Operation(summary = "get section by crn", description = "Retrieves a section from the given CRN.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Section found"),
+            @ApiResponse(responseCode = "400", description = "Invalid CRN"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/section-by-crn")
+    @Tag(name="course-information")
+    public ResponseEntity<CourseSection> getSectionDetailsByCrn(@RequestParam String crn) {
+
+        //return 400 for empty CRN
+        if (crn.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        try {
+            //Call method to get section details
+            CourseSection sectionDetails = courseInformationService.getSectionDetailsByCrn(crn);
+
+            //Return the section if found
+            return ResponseEntity.ok(sectionDetails);
+
+        } catch (Exception e) {
+
+            //Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
    
     /**
      * Asks for list of course information that relates to the 
