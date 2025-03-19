@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ClassPathResource;
 
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +44,7 @@ public class CourseInformationApplication {
     }
 
     @Bean
-    @Order(2)
+    @Order(1)
     CommandLineRunner courseSecCommandLineRunner(
         CourseSectionRepository courseSectionRepository,
         CourseRepository courseRepository,
@@ -51,7 +52,7 @@ public class CourseInformationApplication {
         BuildingRepository buildingRepository) {
         
         return args -> {
-            List<Course2> courses = Pdf.parsePdf("spring", "C:\\Users\\d\\Desktop"); // change this to your computer specifc path
+            List<Course2> courses = Pdf.parsePdf("spring", "C:\\kadestyron\\d\\Desktop"); // change this to your computer specifc path
             List<Course> courseEntities = new ArrayList<>();
             List<CourseSection> courseSections = new ArrayList<>();
             
@@ -148,29 +149,30 @@ public class CourseInformationApplication {
         };
     }
     @Bean
-    @Order(1)
+    @Order(2)
     CommandLineRunner buildingCommandLineRunner (BuildingRepository buildingRepository) {
         return args -> {
-            ObjectMapper objectMapper = new ObjectMapper();
-            String buildingsJsonPath = "edu/uga/devdogs/course_information/buildingData/AthensBuildingData.json";
-            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(buildingsJsonPath)) {
+            String buildingsJsonPath = "buildingData/AthensBuildingData.json"; // Relative path from src/main/resources
+            ClassPathResource resource = new ClassPathResource(buildingsJsonPath);
 
-                if (inputStream == null) {
-                    System.err.println("File not found in classpath: " + buildingsJsonPath);
-                    return;
-                }
+            if (!resource.exists()) {
+                System.err.println("File not found at path: " + buildingsJsonPath);
+                return;
+            }
 
+            try (InputStream inputStream = resource.getInputStream()) {
+                ObjectMapper objectMapper = new ObjectMapper();
                 CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, Building.class);
                 List<Building> buildings = objectMapper.readValue(inputStream, listType);
 
+                
+
+                System.out.println("Parsed JSON successfully. Saving to repository...");
                 buildingRepository.saveAll(buildings);
                 System.out.println("Buildings saved successfully.");
-                for(int i = 0; i <20; i++){
-                    System.out.println("");
-                }
             } catch (IOException e) {
                 System.err.println("Failed to read or parse buildings.json: " + e.getMessage());
             }
-        };
+       };
     }
 }
