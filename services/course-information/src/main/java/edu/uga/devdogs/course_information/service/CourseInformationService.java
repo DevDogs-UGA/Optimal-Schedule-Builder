@@ -132,21 +132,6 @@ public class CourseInformationService {
         return new Time(parsedDate.getTime());
     }
 
-     /**
-     * Retreives a list of all buildings
-     *
-     *  @return List of all building bojects
-     * @throws BuildingNotFoundException if no buildigns are found
-     */
-    public List<Building> getAllBuildings() {
-        List<Building> buildings = buildingRepository.findAll();
-        if (buildings != null) {
-            return buildings;
-        } else {
-            throw new BuildingNotFoundException("No Buildings Found");
-        }
-    }
-
     /**
      *  Retreives a list of all academic subjects at UGA.
      * 
@@ -194,94 +179,6 @@ public class CourseInformationService {
             }    
         }
         return instructors;
-    }
-
-    /**
-     * Retrieves a course's type (e.g., Honors, Lab, Online) based on the given course ID.
-     * Not in use as of 3/10/25.
-     *
-     * <p>
-     * This method queries the repository for a {@link Course} object with the specified ID
-     * and returns its type. If the course does not exist, it throws a {@link CourseNotFoundException}.
-     * </p>
-     *
-     * @param courseId the unique identifier for the course
-     * @return the type of the course as a string
-     * @throws CourseNotFoundException if no course with the specified ID is found
-     */
-    public String getCourseTypeById(String courseId) {
-        Long courseIdLong = Long.parseLong(courseId);
-        List<Course> courseList = courseRepository.getCourseInfoByCourseId(courseIdLong);
-        if (courseList == null) {
-            return null;
-        }
-
-        String courseNumber = courseList.get(0).getCourseNumber();
-        if (courseNumber.length() == 9) {
-            char type = courseNumber.charAt(8);
-            switch (type) {
-                case 'E':
-                    return "Online Learning";
-                case 'S':
-                    return "Service-Learning";
-                case 'H':
-                    return "Honors";
-                case 'I':
-                    return "Integrated Language";
-                case 'W':
-                    return "Writing Intensive";
-                case 'D':
-                    return "Non-Credit Discussion Group";
-                case 'L':
-                    return "Lab (Non-Credit and Credit)";
-            }
-        }
-        return "No Special Designation";
-    }
-
-    /**
-     * Service method for getting pre-requisites for a given course ID or CRN.
-     * Not in use as of 3/10/25.
-     *
-     * @param courseID The ID of the course to retrieve pre-requisites for.
-     * @return A list of course objects that are pre-requisites for the given course.
-     */
-    public List<Course> getPreReqCourses(String courseID, String crn) {
-        Long courseIdLong = Long.parseLong(courseID);
-        return courseRepository.findPrerequisitesByCourseId(courseIdLong);
-    }
-
-    /**
-     * Service method for getting co-requisites for a given course ID or CRN.
-     *
-     * @param courseID The ID of the course to retrieve co-requisites for.
-     * @return A list of course objects that are co-requisites for the given course.
-     */
-    public List<Course> getCoReqCourses(String courseID) {
-        Long courseIdLong = Long.parseLong(courseID);
-        return courseRepository.findCorequisitesByCourseId(courseIdLong);
-    }
-
-    /**
-     * Retrieves a list of courses offered in a specified term (e.g., Fall, Spring, Summer).
-     *
-     * <p>
-     * The term parameter determines the academic term for which to retrieve courses.
-     * If no courses are found for the specified term, a {@link CourseNotFoundException} is thrown.
-     * </p>
-     *
-     * @param term the academic term to retrieve courses for
-     * @return a list of {@link Course} objects offered in the specified term
-     * @throws CourseNotFoundException if no courses are found for the specified term
-     */
-    public List<Course> getCoursesByTerm(String term) {
-        List<Course> courses = courseRepository.findAllBySemester(term);
-
-        if (courses != null && !courses.isEmpty()) {
-            return courses;
-        } else {
-            throw new CourseNotFoundException("No courses found for term: " + term);
-        }
     }
 
     /**
