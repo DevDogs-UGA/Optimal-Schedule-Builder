@@ -1,23 +1,27 @@
 package edu.uga.devdogs.course_information.service;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import edu.uga.devdogs.course_information.Building.Building;
+import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import edu.uga.devdogs.course_information.Class.ClassRepository;
-import edu.uga.devdogs.course_information.Class.Class;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
-import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
-import edu.uga.devdogs.course_information.Building.Building;
-import edu.uga.devdogs.course_information.Building.BuildingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import edu.uga.devdogs.course_information.Professor.Professor;
+import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
+import edu.uga.devdogs.course_information.exceptions.BuildingNotFoundException;
 import edu.uga.devdogs.course_information.exceptions.CourseNotFoundException;
-
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
 
 /**
  * Service class that handles business logic for managing course information.
@@ -40,75 +44,28 @@ import java.util.*;
  */
 @Service
 public class CourseInformationService {
-    // Methods go here
 
-    //Inject our JPA repository interfaces
+    // Inject our JPA repository interfaces
     private final CourseSectionRepository courseSectionRepository;
     private final ClassRepository classRepository;
     private final CourseRepository courseRepository;
     private final BuildingRepository buildingRepository;
+    private final ProfessorRepository professorRepository;
 
-    //Use constructor to inject
     @Autowired
-    public CourseInformationService(CourseSectionRepository courseSectionRepository, ClassRepository classRepository, CourseRepository courseRepository, BuildingRepository buildingRepository) {
+    public CourseInformationService(CourseSectionRepository courseSectionRepository,
+                                    ClassRepository classRepository,
+                                    CourseRepository courseRepository,
+                                    BuildingRepository buildingRepository, ProfessorRepository professorRepository) {
         this.courseSectionRepository = courseSectionRepository;
         this.classRepository = classRepository;
         this.courseRepository = courseRepository;
         this.buildingRepository = buildingRepository;
+        this.professorRepository = professorRepository;
     }
 
-    /**
-     * Retrieves a list of Course section (class) objects that match the specified time slot and CRN (Course Reference Number).
-     *
-     * <p>
-     * This method queries the data repository for classes scheduled in a given time slot
-     * and having the specified CRN. The underlying repository method will be implemented later.
-     * </p>
-     *
-     * @param timeSlot the time slot for which to retrieve class information (e.g., "10:00 AM - 11:15 AM")
-     * @param crn the course reference number to identify a specific class
-     * @return a list of {@link Class} objects that match the given time slot and CRN
-     * @throws CourseNotFoundException if no classes are found for the specified time slot and CRN
-     */
-    public List<Class> getClassesByCrnAndTime(String timeSlot, String crn) {
+    // The rest of your methods follow...
 
-        //Use our helper method to parse a start and end time for JPA calls
-        try {
-            Time startTime = parseTime(timeSlot.split(" - ")[0]);
-            Time endTime = parseTime(timeSlot.split(" - ")[1]);
-
-            //Make object to store returnList to make sure courses actually exist
-            List<Class> timeReturnList = new ArrayList<>();
-            Set<String> seenTimes = new HashSet<>();
-
-
-            List<Class> timeStartReturnList = classRepository.findAllByStartTime(startTime);
-            List<Class> timeEndReturnList = classRepository.findAllByEndTimeBetween(endTime, endTime);
-
-            // Create a map to store elements from timeEndReturnList by their time properties
-            Map<String, Class> endTimeMap = new HashMap<>();
-            for (Class endClass : timeEndReturnList) {
-                String key = endClass.getStartTime().toString() + "-" + endClass.getEndTime().toString();
-                endTimeMap.put(key, endClass);
-            }
-
-            // Iterate through timeStartReturnList and check for matches in endTimeMap
-            for (Class startClass : timeStartReturnList) {
-                String key = startClass.getStartTime().toString() + "-" + startClass.getEndTime().toString();
-
-                if (endTimeMap.containsKey(key) && !seenTimes.contains(key)) {
-                    timeReturnList.add(startClass); // Add to result list
-                    seenTimes.add(key); // Mark as seen
-                }
-            }
-            if (timeReturnList != null)
-                return timeReturnList;
-            else
-                throw new CourseNotFoundException("Class not found for timeSlot: " + timeSlot + " and CRN: " + crn);
-        } catch (ParseException e) {
-            System.err.println("Failed to parse time: " + e.getMessage());
-        }
-    }
 
     /**
      * Method to get a list of section details (tiemslot) matching the given CRN. The method
@@ -176,38 +133,6 @@ public class CourseInformationService {
     }
 
     /**
-     * Retreives course based on Athena name
-     *
-     *  @param athenaName The Athena name of the course
-     *  @return The {@link Course} object matching the given Athena name
-     * @throws CourseNotFoundException if no course is found for the specified Athena name
-     */
-    public List<Course> getCourseByAthenaName(String athenaName) {
-        List<Course> course = courseRepository.findAllByTitle(athenaName);
-
-        if (course != null) {
-            return course;
-        } else {
-            throw new CourseNotFoundException("Course not found for Athena name: " + athenaName);
-        }
-    }
-
-     /**
-     * Retreives a list of all buildings
-     *
-     *  @return List of all building bojects
-     * @throws BuildingNotFoundException if no buildigns are found
-     */
-    public List<Building> getAllBuildings() {
-        List<Building> buildings = buildingRepository.findAll();
-        if (buildings != null) {
-            return buildings;
-        } else {
-            throw new BuildingNotFoundException("No Buildings Found");
-        }
-    }
-
-    /**
      *  Retreives a list of all academic subjects at UGA.
      * 
      *  @return List of all available subjects
@@ -219,9 +144,12 @@ public class CourseInformationService {
         if (courses != null) {
             for (Course course : courses) {
                 //so we avoid duplicate subject names
+
+                /* getSubject() should work - JPA issue. Commenting for now
                 if (!subjects.contains(course.getSubject())) {
                     subjects.add(course.getSubject());
                 }
+                */
             }
             return subjects;
         } else {
@@ -231,40 +159,100 @@ public class CourseInformationService {
     }
 
     /**
-     * Retrieves the type of a class (e.g., Honors, Lab, Online) based on the given course ID.
-     *
-     * <p>
-     * This method queries the repository for a {@link Course} object with the specified ID
-     * and returns its type. If the course does not exist, it throws a {@link CourseNotFoundException}.
-     * </p>
-     *
-     * @param courseId the unique identifier for the course
-     * @return the type of the course as a string
-     * @throws CourseNotFoundException if no course with the specified ID is found
+     * Retrives a list of all Instructors
+     * 
+     * @return a String list of all instructors
+     * @throws ProfessorNotFoundException if there are no professors found
      */
-    public String getCourseTypeById(Long courseId) {
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new CourseNotFoundException("Course not found for ID: " + courseId));
-        String id = course.getCourseNumber();
-        if (id.length() == 9) {
-            char type = id.charAt(8);
-            switch (type) {
-                case 'E':
-                    return "Online Learning";
-                case 'S':
-                    return "Service-Learning";
-                case 'H':
-                    return "Honors";
-                case 'I':
-                    return "Integrated Language";
-                case 'W':
-                    return "Writing Intensive";
-                case 'D':
-                    return "Non-Credit Discussion Group";
-                case 'L':
-                    return "Lab (Non-Credit and Credit)";
-            }
+    public List<String> getAllInstructors() {
+        List<CourseSection> sections = courseSectionRepository.findAll();
+        List<String> instructors = new ArrayList<>();
+        // checks if there are sections before continuing
+        if (sections == null) {
+            throw new ProfessorNotFoundException("No Professors Found");
         }
-        return "No Special Designation";
+        // iterates through all the sections
+        for(int i = 0; i < sections.size(); i++) {
+            // avoids duplicate instructor names
+            if(!instructors.contains(sections.get(i).getInstructor())) {
+                instructors.add(sections.get(i).getInstructor());
+            }    
+        }
+        return instructors;
     }
+
+    /**
+     * Method to get the coordinates of a building based on the building number
+     *
+     * @param number The number of specified building
+     * @return A string coordinate of the building
+     */
+    public String getCoordinatesByBuildingNumber(String number){
+        //String coordinate = buildingRepository.getCoordinatesByBuildingNumber(number); //not implemented in database, commenting for now
+        String coordinate = null; //returning null until JPA implementation is added
+        if (coordinate != null) {
+            return coordinate;
+        } else {
+            throw new BuildingNotFoundException("Building Not Found");
+        }
+    }
+
+    /**
+    * Retrieves a list of all CRNs (Course Registration Numbers) from the database.
+    *
+    * @return a list of CRNs as integers
+    */
+    public List<Integer> getAllCRNs() {
+        // Fetch all courses from the database
+        List<CourseSection> courseSections = courseSectionRepository.findAll();
+        List<Integer> crns = new ArrayList<>();
+    
+        // Extract CRNs from the courses
+        for (CourseSection section : courseSections) {
+            crns.add(section.getCrn());
+        }
+        return crns;
+    }
+
+    /**
+     * Retrieves the average RateMyProfessors rating for a given professor.
+     * 
+     * @param lastName  the professor's last name
+     * @param firstName the professor's first name
+     * @return the average rating as a float
+     * @throws ProfessorNotFoundException if the professor is not found
+     */
+    public float getProfessorAverageRating(String lastName, String firstName) {
+        Professor professor = professorRepository.findByLastNameAndFirstNameIgnoreCase(lastName, firstName);
+
+        if (professor == null) {
+            throw new ProfessorNotFoundException("Professor " + firstName + " " + lastName + " not found");
+        }
+
+        return professor.getAverageRating();
+    }
+
+
+    /**
+     * Retrieves the total number of RateMyProfessors reviews for a given professor.
+     * 
+     * @param lastName  the professor's last name
+     * @param firstName the professor's first name
+     * @return the total number of reviews as an int
+     * @throws ProfessorNotFoundException if the professor is not found
+     */
+    public int getProfessorTotalReviews(String lastName, String firstName) {
+        Professor professor = professorRepository.findByLastNameAndFirstNameIgnoreCase(lastName, firstName);
+
+        if (professor == null) {
+            throw new ProfessorNotFoundException("Professor " + firstName + " " + lastName + " not found");
+        }
+
+        return professor.getTotalReviews(); // Assuming totalReviews is an int field in Professor entity
+    }
+
+
+
+
 }
+

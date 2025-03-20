@@ -30,7 +30,7 @@ export default function SchedulePage() {
         bgColor: "bg-bulldog-red",
         borderColor: "border-bulldog-red",
         currentDay: "MW",
-        otherTimes: ["F", "8:00 - 8:50 am", "Chemistry 100"],
+        otherTimes: ["F", "8:00 am - 8:50 am", "Chemistry 100"],
       },
 
       {

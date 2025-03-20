@@ -10,12 +10,13 @@ import java.io.Serializable;
 
 import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
+import edu.uga.devdogs.course_information.Professor.Professor;
 
 /*
  * Java JPA entity represention for Class
  */
 @Entity
-public class Class implements Serializable{
+public class ClassEntity implements Serializable{
     
     /*
      * Variables
@@ -27,9 +28,9 @@ public class Class implements Serializable{
 
     private String days;
 
-    private  java.sql.Time startTime;
+    private  String startTime;
 
-    private  java.sql.Time endTime;
+    private  String endTime;
 
     private String room;
 
@@ -37,26 +38,30 @@ public class Class implements Serializable{
 
     /*
      * Relationships
-     * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
 
     @ManyToOne
-    @JoinColumn(name = "courseSectionId")
+    @JoinColumn(name = "course_section_id")
     private CourseSection courseSection;
 
     @ManyToOne
     @JoinColumn(name = "buildingNumber")
     private Building building;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;  
+
      /*
       * Constructors
       */
     
      // Default constructor
-     public Class() {
+     public ClassEntity() {
      }
 
      // Constructor w/o classID
-     public Class(String days, java.sql.Time startTime, java.sql.Time endTime, Building building, String room, String campus, CourseSection courseSection) {
+     public ClassEntity(String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
          this.days = days;
          this.startTime = startTime;
          this.endTime = endTime;
@@ -67,7 +72,7 @@ public class Class implements Serializable{
      }
 
      // Constructor w/ classID
-     public Class(int classId, String days, java.sql.Time startTime, java.sql.Time endTime, Building building, String room, String campus, CourseSection courseSection) {
+     public ClassEntity(int classId, String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
          this.classId = classId;
          this.days = days;
          this.startTime = startTime;
@@ -98,19 +103,19 @@ public class Class implements Serializable{
         this.days = days;
     }
 
-    public java.sql.Time getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(java.sql.Time startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public java.sql.Time getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(java.sql.Time endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

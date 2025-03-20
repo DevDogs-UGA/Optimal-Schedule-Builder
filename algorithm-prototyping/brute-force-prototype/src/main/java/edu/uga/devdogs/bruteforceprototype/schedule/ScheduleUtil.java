@@ -1,13 +1,23 @@
 package edu.uga.devdogs.bruteforceprototype.schedule;
 
+import edu.uga.devdogs.sampledataparser.records.SConstraints;
 import edu.uga.devdogs.sampledataparser.records.Section;
 import edu.uga.devdogs.sampledataparser.records.Class;
+import edu.uga.devdogs.sampledataparser.records.HConstraints;
+
+//import edu.uga.devdogs.course_information.service;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.EnumMap;
 import java.util.Set;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+
 
 
 /**
@@ -19,6 +29,10 @@ import java.util.Set;
  * @see <a href="https://drive.google.com/file/d/1J2_vlChwx_oWGYKRrmDkDBzWY6dORn6v/view?usp=sharing">Algorithm Prototyping</a>
  */
 public class ScheduleUtil {
+
+    // Used for bootstrap getting coords
+    //@Autowired
+    //private CourseInformationService courseInformationService;
 
     /**
      * Validates the given schedule by checking for any time conflicts between classes.
@@ -83,6 +97,18 @@ public class ScheduleUtil {
     }
 
     /**
+     * Checks if schedule or constraints is null and throws an exception if it is.
+     *
+     * @param schedule the schedule to validate
+     * @param constraints the constraints to validate
+     */
+    public static void validateHard(Schedule schedule, HConstraints constraints) {
+        if(schedule == null || constraints == null) {
+            throw new IllegalArgumentException("Schedule and/or constraints cannot be null");
+        }
+    }
+
+    /**
      * Computes the maximum distance between buildings for the classes in the schedule.
      * This is the maximum distance that a student would have to travel
      * between consecutive classes.
@@ -101,14 +127,36 @@ public class ScheduleUtil {
         // Iterates over each day in the schedule
         for (TreeSet<Class> day : schedule.days().values()) {
             // Converts the TreeSet to List for direct indexing
-            // TODO: Replace TreeSet with a sorted List for days in Schedule
             List<Class> dayList = new ArrayList<>(day);
 
             // Iterates over consecutive class pairs
             for (int i = 0; i < dayList.size() - 1; i++) {
                 Class currClass = dayList.get(i);
                 Class nextClass = dayList.get(i + 1);
-                double distance = distances.get(currClass.buildingName()).get(nextClass.buildingName());
+
+                double lat1 = 0.0;//courseInformationService.getLatitude(currClass.buildingNumber());
+                double lon1 = 0.0; //courseInformationService.getLongitude(currClass.buildingNumber());
+                double lon2 = 0.0; //courseInformationService.getLongitude(nextClass.buildingNumber());
+                double lat2 = 0.0; //courseInformationService.getLatitude(nextClass.buildingNumber());
+
+                // distance between latitudes and longitudes
+                double dLat = Math.toRadians(lat2 - lat1);
+                double dLon = Math.toRadians(lon2 - lon1);
+
+                // convert to radians
+                lat1 = Math.toRadians(lat1);
+                lat2 = Math.toRadians(lat2);
+
+                // apply Haversine formula
+                double a = Math.pow(Math.sin(dLat / 2), 2) +
+                        Math.pow(Math.sin(dLon / 2), 2) *
+                                Math.cos(lat1) *
+                                Math.cos(lat2);
+
+                // Earth's radius in miles
+                double rad = 3960;
+                double c = 2 * Math.asin(Math.sqrt(a));
+                double distance = rad * c;
 
                 if (distance > maxDistance) {
                     maxDistance = distance;
@@ -116,7 +164,9 @@ public class ScheduleUtil {
             }
         }
 
-        return maxDistance;
+        // dimensional analysis. Average human walking speed is 3 miles per hour.
+        // miles * (hours/miles) * (minutes/hours)
+        return maxDistance * (1/3) * (60);
     }
 
     /**
@@ -160,6 +210,63 @@ public class ScheduleUtil {
         return (double) sumOfTimeGaps / countOfClassGaps;
     }
 
+
+
+    /**
+     * Computes the earliest start time of all classes in a schedule
+     *
+     * @param schedule the schedule for which to compute the earliest start time
+     * @return the earliest start time (in hours) as a double. For example, 4:30 pm would be represented as 16.5
+     */
+    public static double computeStartTime(Schedule schedule) {
+        LocalTime earliestStartTime = LocalTime.of(23,59,59);
+        for (Section eachSection : schedule.sections()) {
+            for (Class eachClass : eachSection.classes()) {
+                if (eachClass.startTime().isBefore(earliestStartTime)) {
+                    earliestStartTime = eachClass.startTime();
+                }
+            }
+        }
+        return earliestStartTime.getHour() + (double) earliestStartTime.getMinute() / 60;
+    }
+
+
+
+    /**
+     * Computes the latest start time of all classes in a schedule
+     *
+     * @param schedule the schedule for which to compute the latest start time
+     * @return the latest start time (in hours) as a double. For example, 4:30 pm would be represented as 16.5
+     */
+    private static double computeEndTime(Schedule schedule) {
+        LocalTime latestStartTime = LocalTime.of(0,0,0);
+        for (Section eachSection : schedule.sections()) {
+            for (Class eachClass : eachSection.classes()) {
+                if (eachClass.startTime().isAfter(latestStartTime)) {
+                    latestStartTime = eachClass.startTime();
+                }
+            }
+        }
+        return latestStartTime.getHour() + (double) latestStartTime.getMinute() / 60;
+    }
+
+
+
+    /**
+     * Determines whether a given schedule has zero classes on a given day
+     *
+     * @param schedule the schedule for which to compute whether it has a gap day or not
+     * @param gapDay the day that is being checked as a gap day or not
+     * @return {@code true} if the given schedule has no classes on the given day, {@code false} if it has at least one class
+     */
+    private static boolean computeGapDay(Schedule schedule, DayOfWeek gapDay) {
+        EnumMap<DayOfWeek, TreeSet<Class>> days = schedule.days();
+        TreeSet<Class> classes = days.get(gapDay);
+        return classes.isEmpty();
+    }
+
+
+
     /**
      * Computes the overall objective score for the given schedule based on weighted objectives.
      * This method computes each objective, normalizes their values using min-max normalization, and computes a weighted sum.
@@ -167,23 +274,14 @@ public class ScheduleUtil {
      *
      * @param schedule the schedule to evaluate
      * @param distances a nested string map that represents distances between buildings on campus
-     * @param weights an array of floats representing the weights for each objective;
-     *                must be of length 3 and add to 1.0
-     *                weights[0] corresponds to averageProfessorQuality
-     *                weights[1] corresponds to maxDistance
-     *                weights[2] corresponds to averageIdleTime
      *
      * @return the overall objective score for the schedule
      */
-    public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances, double[] weights) {
-       // Checks if the parameters are valid
-       if (schedule == null || distances == null || weights == null) {
-           throw new IllegalArgumentException("Parameters cannot be null");
-       } else if (weights.length != 3) {
-           throw new IllegalArgumentException("Number of weights must be 3");
-       } else if (Math.abs(weights[0] + weights[1] + weights[2] - 1) > 1e-6) {
-           throw new IllegalArgumentException("The sum of the weights must be equal to 1");
-       }
+    public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances) {
+        // Checks if the parameters are valid
+        if (schedule == null || distances == null) {
+            throw new IllegalArgumentException("Parameters cannot be null");
+        }
 
         // The minimum rating on rate my professor is 1.0(if they have ratings).
         final double professorQualityMinimum = 1.0;
@@ -205,8 +303,67 @@ public class ScheduleUtil {
 
         // computes the weighted sum. normalizedMaxDistance and normalizedAverageIdleTime are being subtracted from 1 since
         // the higher the value, the worse the schedule.
-        return normalizedProfessorQuality * weights[0] + (1 - normalizedMaxDistance) * weights[1] + (1 - normalizedAverageIdleTime) * weights[2];
+        return normalizedProfessorQuality / 3 + (1 - normalizedMaxDistance) / 3 + (1 - normalizedAverageIdleTime) / 3;
     }
+
+    public static double computeOverallObjectiveExtended(Schedule schedule, Map<String, Map<String, Double>> distances, SConstraints softConstraints) {
+        // Checks if the parameters are valid
+        if (schedule == null || distances == null) {
+            throw new IllegalArgumentException("Parameters cannot be null");
+        }
+
+        // The minimum rating on rate my professor is 1.0(if they have ratings).
+        final double professorQualityMinimum = 1.0;
+        // The maximum rating on rate my professor is 5.0
+        final double professorQualityMaximum = 5.0;
+        // The minimum distance between classes is 0.0 if they are in the same building.
+        final double maxDistanceMinimum = 0.0;
+        // The highest distance shown in the document is 22.1, so 30 should be a good maximum for calculations.
+        final double maxDistanceMaximum = 30.0;
+        // The minimum average idle time is 0 which should only happen if the person has one class a day.
+        final double averageIdleTimeMinimum = 0;
+        // The earliest a class can start is 8:00 a.m. and latest a class can go is 9:00 p.m. which is 780 minutes between those times.
+        final double averageIdleTimeMaximum = 780;
+
+        // The Earliest a class can start is 8 am and the latest a class can start is 9 pm.
+        final double prefTimeMinimum = 8.0;
+        final double prefTimeMaximum = 21.0;
+
+
+        // finds the values and then plugs them into the normalize function with the minimum and maximum.
+        double normalizedProfessorQuality = normalizeValue(computeAverageProfessorQuality(schedule), professorQualityMinimum, professorQualityMaximum);
+        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule, distances), maxDistanceMinimum, maxDistanceMaximum);
+        double normalizedAverageIdleTime = normalizeValue(computeAverageIdleTime(schedule), averageIdleTimeMinimum, averageIdleTimeMaximum);
+
+        // Taking an average of all the optional softConstraints and then multiply the average by 0.25.
+        double possSConstraintScore = 0;
+        int possSConstraintsCount = 0;
+
+        if (softConstraints.gapDay() != null) {
+            possSConstraintScore += computeGapDay(schedule, softConstraints.gapDay()) ? 1 : 0;
+            possSConstraintsCount++;
+        }
+        if (softConstraints.prefStartTime() != null) {
+            possSConstraintScore += normalizeValue(computeStartTime(schedule), prefTimeMinimum, prefTimeMaximum);
+            possSConstraintsCount++;
+        }
+        if (softConstraints.prefEndTime() != null) {
+            possSConstraintScore += 1 - normalizeValue(computeEndTime(schedule), prefTimeMinimum, prefTimeMaximum);
+            possSConstraintsCount++;
+        }
+
+        // Takes the sum and divides it by number of summed values, checks for when count = 0 so we don't divide by 0
+        possSConstraintScore = possSConstraintsCount == 0 ? 0 : possSConstraintScore / possSConstraintsCount;
+
+        // computes the weighted sum. normalizedMaxDistance and normalizedAverageIdleTime are being subtracted from 1 since
+        // the higher the value, the worse the schedule.
+        double output = normalizedProfessorQuality / 4 + (1 - normalizedMaxDistance) / 4;
+        output += (1 - normalizedAverageIdleTime) / 4;
+        output += (possSConstraintScore / 4);
+
+        return output;
+    }
+
 
     /**
      * Normalizes the values using min-max normalization and clips outliers

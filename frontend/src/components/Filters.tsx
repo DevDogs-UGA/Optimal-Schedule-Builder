@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { DropdownSearchInput } from "./ui/DropdownSearchInput";
 import DropdownTagInput from "./ui/DropdownTagInput";
 import { TimeDistanceFilter } from "./courses/TimeDistanceFilter";
@@ -33,14 +36,64 @@ const campusList = [
   "Tifton",
 ];
 const educationLevelList = ["Undergraduate", "Graduate"];
-const creditHourList: string[] = [];
-const buildingList: string[] = [];
-
-const dropdownStyling = "border-pebble-gray";
+// Uncomment to use data (currently unused)
+// let minmHourList: string[];
+// let maxmHourList: string[];
+const hours = [
+  "1 hour",
+  "2 hours",
+  "3 hours",
+  "4 hours",
+  "5 hours",
+  "6 hours",
+  "7 hours",
+  "8 hours",
+  "9 hours",
+  "10 hours",
+  "11 hours",
+  "12 hours",
+  "13 hours",
+  "14 hours",
+  "15 hours",
+  "16 hours",
+  "17 hours",
+  "18 hours",
+  "19 hours",
+  "20 hours",
+  "21 hours",
+  "22 hours",
+  "23 hours",
+  "24 hours",
+];
 
 export const SearchFilter = ({}: props) => {
+  const [minmHours, setSelectedMinmHours] = useState<string | null>();
+  const [maxmHours, setSelectedMaxmHours] = useState<string | null>();
+
+  // State for filtered dropdown lists
+  const [minmHourList, setMinmHourList] = useState<string[]>(hours);
+  const [maxmHourList, setMaxmHourList] = useState<string[]>(hours);
+
+  // Update dropdown lists when minmHours changes
+  useEffect(() => {
+    if (minmHours !== null) {
+      setMaxmHourList(() => [...hours.slice(Number(minmHours?.split(" ")[0]))]);
+    } else {
+      setMaxmHourList(hours);
+    }
+  }, [minmHours]);
+
+  // Update dropdown lists when maxmHours changes
+  useEffect(() => {
+    if (maxmHours !== null) {
+      setMinmHourList([...hours.slice(0, Number(maxmHours?.split(" ")[0]))]);
+    } else {
+      setMinmHourList(hours);
+    }
+  }, [maxmHours]);
+
   return (
-    <>
+    <section>
       <div className="flex flex-col border-4 border-dusty-pink bg-barely-pink p-2">
         {" "}
         {/* Div for Whole Filter Component*/}
@@ -65,6 +118,7 @@ export const SearchFilter = ({}: props) => {
             <div className="flex flex-col space-y-5">
               <div className="font-bold sm:flex sm:items-center sm:space-x-3">
                 <input
+                  title="open"
                   type="checkbox"
                   id="open"
                   name="open"
@@ -77,6 +131,7 @@ export const SearchFilter = ({}: props) => {
 
               <div className="font-bold sm:flex sm:items-center sm:space-x-3">
                 <input
+                  title="waitlist"
                   type="checkbox"
                   id="waitlist"
                   name="waitlist"
@@ -89,6 +144,7 @@ export const SearchFilter = ({}: props) => {
 
               <div className="font-bold sm:flex sm:items-center sm:space-x-3">
                 <input
+                  title="closed"
                   type="checkbox"
                   id="closed"
                   name="closed"
@@ -110,23 +166,17 @@ export const SearchFilter = ({}: props) => {
               <label className="text-right font-extrabold">Instruction:</label>
               <label className="text-right font-extrabold">Campus:</label>
             </div>
-            <div className="grid grid-rows-3 gap-4">
+            <div className="grid max-w-56 grid-rows-3 gap-4">
               {" "}
               {/* Div For Dropdowns */}
-              <DropdownSearchInput
-                items={termList}
-                placeholder="Enter Term"
-                className={dropdownStyling}
-              />
+              <DropdownSearchInput items={termList} placeholder="Enter Term" />
               <DropdownTagInput
                 items={instructionlist}
                 placeholder="Enter Instruction"
-                className={dropdownStyling}
               />
               <DropdownSearchInput
                 items={campusList}
                 placeholder="Enter Campus"
-                className={dropdownStyling}
               />
             </div>
           </div>
@@ -137,31 +187,37 @@ export const SearchFilter = ({}: props) => {
               {" "}
               {/* Div For Labels */}
               <label className="text-right font-extrabold">Levels:</label>
-              <label className="text-right font-extrabold">Credit Hours:</label>
-              <label className="text-right font-extrabold">Building:</label>
+              <label className="text-right font-extrabold">
+                Min Credit Hours:
+              </label>
+              <label className="text-right font-extrabold">
+                Max Credit Hours:
+              </label>
             </div>
-            <div className="grid grid-rows-3 gap-4">
+            <div className="grid max-w-56 grid-rows-3 gap-4">
               {" "}
               {/* Div For Dropdowns */}
               <DropdownSearchInput
                 items={educationLevelList}
                 placeholder="Enter Level"
-                className={dropdownStyling}
-              />
-              <DropdownTagInput
-                items={creditHourList}
-                placeholder="Enter Credit Hours"
-                className={dropdownStyling}
               />
               <DropdownSearchInput
-                items={buildingList}
-                placeholder="Enter Building"
-                className={dropdownStyling}
+                items={minmHourList}
+                placeholder="Enter Min Credit Hours"
+                selectedItem={minmHours ?? undefined}
+                onSelect={(value) => setSelectedMinmHours(value)}
+              />
+              <DropdownSearchInput
+                key={maxmHourList.length}
+                items={maxmHourList}
+                placeholder="Enter Max Credit Hours"
+                selectedItem={maxmHours ?? undefined}
+                onSelect={(value) => setSelectedMaxmHours(value)}
               />
             </div>
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };

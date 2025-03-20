@@ -1,114 +1,114 @@
 [
-    {
-        "Address": "1109 Experiment Station",
-        "Name": "Food PIC",
-        "Longitude": -84.28688428,
-        "Latitude": 33.26302942,
-        "Building Code": 4368
-    },
-    {
-        "Address": "1109 EXPERIMENT ST",
-        "Name": "Plant Research Building",
-        "Longitude": -84.28666392,
-        "Latitude": 33.26514261,
-        "Building Code": 4384
-    },
-    {
-        "Address": "1109 EXPERIMENT ST",
-        "Name": "USDA Greenhouse Complex",
-        "Longitude": -84.28597519,
-        "Latitude": 33.26337612,
-        "Building Code": 4385
-    },
-    {
-        "Address": "220 WOODROOF DR",
-        "Name": "Sanford Barn",
-        "Longitude": -84.28413927,
-        "Latitude": 33.26363266,
-        "Building Code": 4408
-    },
-    {
-        "Address": "210 COWART ST",
-        "Name": "Cowart Building",
-        "Longitude": -84.28404095,
-        "Latitude": 33.26485246,
-        "Building Code": 4413
-    },
-    {
-        "Address": "210 COWART ST",
-        "Name": "Almo Building",
-        "Longitude": -84.28446767,
-        "Latitude": 33.26524833,
-        "Building Code": 4414
-    },
-    {
-        "Address": "290 HIGGINS RD",
-        "Name": "Urban AG Center",
-        "Longitude": -84.28314533,
-        "Latitude": 33.26351559,
-        "Building Code": 4417
-    },
-    {
-        "Address": "1109 EXPERIMENT ST",
-        "Name": "Tissue Culture Lab",
-        "Longitude": -84.28492495,
-        "Latitude": 33.26480052,
-        "Building Code": 4421
-    },
-    {
-        "Address": "210 COWART ST",
-        "Name": "Stress Physiology Building",
-        "Longitude": -84.28340588,
-        "Latitude": 33.26520452,
-        "Building Code": 4426
-    },
-    {
-        "Address": "1109 EXPERIMENT ST",
-        "Name": "Virus Lab Building",
-        "Longitude": -84.28522895,
-        "Latitude": 33.26475918,
-        "Building Code": 4445
-    },
-    {
-        "Address": "1109 EXPERIMENT ST",
-        "Name": "S-9 Lab Building ",
-        "Longitude": -84.28553957,
-        "Latitude": 33.26485689,
-        "Building Code": 4457
-    },
-    {
-        "Address": "350 WOODROOF DR",
-        "Name": "Melton Building",
-        "Longitude": -84.28787472,
-        "Latitude": 33.26317987,
-        "Building Code": 4463
-    },
-    {
-        "Address": "1109 EXPERIMENT ST",
-        "Name": "USDA Support Building",
-        "Longitude": -84.28467051,
-        "Latitude": 33.26334577,
-        "Building Code": 4472
-    },
-    {
-        "Address": "325 WOODROOF DR",
-        "Name": "Redding Building",
-        "Longitude": -84.2869396,
-        "Latitude": 33.26446895,
-        "Building Code": 4475
-    },
-    {
-        "Address": "1109 EXPERIMENT ST",
-        "Name": "Pesticide Storage",
-        "Longitude": -84.28537402,
-        "Latitude": 33.26331048,
-        "Building Code": 4476
-    },
-    {
-        "Address": "285 HIGGINS RD",
-        "Name": "Turfgrass Research & Education Building",
-        "Longitude": -84.28404035,
-        "Latitude": 33.26326321,
-        "Building Code": 4560
-    }
+  {
+    "Address": "1109 Experiment Station",
+    "Name": "Food PIC",
+    "Longitude": -84.28688428,
+    "Latitude": 33.26302942,
+    "Building Code": 4368
+  },
+  {
+    "Address": "1109 EXPERIMENT ST",
+    "Name": "Plant Research Building",
+    "Longitude": -84.28666392,
+    "Latitude": 33.26514261,
+    "Building Code": 4384
+  },
+  {
+    "Address": "1109 EXPERIMENT ST",
+    "Name": "USDA Greenhouse Complex",
+    "Longitude": -84.28597519,
+    "Latitude": 33.26337612,
+    "Building Code": 4385
+  },
+  {
+    "Address": "220 WOODROOF DR",
+    "Name": "Sanford Barn",
+    "Longitude": -84.28413927,
+    "Latitude": 33.26363266,
+    "Building Code": 4408
+  },
+  {
+    "Address": "210 COWART ST",
+    "Name": "Cowart Building",
+    "Longitude": -84.28404095,
+    "Latitude": 33.26485246,
+    "Building Code": 4413
+  },
+  {
+    "Address": "210 COWART ST",
+    "Name": "Almo Building",
+    "Longitude": -84.28446767,
+    "Latitude": 33.26524833,
+    "Building Code": 4414
+  },
+  {
+    "Address": "290 HIGGINS RD",
+    "Name": "Urban AG Center",
+    "Longitude": -84.28314533,
+    "Latitude": 33.26351559,
+    "Building Code": 4417
+  },
+  {
+    "Address": "1109 EXPERIMENT ST",
+    "Name": "Tissue Culture Lab",
+    "Longitude": -84.28492495,
+    "Latitude": 33.26480052,
+    "Building Code": 4421
+  },
+  {
+    "Address": "210 COWART ST",
+    "Name": "Stress Physiology Building",
+    "Longitude": -84.28340588,
+    "Latitude": 33.26520452,
+    "Building Code": 4426
+  },
+  {
+    "Address": "1109 EXPERIMENT ST",
+    "Name": "Virus Lab Building",
+    "Longitude": -84.28522895,
+    "Latitude": 33.26475918,
+    "Building Code": 4445
+  },
+  {
+    "Address": "1109 EXPERIMENT ST",
+    "Name": "S-9 Lab Building ",
+    "Longitude": -84.28553957,
+    "Latitude": 33.26485689,
+    "Building Code": 4457
+  },
+  {
+    "Address": "350 WOODROOF DR",
+    "Name": "Melton Building",
+    "Longitude": -84.28787472,
+    "Latitude": 33.26317987,
+    "Building Code": 4463
+  },
+  {
+    "Address": "1109 EXPERIMENT ST",
+    "Name": "USDA Support Building",
+    "Longitude": -84.28467051,
+    "Latitude": 33.26334577,
+    "Building Code": 4472
+  },
+  {
+    "Address": "325 WOODROOF DR",
+    "Name": "Redding Building",
+    "Longitude": -84.2869396,
+    "Latitude": 33.26446895,
+    "Building Code": 4475
+  },
+  {
+    "Address": "1109 EXPERIMENT ST",
+    "Name": "Pesticide Storage",
+    "Longitude": -84.28537402,
+    "Latitude": 33.26331048,
+    "Building Code": 4476
+  },
+  {
+    "Address": "285 HIGGINS RD",
+    "Name": "Turfgrass Research & Education Building",
+    "Longitude": -84.28404035,
+    "Latitude": 33.26326321,
+    "Building Code": 4560
+  }
 ]
