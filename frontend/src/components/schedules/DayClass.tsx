@@ -4,6 +4,27 @@ import { useState, useEffect } from "react";
 
 type DayClassProps = ClassData;
 
+// Convert 12-hours to 24-hours
+function convertToMinutes(time: string): number {
+  const [hour, minute] = time.split(":").map((val) => parseInt(val, 10));
+  const suffix = time.slice(-2).toLowerCase();
+  let convertedTime = hour! * 60 + minute!; // The ! assers the tyoe of hour and minute as number since they could be undefined. If there's an error it means one of these is undefined.
+  if (suffix === "pm" && hour !== 12) {
+    convertedTime += 12 * 60;
+  }
+  if (suffix === "am" && hour === 12) {
+    convertedTime -= 12 * 60;
+  }
+  return convertedTime;
+}
+
+// Duration of course for the day
+function getDuration(timeStart: string, timeEnd: string): number {
+  const startMinutes = convertToMinutes(timeStart);
+  const endMinutes = convertToMinutes(timeEnd);
+  return endMinutes - startMinutes;
+}
+
 // Allows course block info window to resize itself relative to the screen size
 function useResize() {
   const [width, setWidth] = useState("80vw");
@@ -308,6 +329,15 @@ export default function DayClass({
   currentDay,
   otherTimes,
 }: DayClassProps) {
+  // Find course duartion
+  const duration = getDuration(timeStart, timeEnd);
+
+  // Position of class block based on start time
+  const startPosition = `${timeDifference ? `${timeDifference * 0.8}px` : "0px"}`;
+
+  // Height of class block based on duration
+  const classHeight = `${duration * 0.9}px`;
+
   // Open course block info popup
   const [courseBlockClicked, setcourseBlockClicked] = useState(false);
   const courseBlockInfo = () => {
@@ -317,13 +347,23 @@ export default function DayClass({
   return (
     <div className={`relative ${className}`} onClick={courseBlockInfo}>
       <div
-        className={`w-full rounded-lg p-4 transition duration-150 ease-in-out hover:bg-black ${bgColor} flex justify-between`}
+        className="absolute inset-0 border-r-2 bg-gray-100"
+        style={{
+          height: "100%",
+          width: "100%",
+          backgroundSize: "100% 60px",
+        }}
+      ></div>
+
+      <div
+        className={`w-full rounded-lg p-4 transition duration-150 ease-in-out hover:bg-black ${bgColor} flex items-center justify-between`}
         style={{
           position: "absolute",
-          top: timeDifference ? `${timeDifference * 0.9}px` : "0px",
+          top: startPosition, //timeDifference ? `${timeDifference * 0.9}px` : "0px",
+          height: classHeight,
         }}
       >
-        <div className="">
+        <div>
           <h2 className="font-bold text-white">{classTitle}</h2>
           {locationShort && (
             <p className="text-sm text-white/90">{locationShort}</p>
