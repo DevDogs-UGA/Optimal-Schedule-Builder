@@ -114,12 +114,11 @@ public class ScheduleUtil {
      * between consecutive classes.
      *
      * @param schedule the schedule for which to compute the maximum distance
-     * @param distances a nested string map that represents distances between buildings on campus
      * @return the maximum distance between buildings for consecutive classes
      */
-    public static double computeMaxDistance(Schedule schedule, Map<String, Map<String, Double>> distances) {
-        if (schedule == null || distances == null) {
-            throw new IllegalArgumentException("Schedule or Distances cannot be null");
+    public static double computeMaxDistance(Schedule schedule) {
+        if (schedule == null) {
+            throw new IllegalArgumentException("Schedule cannot be null");
         }
 
         double maxDistance = 0.0;
@@ -298,7 +297,7 @@ public class ScheduleUtil {
 
         // finds the values and then plugs them into the normalize function with the minimum and maximum.
         double normalizedProfessorQuality = normalizeValue(computeAverageProfessorQuality(schedule), professorQualityMinimum, professorQualityMaximum);
-        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule, distances), maxDistanceMinimum, maxDistanceMaximum);
+        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule), maxDistanceMinimum, maxDistanceMaximum);
         double normalizedAverageIdleTime = normalizeValue(computeAverageIdleTime(schedule), averageIdleTimeMinimum, averageIdleTimeMaximum);
 
         // computes the weighted sum. normalizedMaxDistance and normalizedAverageIdleTime are being subtracted from 1 since
@@ -306,7 +305,7 @@ public class ScheduleUtil {
         return normalizedProfessorQuality / 3 + (1 - normalizedMaxDistance) / 3 + (1 - normalizedAverageIdleTime) / 3;
     }
 
-    public static double computeOverallObjectiveExtended(Schedule schedule, Map<String, Map<String, Double>> distances, SConstraints softConstraints) {
+    public static double computeOverallObjectiveExtended(Schedule schedule, SConstraints softConstraints) {
         // Checks if the parameters are valid
         if (schedule == null || distances == null) {
             throw new IllegalArgumentException("Parameters cannot be null");
@@ -332,7 +331,7 @@ public class ScheduleUtil {
 
         // finds the values and then plugs them into the normalize function with the minimum and maximum.
         double normalizedProfessorQuality = normalizeValue(computeAverageProfessorQuality(schedule), professorQualityMinimum, professorQualityMaximum);
-        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule, distances), maxDistanceMinimum, maxDistanceMaximum);
+        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule), maxDistanceMinimum, maxDistanceMaximum);
         double normalizedAverageIdleTime = normalizeValue(computeAverageIdleTime(schedule), averageIdleTimeMinimum, averageIdleTimeMaximum);
 
         // Taking an average of all the optional softConstraints and then multiply the average by 0.25.
