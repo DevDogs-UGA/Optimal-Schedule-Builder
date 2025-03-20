@@ -84,8 +84,9 @@ export function TimeDistanceFilter() {
           <input
             type="checkbox"
             id="walkingDistance"
-            checked={isWalkingDistance} // Check if checkbox is checked
-            onChange={(e) => setIsWalkingDistance(e.target.checked)} // Update checkbox state
+            title="Walking Distance Between Classes"
+            checked={isWalkingDistance}
+            onChange={(e) => setIsWalkingDistance(e.target.checked)}
             className="h-5 w-5 cursor-pointer rounded-full accent-red-700"
           />
         </div>

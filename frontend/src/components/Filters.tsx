@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { DropdownSearchInput } from "./ui/DropdownSearchInput";
-import DropdownTagInput from "./ui/DropdownTagInput";
+import { DropdownTagInput } from "./ui/DropdownTagInput";
 import { TimeDistanceFilter } from "./courses/TimeDistanceFilter";
 
 interface props {
