@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { DropdownSearchInput } from "./ui/DropdownSearchInput";
 import { DropdownTagInput } from "./ui/DropdownTagInput";
+import { TimeDistanceFilter } from "./courses/TimeDistanceFilter";
 
 interface props {
   text?: string;
@@ -102,11 +103,12 @@ export const SearchFilter = ({}: props) => {
         {/* h1 For Filter Title */}
         <div className="sm:flex sm:flex-row sm:justify-around sm:px-8 sm:py-4">
           {" "}
-          {/* Div for filters*/}
-          <div className="m-4 grid grid-cols-2 justify-center gap-4 sm:flex sm:flex-col lg:grid lg:grid-cols-2">
+          {/* Div for filters */}
+          <div className="m-4 grid grid-cols-2 gap-4 sm:flex">
             {" "}
-            {/* Div For Column 1*/}
-            <div className="text-right md:text-left">
+            {/* Div For Column 1: Time and Distance Filters */}
+            <TimeDistanceFilter />
+            <div className="text-right">
               {" "}
               {/* Course Status Label */}
               <label htmlFor="open" className="text-right font-extrabold">
@@ -114,8 +116,6 @@ export const SearchFilter = ({}: props) => {
               </label>
             </div>
             <div className="flex flex-col space-y-5">
-              {" "}
-              {/* Div For Checkboxes */}
               <div className="font-bold sm:flex sm:items-center sm:space-x-3">
                 <input
                   title="open"
@@ -128,6 +128,7 @@ export const SearchFilter = ({}: props) => {
                   Open
                 </label>
               </div>
+
               <div className="font-bold sm:flex sm:items-center sm:space-x-3">
                 <input
                   title="waitlist"
@@ -140,6 +141,7 @@ export const SearchFilter = ({}: props) => {
                   Waitlist
                 </label>
               </div>
+
               <div className="font-bold sm:flex sm:items-center sm:space-x-3">
                 <input
                   title="closed"
@@ -156,7 +158,7 @@ export const SearchFilter = ({}: props) => {
           </div>
           <div className="m-4 grid grid-cols-2 gap-4 sm:flex">
             {" "}
-            {/* Div For Column 2 */}
+            {/* Div For Column 3 */}
             <div className="grid grid-rows-3 gap-4">
               {" "}
               {/* Div For Labels */}
@@ -180,7 +182,7 @@ export const SearchFilter = ({}: props) => {
           </div>
           <div className="m-4 grid grid-cols-2 gap-4 sm:flex">
             {" "}
-            {/* Div For Column 3 in Filters*/}
+            {/* Div For Column 4 in Filters*/}
             <div className="grid grid-rows-3 gap-4">
               {" "}
               {/* Div For Labels */}
