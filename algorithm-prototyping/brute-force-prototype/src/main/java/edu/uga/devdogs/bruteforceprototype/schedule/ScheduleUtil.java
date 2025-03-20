@@ -5,8 +5,8 @@ import edu.uga.devdogs.sampledataparser.records.Section;
 import edu.uga.devdogs.sampledataparser.records.Class;
 import edu.uga.devdogs.sampledataparser.records.HConstraints;
 
-import edu.uga.devdogs.course_information.service;
-import org.springframework.beans.factory.annotation.Autowired;
+//import edu.uga.devdogs.course_information.service;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +31,8 @@ import java.time.LocalTime;
 public class ScheduleUtil {
 
     // Used for bootstrap getting coords
-    @Autowired
-    private CourseInformationService courseInformationService;
+    //@Autowired
+    //private CourseInformationService courseInformationService;
 
     /**
      * Validates the given schedule by checking for any time conflicts between classes.
@@ -134,10 +134,10 @@ public class ScheduleUtil {
                 Class currClass = dayList.get(i);
                 Class nextClass = dayList.get(i + 1);
 
-                double lat1 = courseInformationService.getLatitude(currClass.buildingNumber());
-                double lon1 = courseInformationService.getLongitude(currClass.buildingNumber());
-                double lon2 = courseInformationService.getLongitude(nextClass.buildingNumber());
-                double lat2 = courseInformationService.getLatitude(nextClass.buildingNumber());
+                double lat1 = 0.0;//courseInformationService.getLatitude(currClass.buildingNumber());
+                double lon1 = 0.0; //courseInformationService.getLongitude(currClass.buildingNumber());
+                double lon2 = 0.0; //courseInformationService.getLongitude(nextClass.buildingNumber());
+                double lat2 = 0.0; //courseInformationService.getLatitude(nextClass.buildingNumber());
 
                 // distance between latitudes and longitudes
                 double dLat = Math.toRadians(lat2 - lat1);
