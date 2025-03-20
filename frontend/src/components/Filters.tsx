@@ -55,7 +55,6 @@ export const SearchFilter = ({}: props) => {
             {" "}
             {/* Div For Column 1: Time and Distance Filters */}
             <TimeDistanceFilter />
-
             <div className="text-right">
               {" "}
               {/* Course Status Label */}
@@ -63,7 +62,6 @@ export const SearchFilter = ({}: props) => {
                 Course Status:
               </label>
             </div>
-
             <div className="flex flex-col space-y-5">
               <div className="font-bold sm:flex sm:items-center sm:space-x-3">
                 <input
@@ -100,8 +98,6 @@ export const SearchFilter = ({}: props) => {
                   Closed
                 </label>
               </div>
-
-              
             </div>
           </div>
           <div className="m-4 grid grid-cols-2 gap-4 sm:flex">

@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import { DropdownSearchInput } from "../ui/DropdownSearchInput";
 
 // Create time slots from 8:00 AM to 10:00 PM
 const createTimeSlots = () => {
   const times = [];
   for (let hr = 8; hr <= 22; hr++) {
-    const hour = (hr <= 12 ? hr : hr - 12); // 24hr to 12hr format
-    const amPm = hr < 12 ? 'AM' : 'PM';
+    const hour = hr <= 12 ? hr : hr - 12; // 24hr to 12hr format
+    const amPm = hr < 12 ? "AM" : "PM";
     times.push(`${hour}:00 ${amPm}`);
   }
   return times;
@@ -16,9 +16,9 @@ const createTimeSlots = () => {
 
 export function TimeDistanceFilter() {
   // Tracks selected start time
-  const [startTime, setStartTime] = useState<string>('');
+  const [startTime, setStartTime] = useState<string>("");
   // Tracks selected end time
-  const [endTime, setEndTime] = useState<string>('');
+  const [endTime, setEndTime] = useState<string>("");
   // Stores the valid end times based on selected start time
   const [availableEndTimes, setAvailableEndTimes] = useState<string[]>([]);
   // Tracks walking distance checkbox state
@@ -31,29 +31,31 @@ export function TimeDistanceFilter() {
   / Always clears end time when start time changed. */
   const handleStartTimeSelect = (value: string) => {
     setStartTime(value); // Update start time state
-    
+
     if (!value) {
       // If no start time selected
       setAvailableEndTimes([]);
-      setEndTime('');          
+      setEndTime("");
     } else {
       // If start time is selected
       const startIndex = allTimeSlots.indexOf(value);
       // Get all times after the selected start time
       const validEndTimes = allTimeSlots.slice(startIndex + 1);
       setAvailableEndTimes(validEndTimes); // Update available end times
-      setEndTime(''); 
+      setEndTime("");
     }
   };
 
   return (
     // Main container with 2 columns
-    <div className="grid grid-cols-2 gap-4 max-w-80">
+    <div className="grid max-w-80 grid-cols-2 gap-4">
       {/* Left column: Labels */}
       <div className="grid grid-rows-3 gap-4">
         <label className="text-right font-extrabold">Start Time:</label>
         <label className="text-right font-extrabold">End Time:</label>
-        <label className="text-right font-extrabold">Walking Distance Between Classes:</label>
+        <label className="text-right font-extrabold">
+          Walking Distance Between Classes:
+        </label>
       </div>
 
       {/* Right column: Input fields */}
