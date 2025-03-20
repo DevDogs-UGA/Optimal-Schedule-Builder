@@ -147,10 +147,6 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
                     new Date(`1970/01/01 ${classData.timeStart}`),
                     new Date("1970/01/01 3:06 pm"), // This time is not correct it should be 8:00 AM, but it positions the course blocks correctly
                   );
-                  const duration = differenceInMinutes(
-                    new Date(`1970/01/01 ${classData.timeEnd}`),
-                    new Date(`1970/01/01 ${classData.timeStart}`),
-                  );
                   return (
                     <DayClass
                       key={`${day}-${classData.classTitle}-${index}`}
