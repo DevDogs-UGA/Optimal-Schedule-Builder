@@ -16,7 +16,7 @@ export default function SchedulePage() {
 
   // Map colors to course (if the course includes a lab, drop the L from the string)
   const colorMapping: { [key: string]: string } = {};
-  const usedColors: Set<string | undefined> = new Set();
+  const usedColors: Set<string> = new Set();
 
   function getBgColorForClass(classTitle: string): string {
     // Check if color has already been used
@@ -42,7 +42,7 @@ export default function SchedulePage() {
 
       // Reassign the color to the first class that needs a color
       colorToAssign = bgColors[usedColors.size % bgColors.length];
-      usedColors.add(colorToAssign);
+      usedColors.add(colorToAssign!);
     }
     // If no color assigned
     if (!colorToAssign) {
