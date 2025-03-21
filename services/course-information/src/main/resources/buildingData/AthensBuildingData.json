@@ -111,13 +111,7 @@
       "Latitude": 33.95492364,
       "Building Code": 42
     },
-    {
-      "Address": "225 N HERTY DR",
-      "Name": "Hirsch Hall",
-      "Longitude": -83.37447163,
-      "Latitude": 33.9546902,
-      "Building Code": 43
-    },
+
     {
       "Address": "225 N HERTY DR",
       "Name": "Hirsch Hall",
@@ -580,13 +574,7 @@
       "Latitude": 33.9469264,
       "Building Code": 1010
     },
-    {
-      "Address": "305 SANFORD DR",
-      "Name": "Speirs Hall",
-      "Longitude": -83.37526315,
-      "Latitude": 33.9469264,
-      "Building Code": 1010
-    },
+
     {
       "Address": "147 CEDAR ST",
       "Name": "Conner Hall",
@@ -608,13 +596,7 @@
       "Latitude": 33.946807,
       "Building Code": 1013
     },
-    {
-      "Address": "110 CEDAR ST",
-      "Name": "Cedar Street Building A",
-      "Longitude": -83.37252542,
-      "Latitude": 33.946807,
-      "Building Code": 1013
-    },
+
     {
       "Address": "100 CEDAR ST",
       "Name": "Food Science Building",
@@ -1811,13 +1793,6 @@
       "Longitude": -83.37817108,
       "Latitude": 33.94047747,
       "Building Code": 2623
-    },
-    {
-      "Address": "1242 1/2 S LUMPKIN ST",
-      "Name": "Office of Service-Learning",
-      "Longitude": -83.38105208,
-      "Latitude": 33.94537878,
-      "Building Code": 2627
     },
     {
       "Address": "1242 1/2 S LUMPKIN ST",

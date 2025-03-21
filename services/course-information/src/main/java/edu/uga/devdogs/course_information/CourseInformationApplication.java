@@ -44,7 +44,7 @@ public class CourseInformationApplication {
     }
 
     @Bean
-    @Order(1)
+    @Order(2)
     CommandLineRunner courseSecCommandLineRunner(
         CourseSectionRepository courseSectionRepository,
         CourseRepository courseRepository,
@@ -61,13 +61,13 @@ public class CourseInformationApplication {
                 //     continue;
                 // }
 
-                System.out.print(course.getCrn() + " " + course.getSec() + " " +course.getCreditHours() + "  | ");
+                //System.out.print(course.getCrn() + " " + course.getSec() + " " +course.getCreditHours() + "  | ");
 
                 Course courseEntity = new Course(
                     course.getSubject(), course.getCourseNumber(), course.getTitle(), course.getDepartment(), null );
                 CourseSection courseSection = new CourseSection(
                 course.getCrn(), course.getSec(), (course.getStat()).charAt(0),  course.getCreditHours(), course.getCreditHours(), course.getProfessor(), course.getPartOfTerm(), course.getClassSize(), course.getAvailableSeats(), courseEntity, null);   
-                System.out.println(courseSection.getTerm()); 
+                //System.out.println(courseSection.getTerm()); 
                 
                 courseEntities.add(courseEntity);
                 
@@ -149,10 +149,10 @@ public class CourseInformationApplication {
         };
     }
     @Bean
-    @Order(2)
+    @Order(1)
     CommandLineRunner buildingCommandLineRunner (BuildingRepository buildingRepository) {
         return args -> {
-            String buildingsJsonPath = "buildingData/AthensBuildingData.json"; // Relative path from src/main/resources
+            String buildingsJsonPath = "buildingData/AthensBuildingData.json";
             ClassPathResource resource = new ClassPathResource(buildingsJsonPath);
 
             if (!resource.exists()) {
@@ -165,11 +165,22 @@ public class CourseInformationApplication {
                 CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, Building.class);
                 List<Building> buildings = objectMapper.readValue(inputStream, listType);
 
-                
+                System.out.println("Parsed JSON successfully.");
 
-                System.out.println("Parsed JSON successfully. Saving to repository...");
-                buildingRepository.saveAll(buildings);
-                System.out.println("Buildings saved successfully.");
+                List<Building> buildingsToSave = new ArrayList<>();
+                for (Building building : buildings) {
+                    if (!buildingRepository.existsById(building.getBuildingCode())) {
+                        buildingsToSave.add(building);
+                    }
+                }
+
+                if (!buildingsToSave.isEmpty()) {
+                    buildingRepository.saveAll(buildingsToSave);
+                    System.out.println("Buildings saved successfully.");
+                } else {
+                    System.out.println("No new buildings to save.");
+                }
+
             } catch (IOException e) {
                 System.err.println("Failed to read or parse buildings.json: " + e.getMessage());
             }
