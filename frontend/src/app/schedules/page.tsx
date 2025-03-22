@@ -15,7 +15,7 @@ export default function SchedulePage() {
   ];
 
   // Map colors to course (if the course includes a lab, drop the L from the string)
-  const colorMapping: { [key: string]: string } = {};
+  const colorMapping: Record<string, string> = {};
   const usedColors: Set<string> = new Set<string>();
 
   function getBgColorForClass(classTitle: string): string {
