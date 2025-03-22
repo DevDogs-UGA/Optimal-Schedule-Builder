@@ -1,8 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/Button";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
-import WeekSchedule from "@/components/schedules/WeekSchedule";
-import { useState, useEffect } from "react";
 import { PiNotePencil } from "react-icons/pi";
 import { PiHeart } from "react-icons/pi";
 import { PiArrowsOut } from "react-icons/pi";
@@ -15,6 +13,8 @@ interface PlanDisplayProps {
   plan: WeekScheduleType;
 }
 
+// Saved Plan Component. 
+// Contains each "banner" and action buttons for each of the user's saved plans.
 export default function SavedPlan({
   planTitle,
   plan,
@@ -45,7 +45,7 @@ export default function SavedPlan({
               size={60}
               className="m-2 fill-black transition hover:fill-bulldog-red" 
             />
-          {/* Open button (redirects to the schedules page)*/}
+          {/* Open button (redirects to the schedules page with the schedule data)*/}
           <Link href={`/schedules?title=${encodeURIComponent(planTitle)}&data=${encodeURIComponent(JSON.stringify(plan))}`}>
             <PiArrowsOut
               size={60}
