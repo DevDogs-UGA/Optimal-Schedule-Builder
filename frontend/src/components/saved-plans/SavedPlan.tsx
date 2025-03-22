@@ -10,19 +10,16 @@ import Image from "next/image";
 import Link from "next/Link";
 
 interface PlanDisplayProps {
-  planTitle?: string;
   index?: number;
+  planTitle: string;
+  plan: WeekScheduleType;
 }
 
 export default function SavedPlan({
   planTitle,
+  plan,
 }: PlanDisplayProps) {
 
-  /* TO DO HERE:
-  * Figure out where to get the icons
-  * Figure out how to make icons function as buttons
-  * Make the schedule popup actually work
-  */
   return (
     <div className="relative">
       <div className="flex flex-row items-center m-5 w-[70vw] h-24 rounded-xl bg-glory-glory-red">
@@ -48,8 +45,8 @@ export default function SavedPlan({
               size={60}
               className="m-2 fill-black transition hover:fill-bulldog-red" 
             />
-          {/* Edit button */}
-          <Link href={"/schedules"}>
+          {/* Open button (redirects to the schedules page)*/}
+          <Link href={`/schedules?title=${encodeURIComponent(planTitle)}&data=${encodeURIComponent(JSON.stringify(plan))}`}>
             <PiArrowsOut
               size={60}
               className="m-2 fill-black transition hover:fill-bulldog-red" 

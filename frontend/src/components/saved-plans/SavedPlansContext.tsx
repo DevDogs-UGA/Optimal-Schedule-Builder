@@ -4,11 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import SavedPlan from "@/components/saved-plans/SavedPlan";
 
-export default function SavedPlans() {
-  /* Array of saved plans:
-  * Full of dummy data at the moment
-  * Add a loop to dynamically populate array from local storage when possible */
-  const dummySchedule: WeekScheduleType = {
+const dummySchedule: WeekScheduleType = {
     Monday: [
       {
         classTitle: "CSCI 3030",
@@ -310,27 +306,31 @@ export default function SavedPlans() {
       },
     ],
   }
+  
+  interface SavedPlansContextType {
+    savedPlans: { title: string; data?: WeekScheduleType }[];
+    setSavedPlans: React.Dispatch<React.SetStateAction<{ title: string; data?: WeekScheduleType }[]>>;
+  }
+  
+  const SavedPlansContext = createContext<SavedPlansContextType | undefined>(undefined);
+  
+  export const SavedPlansProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+      const [savedPlans, setSavedPlans] = useState<{title: string; data?: WeekScheduleType }[]>([
+        { title: 'Schedule 1', data: dummySchedule },
+        { title: 'Schedule 2' },
+      ]);
+  
+      return (
+        <SavedPlansContext.Provider value={{ savedPlans, setSavedPlans }}> 
+          {children}
+        </SavedPlansContext.Provider>
+      );
+  };
 
-  const savedPlans = [
-    { title: "Schedule 1", data: dummySchedule},
-    { title: "Schedule 2", data: dummySchedule},
-    { title: "Schedule 3", data: dummySchedule},
-    { title: "Schedule 4", data: dummySchedule},
-  ]
-
-    return (
-      <div className="min-h-screen">
-        <Navbar />
-
-        <div className="flex flex-col flex-nowrap items-center bg-barely-pink border-black border-2 rounded-xl w-4/5 h-[85vh] ml-auto mr-auto mt-20 mb-10 overflow-y-auto">
-          {savedPlans.map((plan,index) => (
-            <SavedPlan
-              key={index}
-              planTitle={plan.title}
-              plan={plan.data}
-            />
-          ))}
-        </div>
-      </div>
-    );
+  export const useSavedPlans = () => {
+    const context = useContext(SavedPlansContext);
+    if (!context) {
+      throw new Error('useSavedPlans must be used within a SavedPlansProvider');
+    }
+    return context;
   }

@@ -1,11 +1,35 @@
 // Returning User: -> Saved Plans
 // New User: -> Saved Plans
-
+'use client';
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
 import Link from "next/link";
+import { useSearchParams } from 'next/navigation';
+
 
 export default function SchedulePage() {
+
+  const searchParams = useSearchParams();
+  const savedPlan = searchParams.get('data');
+  console.log(savedPlan);
+
+  // Parse the savedPlan JSON string
+  let parsedPlan;
+  try {
+    parsedPlan = savedPlan ? JSON.parse(savedPlan) : null;
+  } catch (error) {
+    console.error("Failed to parse plan data:", error);
+    parsedPlan = null;
+  }
+
+  const dummyData: WeekScheduleType = parsedPlan || {
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: []
+  };
+
   const weekScheduleData: WeekScheduleType = {
     Monday: [
       {
@@ -327,7 +351,7 @@ export default function SchedulePage() {
           <Link href={"/route-map"}>Route Map</Link>
         </button>
       </div>
-      <WeekSchedule weekData={weekScheduleData} />
+      <WeekSchedule weekData={dummyData} />
     </div>
   );
 }
