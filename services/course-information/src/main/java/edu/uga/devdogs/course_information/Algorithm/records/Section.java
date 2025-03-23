@@ -1,6 +1,4 @@
-package edu.uga.devdogs.course_information.Algorithmr.records;
-
-import com.google.gson.annotations.SerializedName;
+package edu.uga.devdogs.course_information.Algorithm.records;
 
 import java.util.List;
 
@@ -14,6 +12,6 @@ import java.util.List;
  */
 public record Section(String courseCode,
                       int crn,
-                      @SerializedName("professor_name") Professor professor,
+                      Professor professor,
                       List<Class> classes) {
 }

@@ -17,7 +17,6 @@ public class BruteForcePrototype {
      * Calls most of the other functions, manages error handling, and handles I/O.
      *
      * @param inputCourses a set of requested courses to generate an optimal schedule from
-     * @param distances a nested string map that represents distances between buildings on campus
      * @param softConstraints the soft constraints on the schedule
      * @param hardConstraints the hard constraints on the schedule
      * @return the output of optimize()

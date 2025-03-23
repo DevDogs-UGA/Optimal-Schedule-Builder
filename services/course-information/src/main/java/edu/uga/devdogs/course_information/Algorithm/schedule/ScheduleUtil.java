@@ -5,7 +5,7 @@ import edu.uga.devdogs.course_information.Algorithm.records.Section;
 import edu.uga.devdogs.course_information.Algorithm.records.Class;
 import edu.uga.devdogs.course_information.Algorithm.records.HConstraints;
 
-import edu.uga.devdogs.course_information.service;
+import edu.uga.devdogs.course_information.service.CourseInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -276,9 +276,9 @@ public class ScheduleUtil {
      *
      * @return the overall objective score for the schedule
      */
-    public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances) {
+    public static double computeOverallObjective(Schedule schedule) {
         // Checks if the parameters are valid
-        if (schedule == null || distances == null) {
+        if (schedule == null) {
             throw new IllegalArgumentException("Parameters cannot be null");
         }
 
@@ -307,7 +307,7 @@ public class ScheduleUtil {
 
     public static double computeOverallObjectiveExtended(Schedule schedule, SConstraints softConstraints) {
         // Checks if the parameters are valid
-        if (schedule == null || distances == null) {
+        if (schedule == null) {
             throw new IllegalArgumentException("Parameters cannot be null");
         }
 
