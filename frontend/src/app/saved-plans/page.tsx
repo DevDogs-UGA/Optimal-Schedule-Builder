@@ -627,7 +627,8 @@ export default function SavedPlans() {
   useEffect(() => {
 
     try {
-      // Save the dummy schedules to browser local storage 
+      // REPLACE WITH RETRIEVAL OF REAL DATA WHEN POSSIBLE
+      // Save the dummy schedules to browser local storage
       console.log("Saving to local storage"); // for debugging
       localStorage.setItem('Schedule 1', JSON.stringify(dummySchedule));
       localStorage.setItem('Schedule 2', JSON.stringify(dummySchedule2));
@@ -636,7 +637,7 @@ export default function SavedPlans() {
       localStorage.setItem('Schedule 5', JSON.stringify(dummySchedule));
       console.log("Schedules saved"); // for debugging
 
-      // Retrieve schedules from local storage and populate the savedPlans array
+      // Retrieve schedules from local storage and populate the plans array
       const plans = [];
       // Loop through local storage
       for (let i = 0; i < localStorage.length; i++) {
@@ -656,9 +657,10 @@ export default function SavedPlans() {
       }
     }
     setSavedPlans(plans);
-  } 
+  }
+  // If something goes wrong, this message should be displayed in the browser console 
   catch (error) {
-    console.error("Error", error);
+    console.error("Failed to parse local storage data: ", error);
   }
 }, []);
 
