@@ -66,9 +66,19 @@ public class CourseInformationApplication {
                 Course courseEntity = new Course(
                     course.getSubject(), course.getCourseNumber(), course.getTitle(), course.getDepartment(), null );
                 CourseSection courseSection = new CourseSection(
-
-                course.getCrn(), course.getSec(), (course.getStat()).charAt(0), course.getCreditHours().charAt(0) , course.getProfessor(), course.getPartOfTerm(), course.getClassSize(), course.getAvailableSeats(), 0, courseEntity, null, course.getMeetingDays(), course.getMeetingTimes());   
-
+                    course.getCrn(),
+                    course.getSec(), 
+                    (course.getStat()).charAt(0), 
+                    (int) Math.round(Double.parseDouble(course.getCreditHours().split(" ")[0])),
+                    course.getProfessor(), 
+                    course.getPartOfTerm(), 
+                    course.getClassSize(), 
+                    course.getAvailableSeats(), 
+                    0, 
+                    courseEntity,
+                    null,
+                    course.getMeetingDays(),
+                    course.getMeetingTimes());   
                 //System.out.println(courseSection.getTerm()); 
                 
                 courseEntities.add(courseEntity);
@@ -88,8 +98,6 @@ public class CourseInformationApplication {
             courseRepository.saveAll(courseEntities);
             courseSectionRepository.saveAll(courseSections);
             System.out.println("Saved to database");
-
-            
         };
     }
     @Bean

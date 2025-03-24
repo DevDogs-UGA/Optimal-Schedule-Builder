@@ -30,7 +30,7 @@ public class CourseSection implements Serializable {
 
     private char stat;
 
-    private String creditHours;
+    private int creditHours;
 
     private String instructor;
 
@@ -81,7 +81,7 @@ public class CourseSection implements Serializable {
     // Constructors, getters, setters, and toString 
     public CourseSection() {}
 
-    public CourseSection(int crn, String sec, char stat, String creditHoursLow, String creditHoursHigh, String instructor,
+    public CourseSection(int crn, String sec, char stat, int creditHours, String instructor,
         String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, String meetingTime) {
     this.crn = crn;
     this.sec = sec;
@@ -96,20 +96,6 @@ public class CourseSection implements Serializable {
     this.classes = classes;
     this.daysOfTheWeek = daysOfTheWeek;
     this.meetingTime = meetingTime;
-}
-
-public CourseSection(int crn, String sec, char stat, String creditHoursLow, String creditHoursHigh, String instructor,
-String term, int classSize, int seatsAvailable, Course course, List<ClassEntity> classes) {
-this.crn = crn;
-this.sec = sec;
-this.stat = stat;
-this.creditHours = creditHours;
-this.instructor = instructor;
-this.term = term;
-this.classSize = classSize;
-this.seatsAvailable = seatsAvailable;
-this.course = course;
-this.classes = classes;
 }
 
     public long getId() {
@@ -144,11 +130,11 @@ this.classes = classes;
         this.stat = stat;
     }
 
-    public String getCreditHours() {
+    public int getCreditHours() {
         return creditHours;
     }
 
-    public void setCreditHoursLow(String creditHours) {
+    public void setCreditHoursLow(int creditHours) {
         this.creditHours = creditHours;
     }
 
@@ -211,7 +197,7 @@ this.classes = classes;
     @Override
     public String toString() {
         return "CourseSection [courseSectionId=" + courseSectionId + ", crn=" + crn + ", sec=" + sec + ", stat="
-                + stat + ", creditHoursLow=" + creditHoursLow + ", creditHoursHigh=" + creditHoursHigh + ", instructor="
+                + stat + ", creditHoursLow=" + creditHours + ", instructor="
                 + instructor + ", term=" + term + ", classSize=" + classSize + ", seatsAvailable=" + seatsAvailable
                 + ", year=" + year + "]";
     }
