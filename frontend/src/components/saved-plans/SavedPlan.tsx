@@ -13,19 +13,14 @@ interface PlanDisplayProps {
   plan: WeekScheduleType;
 }
 
-// Saved Plan Component. 
+// Saved Plan Component.
 // Contains each "banner" and action buttons for each of the user's saved plans.
-export default function SavedPlan({
-  planTitle,
-  plan,
-}: PlanDisplayProps) {
-
+export default function SavedPlan({ planTitle, plan }: PlanDisplayProps) {
   return (
     <div className="relative">
-      <div className="flex flex-row items-center m-5 w-[70vw] h-24 rounded-xl bg-glory-glory-red">
-      </div>
+      <div className="m-5 flex h-24 w-[70vw] flex-row items-center rounded-xl bg-glory-glory-red"></div>
       {/* Saved plan container */}
-      <div className="absolute top-0 flex flex-row items-center m-5 w-[70vw] h-20 z-10 rounded-xl border-2 border-black bg-white">
+      <div className="absolute top-0 z-10 m-5 flex h-20 w-[70vw] flex-row items-center rounded-xl border-2 border-black bg-white">
         {/* Paw icon */}
         <Image
           src="/images/blackpaw.svg"
@@ -35,21 +30,21 @@ export default function SavedPlan({
           alt="black paw"
         />
         {/* Plan title */}
-        <h1 className="text-4xl"> 
-          {planTitle} 
-        </h1>
+        <h1 className="text-4xl">{planTitle}</h1>
         {/* Buttons container */}
-        <div className="flex items-center justify-end ml-auto">
+        <div className="ml-auto flex items-center justify-end">
           {/* Save button */}
           <PiHeart
-              size={60}
-              className="m-2 fill-black transition hover:fill-bulldog-red" 
-            />
+            size={60}
+            className="m-2 fill-black transition hover:fill-bulldog-red"
+          />
           {/* Open button (redirects to the schedules page with the schedule data)*/}
-          <Link href={`/schedules?title=${encodeURIComponent(planTitle)}&data=${encodeURIComponent(JSON.stringify(plan))}`}>
+          <Link
+            href={`/schedules?title=${encodeURIComponent(planTitle)}&data=${encodeURIComponent(JSON.stringify(plan))}`}
+          >
             <PiArrowsOut
               size={60}
-              className="m-2 fill-black transition hover:fill-bulldog-red" 
+              className="m-2 fill-black transition hover:fill-bulldog-red"
             />
           </Link>
         </div>

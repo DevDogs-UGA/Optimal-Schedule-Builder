@@ -1,5 +1,5 @@
 "use client";
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import SavedPlan from "@/components/saved-plans/SavedPlan";
@@ -307,7 +307,7 @@ const dummySchedule: WeekScheduleType = {
       otherTimes: ["", "", ""],
     },
   ],
-}
+};
 
 // Dummy Schedule #2: Remove as necessary
 // Be sure to update when the WeekSchedule component changes!
@@ -612,10 +612,9 @@ const dummySchedule2: WeekScheduleType = {
       otherTimes: ["", "", ""],
     },
   ],
-}
+};
 // Handles retrieval of saved plans from local storage and displays a list of them for the user to select
 export default function SavedPlans() {
-
   // Parameters for a saved plan
   interface SavedPlanType {
     title: string;
@@ -625,16 +624,15 @@ export default function SavedPlans() {
   const [savedPlans, setSavedPlans] = useState<SavedPlanType[]>([]);
 
   useEffect(() => {
-
     try {
       // REPLACE WITH RETRIEVAL OF REAL DATA WHEN POSSIBLE
       // Save the dummy schedules to browser local storage
       console.log("Saving to local storage"); // for debugging
-      localStorage.setItem('Schedule 1', JSON.stringify(dummySchedule));
-      localStorage.setItem('Schedule 2', JSON.stringify(dummySchedule2));
-      localStorage.setItem('Schedule 3', JSON.stringify(dummySchedule));
-      localStorage.setItem('Schedule 4', JSON.stringify(dummySchedule2));
-      localStorage.setItem('Schedule 5', JSON.stringify(dummySchedule));
+      localStorage.setItem("Schedule 1", JSON.stringify(dummySchedule));
+      localStorage.setItem("Schedule 2", JSON.stringify(dummySchedule2));
+      localStorage.setItem("Schedule 3", JSON.stringify(dummySchedule));
+      localStorage.setItem("Schedule 4", JSON.stringify(dummySchedule2));
+      localStorage.setItem("Schedule 5", JSON.stringify(dummySchedule));
       console.log("Schedules saved"); // for debugging
 
       // Retrieve schedules from local storage and populate the plans array
@@ -651,36 +649,29 @@ export default function SavedPlans() {
             // Parse the data from the JSON
             plans.push({
               title: key,
-              data: JSON.parse(data)
-          });
+              data: JSON.parse(data),
+            });
+          }
         }
       }
+      // Sort plans by title
+      plans.sort((a, b) => a.title.localeCompare(b.title));
+      setSavedPlans(plans);
+    } catch (error) {
+      // If something goes wrong, this message should be displayed in the browser console
+      console.error("Failed to parse local storage data: ", error);
     }
-    // Sort plans by title
-    plans.sort((a, b) => a.title.localeCompare(b.title));
-    setSavedPlans(plans);
-  }
-  
-  // If something goes wrong, this message should be displayed in the browser console 
-  catch (error) {
-    console.error("Failed to parse local storage data: ", error);
-  }
-}, []);
+  }, []);
 
-    return (
-      <div className="min-h-screen">
-        <Navbar />
+  return (
+    <div className="min-h-screen">
+      <Navbar />
 
-        <div className="flex flex-col flex-nowrap items-center bg-barely-pink border-black border-2 rounded-xl w-4/5 h-[85vh] ml-auto mr-auto mt-20 mb-10 overflow-y-auto">
-          {savedPlans.map((plan,index) => (
-            <SavedPlan
-              key={index}
-              planTitle={plan.title}
-              plan={plan.data}
-            />
-          ))}
-        </div>
+      <div className="mb-10 ml-auto mr-auto mt-20 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl border-2 border-black bg-barely-pink">
+        {savedPlans.map((plan, index) => (
+          <SavedPlan key={index} planTitle={plan.title} plan={plan.data} />
+        ))}
       </div>
-    ); 
-
-  }
+    </div>
+  );
+}
