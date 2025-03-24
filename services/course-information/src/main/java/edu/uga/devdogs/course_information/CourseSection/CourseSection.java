@@ -86,7 +86,7 @@ public class CourseSection implements Serializable {
     this.classes = classes;
 }
 
-public CourseSection(int crn, String sec, char stat, String creditHoursLow, String creditHoursHigh, String instructor,
+public CourseSection(int crn, String sec, char stat, String creditHours, String instructor,
 String term, int classSize, int seatsAvailable, Course course, List<ClassEntity> classes) {
 this.crn = crn;
 this.sec = sec;
