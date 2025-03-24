@@ -4,7 +4,7 @@ package edu.uga.devdogs.course_information.webscraping;
  * @author Yuval Deshe
  * Represents an entry for a Course at UGA.
  */
-public class Course {
+public class Course2 {
     private String subject; // The four-letter String representing the course subject (e.g. CSCI).
     private String courseNumber; // The course number (e.g. 1302).
     private String title; //ie intro to software development
@@ -27,7 +27,7 @@ public class Course {
     /**
      * Constructs a {@code Course} object.
      */
-    public Course() {
+    public Course2() {
         this("","","","",-1,"","","","","","","","","","",-1, -1);
     } // Course
 
@@ -53,7 +53,7 @@ public class Course {
      * @param classSize the total number of seats in the course.
      * @param availableSeats the amount of available seats in the course.
      */
-    public Course(String subject,
+    public Course2(String subject,
                   String courseNumber,
                   String title,
                   String department,
@@ -335,4 +335,29 @@ public class Course {
     public void setCrn(int crn) {
         this.crn = crn;
     } // setCrn
+
+
+ @Override
+public String toString() {
+    return "Course2{" +
+            "subject='" + subject + '\'' +
+            ", courseNumber='" + courseNumber + '\'' +
+            ", title='" + title + '\'' +
+            ", department='" + department + '\'' +
+            ", crn=" + crn +
+            ", sec='" + sec + '\'' +
+            ", stat='" + stat + '\'' +
+            ", creditHours='" + creditHours + '\'' +
+            ", meetingDays='" + meetingDays + '\'' +
+            ", meetingTimes='" + meetingTimes + '\'' +
+            ", building='" + building + '\'' +
+            ", roomNumber='" + roomNumber + '\'' +
+            ", campus='" + campus + '\'' +
+            ", professor='" + professor + '\'' +
+            ", partOfTerm='" + partOfTerm + '\'' +
+            ", classSize=" + classSize +
+            ", availableSeats=" + availableSeats +
+            '}';
+}
+
 } // Course

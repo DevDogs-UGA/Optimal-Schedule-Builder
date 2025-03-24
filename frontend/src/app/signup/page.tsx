@@ -1,7 +1,6 @@
 // Fill out signup data
 // get started -> Home
 
-import { Button } from "@/components/ui/Button";
 import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
 

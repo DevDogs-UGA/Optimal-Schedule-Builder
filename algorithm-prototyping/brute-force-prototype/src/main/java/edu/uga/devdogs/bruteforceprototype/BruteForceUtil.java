@@ -2,6 +2,7 @@ package edu.uga.devdogs.bruteforceprototype;
 
 import edu.uga.devdogs.sampledataparser.records.*;
 import edu.uga.devdogs.sampledataparser.records.Class;
+import edu.uga.devdogs.bruteforceprototype.schedule.Schedule;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -83,8 +84,16 @@ public class BruteForceUtil {
      * @return a set of courses cleaned per the user's specification
      */
     public static Set<Course> dataPreHardFilter(Set<Course> inputCourses, HConstraints currentConstraints) throws Exception {
-
-
+        if(inputCourses == null || currentConstraints == null){     // Throws exception if parameter is null
+            throw new IllegalArgumentException("inputCourses and currentConstraints cannot be null");
+        }
+        Set<Course> validCourses  = new HashSet<>();
+        for (Course course : inputCourses) {   // Checks if course is in excluded courses and adds to return if isn't.
+            if(!currentConstraints.excludedCourses().contains(course)){
+                validCourses.add(course);
+            }
+        }
+        return validCourses;
     }
 
 
@@ -142,4 +151,32 @@ public class BruteForceUtil {
         }
     }
 
+    /**
+     * Ensures every class requested by the user makes it into the schedule.
+     * If any of the courses in {@code inputCourses} are not in a particular
+     * schedule of {@code validSchedules} an exception is thrown.
+     *
+     * @param inputCourses user inputted courses.
+     * @param validSchedules a set of valid generated schedules
+     * @throws Exception if {@code courseInSchedule} if true
+     */
+    public static void ensureInitialCourses(Set<Course> inputCourses, Set<Schedule> validSchedules) throws Exception {
+        boolean courseInSchedule = false;
+        // for every user inputted course
+        for (Course c : inputCourses) {
+            // for every valid schedule
+            for (Schedule s : validSchedules) {
+                // for every section in said schedule
+                for (Section sect : s.sections()) {
+                    // if the course the user inputted, c, is in the schedule, s
+                    if (c.courseCode().equals(sect.courseCode())) {
+                        courseInSchedule = true;
+                    } // if
+                } // for
+                if (!courseInSchedule) {
+                    throw new Exception("Schedule does not contain specified course.");
+                } // if
+            } // for
+        } // for
+    } // ensureInitialCourse
 }

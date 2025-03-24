@@ -1,6 +1,6 @@
 package edu.uga.devdogs.course_information.Building;
 
-import edu.uga.devdogs.course_information.Class.Class;
+import edu.uga.devdogs.course_information.Class.ClassEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,8 +10,10 @@ import jakarta.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /*
- * Java JPA entity represention for Building
+ * Java JPA entity representation for Building
  */
 @Entity
 public class Building implements Serializable {
@@ -20,64 +22,53 @@ public class Building implements Serializable {
      * Variables
      */
 
-    // serves as the id.
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long buildingId;
+    @JsonProperty("Building Code")
+    private long buildingCode;  // Building Code
 
-    /* This can't serve as the id, because many 
-    classes show the building number as NCRR or TBA/
-    */
-    private String buildingNumber;
+    @JsonProperty("Name")
+    private String name;         // Name of the building
 
-    private String name;
-
-    private String grid;
+    @JsonProperty("Address")
+    private String address;      // Address of the building
+    
+    @JsonProperty("Latitude")
+    private double latitude;     // Latitude coordinate
+    
+    @JsonProperty("Longitude")
+    private double longitude;    // Longitude coordinate
 
     /*
      * Relationships
-     * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
     @OneToMany(mappedBy = "building")
-    private List<Class> classes;
+    private List<ClassEntity> classes;
 
     /*
      * Constructors
      */
 
     // Default constructor
-    public Building() {
-    }
+    public Building() {}
 
-    // Constructor w/o buildingNumber
-    public Building(String name, String grid) {
+    // Constructor with parameters
+    public Building(long buildingCode, String name, String address, double latitude, double longitude) {
+        this.buildingCode = buildingCode;
         this.name = name;
-        this.grid = grid;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    // Constructor w/ buildingNumber
-    public Building(String buildingNumber, String name, String grid) {
-        this.buildingNumber = buildingNumber;
-        this.name = name;
-        this.grid = grid;
-        this.classes = classes;
-    }
-
-    
     /*
      * Getters and Setters
      */
-
-    public String getBuildingNumber() {
-        return buildingNumber;
+    public long getBuildingCode() {
+        return buildingCode;
     }
 
-    public long getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber;
+    public void setBuildingCode(long buildingCode) {
+        this.buildingCode = buildingCode;
     }
 
     public String getName() {
@@ -88,32 +79,49 @@ public class Building implements Serializable {
         this.name = name;
     }
 
-    public String getGrid() {
-        return grid;
+    public String getAddress() {
+        return address;
     }
 
-    public void setGrid(String grid) {
-        this.grid = grid;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public List<Class> getClasses() {
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public List<ClassEntity> getClasses() {
         return classes;
     }
 
-    public void setClasses(List<Class> classes) {
+    public void setClasses(List<ClassEntity> classes) {
         this.classes = classes;
     }
 
     /*
-     * toString
+     * toString Method
      */
     @Override
     public String toString() {
-        return "Building [ buildingNumber=" + buildingNumber 
-                + ", name='" + name 
-                + ", grid='" + grid 
-                + ']';
+        return "Building{" +
+                "buildingCode=" + buildingCode +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
-
-    
 }

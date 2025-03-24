@@ -5,11 +5,19 @@ import edu.uga.devdogs.sampledataparser.records.Section;
 import edu.uga.devdogs.sampledataparser.records.Class;
 import edu.uga.devdogs.sampledataparser.records.HConstraints;
 
+//import edu.uga.devdogs.course_information.service;
+//import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.EnumMap;
 import java.util.Set;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+
 
 
 /**
@@ -21,6 +29,10 @@ import java.util.Set;
  * @see <a href="https://drive.google.com/file/d/1J2_vlChwx_oWGYKRrmDkDBzWY6dORn6v/view?usp=sharing">Algorithm Prototyping</a>
  */
 public class ScheduleUtil {
+
+    // Used for bootstrap getting coords
+    //@Autowired
+    //private CourseInformationService courseInformationService;
 
     /**
      * Validates the given schedule by checking for any time conflicts between classes.
@@ -86,7 +98,7 @@ public class ScheduleUtil {
 
     /**
      * Checks if schedule or constraints is null and throws an exception if it is.
-     * 
+     *
      * @param schedule the schedule to validate
      * @param constraints the constraints to validate
      */
@@ -115,14 +127,36 @@ public class ScheduleUtil {
         // Iterates over each day in the schedule
         for (TreeSet<Class> day : schedule.days().values()) {
             // Converts the TreeSet to List for direct indexing
-            // TODO: Replace TreeSet with a sorted List for days in Schedule
             List<Class> dayList = new ArrayList<>(day);
 
             // Iterates over consecutive class pairs
             for (int i = 0; i < dayList.size() - 1; i++) {
                 Class currClass = dayList.get(i);
                 Class nextClass = dayList.get(i + 1);
-                double distance = distances.get(currClass.buildingName()).get(nextClass.buildingName());
+
+                double lat1 = 0.0;//courseInformationService.getLatitude(currClass.buildingNumber());
+                double lon1 = 0.0; //courseInformationService.getLongitude(currClass.buildingNumber());
+                double lon2 = 0.0; //courseInformationService.getLongitude(nextClass.buildingNumber());
+                double lat2 = 0.0; //courseInformationService.getLatitude(nextClass.buildingNumber());
+
+                // distance between latitudes and longitudes
+                double dLat = Math.toRadians(lat2 - lat1);
+                double dLon = Math.toRadians(lon2 - lon1);
+
+                // convert to radians
+                lat1 = Math.toRadians(lat1);
+                lat2 = Math.toRadians(lat2);
+
+                // apply Haversine formula
+                double a = Math.pow(Math.sin(dLat / 2), 2) +
+                        Math.pow(Math.sin(dLon / 2), 2) *
+                                Math.cos(lat1) *
+                                Math.cos(lat2);
+
+                // Earth's radius in miles
+                double rad = 3960;
+                double c = 2 * Math.asin(Math.sqrt(a));
+                double distance = rad * c;
 
                 if (distance > maxDistance) {
                     maxDistance = distance;
@@ -130,7 +164,9 @@ public class ScheduleUtil {
             }
         }
 
-        return maxDistance;
+        // dimensional analysis. Average human walking speed is 3 miles per hour.
+        // miles * (hours/miles) * (minutes/hours)
+        return maxDistance * (1/3) * (60);
     }
 
     /**
@@ -174,6 +210,63 @@ public class ScheduleUtil {
         return (double) sumOfTimeGaps / countOfClassGaps;
     }
 
+
+
+    /**
+     * Computes the earliest start time of all classes in a schedule
+     *
+     * @param schedule the schedule for which to compute the earliest start time
+     * @return the earliest start time (in hours) as a double. For example, 4:30 pm would be represented as 16.5
+     */
+    public static double computeStartTime(Schedule schedule) {
+        LocalTime earliestStartTime = LocalTime.of(23,59,59);
+        for (Section eachSection : schedule.sections()) {
+            for (Class eachClass : eachSection.classes()) {
+                if (eachClass.startTime().isBefore(earliestStartTime)) {
+                    earliestStartTime = eachClass.startTime();
+                }
+            }
+        }
+        return earliestStartTime.getHour() + (double) earliestStartTime.getMinute() / 60;
+    }
+
+
+
+    /**
+     * Computes the latest start time of all classes in a schedule
+     *
+     * @param schedule the schedule for which to compute the latest start time
+     * @return the latest start time (in hours) as a double. For example, 4:30 pm would be represented as 16.5
+     */
+    private static double computeEndTime(Schedule schedule) {
+        LocalTime latestStartTime = LocalTime.of(0,0,0);
+        for (Section eachSection : schedule.sections()) {
+            for (Class eachClass : eachSection.classes()) {
+                if (eachClass.startTime().isAfter(latestStartTime)) {
+                    latestStartTime = eachClass.startTime();
+                }
+            }
+        }
+        return latestStartTime.getHour() + (double) latestStartTime.getMinute() / 60;
+    }
+
+
+
+    /**
+     * Determines whether a given schedule has zero classes on a given day
+     *
+     * @param schedule the schedule for which to compute whether it has a gap day or not
+     * @param gapDay the day that is being checked as a gap day or not
+     * @return {@code true} if the given schedule has no classes on the given day, {@code false} if it has at least one class
+     */
+    private static boolean computeGapDay(Schedule schedule, DayOfWeek gapDay) {
+        EnumMap<DayOfWeek, TreeSet<Class>> days = schedule.days();
+        TreeSet<Class> classes = days.get(gapDay);
+        return classes.isEmpty();
+    }
+
+
+
     /**
      * Computes the overall objective score for the given schedule based on weighted objectives.
      * This method computes each objective, normalizes their values using min-max normalization, and computes a weighted sum.
@@ -185,10 +278,10 @@ public class ScheduleUtil {
      * @return the overall objective score for the schedule
      */
     public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances) {
-       // Checks if the parameters are valid
-       if (schedule == null || distances == null) {
-           throw new IllegalArgumentException("Parameters cannot be null");
-       }
+        // Checks if the parameters are valid
+        if (schedule == null || distances == null) {
+            throw new IllegalArgumentException("Parameters cannot be null");
+        }
 
         // The minimum rating on rate my professor is 1.0(if they have ratings).
         final double professorQualityMinimum = 1.0;
@@ -251,7 +344,7 @@ public class ScheduleUtil {
             possSConstraintsCount++;
         }
         if (softConstraints.prefStartTime() != null) {
-            possSConstraintScore += normalizeValue(computeStartTime(schedule), prefTimeMinimum, prefTimeMaximum);;
+            possSConstraintScore += normalizeValue(computeStartTime(schedule), prefTimeMinimum, prefTimeMaximum);
             possSConstraintsCount++;
         }
         if (softConstraints.prefEndTime() != null) {

@@ -14,6 +14,8 @@ const Building = z.object({
   classes: z.unknown().array(), // TODO: This field represents a join of potentially-circular references
 });
 
+export type Building = z.infer<typeof Building>;
+
 // This interface is defined in `~/services` but is so far unused.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Class = z.object({
@@ -27,21 +29,7 @@ const Class = z.object({
   building: z.unknown(), // TODO: This field represents a join of potentially-circular references
 });
 
-const CourseSection = z.object({
-  courseSectionId: z.number().int(),
-  crn: z.number().int(),
-  sec: z.number().int(),
-  stat: z.string().length(1),
-  creditHoursLow: z.number(),
-  creditHoursHigh: z.number(),
-  instructor: z.string(),
-  term: z.number().int(),
-  classSize: z.number().int(),
-  seatsAvailable: z.number().int(),
-  year: z.number().int(),
-  course: z.unknown(), // TODO: This field represents a join of potentially-circular references
-  class: z.unknown(), // TODO: This field represents a join of potentially-circular references
-});
+export type Class = z.infer<typeof Class>;
 
 const Course = z.object({
   courseId: z.number().int(),
@@ -57,6 +45,26 @@ const Course = z.object({
   semesterCourseOffered: z.string(),
   gradingSystem: z.string(),
 });
+
+export type Course = z.infer<typeof Course>;
+
+const CourseSection = z.object({
+  courseSectionId: z.number().int(),
+  crn: z.number().int(),
+  sec: z.number().int(),
+  stat: z.string().length(1),
+  creditHoursLow: z.number(),
+  creditHoursHigh: z.number(),
+  instructor: z.string(),
+  term: z.number().int(),
+  classSize: z.number().int(),
+  seatsAvailable: z.number().int(),
+  year: z.number().int(),
+  course: Course, // TODO: This field represents a join of potentially-circular references
+  class: z.unknown(), // TODO: This field represents a join of potentially-circular references
+});
+
+export type CourseSection = z.infer<typeof CourseSection>;
 
 /**
  * The default export of this file is a record of queries.
@@ -204,7 +212,7 @@ const queries = {
        */
       requirement: z.string(),
     }),
-    result: CourseSection.array(),
+    result: Course.array(),
   },
   /**
    * Retrieves a list of all academic subjects.
@@ -226,7 +234,7 @@ const queries = {
        */
       professor: z.string(),
     }),
-    result: CourseSection.array(),
+    result: Course.array(),
   },
   /**
    * Retrieves an array of courses for a given major.
@@ -237,6 +245,7 @@ const queries = {
       /**
        * @param major The major identifier for which to select courses (e.g. CSCI)
        */
+      major: z.string(),
     }),
     result: Course.array(),
   },
@@ -273,6 +282,22 @@ const queries = {
     route: "/buildings",
     params: z.object({}),
     result: Building.array(),
+  },
+  /**
+   * Gets all instructors
+   */
+  getAllInstructors: {
+    route: "/getAllInstructors",
+    params: z.object({}),
+    result: z.string().array(),
+  },
+  /**
+   * Gets all CRNs
+   */
+  getAllCRNs: {
+    route: "/getAllCRNs",
+    params: z.object({}),
+    result: z.number().int().array(),
   },
 };
 

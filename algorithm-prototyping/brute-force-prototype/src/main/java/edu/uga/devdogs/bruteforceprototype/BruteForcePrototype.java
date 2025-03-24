@@ -7,7 +7,6 @@ import edu.uga.devdogs.sampledataparser.records.HConstraints;
 import edu.uga.devdogs.sampledataparser.records.SConstraints;
 import edu.uga.devdogs.sampledataparser.records.Section;
 
-import java.sql.Array;
 import java.util.*;
 
 public class BruteForcePrototype {
@@ -42,9 +41,6 @@ public class BruteForcePrototype {
             return optimize(outputCourses, distances, softConstraints,false);
         } catch (Exception e){
             // If an exception arises from dataPreSoftFilter, we will call an overloaded version of optimize().
-            // The overloaded version is not written yet, so when it is actually implemented,
-            // this catch block will need updated accordingly.
-            System.out.println(e.getMessage());
             //outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
             return optimize(outputCourses, distances, softConstraints, true);
         }
@@ -76,7 +72,7 @@ public class BruteForcePrototype {
         List<Schedule> sortedSchedules = new ArrayList<>();
         List<Double> sortedOverallObjectives = new ArrayList<>();
 
-        
+
         // Makeshift Priority Queue; An array sorted by a variable (in this case, overallObjective).
         // Before an item is added, you find where it should be placed so that the List is still sorted correctly
         // Without having to call a special sorting function.
@@ -167,7 +163,7 @@ public class BruteForcePrototype {
             // Instantiates the set of sections for the next iteration
             HashSet<Section> nextSections = new HashSet<>(sections);
             nextSections.add(sectionToAdd);
-            
+
             generateValidSchedulesRecursive(nextSections, nextCoursesToAdd, validSchedules);
         }
     }
