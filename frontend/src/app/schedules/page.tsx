@@ -13,7 +13,6 @@ import { PiX } from "react-icons/pi";
 
 // Page for viewing a generated schedule / saved plan
 export default function SchedulePage() {
-
   // Background colors for course blocks
   const bgColors = [
     "bg-[#cc0128]",
@@ -100,6 +99,8 @@ export default function SchedulePage() {
           }
         }
       }
+      // Sort plans by title
+      plans.sort((a, b) => a.title.localeCompare(b.title));
       // savedPlans = plans. Increases the scope of the plans array
       setSavedPlans(plans);
 
@@ -184,7 +185,7 @@ export default function SchedulePage() {
           </div>
         </div>
         {/* Schedule display container */}
-        <div className="flex flex-row">
+        <div className="flex flex-grow flex-row overflow-y-auto">
           <WeekSchedule weekData={currentPlan.data} />
         </div>
       </div>
