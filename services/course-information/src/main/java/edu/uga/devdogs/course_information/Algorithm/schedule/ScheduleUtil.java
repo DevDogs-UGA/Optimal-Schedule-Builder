@@ -7,6 +7,7 @@ import edu.uga.devdogs.course_information.Algorithm.records.HConstraints;
 
 import edu.uga.devdogs.course_information.service.CourseInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +29,12 @@ import java.time.LocalTime;
  *
  * @see <a href="https://drive.google.com/file/d/1J2_vlChwx_oWGYKRrmDkDBzWY6dORn6v/view?usp=sharing">Algorithm Prototyping</a>
  */
+@Component
 public class ScheduleUtil {
 
     // Used for bootstrap getting coords
     @Autowired
-    private CourseInformationService courseInformationService;
+    private static CourseInformationService courseInformationService;
 
     /**
      * Validates the given schedule by checking for any time conflicts between classes.
@@ -272,7 +274,6 @@ public class ScheduleUtil {
      * The weighted sum increases as averageProfessorScore increases and decreases as maxDistance and averageIdleTime increase.
      *
      * @param schedule the schedule to evaluate
-     * @param distances a nested string map that represents distances between buildings on campus
      *
      * @return the overall objective score for the schedule
      */
