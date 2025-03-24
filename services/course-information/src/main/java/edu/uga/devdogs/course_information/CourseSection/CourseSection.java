@@ -30,9 +30,7 @@ public class CourseSection implements Serializable {
 
     private char stat;
 
-    private String creditHoursLow;
-
-    private String creditHoursHigh;
+    private String creditHours;
 
     private String instructor;
 
@@ -88,8 +86,7 @@ public class CourseSection implements Serializable {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
-    this.creditHoursLow = creditHoursLow;
-    this.creditHoursHigh = creditHoursHigh;
+    this.creditHours = creditHours;
     this.instructor = instructor;
     this.term = term;
     this.classSize = classSize;
@@ -106,8 +103,7 @@ String term, int classSize, int seatsAvailable, Course course, List<ClassEntity>
 this.crn = crn;
 this.sec = sec;
 this.stat = stat;
-this.creditHoursLow = creditHoursLow;
-this.creditHoursHigh = creditHoursHigh;
+this.creditHours = creditHours;
 this.instructor = instructor;
 this.term = term;
 this.classSize = classSize;
@@ -148,20 +144,12 @@ this.classes = classes;
         this.stat = stat;
     }
 
-    public String getCreditHoursLow() {
-        return creditHoursLow;
+    public String getCreditHours() {
+        return creditHours;
     }
 
-    public void setCreditHoursLow(String creditHoursLow) {
-        this.creditHoursLow = creditHoursLow;
-    }
-
-    public String getCreditHoursHigh() {
-        return creditHoursHigh;
-    }
-
-    public void setCreditHoursHigh(String creditHoursHigh) {
-        this.creditHoursHigh = creditHoursHigh;
+    public void setCreditHoursLow(String creditHours) {
+        this.creditHours = creditHours;
     }
 
     public String getInstructor() {
