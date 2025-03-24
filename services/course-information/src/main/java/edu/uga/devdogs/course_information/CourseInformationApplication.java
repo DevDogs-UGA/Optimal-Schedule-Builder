@@ -66,12 +66,14 @@ public class CourseInformationApplication {
                 Course courseEntity = new Course(
                     course.getSubject(), course.getCourseNumber(), course.getTitle(), course.getDepartment(), null );
                 CourseSection courseSection = new CourseSection(
-                course.getCrn(), course.getSec(), (course.getStat()).charAt(0),  course.getCreditHours().charAt(0), course.getProfessor(), course.getPartOfTerm(), course.getClassSize(), course.getAvailableSeats(), courseEntity, null);   
+
+                course.getCrn(), course.getSec(), (course.getStat()).charAt(0), course.getCreditHours().charAt(0) , course.getProfessor(), course.getPartOfTerm(), course.getClassSize(), course.getAvailableSeats(), 0, courseEntity, null, course.getMeetingDays(), course.getMeetingTimes());   
+
                 //System.out.println(courseSection.getTerm()); 
                 
                 courseEntities.add(courseEntity);
                 
-                if (courseSection.getSeatsAvailable() > 0) {
+                if (courseSection.getClassSize() > 0) {
                     courseSections.add(courseSection);
                 }
 
