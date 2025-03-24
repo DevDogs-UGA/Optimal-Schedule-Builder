@@ -251,7 +251,43 @@ public class CourseInformationService {
         return professor.getTotalReviews(); // Assuming totalReviews is an int field in Professor entity
     }
 
+    /**
+     * Retrieves the latitude for a given building code.
+     * @param buildingCode the building code for which to retrieve the latitude
+     * @return a double representing the latitude
+     */
+    public double getLatitude(String buildingCode) {
+        long buildingCodeLong = Long.parseLong(buildingCode);
+        List<Building> buildings = buildingRepository.findAll();
 
+        for (Building building : buildings) {
+            if (building.getBuildingCode() == buildingCodeLong) {
+                return building.getLatitude();
+            }
+        }
+
+        //if matching building not found, throw an exception
+        throw new BuildingNotFoundException();
+    }
+
+    /**
+     * Retrieves the longitude for a given building code.
+     * @param buildingCode the building code for which to retrieve the longitude
+     * @return a double representing the longitude
+     */
+    public double getLongitude(String buildingCode) {
+        long buildingCodeLong = Long.parseLong(buildingCode);
+        List<Building> buildings = buildingRepository.findAll();
+
+        for (Building building : buildings) {
+            if (building.getBuildingCode() == buildingCodeLong) {
+                return building.getLongitude();
+            }
+        }
+
+        //if matching building not found, throw an exception
+        throw new BuildingNotFoundException();
+    }
 
 
 }
