@@ -46,7 +46,17 @@ public class CourseSection implements Serializable {
 
     private String daysOfTheWeek;
 
+    private String meetingTime;
+    
 
+
+    public String getMeetingTime() {
+        return meetingTime;
+    }
+
+    public void setMeetingTime(String meetingTime) {
+        this.meetingTime = meetingTime;
+    }
 
     public String getDaysOfTheWeek() {
         return daysOfTheWeek;
@@ -74,7 +84,7 @@ public class CourseSection implements Serializable {
     public CourseSection() {}
 
     public CourseSection(int crn, String sec, char stat, String creditHoursLow, String creditHoursHigh, String instructor,
-        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes) {
+        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, String meetingTime) {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
@@ -87,6 +97,8 @@ public class CourseSection implements Serializable {
     this.year = year;
     this.course = course;
     this.classes = classes;
+    this.daysOfTheWeek = daysOfTheWeek;
+    this.meetingTime = meetingTime;
 }
 
 public CourseSection(int crn, String sec, char stat, String creditHoursLow, String creditHoursHigh, String instructor,
