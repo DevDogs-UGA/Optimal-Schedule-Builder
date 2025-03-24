@@ -656,8 +656,11 @@ export default function SavedPlans() {
         }
       }
     }
+    // Sort plans by title
+    plans.sort((a, b) => a.title.localeCompare(b.title));
     setSavedPlans(plans);
   }
+  
   // If something goes wrong, this message should be displayed in the browser console 
   catch (error) {
     console.error("Failed to parse local storage data: ", error);
