@@ -45,10 +45,44 @@ public class CourseInfoController {
         this.courseInformationService = courseInformationService;
     }
 
+    /**
+     * Returns the details of a specified CRN.
+     *
+     * @param crn The CRN of the section
+     * @return returns a section object for the CRN
+     */
+    @Operation(summary = "get section by crn", description = "Retrieves a section from the given CRN.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Section found"),
+            @ApiResponse(responseCode = "400", description = "Invalid CRN"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/section-by-crn")
+    @Tag(name="course-information")
+    public ResponseEntity<CourseSection> getSectionDetailsByCrn(@RequestParam String crn) {
+
+        //return 400 for empty CRN
+        if (crn.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        try {
+            //Call method to get section details
+            CourseSection sectionDetails = courseInformationService.getSectionDetailsByCrn(crn);
+
+            //Return the section if found
+            return ResponseEntity.ok(sectionDetails);
+
+        } catch (Exception e) {
+
+            //Return 500 if a server error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
    
     /**
      * Asks for list of course information that relates to the 
-     * @param professor given. Not in use as of 3/10/25.
+     * @param professor given.
      * 
      * @param professor name of the professor teaching the course
      * @return course information list that's related to the given professor.
@@ -111,41 +145,7 @@ public class CourseInfoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-    /**
-     * Returns the details of a specified CRN. Not in use as of 3/10/25.
-     * 
-     * @param crn The CRN of the section
-     * @return returns a section object for the CRN
-     */
-    @Operation(summary = "get section by crn", description = "Retrieves a section from the given CRN.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Section found"),
-        @ApiResponse(responseCode = "400", description = "Invalid CRN"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/section-by-crn")
-    @Tag(name="course-information")
-    public ResponseEntity<CourseSection> getCourseEntity(@RequestParam String crn) {
-
-        //return 400 for empty CRN
-        if (crn.isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        try {
-            //Call method to get section details
-            CourseSection sectionDetails = courseInformationService.getSectionDetailsByCrn(crn);
-
-            //Return the section if found
-            return ResponseEntity.ok(sectionDetails);
-
-        } catch (Exception e) {
-
-            //Return 500 if a server error occurs
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
+  
     /**
      * Retrieves course details for a given CRN.
      *
@@ -172,59 +172,7 @@ public class CourseInfoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-    /**
-     * Retrieves a list of all building objects. Not in use as of 3/10/25.
-     *
-     * @return A list of all building objects in JSON format
-     */
-    @Operation(summary = "Get all buildings", description = "Retrieves a list of all building objects.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Buildings found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/buildings")
-    @Tag(name="course-information")
-    public ResponseEntity<List<Building>> getAllBuildings() {
-        try {
-            List<Building> buildings = courseInformationService.getAllBuildings();
-            return ResponseEntity.ok(buildings);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-    /**
-     * Gets a course's special type (e.g. honors/lab/online) from a course ID. Not in use as of 3/10/25.
-     *
-     * @param courseId The course ID of the course to find the special types.
-     * @return A list of Strings that correspond to the special types of that course.
-     */
-    @Operation(summary = "Get special course type by crn", description = "Retrieves if the section is honors, online, or lab based on given crn")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Course found"),
-            @ApiResponse(responseCode = "400", description = "Invalid course CRN"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/course/specialCourseTypes")
-    public ResponseEntity<List<String>> getSpecialCourseTypesFromId(
-            @RequestParam(value = "crn", required = true) String courseId
-    ) {
-        if (courseId == null || courseId.isEmpty()) {
-            return ResponseEntity.badRequest().body(Collections.emptyList());
-        }
-
-        try {
-            List<String> specialCourseType = new ArrayList<>();
-            specialCourseType.add(courseInformationService.getCourseTypeById(courseId));
-
-            return ResponseEntity.ok(specialCourseType);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList("An error occurred while fetching course types."));
-        }
-    }
-
+  
     /**
      * Retrieves a list of all academic subjects at UGA .
      *
@@ -249,108 +197,6 @@ public class CourseInfoController {
         } catch (Exception e) {
 
             // Return 500 if a server error occurs
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-
-    /**
-     * Retrieves course information based on the given term, like Fall or Summer.
-     * Not in use as of 3/10/25.
-     *
-     * @param term The term for which the course has to be in.
-     * @return A "Course" List containing the course information from a specific term.
-     */
-    @Operation(summary = "Get courses by term", description = "Retrieves courses based on the given term")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Course found"),
-            @ApiResponse(responseCode = "400", description = "Invalid term"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
-    })
-    @GetMapping("/term")
-    @Tag(name = "bulletin")
-    public ResponseEntity<List<Course>> getCourseByTerm(@RequestParam(value = "term", required = true) String term) {
-
-        if(term.isEmpty()){
-            return ResponseEntity.badRequest().body(null); //Returns 400 if parameter isn't given
-        }
-
-        try {
-            List<Course> courseList = courseInformationService.getCoursesByTerm(term); //fetches the courses based on term
-
-            return ResponseEntity.ok(courseList); //Returns course information if everything is correct
-
-        } catch (Exception e) {
-            //Catches any server problems or exceptions
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-
-    }
-
-    /**
-     * Retrieves co-requisites for a given course ID or CRN. Not in use as of 3/10/25.
-     *
-     * @param courseId The ID of the course to retrieve co-requisites for.
-     * @return A list of course objects that are co-requisites for the given course.
-     */
-    @Operation(summary = "Get coreqs by course ID", description = "Retrieves co-requisites based on the provided course ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Course found"),
-            @ApiResponse(responseCode = "400", description = "Invalid course ID"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/course/coreqs")
-    public ResponseEntity<List<Course>> getCoReqs(@RequestParam(value = "courseId", required = false) String courseId) {
-        // Check if courseId is null or empty
-        if (courseId == null || courseId.isEmpty()) {
-            return ResponseEntity.badRequest().body(null); // Return 400 if parameter is not provided
-        }
-
-        try {
-            // Fetch co-requisite courses using the courseId or crn
-            List<Course> coReqs = courseInformationService.getCoReqCourses(courseId);
-
-            // Return the list of co-requisite courses
-            return ResponseEntity.ok(coReqs);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-
-    /**
-     * Retrieves pre-requisites for a given course ID or CRN. Not in use as of 3/10/25.
-     *
-     * @param courseId The ID of the course to retrieve pre-requisites for. (optional)
-     * @param crn The CRN of the course to retrieve pre-requisites for. (optional)
-     * @return A list of course objects that are pre-requisites for the given course.
-     */
-    @Operation(summary = "Get prereqs by course ID", description = "Retrieves pre-requisites based on the provided course ID or CRN.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Course found"),
-            @ApiResponse(responseCode = "400", description = "Invalid course ID"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/course/prereqs")
-    public ResponseEntity<List<Course>> getPreReqs(
-            @RequestParam(value = "courseId", required = false) String courseId,
-            @RequestParam(value = "crn", required = false) String crn
-    ) {
-        // Check if both courseId and crn are null or empty
-        if ((courseId == null || courseId.isEmpty()) && (crn == null || crn.isEmpty())) {
-            return ResponseEntity.badRequest().body(null); // Return 400 if neither parameter is provided
-        }
-
-        try {
-            // Fetch pre-requisite courses using the courseId or crn
-            List<Course> preReqs = courseInformationService.getPreReqCourses(courseId, crn);
-
-            // Return the list of pre-requisite courses
-            return ResponseEntity.ok(preReqs);
-
-        } catch (Exception e) {
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

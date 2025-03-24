@@ -82,6 +82,39 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
     return () => controller.abort();
   }, [handleScroll]);
 
+  /*
+   * Create lines for each hour under each day. (8AM to 10PM)
+   */
+  const createHourlySections = () => {
+    const sections = [];
+    const startHour = 8; // 8AM
+    const endHour = 22; // 10PM
+    const totalHours = endHour - startHour + 1;
+    const sectionHeight = 50 / totalHours;
+    for (let hour = startHour; hour <= endHour; hour++) {
+      // convert 24-hour to am/pm
+      const ampm = hour > 12 ? hour - 12 : hour;
+      const period = hour >= 12 ? "PM" : "AM";
+      const timeString = `${ampm}:00 ${period}`;
+      sections.push(
+        <div
+          key={hour}
+          className="h- relative w-full border-t border-gray-300"
+          style={{
+            height: `${sectionHeight}%`,
+            top: `${(hour - startHour) * sectionHeight}%`,
+            zIndex: 0, // lines stay behind course blocks
+          }}
+        >
+          <span className="absolute left-0 px-4 text-sm text-gray-500">
+            {timeString}
+          </span>
+        </div>,
+      );
+    }
+    return sections;
+  };
+
   return (
     <div className="relative z-0 mx-auto w-screen max-w-[1800px] overflow-hidden px-8">
       <button
@@ -96,26 +129,32 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
       </button>
 
       <section
-        className="grid h-[540px] w-full snap-x snap-mandatory grid-cols-[1rem_repeat(5,calc((100%-1rem)/var(--cols)))] overflow-x-auto scroll-smooth [--cols:1] sm:[--cols:2] md:overflow-hidden lg:[--cols:3] xl:[--cols:4] 2xl:[--cols:5]"
+        className="scroll-smoothp-1 m-2 grid h-[750px] w-full snap-x snap-mandatory grid-cols-[1rem_repeat(5,calc((100%-1rem)/var(--cols)))] overflow-x-auto rounded-lg bg-pink-200/50 p-4 [--cols:1] sm:[--cols:2] md:overflow-hidden lg:[--cols:3] xl:[--cols:4] 2xl:[--cols:5]"
         ref={scrollportRef}
       >
         <div />
 
         {Object.entries(weekData).map(([day, classes]) => (
           <div className="snap-end snap-always pr-4" data-title={day} key={day}>
-            <article className="flex h-full w-full flex-col gap-4 rounded-xl bg-pink-200/50 px-4 py-6">
-              <h2 className="text text-xl font-bold">{day}</h2>
-              <div>
-                {classes.map((classData, index) => (
-                  <DayClass
-                    key={`${day}-${classData.classTitle}-${index}`}
-                    {...classData}
-                    timeDifference={differenceInMinutes(
-                      new Date(`1970/01/01 ${classData.timeStart}`),
-                      new Date("1970/01/01 8:00 am"),
-                    )}
-                  />
-                ))}
+            <article className="flex h-full w-full flex-col gap-4 rounded-xl bg-white px-0 py-0">
+              <h2 className="text rounded-lg bg-[#222233] px-4 py-3 text-center text-xl font-bold text-white">
+                {day}
+              </h2>
+              <div className="relative h-full">
+                {createHourlySections()}
+                {classes.map((classData, index) => {
+                  const startDiff = differenceInMinutes(
+                    new Date(`1970/01/01 ${classData.timeStart}`),
+                    new Date("1970/01/01 3:06 pm"), // This time is not correct it should be 8:00 AM, but it positions the course blocks correctly
+                  );
+                  return (
+                    <DayClass
+                      key={`${day}-${classData.classTitle}-${index}`}
+                      {...classData}
+                      timeDifference={startDiff}
+                    />
+                  );
+                })}
               </div>
             </article>
           </div>

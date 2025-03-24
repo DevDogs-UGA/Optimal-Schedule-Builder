@@ -6,6 +6,54 @@ import WeekSchedule from "@/components/schedules/WeekSchedule";
 import Link from "next/link";
 
 export default function SchedulePage() {
+  const bgColors = [
+    "bg-[#cc0128]",
+    "bg-[#bc8da7]",
+    "bg-[#0db1b1]",
+    "bg-[#53917e]",
+    "bg-[#202c59]",
+  ];
+
+  // Map colors to course (if the course includes a lab, drop the L from the string)
+  const colorMapping: Record<string, string> = {};
+  const usedColors: Set<string> = new Set<string>();
+
+  function getBgColorForClass(classTitle: string): string {
+    // Check if color has already been used
+    if (colorMapping[classTitle]) {
+      return colorMapping[classTitle];
+    }
+
+    // Find an unused color
+    let colorToAssign: string | undefined;
+
+    // Assign unused color
+    if (usedColors.size < bgColors.length) {
+      for (const color of bgColors) {
+        if (!usedColors.has(color)) {
+          colorToAssign = color;
+          usedColors.add(color); // Mark color as used
+          break;
+        }
+      }
+    } else {
+      // All colors have been used, so reset colors to be reused
+      usedColors.clear();
+
+      // Reassign the color to the first class that needs a color
+      colorToAssign = bgColors[usedColors.size % bgColors.length];
+      usedColors.add(colorToAssign!); // ! asserts variable to not be read as undefined
+    }
+    // If no color assigned
+    if (!colorToAssign) {
+      colorToAssign = "bg-gray-500";
+    }
+
+    // Store the assign color for classTitle
+    colorMapping[classTitle] = colorToAssign;
+    return colorToAssign;
+  }
+
   const weekScheduleData: WeekScheduleType = {
     Monday: [
       {
@@ -27,7 +75,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-bulldog-red",
+        bgColor: getBgColorForClass("CSCI 3030"),
         borderColor: "border-bulldog-red",
         currentDay: "MW",
         otherTimes: ["F", "8:00 am - 8:50 am", "Chemistry 100"],
@@ -51,7 +99,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-bulldog-red",
+        bgColor: getBgColorForClass("CSCI 1302"),
         borderColor: "border-bulldog-red",
         currentDay: "M",
         otherTimes: ["TR", "9:35 am - 10:50 am", "Food Sci 100"],
@@ -75,7 +123,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-dev-dog-blue",
+        bgColor: getBgColorForClass("BIOL 1103"),
         borderColor: "border-dev-dog-blue",
 
         currentDay: "MWF",
@@ -102,7 +150,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-bulldog-red",
+        bgColor: getBgColorForClass("CSCI 1302"),
         borderColor: "border-bulldog-red",
         currentDay: "TR",
         otherTimes: ["M", "10:20 am - 11:10 am", "Conner 100"],
@@ -127,7 +175,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-lake-herrick",
+        bgColor: getBgColorForClass("MUSI 2300"),
         borderColor: "border-lake-herrick",
         currentDay: "TR",
         otherTimes: ["", "", ""],
@@ -153,7 +201,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-bulldog-red",
+        bgColor: getBgColorForClass("CSCI 3030"),
         borderColor: "border-bulldog-red",
         currentDay: "MW",
         otherTimes: ["F", "8:00 am - 8:50 am", "Chemistry 100"],
@@ -177,7 +225,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-dev-dog-blue",
+        bgColor: getBgColorForClass("BIOL 1103"),
         borderColor: "border-dev-dog-blue",
         currentDay: "MWF",
         otherTimes: ["", "", ""],
@@ -203,7 +251,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-bulldog-red",
+        bgColor: getBgColorForClass("CSCI 1302"),
         borderColor: "border-bulldog-red",
         currentDay: "TR",
         otherTimes: ["M", "10:20 am - 11:10 am", "Conner 100"],
@@ -227,7 +275,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-lake-herrick",
+        bgColor: getBgColorForClass("MUSI 2300"),
         borderColor: "border-lake-herrick",
         currentDay: "TR",
         otherTimes: ["", "", ""],
@@ -251,7 +299,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-dev-dog-blue",
+        bgColor: getBgColorForClass("BIOL 1103"),
         borderColor: "border-dev-dog-blue",
         currentDay: "R",
         otherTimes: ["", "", ""],
@@ -277,7 +325,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-bulldog-red",
+        bgColor: getBgColorForClass("CSCI 3030"),
         borderColor: "border-bulldog-red",
         currentDay: "F",
         otherTimes: ["MW", "8:00 - 8:50 am", "Boyd 100"],
@@ -301,7 +349,7 @@ export default function SchedulePage() {
         openSeats: 100,
         maxSeats: 100,
         waitlist: 0,
-        bgColor: "bg-dev-dog-blue",
+        bgColor: getBgColorForClass("BIOL 1103"),
         borderColor: "border-dev-dog-blue",
         currentDay: "MWF",
         otherTimes: ["", "", ""],

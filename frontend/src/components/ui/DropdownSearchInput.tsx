@@ -44,7 +44,8 @@ export const DropdownSearchInput = ({
   };
 
   //Handles clicking on a dropdown item
-  const handleClick = (e: React.MouseEvent, index: number) => {
+  //"index: number" parameter never used
+  const handleClick = (e: React.MouseEvent) => {
     const selectedValue = e.currentTarget.textContent ?? "";
     setQuery(selectedValue);
     setIsOpen((prev) => !prev);
@@ -113,7 +114,7 @@ export const DropdownSearchInput = ({
           {filteredData.map((item, index) => (
             <li
               key={index}
-              onClick={(e) => handleClick(e, index)}
+              onClick={(e) => handleClick(e)}
               className="bg-inherit px-2 py-1 hover:brightness-75"
               tabIndex={0}
               onKeyDown={handleKeyPress}

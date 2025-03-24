@@ -1,12 +1,13 @@
-package edu.uga.devdogs.bruteforceprototype.schedule;
+package edu.uga.devdogs.course_information.Algorithm.schedule;
 
-import edu.uga.devdogs.sampledataparser.records.SConstraints;
-import edu.uga.devdogs.sampledataparser.records.Section;
-import edu.uga.devdogs.sampledataparser.records.Class;
-import edu.uga.devdogs.sampledataparser.records.HConstraints;
+import edu.uga.devdogs.course_information.Algorithm.records.SConstraints;
+import edu.uga.devdogs.course_information.Algorithm.records.Section;
+import edu.uga.devdogs.course_information.Algorithm.records.Class;
+import edu.uga.devdogs.course_information.Algorithm.records.HConstraints;
 
-//import edu.uga.devdogs.course_information.service;
-//import org.springframework.beans.factory.annotation.Autowired;
+import edu.uga.devdogs.course_information.service.CourseInformationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +29,12 @@ import java.time.LocalTime;
  *
  * @see <a href="https://drive.google.com/file/d/1J2_vlChwx_oWGYKRrmDkDBzWY6dORn6v/view?usp=sharing">Algorithm Prototyping</a>
  */
+@Component
 public class ScheduleUtil {
 
     // Used for bootstrap getting coords
-    //@Autowired
-    //private CourseInformationService courseInformationService;
+    @Autowired
+    private static CourseInformationService courseInformationService;
 
     /**
      * Validates the given schedule by checking for any time conflicts between classes.
@@ -114,12 +116,11 @@ public class ScheduleUtil {
      * between consecutive classes.
      *
      * @param schedule the schedule for which to compute the maximum distance
-     * @param distances a nested string map that represents distances between buildings on campus
      * @return the maximum distance between buildings for consecutive classes
      */
-    public static double computeMaxDistance(Schedule schedule, Map<String, Map<String, Double>> distances) {
-        if (schedule == null || distances == null) {
-            throw new IllegalArgumentException("Schedule or Distances cannot be null");
+    public static double computeMaxDistance(Schedule schedule) {
+        if (schedule == null) {
+            throw new IllegalArgumentException("Schedule cannot be null");
         }
 
         double maxDistance = 0.0;
@@ -134,10 +135,10 @@ public class ScheduleUtil {
                 Class currClass = dayList.get(i);
                 Class nextClass = dayList.get(i + 1);
 
-                double lat1 = 0.0;//courseInformationService.getLatitude(currClass.buildingNumber());
-                double lon1 = 0.0; //courseInformationService.getLongitude(currClass.buildingNumber());
-                double lon2 = 0.0; //courseInformationService.getLongitude(nextClass.buildingNumber());
-                double lat2 = 0.0; //courseInformationService.getLatitude(nextClass.buildingNumber());
+                double lat1 = courseInformationService.getLatitude(currClass.buildingNumber());
+                double lon1 = courseInformationService.getLongitude(currClass.buildingNumber());
+                double lon2 = courseInformationService.getLongitude(nextClass.buildingNumber());
+                double lat2 = courseInformationService.getLatitude(nextClass.buildingNumber());
 
                 // distance between latitudes and longitudes
                 double dLat = Math.toRadians(lat2 - lat1);
@@ -273,13 +274,12 @@ public class ScheduleUtil {
      * The weighted sum increases as averageProfessorScore increases and decreases as maxDistance and averageIdleTime increase.
      *
      * @param schedule the schedule to evaluate
-     * @param distances a nested string map that represents distances between buildings on campus
      *
      * @return the overall objective score for the schedule
      */
-    public static double computeOverallObjective(Schedule schedule, Map<String, Map<String, Double>> distances) {
+    public static double computeOverallObjective(Schedule schedule) {
         // Checks if the parameters are valid
-        if (schedule == null || distances == null) {
+        if (schedule == null) {
             throw new IllegalArgumentException("Parameters cannot be null");
         }
 
@@ -298,7 +298,7 @@ public class ScheduleUtil {
 
         // finds the values and then plugs them into the normalize function with the minimum and maximum.
         double normalizedProfessorQuality = normalizeValue(computeAverageProfessorQuality(schedule), professorQualityMinimum, professorQualityMaximum);
-        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule, distances), maxDistanceMinimum, maxDistanceMaximum);
+        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule), maxDistanceMinimum, maxDistanceMaximum);
         double normalizedAverageIdleTime = normalizeValue(computeAverageIdleTime(schedule), averageIdleTimeMinimum, averageIdleTimeMaximum);
 
         // computes the weighted sum. normalizedMaxDistance and normalizedAverageIdleTime are being subtracted from 1 since
@@ -306,9 +306,9 @@ public class ScheduleUtil {
         return normalizedProfessorQuality / 3 + (1 - normalizedMaxDistance) / 3 + (1 - normalizedAverageIdleTime) / 3;
     }
 
-    public static double computeOverallObjectiveExtended(Schedule schedule, Map<String, Map<String, Double>> distances, SConstraints softConstraints) {
+    public static double computeOverallObjectiveExtended(Schedule schedule, SConstraints softConstraints) {
         // Checks if the parameters are valid
-        if (schedule == null || distances == null) {
+        if (schedule == null) {
             throw new IllegalArgumentException("Parameters cannot be null");
         }
 
@@ -332,7 +332,7 @@ public class ScheduleUtil {
 
         // finds the values and then plugs them into the normalize function with the minimum and maximum.
         double normalizedProfessorQuality = normalizeValue(computeAverageProfessorQuality(schedule), professorQualityMinimum, professorQualityMaximum);
-        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule, distances), maxDistanceMinimum, maxDistanceMaximum);
+        double normalizedMaxDistance = normalizeValue(computeMaxDistance(schedule), maxDistanceMinimum, maxDistanceMaximum);
         double normalizedAverageIdleTime = normalizeValue(computeAverageIdleTime(schedule), averageIdleTimeMinimum, averageIdleTimeMaximum);
 
         // Taking an average of all the optional softConstraints and then multiply the average by 0.25.

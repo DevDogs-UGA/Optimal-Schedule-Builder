@@ -1,7 +1,7 @@
-package edu.uga.devdogs.bruteforceprototype.schedule;
+package edu.uga.devdogs.course_information.Algorithm.schedule;
 
-import edu.uga.devdogs.sampledataparser.records.Section;
-import edu.uga.devdogs.sampledataparser.records.Class;
+import edu.uga.devdogs.course_information.Algorithm.records.Section;
+import edu.uga.devdogs.course_information.Algorithm.records.Class;
 
 import java.time.DayOfWeek;
 import java.util.*;

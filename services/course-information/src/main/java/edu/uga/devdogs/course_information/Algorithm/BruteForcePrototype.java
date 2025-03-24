@@ -1,11 +1,11 @@
-package edu.uga.devdogs.bruteforceprototype;
+package edu.uga.devdogs.course_information.Algorithm;
 
-import edu.uga.devdogs.bruteforceprototype.schedule.Schedule;
-import edu.uga.devdogs.bruteforceprototype.schedule.ScheduleUtil;
-import edu.uga.devdogs.sampledataparser.records.Course;
-import edu.uga.devdogs.sampledataparser.records.HConstraints;
-import edu.uga.devdogs.sampledataparser.records.SConstraints;
-import edu.uga.devdogs.sampledataparser.records.Section;
+import edu.uga.devdogs.course_information.Algorithm.schedule.Schedule;
+import edu.uga.devdogs.course_information.Algorithm.schedule.ScheduleUtil;
+import edu.uga.devdogs.course_information.Algorithm.records.Course;
+import edu.uga.devdogs.course_information.Algorithm.records.HConstraints;
+import edu.uga.devdogs.course_information.Algorithm.records.SConstraints;
+import edu.uga.devdogs.course_information.Algorithm.records.Section;
 
 import java.util.*;
 
@@ -17,12 +17,11 @@ public class BruteForcePrototype {
      * Calls most of the other functions, manages error handling, and handles I/O.
      *
      * @param inputCourses a set of requested courses to generate an optimal schedule from
-     * @param distances a nested string map that represents distances between buildings on campus
      * @param softConstraints the soft constraints on the schedule
      * @param hardConstraints the hard constraints on the schedule
      * @return the output of optimize()
      */
-    public static int[][] algorithmDriver(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,
+    public static int[][] algorithmDriver(Set<Course> inputCourses,
                                           SConstraints softConstraints, HConstraints hardConstraints){
         Set<Course> outputCourses = new HashSet<>(inputCourses);
 
@@ -38,11 +37,11 @@ public class BruteForcePrototype {
         try {
             outputCourses = BruteForceUtil.dataPreSoftFilter(outputCourses, softConstraints);
             //outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
-            return optimize(outputCourses, distances, softConstraints,false);
+            return optimize(outputCourses, softConstraints,false);
         } catch (Exception e){
             // If an exception arises from dataPreSoftFilter, we will call an overloaded version of optimize().
             //outputCourses = BruteForceUtil.dayOfWeekConvert(outputCourses);
-            return optimize(outputCourses, distances, softConstraints, true);
+            return optimize(outputCourses, softConstraints, true);
         }
     }
 
@@ -55,10 +54,9 @@ public class BruteForcePrototype {
      * and returns the first five items of the list.
      *
      * @param inputCourses a set of courses to generate an optimal schedule from
-     * @param distances a nested string map that represents distances between buildings on campus
      * @return the five schedules with the highest overall objective score based on the input courses and weights
      */
-    public static int[][] optimize(Set<Course> inputCourses, Map<String, Map<String, Double>> distances,
+    public static int[][] optimize(Set<Course> inputCourses,
                                    SConstraints soft, boolean usesSoft) {
         Set<Schedule> validSchedules = generateValidSchedules(inputCourses);
 
@@ -81,9 +79,9 @@ public class BruteForcePrototype {
         for (Schedule schedule : validSchedules) {
             double overallObjective = 0;
             if (usesSoft) {
-                overallObjective = ScheduleUtil.computeOverallObjectiveExtended(schedule, distances, soft);
+                overallObjective = ScheduleUtil.computeOverallObjectiveExtended(schedule, soft);
             } else {
-                overallObjective = ScheduleUtil.computeOverallObjective(schedule, distances);
+                overallObjective = ScheduleUtil.computeOverallObjective(schedule);
             }
             // Starting from the back of the array, find where the new schedule belongs based on overallObjective.
             int i = sortedSchedules.size();
