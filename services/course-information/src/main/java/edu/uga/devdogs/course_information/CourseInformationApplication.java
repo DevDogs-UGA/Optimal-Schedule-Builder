@@ -79,6 +79,7 @@ public class CourseInformationApplication {
                     null,
                     course.getMeetingDays(),
                     course.getMeetingTimes());   
+
                 //System.out.println(courseSection.getTerm()); 
                 
                 courseEntities.add(courseEntity);
@@ -98,6 +99,7 @@ public class CourseInformationApplication {
             courseRepository.saveAll(courseEntities);
             courseSectionRepository.saveAll(courseSections);
             System.out.println("Saved to database");
+   
         };
     }
     @Bean

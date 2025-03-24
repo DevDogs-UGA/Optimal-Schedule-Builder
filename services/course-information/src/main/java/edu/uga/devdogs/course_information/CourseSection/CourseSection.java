@@ -29,7 +29,7 @@ public class CourseSection implements Serializable {
     private String sec;
 
     private char stat;
-
+  
     private int creditHours;
 
     private String instructor;
@@ -86,7 +86,8 @@ public class CourseSection implements Serializable {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
-    this.creditHours = creditHours;
+    this.creditHoursLow = creditHoursLow;
+    this.creditHoursHigh = creditHoursHigh;
     this.instructor = instructor;
     this.term = term;
     this.classSize = classSize;
@@ -134,8 +135,8 @@ public class CourseSection implements Serializable {
         return creditHours;
     }
 
-    public void setCreditHoursLow(int creditHours) {
-        this.creditHours = creditHours;
+    public void setCreditHours(int creditHours) {
+        this.creditHoursHigh = creditHoursHigh;
     }
 
     public String getInstructor() {
