@@ -322,8 +322,7 @@ export default function SchedulePage() {
 
   return (
     <div className="mx-auto min-h-screen w-[100%]">
-      <div className="p-7 text-center text-blue-600">
-      </div>
+
       <WeekSchedule weekData={weekScheduleData} />
     </div>
   );
