@@ -86,6 +86,30 @@ public class CourseInformationService {
     }
 
     /**
+     * Service method for retrieving course details for a given CRN.
+     *
+     * @param crn the course reference number for which to retrieve course details
+     * @return the Course object associated with the CRN
+     * @throws CourseNotFoundException if no course section is found with the specified CRN
+     */
+    public Course getCourseDetailsByCrn(String crn) {
+        int intCrn = Integer.parseInt(crn);
+        CourseSection courseSection = courseSectionRepository.findByCrn(intCrn);
+
+        if (courseSection != null) {
+            Course course = courseSection.getCourse();
+
+            if (course != null) {
+                return course;
+            } else {
+                throw new CourseNotFoundException("Course details not found for CRN: " + crn);
+            }
+        } else {
+            throw new CourseNotFoundException("No course section found with CRN: " + crn);
+        }
+    }
+
+    /**
      * Method to get a list of Course objects matching the given major. The method
      * it calls in the JPA layer will be implemented later.
      * 
