@@ -10,11 +10,11 @@ import { PiHeart } from "react-icons/pi";
 import { PiArrowLeft } from "react-icons/pi";
 import { PiArrowRight } from "react-icons/pi";
 import { PiX } from "react-icons/pi";
-import { PiTrash } from "react-icons/pi";
 
 // Page for viewing a generated schedule / saved plan
 export default function SchedulePage() 
 {
+  // COURSE BLOCK BACKGROUND COLORS ON SCHEDULE DISPLAY
   // Background colors for course blocks
   const bgColors = [
     "bg-[#cc0128]",
@@ -64,6 +64,7 @@ export default function SchedulePage()
     return colorToAssign;
   }
 
+  // RETRIEVING SCHEDULES FROM BROWSER LOCAL STORAGE
   // Retrieve the current schedule data and title (from the SavedPlan component)
   const searchParams = useSearchParams();
   const savedPlan = searchParams.get("data");
@@ -180,10 +181,10 @@ export default function SchedulePage()
           </div>
           {/* Save/exit buttons: exit returns to saved plan list */}
           <div className="flex flex-row">
+            <PiHeart size={32} className="mr-3 mt-5 fill-bulldog-red" />
             <Link href={"/saved-plans"}>
               <PiX size={32} className="mr-3 mt-5 hover:fill-bulldog-red" />
             </Link>
-            <PiHeart size={32} className="mr-3 mt-5 fill-bulldog-red" />
           </div>
         </div>
         {/* Schedule display container */}

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import SavedPlan from "@/components/saved-plans/SavedPlan";
+import DeletePlan from "@/components/ui/DeletePlan";
 
 // Dummy Schedule #1: Remove as necessary
 // Be sure to update when the WeekSchedule component changes!
@@ -622,6 +623,7 @@ export default function SavedPlans() {
   }
 
   const [savedPlans, setSavedPlans] = useState<SavedPlanType[]>([]);
+  const [planToDelete, setPlanToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -654,7 +656,7 @@ export default function SavedPlans() {
           }
         }
       }
-      // Sort plans by title
+      // Sort plans by title, because apparently the browser can't be bothered to keep the order straight
       plans.sort((a, b) => a.title.localeCompare(b.title));
       setSavedPlans(plans);
     } catch (error) {
@@ -663,15 +665,39 @@ export default function SavedPlans() {
     }
   }, []);
 
+  const confirmDeletePlan = (title: string) => {
+    setPlanToDelete(title);
+  };
+
+  const deletePlan = () => {
+    if (planToDelete) {
+      localStorage.removeItem(planToDelete);
+      setSavedPlans((prevPlans) => prevPlans.filter((plan) => plan.title !== planToDelete));
+      setPlanToDelete(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setPlanToDelete(null);
+  };
+
   return (
     <div className="min-h-screen">
       <Navbar />
 
-      <div className="mb-10 ml-auto mr-auto mt-20 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl border-2 border-black bg-barely-pink">
+      <div className="mb-10 z-1 ml-auto mr-auto mt-20 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl border-2 border-black bg-barely-pink">
         {savedPlans.map((plan, index) => (
-          <SavedPlan key={index} planTitle={plan.title} plan={plan.data} />
+          <SavedPlan key={index} planTitle={plan.title} plan={plan.data}
+          onDelete={() => confirmDeletePlan(plan.title)} />
         ))}
       </div>
+      {planToDelete && (
+        <DeletePlan
+          onConfirm={deletePlan}
+          onCancel={cancelDelete}
+          planTitle={planToDelete}
+        />
+      )}
     </div>
   );
 }
