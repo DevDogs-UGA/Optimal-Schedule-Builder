@@ -19,7 +19,7 @@ export default function Page({ searchParams }: Props) {
         <SearchFilter />
         <section className="flex flex-col gap-3 sm:flex-row sm:justify-center">
           <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
-            <Link href={"/generate-schedule"}>Generate Schedule</Link>
+            <Link href={"/schedules"}>View Schedule</Link>
           </button>
         </section>
       </main>
