@@ -44,7 +44,7 @@ public class CourseInformationApplication {
     }
 
     @Bean
-    @Order(2)
+    @Order(1)
     CommandLineRunner courseSecCommandLineRunner(
         CourseSectionRepository courseSectionRepository,
         CourseRepository courseRepository,
@@ -69,7 +69,7 @@ public class CourseInformationApplication {
                     course.getCrn(),
                     course.getSec(), 
                     (course.getStat()).charAt(0), 
-                    (int) Math.round(Double.parseDouble(course.getCreditHours().split(" ")[0])),
+                    (int) Character.getNumericValue(course.getCreditHours().trim().charAt(0)),
                     course.getProfessor(), 
                     course.getPartOfTerm(), 
                     course.getClassSize(), 
