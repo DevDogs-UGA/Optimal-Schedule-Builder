@@ -4,7 +4,7 @@
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
 import Link from "next/link";
-import { Suspense } from 'react';
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { PiHeart } from "react-icons/pi";
