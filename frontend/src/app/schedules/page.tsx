@@ -189,10 +189,13 @@ export default function SchedulePage() {
           </div>
         </div>
         {/* Schedule display container */}
-        <Suspense fallback={<div>
-          <Button className="px-8 py-2" text="Loading..."
-          ></Button>
-            </div>}>
+        <Suspense
+          fallback={
+            <div>
+              <Button className="px-8 py-2" text="Loading..."></Button>
+            </div>
+          }
+        >
           <div className="flex flex-grow flex-row overflow-y-auto">
             <WeekSchedule weekData={currentPlan.data} />
           </div>
