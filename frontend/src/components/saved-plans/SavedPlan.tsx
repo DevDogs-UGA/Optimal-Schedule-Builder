@@ -18,10 +18,14 @@ interface PlanDisplayProps {
 
 // Saved Plan Component.
 // Contains each "banner" and action buttons for each of the user's saved plans.
-export default function SavedPlan({ planTitle, plan, onDelete }: PlanDisplayProps) {
-  <div> 
+export default function SavedPlan({
+  planTitle,
+  plan,
+  onDelete,
+}: PlanDisplayProps) {
+  <div>
     <Card></Card>
-  </div>
+  </div>;
   return (
     <div className="relative">
       <div className="m-5 flex h-24 w-[70vw] flex-row items-center rounded-xl bg-glory-glory-red"></div>
@@ -42,7 +46,7 @@ export default function SavedPlan({ planTitle, plan, onDelete }: PlanDisplayProp
           {/* Save button: WIP */}
           <PiHeart
             size={60}
-            className="m-2 fill-black transition fill-bulldog-red"
+            className="m-2 fill-black fill-bulldog-red transition"
           />
           {/* Open button (redirects to the schedules page with the schedule data)*/}
           <Link
@@ -53,7 +57,11 @@ export default function SavedPlan({ planTitle, plan, onDelete }: PlanDisplayProp
               className="m-2 fill-black transition hover:fill-bulldog-red"
             />
           </Link>
-          <PiTrash size={60} className="m-2 hover:fill-bulldog-red" onClick={onDelete} />
+          <PiTrash
+            size={60}
+            className="m-2 hover:fill-bulldog-red"
+            onClick={onDelete}
+          />
         </div>
       </div>
     </div>

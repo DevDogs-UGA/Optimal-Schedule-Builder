@@ -8,25 +8,29 @@ interface DeletePlanProps {
   planTitle: string;
 }
 
-export default function DeletePlan({ onConfirm, onCancel, planTitle }: DeletePlanProps) {
+export default function DeletePlan({
+  onConfirm,
+  onCancel,
+  planTitle,
+}: DeletePlanProps) {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="border-2 border-black bg-barely-pink p-5 rounded-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="rounded-lg border-2 border-black bg-barely-pink p-5">
         <div className="flex flex-col items-center">
-          <h2 className="text-black text-xl mb-4">Are you sure you want to delete the plan "{planTitle}"?</h2>
+          <h2 className="mb-4 text-xl text-black">
+            Are you sure you want to delete the plan "{planTitle}"?
+          </h2>
           <div className="flex flex-row space-x-4">
-          <Button
-                className="text-white hover:bg-black px-8 mr-5 py-2"
-                text="Yes"
-                onClick={onConfirm}
-            >
-            </Button>
             <Button
-                className="text-white hover:bg-black px-8 ml-5 py-2"
-                text="No"
-                onClick={onCancel}
-            >
-            </Button>
+              className="mr-5 px-8 py-2 text-white hover:bg-black"
+              text="Yes"
+              onClick={onConfirm}
+            ></Button>
+            <Button
+              className="ml-5 px-8 py-2 text-white hover:bg-black"
+              text="No"
+              onClick={onCancel}
+            ></Button>
           </div>
         </div>
       </div>

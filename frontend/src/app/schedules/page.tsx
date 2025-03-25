@@ -12,8 +12,7 @@ import { PiArrowRight } from "react-icons/pi";
 import { PiX } from "react-icons/pi";
 
 // Page for viewing a generated schedule / saved plan
-export default function SchedulePage() 
-{
+export default function SchedulePage() {
   // COURSE BLOCK BACKGROUND COLORS ON SCHEDULE DISPLAY
   // Background colors for course blocks
   const bgColors = [
@@ -188,7 +187,7 @@ export default function SchedulePage()
           </div>
         </div>
         {/* Schedule display container */}
-        <div className="flex flex-row flex-grow overflow-y-auto">
+        <div className="flex flex-grow flex-row overflow-y-auto">
           <WeekSchedule weekData={currentPlan.data} />
         </div>
       </div>

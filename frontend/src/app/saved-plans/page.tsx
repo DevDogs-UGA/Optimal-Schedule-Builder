@@ -672,7 +672,9 @@ export default function SavedPlans() {
   const deletePlan = () => {
     if (planToDelete) {
       localStorage.removeItem(planToDelete);
-      setSavedPlans((prevPlans) => prevPlans.filter((plan) => plan.title !== planToDelete));
+      setSavedPlans((prevPlans) =>
+        prevPlans.filter((plan) => plan.title !== planToDelete),
+      );
       setPlanToDelete(null);
     }
   };
@@ -685,10 +687,14 @@ export default function SavedPlans() {
     <div className="min-h-screen">
       <Navbar />
 
-      <div className="mb-10 z-1 ml-auto mr-auto mt-20 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl border-2 border-black bg-barely-pink">
+      <div className="z-1 mb-10 ml-auto mr-auto mt-20 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl border-2 border-black bg-barely-pink">
         {savedPlans.map((plan, index) => (
-          <SavedPlan key={index} planTitle={plan.title} plan={plan.data}
-          onDelete={() => confirmDeletePlan(plan.title)} />
+          <SavedPlan
+            key={index}
+            planTitle={plan.title}
+            plan={plan.data}
+            onDelete={() => confirmDeletePlan(plan.title)}
+          />
         ))}
       </div>
       {planToDelete && (
