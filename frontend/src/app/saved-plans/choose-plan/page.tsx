@@ -3,9 +3,9 @@
 // New User: -> Schedule View (\schedules)
 
 // make class blocks clickable to access more
+import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/Button";
-import Link from "next/link";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
 import { useState, useEffect } from "react";
