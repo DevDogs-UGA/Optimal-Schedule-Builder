@@ -1,5 +1,4 @@
 "use client";
-import DeletePlan from "../ui/DeletePlan";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import { PiNotePencil } from "react-icons/pi";
 import { PiHeart } from "react-icons/pi";
