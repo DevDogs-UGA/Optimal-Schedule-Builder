@@ -322,7 +322,6 @@ export default function SchedulePage() {
 
   return (
     <div className="mx-auto min-h-screen w-[100%]">
-
       <WeekSchedule weekData={weekScheduleData} />
     </div>
   );
