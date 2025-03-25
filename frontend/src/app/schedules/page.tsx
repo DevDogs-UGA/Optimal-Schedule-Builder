@@ -187,9 +187,9 @@ export default function SchedulePage() {
           </div>
         </div>
         {/* Schedule display container */}
-          <div className="flex flex-grow flex-row overflow-y-auto">
-            <WeekSchedule weekData={currentPlan.data} />
-          </div>
+        <div className="flex flex-grow flex-row overflow-y-auto">
+          <WeekSchedule weekData={currentPlan.data} />
+        </div>
       </div>
     </div>
   );
