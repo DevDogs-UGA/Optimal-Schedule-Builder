@@ -647,11 +647,11 @@ export default function SavedPlans() {
           // Retrieve data matching key
           const data = localStorage.getItem(key);
           // Only proceed if the data looks like a WeekSchedule component
-          if (data && data.startsWith('{"Monday"')) {
+          if (data?.startsWith('{"Monday"')) {
             // Parse the data from the JSON
             plans.push({
               title: key,
-              data: JSON.parse(data),
+              data: JSON.parse(data) as WeekScheduleType,
             });
           }
         }

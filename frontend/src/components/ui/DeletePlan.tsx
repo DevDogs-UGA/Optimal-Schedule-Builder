@@ -18,7 +18,7 @@ export default function DeletePlan({
       <div className="rounded-lg border-2 border-black bg-barely-pink p-5">
         <div className="flex flex-col items-center">
           <h2 className="mb-4 text-xl text-black">
-            Are you sure you want to delete the plan "{planTitle}"?
+            Are you sure you want to delete the plan &quot{planTitle}&quot?
           </h2>
           <div className="flex flex-row space-x-4">
             <Button

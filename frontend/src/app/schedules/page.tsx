@@ -92,11 +92,11 @@ export default function SchedulePage() {
           // Retrieve data matching key
           const data = localStorage.getItem(key);
           // Only proceed if the data looks like a WeekSchedule component
-          if (data && data.startsWith('{"Monday"')) {
+          if (data?.startsWith('{"Monday"')) {
             // Parse the data from the JSON
             plans.push({
               title: key,
-              data: JSON.parse(data),
+              data: JSON.parse(data) as WeekScheduleType,
             });
           }
         }
@@ -110,7 +110,7 @@ export default function SchedulePage() {
       if (savedPlan && planTitle) {
         const initialPlan = {
           title: planTitle,
-          data: JSON.parse(savedPlan),
+          data: JSON.parse(savedPlan) as WeekScheduleType,
         };
         // Get the index of the current plan and update the current plan index
         const initialIndex = plans.findIndex(
@@ -126,7 +126,7 @@ export default function SchedulePage() {
   /* The current plan/schedule is what is displayed on the page.
    * For safety, an empty schedule is assigned if the data from the array is null or cannot be read.
    */
-  const currentPlan = savedPlans[currentPlanIndex] || {
+  const currentPlan = savedPlans[currentPlanIndex] ?? {
     title: "",
     data: { Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [] },
   };
