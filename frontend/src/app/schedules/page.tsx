@@ -4,6 +4,7 @@
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
 import Link from "next/link";
+import { Suspense } from 'react';
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { PiHeart } from "react-icons/pi";
@@ -187,9 +188,11 @@ export default function SchedulePage() {
           </div>
         </div>
         {/* Schedule display container */}
-        <div className="flex flex-grow flex-row overflow-y-auto">
-          <WeekSchedule weekData={currentPlan.data} />
-        </div>
+        <Suspense fallback={<div>Loading...</div>}>
+          <div className="flex flex-grow flex-row overflow-y-auto">
+            <WeekSchedule weekData={currentPlan.data} />
+          </div>
+        </Suspense>
       </div>
     </div>
   );
