@@ -349,10 +349,12 @@ export default function ChoosePlan() {
             className="m-2 rounded-lg border-2 border-pebble-gray bg-dusty-pink px-4 py-2 font-semibold text-black hover:bg-barely-pink"
             text="Save"
           ></Button>
-          <Button
-            className="m-2 rounded-lg border-2 border-pebble-gray bg-dusty-pink px-4 py-2 font-semibold text-black hover:bg-barely-pink"
-            text="Create"
-          ></Button>
+          <Link href="/course-adding">
+            <Button
+              className="m-2 rounded-lg border-2 border-pebble-gray bg-dusty-pink px-4 py-2 font-semibold text-black hover:bg-barely-pink"
+              text="Create"
+            ></Button>
+          </Link>
         </div>
       </div>
 
