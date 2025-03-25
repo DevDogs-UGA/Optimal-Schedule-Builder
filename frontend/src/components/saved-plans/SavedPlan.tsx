@@ -4,6 +4,7 @@ import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import { PiNotePencil } from "react-icons/pi";
 import { PiHeart } from "react-icons/pi";
 import { PiArrowsOut } from "react-icons/pi";
+import { PiTrash } from "react-icons/pi";
 import Image from "next/image";
 import Link from "next/Link";
 
@@ -47,6 +48,7 @@ export default function SavedPlan({ planTitle, plan }: PlanDisplayProps) {
               className="m-2 fill-black transition hover:fill-bulldog-red"
             />
           </Link>
+          <PiTrash size={32} className="mr-3 mt-5 fill-bulldog-red" />
         </div>
       </div>
     </div>
