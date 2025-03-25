@@ -6,7 +6,7 @@ import { PiHeart } from "react-icons/pi";
 import { PiArrowsOut } from "react-icons/pi";
 import { PiTrash } from "react-icons/pi";
 import Image from "next/image";
-import Link from "next/Link";
+import Link from "next/link";
 import { Card } from "../ui/Card";
 
 interface PlanDisplayProps {
