@@ -29,10 +29,8 @@ public class CourseSection implements Serializable {
     private String sec;
 
     private char stat;
-
-    private String creditHoursLow;
-
-    private String creditHoursHigh;
+  
+    private int creditHours;
 
     private String instructor;
 
@@ -46,7 +44,17 @@ public class CourseSection implements Serializable {
 
     private String daysOfTheWeek;
 
+    private String meetingTime;
+    
 
+
+    public String getMeetingTime() {
+        return meetingTime;
+    }
+
+    public void setMeetingTime(String meetingTime) {
+        this.meetingTime = meetingTime;
+    }
 
     public String getDaysOfTheWeek() {
         return daysOfTheWeek;
@@ -73,8 +81,8 @@ public class CourseSection implements Serializable {
     // Constructors, getters, setters, and toString 
     public CourseSection() {}
 
-    public CourseSection(int crn, String sec, char stat, String creditHoursLow, String creditHoursHigh, String instructor,
-        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes) {
+    public CourseSection(int crn, String sec, char stat, int creditHours, String instructor,
+        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, String meetingTime) {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
@@ -87,21 +95,8 @@ public class CourseSection implements Serializable {
     this.year = year;
     this.course = course;
     this.classes = classes;
-}
-
-public CourseSection(int crn, String sec, char stat, String creditHoursLow, String creditHoursHigh, String instructor,
-String term, int classSize, int seatsAvailable, Course course, List<ClassEntity> classes) {
-this.crn = crn;
-this.sec = sec;
-this.stat = stat;
-this.creditHoursLow = creditHoursLow;
-this.creditHoursHigh = creditHoursHigh;
-this.instructor = instructor;
-this.term = term;
-this.classSize = classSize;
-this.seatsAvailable = seatsAvailable;
-this.course = course;
-this.classes = classes;
+    this.daysOfTheWeek = daysOfTheWeek;
+    this.meetingTime = meetingTime;
 }
 
     public long getId() {
@@ -136,19 +131,11 @@ this.classes = classes;
         this.stat = stat;
     }
 
-    public String getCreditHoursLow() {
-        return creditHoursLow;
+    public int getCreditHours() {
+        return creditHours;
     }
 
-    public void setCreditHoursLow(String creditHoursLow) {
-        this.creditHoursLow = creditHoursLow;
-    }
-
-    public String getCreditHoursHigh() {
-        return creditHoursHigh;
-    }
-
-    public void setCreditHoursHigh(String creditHoursHigh) {
+    public void setCreditHours(int creditHours) {
         this.creditHoursHigh = creditHoursHigh;
     }
 
@@ -211,7 +198,7 @@ this.classes = classes;
     @Override
     public String toString() {
         return "CourseSection [courseSectionId=" + courseSectionId + ", crn=" + crn + ", sec=" + sec + ", stat="
-                + stat + ", creditHoursLow=" + creditHoursLow + ", creditHoursHigh=" + creditHoursHigh + ", instructor="
+                + stat + ", creditHoursLow=" + creditHours + ", instructor="
                 + instructor + ", term=" + term + ", classSize=" + classSize + ", seatsAvailable=" + seatsAvailable
                 + ", year=" + year + "]";
     }

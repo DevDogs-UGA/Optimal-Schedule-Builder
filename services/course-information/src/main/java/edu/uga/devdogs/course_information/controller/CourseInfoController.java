@@ -145,7 +145,34 @@ public class CourseInfoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+  
+    /**
+     * Retrieves course details for a given CRN.
+     *
+     * @param crn the course reference number for which to retrieve course details
+     * @return Course object containing details about the course associated with the CRN
+     */
+    @Operation(summary = "Get course details by crn", description = "Retrieves information about a course based on a given CRN.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "400", description = "Invalid CRN"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/course-by-crn")
+    @Tag(name="course-information")
+    public ResponseEntity<Course> getCourseDetailsByCrn(@RequestParam String crn) {
+        if (crn.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
 
+        try {
+            Course courseDetails = courseInformationService.getCourseDetailsByCrn(crn);
+            return ResponseEntity.ok(courseDetails);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+  
     /**
      * Retrieves a list of all academic subjects at UGA .
      *
