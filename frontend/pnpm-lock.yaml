@@ -37,6 +37,12 @@ importers:
       next:
         specifier: 14.2.23
         version: 14.2.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      node-localstorage:
+        specifier: ^3.0.5
+        version: 3.0.5
+      pnpm:
+        specifier: ^10.6.3
+        version: 10.6.3
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -2615,6 +2621,13 @@ packages:
       sass:
         optional: true
 
+  node-localstorage@3.0.5:
+    resolution:
+      {
+        integrity: sha512-GCwtK33iwVXboZWYcqQHu3aRvXEBwmPkAMRBLeaX86ufhqslyUkLGsi4aW3INEfdQYpUB5M9qtYf3eHvAk2VBg==,
+      }
+    engines: { node: ">=0.12" }
+
   normalize-path@3.0.0:
     resolution:
       {
@@ -2799,6 +2812,14 @@ packages:
         integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==,
       }
     engines: { node: ">= 6" }
+
+  pnpm@10.6.3:
+    resolution:
+      {
+        integrity: sha512-u0XjTVCpp26FipWDcwG/tr1tNa6ixdUglPpJekZ8Q/XEQBA84lEengovicPWBxuqwzWPxorG+3XizrPSc2Bl5g==,
+      }
+    engines: { node: ">=18.12" }
+    hasBin: true
 
   possible-typed-array-names@1.1.0:
     resolution:
@@ -3628,6 +3649,13 @@ packages:
       {
         integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==,
       }
+
+  write-file-atomic@5.0.1:
+    resolution:
+      {
+        integrity: sha512-+QU2zd6OTD8XWIJCbffaiQeH9U73qIqafo1x6V1snCWYGJf6cVE0cDR4D8xRzcEnfI21IFrUPzPGtcPf8AC+Rw==,
+      }
+    engines: { node: ^14.17.0 || ^16.13.0 || >=18.0.0 }
 
   yaml@2.7.0:
     resolution:
@@ -5345,6 +5373,10 @@ snapshots:
       - "@babel/core"
       - babel-plugin-macros
 
+  node-localstorage@3.0.5:
+    dependencies:
+      write-file-atomic: 5.0.1
+
   normalize-path@3.0.0: {}
 
   object-assign@4.1.1: {}
@@ -5445,6 +5477,8 @@ snapshots:
   pify@2.3.0: {}
 
   pirates@4.0.6: {}
+
+  pnpm@10.6.3: {}
 
   possible-typed-array-names@1.1.0: {}
 
@@ -6019,6 +6053,11 @@ snapshots:
       strip-ansi: 7.1.0
 
   wrappy@1.0.2: {}
+
+  write-file-atomic@5.0.1:
+    dependencies:
+      imurmurhash: 0.1.4
+      signal-exit: 4.1.0
 
   yaml@2.7.0: {}
 
