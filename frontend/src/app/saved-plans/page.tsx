@@ -615,7 +615,6 @@ const dummySchedule2: WeekScheduleType = {
   ],
 };
 
-
 const dummySchedule3: WeekScheduleType = {
   Monday: [
     {
@@ -1095,7 +1094,7 @@ const dummySchedule5: WeekScheduleType = {
       coreq: "",
       professor: "Dr. Ian Caldwell",
       semester: "Spring",
-      timeStart: "11:10 am",       // shifted to after 11:00 am
+      timeStart: "11:10 am", // shifted to after 11:00 am
       timeEnd: "12:00 pm",
       timeDifference: null,
       credits: 3,
@@ -1105,7 +1104,7 @@ const dummySchedule5: WeekScheduleType = {
       waitlist: 0,
       bgColor: "bg-dev-dog-blue",
       borderColor: "border-dev-dog-blue",
-      currentDay: "MW",            // same as original: appears Monday & Wednesday
+      currentDay: "MW", // same as original: appears Monday & Wednesday
       otherTimes: ["F", "11:10 am - 12:00 pm", "Geol 200"], // updated Friday time
     },
     {
@@ -1119,7 +1118,7 @@ const dummySchedule5: WeekScheduleType = {
       coreq: "",
       professor: "Dr. Maria Ortiz",
       semester: "Spring",
-      timeStart: "1:20 pm",        // shifted to after 11:00 am
+      timeStart: "1:20 pm", // shifted to after 11:00 am
       timeEnd: "2:10 pm",
       timeDifference: null,
       credits: 3,
@@ -1129,7 +1128,7 @@ const dummySchedule5: WeekScheduleType = {
       waitlist: 0,
       bgColor: "bg-bulldog-red",
       borderColor: "border-bulldog-red",
-      currentDay: "M",             // Monday-only section
+      currentDay: "M", // Monday-only section
       otherTimes: ["W", "11:10 am - 12:00 pm", "Anth 120"], // updated Wed time
     },
     {
@@ -1143,7 +1142,7 @@ const dummySchedule5: WeekScheduleType = {
       coreq: "",
       professor: "Dr. Anna Stevens",
       semester: "Spring",
-      timeStart: "3:30 pm",        // shifted to after 11:00 am
+      timeStart: "3:30 pm", // shifted to after 11:00 am
       timeEnd: "4:20 pm",
       timeDifference: null,
       credits: 3,
@@ -1153,7 +1152,7 @@ const dummySchedule5: WeekScheduleType = {
       waitlist: 0,
       bgColor: "bg-lake-herrick",
       borderColor: "border-lake-herrick",
-      currentDay: "MWF",           // appears Monday, Wednesday, Friday
+      currentDay: "MWF", // appears Monday, Wednesday, Friday
       otherTimes: ["", "", ""],
     },
   ],
@@ -1170,7 +1169,7 @@ const dummySchedule5: WeekScheduleType = {
       coreq: "",
       professor: "Dr. Maria Ortiz",
       semester: "Spring",
-      timeStart: "11:30 am",       // shifted to after 11:00 am
+      timeStart: "11:30 am", // shifted to after 11:00 am
       timeEnd: "12:45 pm",
       timeDifference: null,
       credits: 3,
@@ -1180,7 +1179,7 @@ const dummySchedule5: WeekScheduleType = {
       waitlist: 0,
       bgColor: "bg-bulldog-red",
       borderColor: "border-bulldog-red",
-      currentDay: "TR",            // Tuesday/Thursday
+      currentDay: "TR", // Tuesday/Thursday
       otherTimes: ["MW", "1:20 pm - 2:10 pm", "Anth 120"], // referencing M/W times
     },
   ],
@@ -1197,7 +1196,7 @@ const dummySchedule5: WeekScheduleType = {
       coreq: "",
       professor: "Dr. Anna Stevens",
       semester: "Spring",
-      timeStart: "4:00 pm",        // shifted to after 11:00 am
+      timeStart: "4:00 pm", // shifted to after 11:00 am
       timeEnd: "4:50 pm",
       timeDifference: null,
       credits: 3,
@@ -1224,7 +1223,7 @@ const dummySchedule5: WeekScheduleType = {
       coreq: "",
       professor: "Dr. Ian Caldwell",
       semester: "Spring",
-      timeStart: "11:30 am",       // shifted to after 11:00 am
+      timeStart: "11:30 am", // shifted to after 11:00 am
       timeEnd: "12:45 pm",
       timeDifference: null,
       credits: 1,
@@ -1248,7 +1247,7 @@ const dummySchedule5: WeekScheduleType = {
       coreq: "",
       professor: "Dr. Maria Ortiz",
       semester: "Spring",
-      timeStart: "1:20 pm",        // shifted to after 11:00 am
+      timeStart: "1:20 pm", // shifted to after 11:00 am
       timeEnd: "2:10 pm",
       timeDifference: null,
       credits: 3,
@@ -1275,7 +1274,7 @@ const dummySchedule5: WeekScheduleType = {
       coreq: "",
       professor: "Dr. Ian Caldwell",
       semester: "Spring",
-      timeStart: "11:10 am",       // shifted to after 11:00 am
+      timeStart: "11:10 am", // shifted to after 11:00 am
       timeEnd: "12:00 pm",
       timeDifference: null,
       credits: 3,
@@ -1285,7 +1284,7 @@ const dummySchedule5: WeekScheduleType = {
       waitlist: 0,
       bgColor: "bg-dev-dog-blue",
       borderColor: "border-dev-dog-blue",
-      currentDay: "MW",            // appears M/W but also has a Friday session
+      currentDay: "MW", // appears M/W but also has a Friday session
       otherTimes: ["MW", "11:10 am - 12:00 pm", "Geol 200"],
     },
     {
@@ -1299,7 +1298,7 @@ const dummySchedule5: WeekScheduleType = {
       coreq: "",
       professor: "Dr. Anna Stevens",
       semester: "Spring",
-      timeStart: "2:00 pm",        // shifted to after 11:00 am
+      timeStart: "2:00 pm", // shifted to after 11:00 am
       timeEnd: "3:15 pm",
       timeDifference: null,
       credits: 3,
@@ -1314,8 +1313,6 @@ const dummySchedule5: WeekScheduleType = {
     },
   ],
 };
-
-
 
 // Handles retrieval of saved plans from local storage and displays a list of them for the user to select
 export default function SavedPlans() {
