@@ -140,4 +140,33 @@ public class CourseInformationApplication {
             }
        };
     }
+
+    @Bean
+    @Order(2)
+    CommandLineRunner professorCommandLineRunner(ProfessorService professorService) {
+        return args -> {
+            String filePath = "something.json"; // ADD PATH HERE
+            ClassPathResource resource = new ClassPathResource(filePath);
+
+            if (!resource.exists()) {
+                System.err.println("File not found: " + filePath);
+                return;
+            }
+
+            try (InputStream inputStream = resource.getInputStream()) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, Professor.class);
+                List<Professor> professors = objectMapper.readValue(inputStream, listType);
+
+                for (Professor professor : professors) {
+                    professorService.saveOrUpdateProfessor(professor);
+                }
+
+                System.out.println("RateMyProf data saved successfully.");
+
+            } catch (IOException e) {
+                System.err.println("Failed to read RateMyProf JSON: " + e.getMessage());
+            }
+        };
+    }
 }
