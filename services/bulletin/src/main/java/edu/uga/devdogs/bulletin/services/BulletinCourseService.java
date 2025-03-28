@@ -38,45 +38,49 @@ public class BulletinCourseService {
     }
 
     /**
-     * Retrieves the type of class (e.g., Honors, Lab, Online) for a given course ID.
-     *
-     * @param courseId the ID of the course
-     * @return the type of the class as a String
-     * @throws IllegalArgumentException if the course ID is invalid or not found
+     * Method to get a list of courses matching a given special type (honors, lab, or online).
+     * The methods it calls in the JPA layer will be implemented later by the database team.
+     * In-line comments in the body of the function indicate what data we need from the JPA layer.
+     * 
+     * @param type the type of course of which to retrieve a list.
+     * @return A list of course objects matching the given type.
      */
-    public String getClassTypeByCourseId(Long courseId) {
-        // Validate the courseId
-        if (courseId == null || courseId <= 0) {
-            throw new IllegalArgumentException("Invalid course ID");
+    public List<Course> getCoursesByType(String type) {
+        List<Course> returnList;
+        if (type.equals("honors")) {
+            //we want to get a list of all honors courses from the database
+            returnList = bulletinJPAFile.getHonorsCourses();
+        } else if (type.equals("online")) {
+            //we want to get a list of all online courses from the database
+            returnList = bulletinJPAFile.getOnlineCourses();
+        } else if (type.equals("lab")) {
+            //we want to get a list of all lab courses from the database
+            returnList = bulletinJPAFile.getLabCourses();
         }
 
-        // Example JPA call to fetch course type
-        // Assuming Course entity has a method getType() that returns the type of the course
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalArgumentException("Course not found for ID: " + courseId));
-
-        return course.getType();
-    }    
+        if (returnList != null) {
+            return returnList;
+        } else {
+            throw new CourseNotFoundException("Courses with the type " + type + " not found!");
+        }
+    }
 
     /**
-     * Retrieves a list of courses available in a specified term.
+     * Method retrieves the requirements for a given course.
      *
-     * <p>
-     * This method fetches courses from the database that are available in the given term.
-     * If the term is null or empty, it returns all available courses.
-     * </p>
-     *
-     * @param term the academic term for which courses are to be retrieved
-     * @return a list of courses available in the specified term
+     * @param courseName The identifier for the course (e.g., CSCI1302).
+     * @return a list of required classes for the given course.
      */
-    public List<Course> getCoursesByTerm(String term) {
-        // Check if the term is provided and not empty
-        if (term != null && !term.isEmpty()) {
-            // Fetch courses for the specified term
-            return courseRepository.findByTerm(term);
-        }
+    public List<String> getCourseRequirements(String courseName) {
+        // Find the course by courseCode (assuming courseCode is a field in the Course entity)
+        Course course = courseRepository.findByCourseCode(courseName);
 
-        // Return all courses if no term is specified
-        return courseRepository.findAll();
+        // Return the course requirements (assuming requirements are stored as a List in Course entity)
+        if (course != null) {
+            return course.getRequirements();
+        } else {
+            throw new CourseNotFoundException("Course not found for code: " + courseName);
+        }
     }
 
 }
