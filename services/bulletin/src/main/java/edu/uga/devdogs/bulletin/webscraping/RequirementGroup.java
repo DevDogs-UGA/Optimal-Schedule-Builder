@@ -18,6 +18,7 @@ public class RequirementGroup {
     private boolean requiresHonors;
     private boolean canSubstituteDepartmentPermission;
     private String courseName;
+    private String courseDescription;
     private ArrayList<String> courses = new ArrayList<>();
 
     /**
@@ -76,6 +77,14 @@ public class RequirementGroup {
         this.canSubstituteDepartmentPermission = canSubstituteDepartmentPermission;
     }
 
+    public String getCourseDescription() {
+        return courseDescription;
+    }
+
+    public void setCourseDescription(String courseDescription) {
+        this.courseDescription = courseDescription;
+    }
+
     /**
      * Adds a course to this RequirementGroup that can fill this requirement.
      * @param prerequisite The name of the course that can fill this requirement represented as a string; i.e. "FANR 1100"
@@ -101,6 +110,7 @@ public class RequirementGroup {
     public String toString() {
         String toString = "RequirementGroup [ ";
         toString += "\n\tCourse Name: " + courseName;
+        toString += "\n\tDescription: " + courseDescription;
         toString += "\n\tRequires honors: " + requiresHonors;
         toString += "\n\tCan substitute Dept. Permission: " + canSubstituteDepartmentPermission;
         toString += "\n\tRequires Dept. Permission: " + requiresDepartmentPermission();

@@ -34,7 +34,9 @@ public class BulletinScraper {
      * @param courseName The name of the course that these requirements will be associated with.
      * @return An ArrayList of RequirementGroup objects, each representing a set of requirements for the course
      */
-   private static ArrayList<RequirementGroup> getRequirementGroupsFromTable(String text, String courseName) {
+
+    
+   private static ArrayList<RequirementGroup> getRequirementGroupsFromTable(String text, String courseName, String courseDescription) {
        Pattern coursePrefixRegex = Pattern.compile("\\b[A-Z]{4}\\b"); // i.e. "MATH"
        Pattern courseSuffixRegex = Pattern.compile("\\b\\d{4}[A-Z]?\\b"); // i.e. "1113"
 
@@ -92,7 +94,7 @@ public class BulletinScraper {
 
            // By this point, the className will have already been set (we are going down the table from the top)
            RequirementGroup currentGroup = new RequirementGroup(course);
-
+           System.out.println(course);
            for (String s : strings) {
                Matcher letterMatcher = coursePrefixRegex.matcher(s); // find all prefixes
                Matcher numberMatcher = courseSuffixRegex.matcher(s); // find all suffixes
@@ -130,7 +132,9 @@ public class BulletinScraper {
            requirementGroups.add(currentGroup);
        }
 
-
+        for (RequirementGroup group : requirementGroups) {
+            group.setCourseDescription(courseDescription);
+        }
        return requirementGroups;
 
 
@@ -167,6 +171,8 @@ public class BulletinScraper {
         Elements resultsTables = courseResults.getElementsByClass("courseresultstable");
         boolean isCourseID = false;
         boolean isRequirement = false;
+        boolean isDescription = false;
+        String pendingDescription = "";
         for (Element table : resultsTables) {
 
             // Loop through each row of the table to find the information we need
@@ -189,11 +195,17 @@ public class BulletinScraper {
                     isRequirement = true;
                 } else if (isRequirement) {
                     // Get the requirements for this course...
-                    ArrayList<RequirementGroup> groups = getRequirementGroupsFromTable(text, className);
+                    ArrayList<RequirementGroup> groups = getRequirementGroupsFromTable(text, className, pendingDescription);
                     // and add it to the requirements for all courses that we've collected so far.
                     requirementGroups.addAll(groups);
                     isRequirement = false;
+                    pendingDescription = "";
 
+                } else if (text.contains("Description")) {
+                    isDescription = true;
+                } else if (isDescription) {
+                    pendingDescription = text;
+                    isDescription = false;
                 }
             }
         }
