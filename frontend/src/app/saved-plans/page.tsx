@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/Link";
+import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import SavedPlan from "@/components/saved-plans/SavedPlan";
