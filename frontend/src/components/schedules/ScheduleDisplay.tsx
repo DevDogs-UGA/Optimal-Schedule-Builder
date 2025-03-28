@@ -14,7 +14,7 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
   const colorMapping: Record<string, string> = {};
   const usedColors: Set<string> = new Set<string>();
 
-  // I feel like this function needs to go somewhere else
+  // Function to assign a different color to each course block on the schedule
   function getBgColorForClass(classTitle: string): string {
     // Course block colors:
     // Check if color has already been used
@@ -67,12 +67,9 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
 
   // List of the user's saved schedules
   const [savedPlans, setSavedPlans] = useState<SavedPlanType[]>([]);
-  
+
   // Used to enable selection of any schedule from the list
   const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
-  // Used to enable pinning saved plans even on the schedule page
-  const planToPin = useState<string | null>(null);
-
 
   useEffect(() => {
     try {
@@ -85,7 +82,7 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
         if (key) {
           // Retrieve data matching key
           const data = localStorage.getItem(key);
-          if (data) {
+          if (data?.startsWith(`{"data":{`)) {
             const parsedData = JSON.parse(data) as SavedPlanType;
             if (parsedData.data && parsedData.pinned !== undefined) {
               // Parse the data from the JSON
@@ -99,15 +96,19 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
         }
       }
       // Sort plans by title, and then again by pinned status
-      plans.sort((a, b) => Number(b.pinned) - Number(a.pinned) || a.title.localeCompare(b.title));
+      plans.sort(
+        (a, b) =>
+          Number(b.pinned) - Number(a.pinned) || a.title.localeCompare(b.title),
+      );
 
       // savedPlans = plans. Increases the scope of the plans array
       setSavedPlans(plans);
 
       // Get the index of the current plan and update the current plan index (trim any whitespace)
-      const initialIndex = plans.findIndex((plan) => plan.title.trim() === planTitle.trim());
+      const initialIndex = plans.findIndex(
+        (plan) => plan.title.trim() === planTitle.trim(),
+      );
       setCurrentPlanIndex(initialIndex !== -1 ? initialIndex : 0);
-      
     } catch (error) {
       console.error("Failed to parse local storage data: ", error);
     }
@@ -140,31 +141,43 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
   const pinPlan = () => {
     if (currentPlan.title) {
       setSavedPlans((prevPlans) => {
-        const updatedPlans = prevPlans.map((plan => {
+        const updatedPlans = prevPlans.map((plan) => {
           if (plan.title === currentPlan.title) {
             // Toggle the pinned status
             const updatedPlan = { ...plan, pinned: !plan.pinned };
             // Save the updated plan back to local storage
-            localStorage.setItem(currentPlan.title, JSON.stringify({ data: plan.data, pinned: updatedPlan.pinned }));
+            localStorage.setItem(
+              currentPlan.title,
+              JSON.stringify({ data: plan.data, pinned: updatedPlan.pinned }),
+            );
             return updatedPlan;
           }
           return plan;
-        }));
+        });
 
-        // Sort plans so that pinned plans come first
-        updatedPlans.sort((a,b) => Number(b.pinned) - Number(a.pinned));
+        // Sort plans again to reflect the new pin
+        updatedPlans.sort(
+          (a, b) =>
+            Number(b.pinned) - Number(a.pinned) ||
+            a.title.localeCompare(b.title),
+        );
 
         // Save sorted plans back to local storage
-        updatedPlans.forEach((plan => {
-          localStorage.setItem(plan.title, JSON.stringify({ data: plan.data, pinned: plan.pinned }));
-        }));
+        updatedPlans.forEach((plan) => {
+          localStorage.setItem(
+            plan.title,
+            JSON.stringify({ data: plan.data, pinned: plan.pinned }),
+          );
+        });
 
         // Update the current plan index to reflect the new order
-        const newIndex = updatedPlans.findIndex((plan => plan.title === currentPlan.title));
+        const newIndex = updatedPlans.findIndex(
+          (plan) => plan.title === currentPlan.title,
+        );
         setCurrentPlanIndex(newIndex);
         return updatedPlans;
       });
-    };
+    }
   };
 
   // Sorts the classes on the schedule display by start time
@@ -174,7 +187,31 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
       const timeB = new Date(`1970/01/01 ${b.timeStart}`);
       return timeA.getTime() - timeB.getTime();
     });
+
+    // Assign background colors to each class
+    currentPlan.data[day]?.forEach((classItem) => {
+      classItem.bgColor = getBgColorForClass(classItem.classTitle);
+      console.log(classItem.bgColor);
+    });
   });
+
+  // Variables to control if the next and back buttons should appear
+  let canCycleBack = true;
+  let canCycleNext = true;
+
+  // If we're looking at the first plan, don't display the back button
+  if (currentPlanIndex > 0) {
+    canCycleBack = true;
+  } else {
+    canCycleBack = false;
+  }
+
+  // If we're looking at the last plan, don't display the next button
+  if (currentPlanIndex < savedPlans.length - 1) {
+    canCycleNext = true;
+  } else {
+    canCycleNext = false;
+  }
 
   // Render the schedule
   return (
@@ -185,25 +222,45 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
         <div className="flex flex-row">
           {/* Cycling bar; changes the displayed schedule when arrows are clicked */}
           <div className="mb-5 ml-auto mr-auto mt-5 flex h-10 w-[30vw] flex-row items-center rounded-lg bg-white">
-            <button onClick={previousPlan}>
-              <PiArrowLeft size={32} className="ml-5 hover:fill-bulldog-red" />
-            </button>
+            {canCycleBack ? (
+              <button onClick={previousPlan}>
+                <PiArrowLeft
+                  size={32}
+                  className="ml-5 hover:fill-bulldog-red"
+                />
+              </button>
+            ) : (
+              <div></div>
+            )}
             <h1 className="ml-auto mr-auto text-2xl font-bold">
               {currentPlan.title}
             </h1>
-            <button onClick={nextPlan}>
-              <PiArrowRight size={32} className="mr-5 hover:fill-bulldog-red" />
-            </button>
+            {canCycleNext ? (
+              <button onClick={nextPlan}>
+                <PiArrowRight
+                  size={32}
+                  className="ml-5 hover:fill-bulldog-red"
+                />
+              </button>
+            ) : (
+              <div></div>
+            )}
           </div>
           {/* Save/exit buttons: exit returns to saved plan list */}
           <div className="flex flex-row">
             <div onClick={pinPlan}>
               {currentPlan.pinned ? (
-                <FaHeart size={30} className="mr-3 mt-5 fill-glory-glory-red transition" />
+                <FaHeart
+                  size={30}
+                  className="mr-3 mt-5 fill-glory-glory-red transition"
+                />
               ) : (
-                <FaRegHeart size={30} className="mr-3 mt-5 transition hover:fill-glory-glory-red" />
+                <FaRegHeart
+                  size={30}
+                  className="mr-3 mt-5 transition hover:fill-glory-glory-red"
+                />
               )}
-            </div>            
+            </div>
             <Link href={"/saved-plans"}>
               <PiX size={32} className="mr-3 mt-5 hover:fill-bulldog-red" />
             </Link>

@@ -1,6 +1,6 @@
 "use client";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
-import { PiNotePencil, PiArrowsOut, PiTrash } from "react-icons/pi";
+import { /*PiNotePencil,*/ PiArrowsOut, PiTrash } from "react-icons/pi";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
@@ -43,9 +43,15 @@ export default function SavedPlan({
           {/* Pin button (gives a saved plan priority over others*/}
           <div onClick={onPin}>
             {pinned ? (
-              <FaHeart size={50} className="m-2 fill-glory-glory-red transition" />
+              <FaHeart
+                size={50}
+                className="m-2 fill-glory-glory-red transition"
+              />
             ) : (
-              <FaRegHeart size={50} className="m-2 transition hover:fill-glory-glory-red" />
+              <FaRegHeart
+                size={50}
+                className="m-2 transition hover:fill-glory-glory-red"
+              />
             )}
           </div>
           {/* Open button (redirects to the schedules page with the schedule data)*/}
@@ -56,12 +62,12 @@ export default function SavedPlan({
           >
             <PiArrowsOut
               size={60}
-              className="m-2 fill-black transition hover:fill-bulldog-red"
+              className="m-2 fill-black transition hover:fill-glory-glory-red"
             />
           </Link>
           <PiTrash
             size={60}
-            className="m-2 hover:fill-bulldog-red"
+            className="m-2 hover:fill-glory-glory-red"
             onClick={onDelete}
           />
         </div>

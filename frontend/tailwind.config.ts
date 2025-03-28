@@ -24,6 +24,7 @@ export default {
         peach: "hsl(var(--peach))",
         wave: "hsl(var(--wave))",
       },
+
       keyframes: {
         fadeInOverlay: {
           from: { backgroundColor: "transparent" },
