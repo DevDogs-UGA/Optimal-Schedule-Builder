@@ -5,12 +5,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,10 +32,14 @@ import java.nio.file.Paths;
 import edu.uga.devdogs.course_information.webscraping.Pdf;
 
 @SpringBootApplication
+@EnableTransactionManagement 
 public class CourseInformationApplication {
 
 
     private final BuildingRepository buildingRepository;
+
+    @Value("${update.buildings}")
+    private boolean updateBuildings;
 
     CourseInformationApplication(BuildingRepository buildingRepository) {
         this.buildingRepository = buildingRepository;
@@ -52,6 +58,10 @@ public class CourseInformationApplication {
         BuildingRepository buildingRepository) {
         
         return args -> {
+
+            courseSectionRepository.deleteAll();
+            courseRepository.deleteAll();
+
             List<Course2> courses = Pdf.parsePdf("spring", "C:\\kadestyron\\d\\Desktop"); // change this to your computer specifc path
             List<Course> courseEntities = new ArrayList<>();
             List<CourseSection> courseSections = new ArrayList<>();
@@ -60,7 +70,29 @@ public class CourseInformationApplication {
                 // if(course.getSec().equals("C")) {
                 //     continue;
                 // }
+                String creditHoursStr = course.getCreditHours().trim();
 
+                int creditHours = 3; // Default value if parsing fails or if the string is empty
+
+                // Remove non-numeric characters
+                creditHoursStr = creditHoursStr.replaceAll("[^0-9.-]", "").trim();
+                
+                // Check for a range (e.g., "4.0-4.0")
+                if (creditHoursStr.contains("-")) {
+                    String[] parts = creditHoursStr.split("-");
+                    // Parse the first part of the range (or average the two values)
+                    try {
+                        double firstValue = Double.parseDouble(parts[0].trim());
+                        creditHours = (int) firstValue; // Convert to integer (you can also average the values if needed)
+                    } catch (NumberFormatException e) {
+                        creditHours = 3; // Default value in case of invalid range format
+                        System.err.println("Invalid credit hours range: " + course.getCreditHours() + ", defaulting to 3.");
+                    }
+                }     
+                
+                // default to 3 if credit hours is empty
+
+            
                 //System.out.print(course.getCrn() + " " + course.getSec() + " " +course.getCreditHours() + "  | ");
 
                 Course courseEntity = new Course(
@@ -69,7 +101,7 @@ public class CourseInformationApplication {
                     course.getCrn(),
                     course.getSec(), 
                     (course.getStat()).charAt(0), 
-                    (int) Character.getNumericValue(course.getCreditHours().trim().charAt(0)),
+                    creditHours, // Use parsed credit hours
                     course.getProfessor(), 
                     course.getPartOfTerm(), 
                     course.getClassSize(), 
@@ -80,7 +112,7 @@ public class CourseInformationApplication {
                     course.getMeetingDays(),
                     course.getMeetingTimes());   
 
-                //System.out.println(courseSection.getTerm()); 
+                System.out.println(courseSection.getCreditHours()); 
                 
                 courseEntities.add(courseEntity);
                 
@@ -97,15 +129,25 @@ public class CourseInformationApplication {
             }
             System.out.println("Saving to database...");
             courseRepository.saveAll(courseEntities);
+
+
             courseSectionRepository.saveAll(courseSections);
             System.out.println("Saved to database");
    
         };
     }
+
+    
     @Bean
-    @Order(1)
+    @Order(2)
     CommandLineRunner buildingCommandLineRunner (BuildingRepository buildingRepository) {
         return args -> {
+
+
+            if (!updateBuildings) {
+                System.out.println("Building update skipped due to configuration.");
+                return;  // Exit early if the property is set to false
+            }
             String buildingsJsonPath = "buildingData/AthensBuildingData.json";
             ClassPathResource resource = new ClassPathResource(buildingsJsonPath);
 
