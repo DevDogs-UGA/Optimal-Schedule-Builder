@@ -30,7 +30,8 @@ public class CourseSection implements Serializable {
 
     private char stat;
   
-    private int creditHours;
+    @Column(nullable = false) 
+    private int creditHours = 3;
 
     private String instructor;
 
@@ -86,8 +87,7 @@ public class CourseSection implements Serializable {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
-    this.creditHoursLow = creditHoursLow;
-    this.creditHoursHigh = creditHoursHigh;
+    this.creditHours = creditHours;
     this.instructor = instructor;
     this.term = term;
     this.classSize = classSize;
@@ -136,7 +136,7 @@ public class CourseSection implements Serializable {
     }
 
     public void setCreditHours(int creditHours) {
-        this.creditHoursHigh = creditHoursHigh;
+        this.creditHours = creditHours;
     }
 
     public String getInstructor() {
