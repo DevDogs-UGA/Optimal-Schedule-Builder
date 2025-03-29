@@ -299,6 +299,36 @@ const queries = {
     params: z.object({}),
     result: z.number().int().array(),
   },
+
+  getAvgProfessorRating: {
+    route: "/avgRating",
+    params: z.object({
+      /**
+       * Retrieves a Professor's Average Rating on RateMyProfessor.
+       *
+       * @param lname A String of the professor's last name
+       * @param fname A String of the professor's first name
+       */
+      lname: z.string(),
+      fname: z.string(),
+    }),
+    result: z.number(),
+  },
+
+  getNumProfessorRatings: {
+    route: "/numRatings",
+    params: z.object({
+      /**
+       * Retrieves the number of RateMyProfessor reviews of a professor
+       *
+       * @param lname A String of the professor's last name
+       * @param fname A String of the professor's first name
+       */
+      lname: z.string(),
+      fname: z.string(),
+    }),
+    result: z.number().int(),
+  },
 };
 
 export default queries;
