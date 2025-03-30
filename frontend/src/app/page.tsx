@@ -56,7 +56,7 @@ export default function Home() {
               </p>
               <Link
                 className="flex items-center gap-10 rounded-full border-2 border-red-900 bg-bulldog-red py-2.5 pl-4 pr-1.5 text-white shadow-md"
-                href="/course-adding"
+                href="/create"
               >
                 Get Started!{" "}
                 <span className="-my-2 flex size-10 items-center justify-center rounded-full border-2 border-red-900 bg-white pt-0.5 text-[1.5rem] leading-none shadow-sm">

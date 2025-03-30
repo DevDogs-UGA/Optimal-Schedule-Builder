@@ -19,7 +19,7 @@ const dummySchedule2 = {
 };
 
 // Handles retrieval of saved plans from local storage and displays a list of them for the user to select
-export default function SavedPlans() {
+export default function MyPlans() {
   // Parameters for a saved plan
   interface SavedPlanType {
     title: string;
@@ -160,7 +160,7 @@ export default function SavedPlans() {
             <h1 className="text-3xl font-bold">
               You don&apos;t have any saved plans yet.{" "}
             </h1>
-            <Link href="/course-adding">
+            <Link href="/create">
               <button className="mt-5 rounded-lg bg-bulldog-red px-8 py-4 text-xl font-bold text-white hover:bg-black">
                 Create
               </button>
