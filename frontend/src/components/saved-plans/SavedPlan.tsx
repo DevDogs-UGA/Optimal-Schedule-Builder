@@ -1,30 +1,28 @@
 "use client";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
-import { PiNotePencil } from "react-icons/pi";
-import { PiHeart } from "react-icons/pi";
-import { PiArrowsOut } from "react-icons/pi";
-import { PiTrash } from "react-icons/pi";
+import { /*PiNotePencil,*/ PiArrowsOut, PiTrash } from "react-icons/pi";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
-import { Card } from "../ui/Card";
 
 interface PlanDisplayProps {
   index?: number;
-  planTitle: string;
   plan: WeekScheduleType;
+  planTitle: string;
+  pinned: boolean;
+  onPin: () => void;
   onDelete: () => void;
 }
 
 // Saved Plan Component.
 // Contains each "banner" and action buttons for each of the user's saved plans.
 export default function SavedPlan({
-  planTitle,
   plan,
+  planTitle,
+  pinned,
+  onPin,
   onDelete,
 }: PlanDisplayProps) {
-  <div>
-    <Card></Card>
-  </div>;
   return (
     <div className="relative">
       <div className="m-5 flex h-24 w-[70vw] flex-row items-center rounded-xl bg-glory-glory-red"></div>
@@ -42,23 +40,34 @@ export default function SavedPlan({
         <h1 className="text-4xl">{planTitle}</h1>
         {/* Buttons container */}
         <div className="ml-auto flex items-center justify-end">
-          {/* Save button: WIP */}
-          <PiHeart
-            size={60}
-            className="m-2 fill-black fill-bulldog-red transition"
-          />
+          {/* Pin button (gives a saved plan priority over others*/}
+          <div onClick={onPin}>
+            {pinned ? (
+              <FaHeart
+                size={50}
+                className="m-2 fill-glory-glory-red transition"
+              />
+            ) : (
+              <FaRegHeart
+                size={50}
+                className="m-2 transition hover:fill-glory-glory-red"
+              />
+            )}
+          </div>
           {/* Open button (redirects to the schedules page with the schedule data)*/}
           <Link
-            href={`/schedules?title=${encodeURIComponent(planTitle)}&data=${encodeURIComponent(JSON.stringify(plan))}`}
+            href={`/schedules?title=${encodeURIComponent(planTitle)}
+            &pinned=${encodeURIComponent(JSON.stringify(pinned))}
+            &data=${encodeURIComponent(JSON.stringify(plan))}`}
           >
             <PiArrowsOut
               size={60}
-              className="m-2 fill-black transition hover:fill-bulldog-red"
+              className="m-2 fill-black transition hover:fill-glory-glory-red"
             />
           </Link>
           <PiTrash
             size={60}
-            className="m-2 hover:fill-bulldog-red"
+            className="m-2 hover:fill-glory-glory-red"
             onClick={onDelete}
           />
         </div>

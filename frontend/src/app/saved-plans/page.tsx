@@ -1,641 +1,63 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import SavedPlan from "@/components/saved-plans/SavedPlan";
 import DeletePlan from "@/components/ui/DeletePlan";
+import { dummyData1, dummyData2 } from "@/components/schedules/dummySchedules";
 
-// Dummy Schedule #1: Remove as necessary
-// Be sure to update when the WeekSchedule component changes!
-const dummySchedule: WeekScheduleType = {
-  Monday: [
-    {
-      classTitle: "CSCI 3030",
-      className: "Computing, Ethics, and Society",
-      description:
-        "Introduction to social and ethical issues relating to computer science and information technology. Topics include privacy, intellectual property, open-source software, the digital divide, globalization, professional ethics, social justice issues, and current events. Students should have a working knowledge of personal computing.",
-      locationLong: "Boyd Research and Education Center 100",
-      locationShort: "Boyd 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "Spring",
-      timeStart: "8:00 am",
-      timeEnd: "8:50 am",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "MW",
-      otherTimes: ["F", "8:00 am - 8:50 am", "Chemistry 100"],
-    },
-
-    {
-      classTitle: "CSCI 1302",
-      className: "Software Development",
-      description: "The course description will be displayed here.",
-      locationLong: "Conner Hall 100",
-      locationShort: "Conner 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "All",
-      timeStart: "10:20 am",
-      timeEnd: "11:10 am",
-      timeDifference: null,
-      credits: 4,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "M",
-      otherTimes: ["TR", "9:35 am - 10:50 am", "Food Sci 100"],
-    },
-
-    {
-      classTitle: "BIOL 1103",
-      className: "Topics in Biology",
-      description: "The course description will be displayed here.",
-      locationLong: "Science Learning Center 100",
-      locationShort: "SLC 100",
-      prereq: "",
-      coreq: "BIOL 1103L",
-      professor: "Jane Doe",
-      semester: "Spring/Fall",
-      timeStart: "1:30 pm",
-      timeEnd: "2:20 pm",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-dev-dog-blue",
-      borderColor: "border-dev-dog-blue",
-
-      currentDay: "MWF",
-      otherTimes: ["", "", ""],
-    },
-  ],
-
-  Tuesday: [
-    {
-      classTitle: "CSCI 1302",
-      className: "Software Development",
-      description: "The course description will be displayed here.",
-      locationLong: "Food Science 100",
-      locationShort: "Food Sci 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "All",
-      timeStart: "9:35 am",
-      timeEnd: "10:50 am",
-      timeDifference: null,
-      credits: 4,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "TR",
-      otherTimes: ["M", "10:20 am - 11:10 am", "Conner 100"],
-    },
-
-    {
-      classTitle: "MUSI 2300",
-      className: "Music in Athens",
-      description:
-        "Explores national and international musical and cultural trends. The course draws from Athens, Georgia’s diverse musical communities and their histories, exploring the rock, hip hop, and indie popular music scenes along with African-American traditions, folk and traditional musics, and the emergent Latin music scene.",
-      locationLong: "Hugh Hudgson School of Music 100",
-      locationShort: "Hugh Hudgson 100",
-      prereq: "",
-      coreq: "",
-      professor: "Jane Doe",
-      semester: "Spring",
-      timeStart: "12:45 pm",
-      timeEnd: "2:00 pm",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-lake-herrick",
-      borderColor: "border-lake-herrick",
-      currentDay: "TR",
-      otherTimes: ["", "", ""],
-    },
-  ],
-
-  Wednesday: [
-    {
-      classTitle: "CSCI 3030",
-      className: "Computing, Ethics, and Society",
-      description: "The course description will be displayed here.",
-      locationLong: "Boyd Research and Education Center 100",
-      locationShort: "Boyd 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "Spring",
-      timeStart: "8:00 am",
-      timeEnd: "8:50 am",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "MW",
-      otherTimes: ["F", "8:00 am - 8:50 am", "Chemistry 100"],
-    },
-
-    {
-      classTitle: "BIOL 1103",
-      className: "Topics in Biology",
-      description: "The course description will be displayed here.",
-      locationLong: "Science Learning Center 100",
-      locationShort: "SLC 100",
-      prereq: "",
-      coreq: "BIOL 1103L",
-      professor: "Jane Doe",
-      semester: "Spring/Fall",
-      timeStart: "1:30 pm",
-      timeEnd: "2:20 pm",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-dev-dog-blue",
-      borderColor: "border-dev-dog-blue",
-      currentDay: "MWF",
-      otherTimes: ["", "", ""],
-    },
-  ],
-
-  Thursday: [
-    {
-      classTitle: "CSCI 1302",
-      className: "Software Development",
-      description: "The course description will be displayed here.",
-      locationLong: "Food Science 100",
-      locationShort: "Food Sci 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "Spring",
-      timeStart: "9:35 am",
-      timeEnd: "10:50 am",
-      timeDifference: null,
-      credits: 4,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "TR",
-      otherTimes: ["M", "10:20 am - 11:10 am", "Conner 100"],
-    },
-
-    {
-      classTitle: "MUSI 2300",
-      className: "Music in Athens",
-      description: "The course description will be displayed here.",
-      locationLong: "Hugh Hudgson School of Music 100",
-      locationShort: "Hugh Hudgson 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "Jane Doe",
-      semester: "Spring",
-      timeStart: "12:45 pm",
-      timeEnd: "2:00 pm",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-lake-herrick",
-      borderColor: "border-lake-herrick",
-      currentDay: "TR",
-      otherTimes: ["", "", ""],
-    },
-
-    {
-      classTitle: "BIOL 1103L",
-      className: "Concepts in Biology Laboratory",
-      description: "The course description will be displayed here.",
-      locationLong: "Science Learning Center 100",
-      locationShort: "SLC 100",
-      prereq: "",
-      coreq: "BIOL 1103",
-      professor: "Jane Doe",
-      semester: "Spring/Fall",
-      timeStart: "2:20 pm",
-      timeEnd: "4:15 pm",
-      timeDifference: null,
-      credits: 1,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-dev-dog-blue",
-      borderColor: "border-dev-dog-blue",
-      currentDay: "R",
-      otherTimes: ["", "", ""],
-    },
-  ],
-
-  Friday: [
-    {
-      classTitle: "CSCI 3030",
-      className: "Computing, Ethics, and Society",
-      description: "The course description will be displayed here.",
-      locationLong: "Boyd Research and Education Center 100",
-      locationShort: "Chemistry 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "Spring",
-      timeStart: "8:00 am",
-      timeEnd: "8:50 am",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "F",
-      otherTimes: ["MW", "8:00 - 8:50 am", "Boyd 100"],
-    },
-
-    {
-      classTitle: "BIOL 1103",
-      className: "Topics in Biology",
-      description: "The course description will be displayed here.",
-      locationLong: "Science Learning Center 100",
-      locationShort: "SLC 100",
-      prereq: "",
-      coreq: "BIOL 1103L",
-      professor: "Jane Doe",
-      semester: "Spring/Fall",
-      timeStart: "1:30 pm",
-      timeEnd: "2:20 pm",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-dev-dog-blue",
-      borderColor: "border-dev-dog-blue",
-      currentDay: "MWF",
-      otherTimes: ["", "", ""],
-    },
-  ],
+// Remove these objects when we have generated schedules getting auto-saved to local storage
+const dummySchedule1 = {
+  data: dummyData1,
+  pinned: false,
 };
 
-// Dummy Schedule #2: Remove as necessary
-// Be sure to update when the WeekSchedule component changes!
-const dummySchedule2: WeekScheduleType = {
-  Monday: [
-    {
-      classTitle: "CSCI 3030",
-      className: "Computing, Ethics, and Society",
-      description:
-        "Introduction to social and ethical issues relating to computer science and information technology. Topics include privacy, intellectual property, open-source software, the digital divide, globalization, professional ethics, social justice issues, and current events. Students should have a working knowledge of personal computing.",
-      locationLong: "Boyd Research and Education Center 100",
-      locationShort: "Boyd 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "Spring",
-      timeStart: "1:30 pm",
-      timeEnd: "2:20 pm",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "MW",
-      otherTimes: ["F", "8:00 am - 8:50 am", "Chemistry 100"],
-    },
-
-    {
-      classTitle: "CSCI 1302",
-      className: "Software Development",
-      description: "The course description will be displayed here.",
-      locationLong: "Conner Hall 100",
-      locationShort: "Conner 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "All",
-      timeStart: "10:20 am",
-      timeEnd: "11:10 am",
-      timeDifference: null,
-      credits: 4,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "M",
-      otherTimes: ["TR", "9:35 am - 10:50 am", "Food Sci 100"],
-    },
-
-    {
-      classTitle: "BIOL 1103",
-      className: "Topics in Biology",
-      description: "The course description will be displayed here.",
-      locationLong: "Science Learning Center 100",
-      locationShort: "SLC 100",
-      prereq: "",
-      coreq: "BIOL 1103L",
-      professor: "Jane Doe",
-      semester: "Spring/Fall",
-      timeStart: "9:10 am",
-      timeEnd: "10:00 am",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-dev-dog-blue",
-      borderColor: "border-dev-dog-blue",
-
-      currentDay: "MWF",
-      otherTimes: ["", "", ""],
-    },
-  ],
-
-  Tuesday: [
-    {
-      classTitle: "CSCI 1302",
-      className: "Software Development",
-      description: "The course description will be displayed here.",
-      locationLong: "Food Science 100",
-      locationShort: "Food Sci 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "All",
-      timeStart: "9:35 am",
-      timeEnd: "10:50 am",
-      timeDifference: null,
-      credits: 4,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "TR",
-      otherTimes: ["M", "10:20 am - 11:10 am", "Conner 100"],
-    },
-
-    {
-      classTitle: "MUSI 2300",
-      className: "Music in Athens",
-      description:
-        "Explores national and international musical and cultural trends. The course draws from Athens, Georgia’s diverse musical communities and their histories, exploring the rock, hip hop, and indie popular music scenes along with African-American traditions, folk and traditional musics, and the emergent Latin music scene.",
-      locationLong: "Hugh Hudgson School of Music 100",
-      locationShort: "Hugh Hudgson 100",
-      prereq: "",
-      coreq: "",
-      professor: "Jane Doe",
-      semester: "Spring",
-      timeStart: "12:45 pm",
-      timeEnd: "2:00 pm",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-lake-herrick",
-      borderColor: "border-lake-herrick",
-      currentDay: "TR",
-      otherTimes: ["", "", ""],
-    },
-  ],
-
-  Wednesday: [
-    {
-      classTitle: "CSCI 3030",
-      className: "Computing, Ethics, and Society",
-      description: "The course description will be displayed here.",
-      locationLong: "Boyd Research and Education Center 100",
-      locationShort: "Boyd 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "Spring",
-      timeStart: "1:30 pm",
-      timeEnd: "2:20 pm",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "MW",
-      otherTimes: ["F", "1:30 pm - 2:20 pm", "Chemistry 100"],
-    },
-
-    {
-      classTitle: "BIOL 1103",
-      className: "Topics in Biology",
-      description: "The course description will be displayed here.",
-      locationLong: "Science Learning Center 100",
-      locationShort: "SLC 100",
-      prereq: "",
-      coreq: "BIOL 1103L",
-      professor: "Jane Doe",
-      semester: "Spring/Fall",
-      timeStart: "9:10 am",
-      timeEnd: "10:00 am",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-dev-dog-blue",
-      borderColor: "border-dev-dog-blue",
-      currentDay: "MWF",
-      otherTimes: ["", "", ""],
-    },
-  ],
-
-  Thursday: [
-    {
-      classTitle: "CSCI 1302",
-      className: "Software Development",
-      description: "The course description will be displayed here.",
-      locationLong: "Food Science 100",
-      locationShort: "Food Sci 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "Spring",
-      timeStart: "9:35 am",
-      timeEnd: "10:50 am",
-      timeDifference: null,
-      credits: 4,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "TR",
-      otherTimes: ["M", "10:20 am - 11:10 am", "Conner 100"],
-    },
-
-    {
-      classTitle: "MUSI 2300",
-      className: "Music in Athens",
-      description: "The course description will be displayed here.",
-      locationLong: "Hugh Hudgson School of Music 100",
-      locationShort: "Hugh Hudgson 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "Jane Doe",
-      semester: "Spring",
-      timeStart: "12:45 pm",
-      timeEnd: "2:00 pm",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-lake-herrick",
-      borderColor: "border-lake-herrick",
-      currentDay: "TR",
-      otherTimes: ["", "", ""],
-    },
-
-    {
-      classTitle: "BIOL 1103L",
-      className: "Concepts in Biology Laboratory",
-      description: "The course description will be displayed here.",
-      locationLong: "Science Learning Center 100",
-      locationShort: "SLC 100",
-      prereq: "",
-      coreq: "BIOL 1103",
-      professor: "Jane Doe",
-      semester: "Spring/Fall",
-      timeStart: "2:20 pm",
-      timeEnd: "4:15 pm",
-      timeDifference: null,
-      credits: 1,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-dev-dog-blue",
-      borderColor: "border-dev-dog-blue",
-      currentDay: "R",
-      otherTimes: ["", "", ""],
-    },
-  ],
-
-  Friday: [
-    {
-      classTitle: "CSCI 3030",
-      className: "Computing, Ethics, and Society",
-      description: "The course description will be displayed here.",
-      locationLong: "Boyd Research and Education Center 100",
-      locationShort: "Chemistry 100",
-      prereq: "ENGL 1102",
-      coreq: "",
-      professor: "John Doe",
-      semester: "Spring",
-      timeStart: "1:30 pm",
-      timeEnd: "2:20 pm",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-bulldog-red",
-      borderColor: "border-bulldog-red",
-      currentDay: "F",
-      otherTimes: ["MW", "1:30 pm - 2:20 pm", "Boyd 100"],
-    },
-
-    {
-      classTitle: "BIOL 1103",
-      className: "Topics in Biology",
-      description: "The course description will be displayed here.",
-      locationLong: "Science Learning Center 100",
-      locationShort: "SLC 100",
-      prereq: "",
-      coreq: "BIOL 1103L",
-      professor: "Jane Doe",
-      semester: "Spring/Fall",
-      timeStart: "9:10 am",
-      timeEnd: "10:00 am",
-      timeDifference: null,
-      credits: 3,
-      crn: 26510,
-      openSeats: 100,
-      maxSeats: 100,
-      waitlist: 0,
-      bgColor: "bg-dev-dog-blue",
-      borderColor: "border-dev-dog-blue",
-      currentDay: "MWF",
-      otherTimes: ["", "", ""],
-    },
-  ],
+const dummySchedule2 = {
+  data: dummyData2,
+  pinned: false,
 };
+
 // Handles retrieval of saved plans from local storage and displays a list of them for the user to select
 export default function SavedPlans() {
   // Parameters for a saved plan
   interface SavedPlanType {
     title: string;
     data: WeekScheduleType;
+    pinned: boolean;
   }
 
+  // useState variables for updating the saved plans list + specifying a plan to pin or delete
   const [savedPlans, setSavedPlans] = useState<SavedPlanType[]>([]);
+  const planToPin = useState<string | null>(null);
   const [planToDelete, setPlanToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     try {
-      // REPLACE WITH RETRIEVAL OF REAL DATA WHEN POSSIBLE
-      // Save the dummy schedules to browser local storage
-      console.log("Saving to local storage"); // for debugging
-      localStorage.setItem("Schedule 1", JSON.stringify(dummySchedule));
-      localStorage.setItem("Schedule 2", JSON.stringify(dummySchedule2));
-      localStorage.setItem("Schedule 3", JSON.stringify(dummySchedule));
-      localStorage.setItem("Schedule 4", JSON.stringify(dummySchedule2));
-      localStorage.setItem("Schedule 5", JSON.stringify(dummySchedule));
-      console.log("Schedules saved"); // for debugging
+      /* REMOVE THE LINES INSIDE THE BOX WHEN WE KNOW WE HAVE WORKING DATA
+       **********************************************************************/
+      let noSchedules = true;
+      // Loop through local storage to determine if schedules are already present
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key) {
+          const data = localStorage.getItem(key);
+          if (data?.startsWith(`{"data":{`)) {
+            noSchedules = false;
+            break;
+          }
+        }
+      }
+
+      // If local storage is empty, save the dummy schedules there
+      if (noSchedules) {
+        localStorage.setItem("Schedule 1", JSON.stringify(dummySchedule1));
+        localStorage.setItem("Schedule 2", JSON.stringify(dummySchedule2));
+        localStorage.setItem("Schedule 3", JSON.stringify(dummySchedule1));
+        localStorage.setItem("Schedule 4", JSON.stringify(dummySchedule2));
+        localStorage.setItem("Schedule 5", JSON.stringify(dummySchedule1));
+      }
+      /***********************************************************************/
 
       // Retrieve schedules from local storage and populate the plans array
       const plans = [];
@@ -646,18 +68,25 @@ export default function SavedPlans() {
         if (key) {
           // Retrieve data matching key
           const data = localStorage.getItem(key);
-          // Only proceed if the data looks like a WeekSchedule component
-          if (data?.startsWith('{"Monday"')) {
-            // Parse the data from the JSON
-            plans.push({
-              title: key,
-              data: JSON.parse(data) as WeekScheduleType,
-            });
+          // Only continue if the data looks like a saved plan
+          if (data?.startsWith(`{"data":{`)) {
+            const parsedData = JSON.parse(data) as SavedPlanType;
+            if (parsedData.data && parsedData.pinned !== undefined) {
+              // Parse the data from the JSON
+              plans.push({
+                title: key,
+                data: parsedData.data,
+                pinned: parsedData.pinned,
+              });
+            }
           }
         }
       }
       // Sort plans by title, because apparently the browser can't be bothered to keep the order straight
-      plans.sort((a, b) => a.title.localeCompare(b.title));
+      plans.sort(
+        (a, b) =>
+          Number(b.pinned) - Number(a.pinned) || a.title.localeCompare(b.title),
+      );
       setSavedPlans(plans);
     } catch (error) {
       // If something goes wrong, this message should be displayed in the browser console
@@ -665,8 +94,49 @@ export default function SavedPlans() {
     }
   }, []);
 
+  // When the heart is clicked, the plan is pinned and takes priority in the list
+  const pinPlan = (title: string) => {
+    if (planToPin) {
+      setSavedPlans((prevPlans) => {
+        const updatedPlans = prevPlans.map((plan) => {
+          if (plan.title === title) {
+            // Toggle the pinned status
+            const updatedPlan = { ...plan, pinned: !plan.pinned };
+            // Save the updated plan back to local storage
+            localStorage.setItem(
+              title,
+              JSON.stringify({ data: plan.data, pinned: updatedPlan.pinned }),
+            );
+            return updatedPlan;
+          }
+          return plan;
+        });
+
+        // Sort plans so that pinned plans come first
+        updatedPlans.sort(
+          (a, b) =>
+            Number(b.pinned) - Number(a.pinned) ||
+            a.title.localeCompare(b.title),
+        );
+
+        // Save sorted plans back to local storage
+        updatedPlans.forEach((plan) => {
+          localStorage.setItem(
+            plan.title,
+            JSON.stringify({ data: plan.data, pinned: plan.pinned }),
+          );
+        });
+        return updatedPlans;
+      });
+    }
+  };
+
   const confirmDeletePlan = (title: string) => {
     setPlanToDelete(title);
+  };
+
+  const cancelDelete = () => {
+    setPlanToDelete(null);
   };
 
   const deletePlan = () => {
@@ -679,24 +149,40 @@ export default function SavedPlans() {
     }
   };
 
-  const cancelDelete = () => {
-    setPlanToDelete(null);
-  };
-
   return (
     <div className="min-h-screen">
       <Navbar />
 
-      <div className="z-1 mb-10 ml-auto mr-auto mt-20 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl border-2 border-black bg-barely-pink">
-        {savedPlans.map((plan, index) => (
-          <SavedPlan
-            key={index}
-            planTitle={plan.title}
-            plan={plan.data}
-            onDelete={() => confirmDeletePlan(plan.title)}
-          />
-        ))}
-      </div>
+      {savedPlans.length === 0 ? (
+        // if savedPlans array is empty: direct user to the schedule builder
+        <div className="z-1 mb-10 ml-auto mr-auto mt-20 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl border-2 border-black bg-barely-pink">
+          <div className="m-auto flex flex-col items-center justify-center">
+            <h1 className="text-3xl font-bold">
+              You don&apos;t have any saved plans yet.{" "}
+            </h1>
+            <Link href="/course-adding">
+              <button className="mt-5 rounded-lg bg-bulldog-red px-8 py-4 text-xl font-bold text-white hover:bg-black">
+                Create
+              </button>
+            </Link>
+          </div>
+        </div>
+      ) : (
+        // if there are saved plans, display all of them
+        <div className="z-1 mb-10 ml-auto mr-auto mt-20 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl border-2 border-black bg-barely-pink">
+          {savedPlans.map((plan, index) => (
+            <SavedPlan
+              key={index}
+              plan={plan.data}
+              planTitle={plan.title}
+              pinned={plan.pinned}
+              onPin={() => pinPlan(plan.title)}
+              onDelete={() => confirmDeletePlan(plan.title)}
+            />
+          ))}
+        </div>
+      )}
+
       {planToDelete && (
         <DeletePlan
           onConfirm={deletePlan}
