@@ -1,5 +1,3 @@
-// Returning User: -> Saved Plans
-// New User: -> Saved Plans
 "use client";
 import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import WeekSchedule from "@/components/schedules/WeekSchedule";
@@ -261,7 +259,7 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
                 />
               )}
             </div>
-            <Link href={"/saved-plans"}>
+            <Link href={"/my-plans"}>
               <PiX size={32} className="mr-3 mt-5 hover:fill-bulldog-red" />
             </Link>
           </div>

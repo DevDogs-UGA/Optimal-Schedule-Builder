@@ -1,5 +1,3 @@
-// Returning User: -> Saved Plans
-// New User: -> Saved Plans
 "use client";
 import { Suspense } from "react";
 import ScheduleDisplay from "@/components/schedules/ScheduleDisplay";
