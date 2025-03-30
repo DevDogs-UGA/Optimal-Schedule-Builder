@@ -1,6 +1,8 @@
 "use client";
 import { type ClassData } from "@/types/scheduleTypes";
 import { useState, useEffect } from "react";
+import useQuery from "@/hooks/useQuery";
+import { FaStar } from "react-icons/fa";
 
 type DayClassProps = ClassData;
 
@@ -123,6 +125,18 @@ function getWeekLayout(
   return weekInfo;
 }
 
+interface ProfessorStarsProps {
+  rating: number;
+}
+const ProfessorStars = ({ rating }: ProfessorStarsProps) => {
+  const renderSVGs = () => {
+    return Array.from({ length: rating }, () => (
+      <FaStar key={rating} className="inline -translate-y-0.5" />
+    ));
+  };
+  return <div className="inline">{renderSVGs()}</div>;
+};
+
 function CourseInfo({
   classTitle,
   className,
@@ -160,6 +174,24 @@ function CourseInfo({
     locationShort,
   );
 
+  const professorName: string[] = professor.split(" ");
+  const firstName: string = professorName[0] ?? "";
+  const lastName: string = professorName.slice(1).join(" ") ?? "";
+  const avgProfessorQuery = useQuery("getAvgProfessorRating", {
+    lname: lastName,
+    fname: firstName,
+  });
+  // To test with dummy data, replace "0" with a professor rating of choice in the following line
+  const avgProfessorData: number | undefined = avgProfessorQuery.data ?? 0;
+  const isAvgZero = avgProfessorData === 0;
+  const numProfessorQuery = useQuery("getNumProfessorRatings", {
+    lname: lastName,
+    fname: firstName,
+  });
+  // To test with dummy data, replace "0" with a number of reviewings in the following line
+  const numProfessorData: number | undefined = numProfessorQuery.data ?? 0;
+  const isNumZero = numProfessorData === 0;
+
   return (
     <div
       className={`fixed inset-0 z-40 flex items-center justify-center bg-white bg-opacity-50`}
@@ -194,7 +226,11 @@ function CourseInfo({
             </p>
             <p>
               {" "}
-              <b>Professor:</b> {professor}{" "}
+              <b>Professor:</b> {professor}
+              {!(isAvgZero && isNumZero) && " | "}
+              <ProfessorStars rating={avgProfessorData} />
+              {!isAvgZero && !isNumZero && " | "}
+              {!isNumZero && numProfessorData + " reviews"}{" "}
             </p>{" "}
             <br></br>
             <p>
