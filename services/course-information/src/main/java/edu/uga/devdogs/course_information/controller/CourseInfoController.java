@@ -232,7 +232,7 @@ public class CourseInfoController {
     /**
      * Retrieves coordinates associated with a particular building code of a building at UGA.
      *
-     * @param buildingNumber Building number stored as a string
+     * @param buildingCode Building number stored as a string
      * @return List of all available subjects as strings
      */
     @Operation(summary = "Get coordinates based on building numbers", description = "Retrieves coordinates associated with a particular building code.")
@@ -243,15 +243,14 @@ public class CourseInfoController {
     })
     @GetMapping("/coordinates")
     @Tag(name="course-information")
-    public ResponseEntity<List<String>> getCoordinatesByBuildingNumber(@RequestParam(value="buildingNumber",
-            required = true) String buildingNumber) {
-        if (buildingNumber == null) {
+    public ResponseEntity<List<String>> getCoordinatesByBuildingCode(@RequestParam(value="buildingCode",
+            required = true) String buildingCode) {
+        if (buildingCode == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         try {
-            // Coordinates of a building number as a string
             List<String> coordinates = new ArrayList<String>();
-            coordinates.add(courseInformationService.getCoordinatesByBuildingNumber(buildingNumber));
+            coordinates.add(courseInformationService.getCoordinatesByBuildingCode(buildingCode));
 
             // Return the list of subject strings if found
             return ResponseEntity.ok(coordinates);

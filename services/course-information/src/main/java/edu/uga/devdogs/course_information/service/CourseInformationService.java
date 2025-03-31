@@ -208,14 +208,13 @@ public class CourseInformationService {
     /**
      * Method to get the coordinates of a building based on the building number
      *
-     * @param number The number of specified building
+     * @param code The number of specified building
      * @return A string coordinate of the building
      */
-    public String getCoordinatesByBuildingNumber(String number){
-        //String coordinate = buildingRepository.getCoordinatesByBuildingNumber(number); //not implemented in database, commenting for now
-        String coordinate = null; //returning null until JPA implementation is added
-        if (coordinate != null) {
-            return coordinate;
+    public String getCoordinatesByBuildingCode(String code){
+        String coordinates = "(" + getLatitude(code) + ", " + getLongitude(code);
+        if (coordinates != null) {
+            return coordinates;
         } else {
             throw new BuildingNotFoundException("Building Not Found");
         }
