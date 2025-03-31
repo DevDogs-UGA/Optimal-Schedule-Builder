@@ -47,15 +47,15 @@ export default function Home() {
               </div>
 
               <div className="flex w-full max-w-lg items-center justify-center text-xl font-bold xl:text-2xl">
-                <p className="-mr-8 w-1/2 cursor-default rounded-l-full bg-[#F8E6EA] bg-dusty-pink px-6 py-5 text-left text-neutral-600/40 shadow-inner">
+                <p className="-mr-8 w-1/2 cursor-default rounded-l-full bg-[#F8E6EA] bg-dusty-pink px-6 py-5 text-left text-neutral-600/40">
                   Ready?
                 </p>
                 <Link
-                  className="flex w-3/5 items-center gap-4 rounded-full border-2 border-red-900 bg-bulldog-red py-4 pl-8 pr-1.5 text-white shadow-md"
+                  className="flex w-3/5 items-center gap-4 rounded-full bg-bulldog-red px-6 py-5 pl-8 pr-1.5 text-white shadow-md"
                   href="/create"
                 >
-                  Get Started!{" "}
-                  <span className="-my-2 ml-auto mr-1 flex size-12 items-center justify-center rounded-full border-2 border-red-900 bg-white pt-0.5 text-[1.5rem] leading-none shadow-sm">
+                  Start Now!{" "}
+                  <span className="-my-2 ml-auto mr-3 flex size-12 items-center justify-center rounded-full border-2 border-red-900 bg-white pt-0.5 text-[1.5rem] leading-none">
                     🚀
                   </span>
                 </Link>

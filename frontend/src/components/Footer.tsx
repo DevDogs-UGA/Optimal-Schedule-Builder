@@ -26,12 +26,12 @@ export function Footer() {
           About Us
         </a>
 
+        {/* Removed Terms of Use */}
         <a
+          title="blank"
           className="col-span-2 flex items-center justify-center text-center hover:text-slate-900 min-[480px]:col-span-1"
           href="#"
-        >
-          Terms of Use
-        </a>
+        ></a>
 
         <a
           className="col-span-2 flex items-center justify-center text-center hover:text-slate-900 min-[480px]:col-span-1"
