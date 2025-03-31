@@ -227,10 +227,7 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
                 />
               </button>
             ) : (
-                <PiArrowLeft
-                  size={32}
-                  className="ml-5 fill-pebble-gray"
-                />
+              <PiArrowLeft size={32} className="ml-5 fill-pebble-gray" />
             )}
             <h1 className="ml-auto mr-auto text-2xl font-bold">
               {currentPlan.title}
@@ -243,10 +240,7 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
                 />
               </button>
             ) : (
-              <PiArrowRight
-                  size={32}
-                  className="mr-5 fill-pebble-gray"
-                />
+              <PiArrowRight size={32} className="mr-5 fill-pebble-gray" />
             )}
           </div>
           {/* Save/exit buttons: exit returns to saved plan list */}
