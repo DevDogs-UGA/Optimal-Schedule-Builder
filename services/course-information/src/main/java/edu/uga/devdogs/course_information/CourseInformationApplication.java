@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.uga.devdogs.course_information.webscraping.DescriptionScraper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -110,7 +111,7 @@ public class CourseInformationApplication {
                     courseEntity,
                     null,
                     course.getMeetingDays(),
-                    course.getMeetingTimes());   
+                    course.getMeetingTimes(), DescriptionScraper.getCourseDescription(course.getSubject(), course.getCourseNumber()));
 
                 System.out.println(courseSection.getCreditHours()); 
                 

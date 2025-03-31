@@ -29,7 +29,8 @@ public class CourseSection implements Serializable {
     private String sec;
 
     private char stat;
-  
+
+    private String courseDescription;
     @Column(nullable = false) 
     private int creditHours = 3;
 
@@ -83,7 +84,7 @@ public class CourseSection implements Serializable {
     public CourseSection() {}
 
     public CourseSection(int crn, String sec, char stat, int creditHours, String instructor,
-        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, String meetingTime) {
+        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, String meetingTime, String courseDescription) {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
@@ -97,6 +98,7 @@ public class CourseSection implements Serializable {
     this.classes = classes;
     this.daysOfTheWeek = daysOfTheWeek;
     this.meetingTime = meetingTime;
+    this.courseDescription = courseDescription;
 }
 
     public long getId() {
@@ -125,6 +127,14 @@ public class CourseSection implements Serializable {
 
     public char getStat() {
         return stat;
+    }
+
+    public String getCourseDescription() {
+        return courseDescription;
+    }
+
+    public void setCourseDescription(String courseDescription) {
+        this.courseDescription = courseDescription;
     }
 
     public void setStat(char stat) {
