@@ -1,17 +1,17 @@
 import { PiInstagramLogoBold, PiLinkedinLogoBold } from "react-icons/pi";
-import Image from 'next/image';
+import Image from "next/image";
 
 export function Footer() {
   return (
     <footer className="m-4 grid grid-cols-6 grid-rows-3 gap-y-0 rounded-md border-2 border-neutral-500 bg-neutral-200 px-4 py-0 text-neutral-600 min-[480px]:grid-cols-[1fr_repeat(3,1.5fr)_1fr] min-[480px]:grid-rows-2 min-[480px]:gap-y-1.5 min-[480px]:py-3 sm:gap-y-1 sm:py-2 md:grid-cols-[repeat(2,max-content)_1fr_repeat(3,max-content)] md:grid-rows-1 md:gap-x-4 lg:gap-x-6 lg:px-6">
       {/* WordmarkMascot image */}
-      <div className="col-span-full flex justify-center items-center h-full py-1 sm:row-start-2 md:col-span-1 md:col-start-3 md:row-start-1">
+      <div className="col-span-full flex h-full items-center justify-center py-1 sm:row-start-2 md:col-span-1 md:col-start-3 md:row-start-1">
         <Image
           src="/images/WordmarkMascot.png"
           alt="UGA DevDogs and GDG Logos"
           width={250}
           height={40}
-          className="object-contain mx-auto"
+          className="mx-auto object-contain"
           priority
         />
       </div>
