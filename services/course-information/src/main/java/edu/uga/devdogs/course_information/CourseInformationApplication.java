@@ -1,122 +1,214 @@
 package edu.uga.devdogs.course_information;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import edu.uga.devdogs.course_information.Class.Class;
+import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import edu.uga.devdogs.course_information.Building.Building;
+import aj.org.objectweb.asm.TypeReference;
+import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import edu.uga.devdogs.course_information.Class.ClassRepository;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
-import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
-import edu.uga.devdogs.course_information.Building.BuildingRepository;
-import java.sql.Time;
-
+import edu.uga.devdogs.course_information.webscraping.Course2;
+import edu.uga.devdogs.course_information.webscraping.Pdf;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import edu.uga.devdogs.course_information.webscraping.Pdf;
 
 @SpringBootApplication
+@EnableTransactionManagement 
 public class CourseInformationApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CourseInformationApplication.class, args);
-	}
 
-	@Bean
-    	CommandLineRunner courseSecCommandLineRunner(
-			CourseSectionRepository courseSectionRepository,
-			CourseRepository courseRepository, 
-			Building building, 
-			ClassRepository classRepository,
-			BuildingRepository buildingRepository) {
-				return args -> {
-					//CourseSection interface objects
-					CourseSection section1 = new CourseSection (
-						123456,
-						4,
-						'A',
-						1.0,
-						4.0,
-						"Barnes",
-						2,
-						40,
-						40,
-						2024,
-						null,
-						null
-					);
+    private final BuildingRepository buildingRepository;
 
-					courseSectionRepository.save(section1);
+    @Value("${update.buildings}")
+    private boolean updateBuildings;
 
-					//courseRepository interface objects
-					Course course1 = new Course (
-						"physiology", 
-						"420", 
-						"pain", 
-						"Mary Francis early education",
-						null
-					);
+    CourseInformationApplication(BuildingRepository buildingRepository) {
+        this.buildingRepository = buildingRepository;
+    }
 
-					courseRepository.save(course1);
+    public static void main(String[] args) {
+        SpringApplication.run(CourseInformationApplication.class, args);
+    }
 
-					//Building interface objects
-					Building building1 = new Building (2438, "CAGTECH", "F - 6");
-					buildingRepository.save(building1);
-					
-					Building building2 = new Building(46, "Caldwell Hall", "C - 1");
-					buildingRepository.save(building2);
-					
-					Building building3 = new Building(2118, "Campus Mail/Environmental Safety", "E - 6");
-					buildingRepository.save(building3);
-					
-					Building building4 = new Building(1637, "Campus Transit Facility", "D - 8");
-					buildingRepository.save(building4);
-					
-					Building building5 = new Building(31, "Candler Hall", "C - 1");
-					buildingRepository.save(building5);
-					
-					Building building6 = new Building(1110, "Carlton Street Deck", "B - 4");
-					buildingRepository.save(building6);
-					
-					Building building7 = new Building(2419, "CCRC", "E - 7");
-					buildingRepository.save(building7);
-					
-					Building building8 = new Building(2127, "Center for Applied Isotope Study", "E - 6");
-					buildingRepository.save(building8);
-					
-					Building building9 = new Building(2395, "Center for Molecular Medicine", "E - 7");
-					buildingRepository.save(building9);
-					
-					Building building10 = new Building(178, "Central Campus Mech. Building", "C - 2");
-					buildingRepository.save(building10);
+    @Bean
+    @Order(1)
+    CommandLineRunner courseSecCommandLineRunner(
+        CourseSectionRepository courseSectionRepository,
+        CourseRepository courseRepository,
+        ClassRepository classRepository,
+        BuildingRepository buildingRepository) {
+        
+        return args -> {
 
+            courseSectionRepository.deleteAll();
+            courseRepository.deleteAll();
 
-					//Class interface objects
-					Class class1 = new Class(
-							"MWF", 
-							Time.valueOf("08:00:00"), 
-							Time.valueOf("09:15:00"), 
-							"Science Building", 
-							"101", 
-							"Main Campus" ,
-							null
-					);
+            List<Course2> courses = Pdf.parsePdf("spring", "C:\\kadestyron\\d\\Desktop"); // change this to your computer specifc path
+            List<Course> courseEntities = new ArrayList<>();
+            List<CourseSection> courseSections = new ArrayList<>();
+            
+            for(Course2 course : courses) {
+                // if(course.getSec().equals("C")) {
+                //     continue;
+                // }
+                String creditHoursStr = course.getCreditHours().trim();
 
-					Class class2 = new Class(
-							"TR", 
-							Time.valueOf("13:00:00"), 
-							Time.valueOf("14:15:00"), 
-							"Engineering Hall", 
-							"205", 
-							"North Campus",
-							null
-					);
+                int creditHours = 3; // Default value if parsing fails or if the string is empty
 
-				classRepository.save(class1);
-				classRepository.save(class2);
-			};
-		}
+                // Remove non-numeric characters
+                creditHoursStr = creditHoursStr.replaceAll("[^0-9.-]", "").trim();
+                
+                // Check for a range (e.g., "4.0-4.0")
+                if (creditHoursStr.contains("-")) {
+                    String[] parts = creditHoursStr.split("-");
+                    // Parse the first part of the range (or average the two values)
+                    try {
+                        double firstValue = Double.parseDouble(parts[0].trim());
+                        creditHours = (int) firstValue; // Convert to integer (you can also average the values if needed)
+                    } catch (NumberFormatException e) {
+                        creditHours = 3; // Default value in case of invalid range format
+                        System.err.println("Invalid credit hours range: " + course.getCreditHours() + ", defaulting to 3.");
+                    }
+                }     
+                
+                // default to 3 if credit hours is empty
+
+            
+                //System.out.print(course.getCrn() + " " + course.getSec() + " " +course.getCreditHours() + "  | ");
+
+                Course courseEntity = new Course(
+                    course.getSubject(), course.getCourseNumber(), course.getTitle(), course.getDepartment(), null );
+                CourseSection courseSection = new CourseSection(
+                    course.getCrn(),
+                    course.getSec(), 
+                    (course.getStat()).charAt(0), 
+                    creditHours, // Use parsed credit hours
+                    course.getProfessor(), 
+                    course.getPartOfTerm(), 
+                    course.getClassSize(), 
+                    course.getAvailableSeats(), 
+                    0, 
+                    courseEntity,
+                    null,
+                    course.getMeetingDays(),
+                    course.getMeetingTimes());   
+
+                System.out.println(courseSection.getCreditHours()); 
+                
+                courseEntities.add(courseEntity);
+                
+                if (courseSection.getClassSize() > 0) {
+                    courseSections.add(courseSection);
+                }
+
+                // courseRepository.save(courseEntity);
+                // //only save if it has a seat available
+                // if(courseSection.getSeatsAvailable() > 0) {
+                //     courseSectionRepository.save(courseSection);
+                // }
+
+            }
+            System.out.println("Saving to database...");
+            courseRepository.saveAll(courseEntities);
 
 
+            courseSectionRepository.saveAll(courseSections);
+            System.out.println("Saved to database");
+   
+        };
+    }
+
+    
+    @Bean
+    @Order(2)
+    CommandLineRunner buildingCommandLineRunner (BuildingRepository buildingRepository) {
+        return args -> {
+
+
+            if (!updateBuildings) {
+                System.out.println("Building update skipped due to configuration.");
+                return;  // Exit early if the property is set to false
+            }
+            String buildingsJsonPath = "buildingData/AthensBuildingData.json";
+            ClassPathResource resource = new ClassPathResource(buildingsJsonPath);
+
+            if (!resource.exists()) {
+                System.err.println("File not found at path: " + buildingsJsonPath);
+                return;
+            }
+
+            try (InputStream inputStream = resource.getInputStream()) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, Building.class);
+                List<Building> buildings = objectMapper.readValue(inputStream, listType);
+
+                System.out.println("Parsed JSON successfully.");
+
+                List<Building> buildingsToSave = new ArrayList<>();
+                for (Building building : buildings) {
+                    if (!buildingRepository.existsById(building.getBuildingCode())) {
+                        buildingsToSave.add(building);
+                    }
+                }
+
+                if (!buildingsToSave.isEmpty()) {
+                    buildingRepository.saveAll(buildingsToSave);
+                    System.out.println("Buildings saved successfully.");
+                } else {
+                    System.out.println("No new buildings to save.");
+                }
+
+            } catch (IOException e) {
+                System.err.println("Failed to read or parse buildings.json: " + e.getMessage());
+            }
+       };
+    }
+
+    @Bean
+    @Order(2)
+    CommandLineRunner professorCommandLineRunner(ProfessorService professorService) {
+        return args -> {
+            String filePath = "something.json"; // ADD PATH HERE
+            ClassPathResource resource = new ClassPathResource(filePath);
+
+            if (!resource.exists()) {
+                System.err.println("File not found: " + filePath);
+                return;
+            }
+
+            try (InputStream inputStream = resource.getInputStream()) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, Professor.class);
+                List<Professor> professors = objectMapper.readValue(inputStream, listType);
+
+                for (Professor professor : professors) {
+                    professorService.saveOrUpdateProfessor(professor);
+                }
+
+                System.out.println("RateMyProf data saved successfully.");
+
+            } catch (IOException e) {
+                System.err.println("Failed to read RateMyProf JSON: " + e.getMessage());
+            }
+        };
+    }
 }
-

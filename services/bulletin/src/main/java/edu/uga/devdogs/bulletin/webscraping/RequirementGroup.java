@@ -19,6 +19,7 @@ public class RequirementGroup {
     private boolean canSubstituteDepartmentPermission;
     private String courseName;
     private String courseDescription;
+  
     private ArrayList<String> courses = new ArrayList<>();
 
     /**
@@ -76,6 +77,7 @@ public class RequirementGroup {
     public void setCanSubstituteDepartmentPermission(boolean canSubstituteDepartmentPermission) {
         this.canSubstituteDepartmentPermission = canSubstituteDepartmentPermission;
     }
+
 
     public String getCourseDescription() {
         return courseDescription;

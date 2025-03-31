@@ -1,67 +1,67 @@
 [
   {
     "name": "Park Hall",
-    "x": 0,
-    "y": 0
+    "x": 11,
+    "y": 25
   },
   {
     "name": "Miller Plant Sciences",
-    "x": 0,
-    "y": 0
+    "x": 12,
+    "y": 3
   },
   {
     "name": "Boyd",
-    "x": 0,
-    "y": 0
+    "x": 11,
+    "y": 12
   },
   {
     "name": "Dawson Hall",
-    "x": 0,
-    "y": 0
+    "x": 10,
+    "y": 15
   },
   {
     "name": "Physics",
-    "x": 0,
-    "y": 0
+    "x": 9,
+    "y": 17
   },
   {
     "name": "Science Learning Center",
-    "x": 0,
-    "y": 0
+    "x": 9,
+    "y": 3
   },
   {
     "name": "Conner Hall",
-    "x": 0,
-    "y": 0
+    "x": 14,
+    "y": 16
   },
   {
     "name": "Cedar Street Building C",
-    "x": 0,
-    "y": 0
+    "x": 14,
+    "y": 17
   },
   {
     "name": "Aderhold Hall",
-    "x": 0,
-    "y": 0
+    "x": 16,
+    "y": 2
   },
   {
     "name": "Life Sciences",
-    "x": 0,
-    "y": 0
+    "x": 17,
+    "y": 4
   },
   {
     "name": "Forest Resources",
-    "x": 0,
-    "y": 0
+    "x": 12,
+    "y": 8
   },
   {
     "name": "Food Sciences",
-    "x": 0,
-    "y": 0
+    "x": 16,
+    "y": 14
   },
   {
     "name": "Geography Geology",
-    "x": 0,
-    "y": 0
+    "x": 10,
+    "y": 18
   }
 ]

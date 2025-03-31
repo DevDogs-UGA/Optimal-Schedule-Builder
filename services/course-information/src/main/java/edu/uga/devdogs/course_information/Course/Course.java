@@ -1,56 +1,137 @@
 package edu.uga.devdogs.course_information.Course;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
+import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
-
 
 @Entity
 public class Course implements Serializable {
-    //Variables
+    // Variables
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "course_id")
     private long courseId;
 
-    private String subject;
-
-    private String courseNumber;
-
     private String title;
-
+    private String subject;
+    private String courseNumber;
     private String department;
+    private String courseDescription;
+    private String athenaTitle;
+    private String gradingSystem;
 
-    //Relationships
+    // Relationships
     @OneToMany(mappedBy = "course")
-    private List<CourseSection> courseSections;
+    private List<CourseSection> courseSections = new ArrayList<>();
+    
+    private List<CourseSection> preRequisites;
+    private List<CourseSection> coRequisites;
 
-    //Constructors, getters, setters...
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "equiv_courses_junction", 
+        joinColumns = @JoinColumn(name = "course_id"), 
+        inverseJoinColumns = @JoinColumn(name = "equiv_course_id")
+    )
+    List<Course> equivalentCourses = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "pre_req_junction", 
+        joinColumns = @JoinColumn(name = "course_id"), 
+        inverseJoinColumns = @JoinColumn(name = "prereq_course_id")
+    )
+    List<Course> prerequisiteCourses = new ArrayList<>();
+
+    @ElementCollection
+    private List<String> semesters = new ArrayList<>();
+
+    // Default constructor with proper initialization
     public Course() {
+        this.courseSections = new ArrayList<>();
+        this.preRequisites = new ArrayList<>();
+        this.coRequisites = new ArrayList<>();
+        this.equivalentCourses = new ArrayList<>();
+        this.prerequisiteCourses = new ArrayList<>();
+        this.semesters = new ArrayList<>();
     }
 
+    // Constructor that properly sets title parameter
     public Course(String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {
+        this();  // Call default constructor for initialization
+        this.subject = subject;
+        this.courseNumber = courseNumber;
+        this.title = title;  // Fixed: now setting the title
+        this.department = department;
+        if (courseSections != null) {
+            this.courseSections = courseSections;
+        }
+    }
+
+    // Full constructor for all fields
+    public Course(String subject, String courseNumber, String title, String department, 
+                 String courseDescription, String athenaTitle, String gradingSystem) {
+        this(); // Call default constructor for initialization
         this.subject = subject;
         this.courseNumber = courseNumber;
         this.title = title;
         this.department = department;
-        this.courseSections = courseSections;
+        this.courseDescription = courseDescription;
+        this.athenaTitle = athenaTitle;
+        this.gradingSystem = gradingSystem;
     }
 
-    public Course(long courseId, String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {
+    // Original constructor with fixes
+    public Course(String subject, String courseNumber, String title, String department, 
+                 List<CourseSection> courseSections, List<CourseSection> preRequisites, 
+                 List<CourseSection> coRequisites) {    
+        this(); // Call default constructor for initialization
+        this.title = title;
+        this.subject = subject;
+        this.courseNumber = courseNumber;
+        this.department = department;
+        if (preRequisites != null) {
+            this.preRequisites = preRequisites;
+        }
+        if (coRequisites != null) {
+            this.coRequisites = coRequisites;
+        }
+        if (courseSections != null) {
+            this.courseSections = courseSections;
+        }
+    }
+
+    // Full constructor with ID
+    public Course(long courseId, String subject, String courseNumber, String title, String department,
+            List<CourseSection> courseSections, String courseDescription, String athenaTitle,
+            List<Course> equivalentCourses, List<Course> prerequisiteCourses, List<String> semesters,
+            String gradingSystem) {
+        this(); // Call default constructor for initialization
         this.courseId = courseId;
         this.subject = subject;
         this.courseNumber = courseNumber;
         this.title = title;
         this.department = department;
-        this.courseSections = courseSections;
+        if (courseSections != null) {
+            this.courseSections = courseSections;
+        }
+        this.courseDescription = courseDescription;
+        this.athenaTitle = athenaTitle;
+        if (equivalentCourses != null) {
+            this.equivalentCourses = equivalentCourses;
+        }
+        if (prerequisiteCourses != null) {
+            this.prerequisiteCourses = prerequisiteCourses;
+        }
+        if (semesters != null) {
+            this.semesters = semesters;
+        }
+        this.gradingSystem = gradingSystem;
     }
 
+    // Getters and setters...
     public long getCourseId() {
         return courseId;
     }
@@ -99,11 +180,91 @@ public class Course implements Serializable {
         this.courseSections = courseSections;
     }
 
-    @Override
-    public String toString() {
-        return "Course [courseId=" + courseId + ", subject=" + subject + ", courseNumber=" + courseNumber + ", title="
-                + title + ", department=" + department + "]";
+    public List<CourseSection> getPrerequisets(long id) {
+        return preRequisites;
     }
 
-    
+    public void setPrerequisites(List<CourseSection> preRequisites) {
+        this.preRequisites = preRequisites;
+    }
+
+    public List<CourseSection> getCorequisites(long id) {
+        return coRequisites;
+    }
+
+    public void setCorequisites(List<CourseSection> coRequisites) {
+        this.coRequisites = coRequisites;
+    }
+
+    public String getCourseDescription() {
+        return courseDescription;
+    }
+
+    public void setCourseDescription(String courseDescription) {
+        this.courseDescription = courseDescription;
+    }
+
+    public String getAthenaTitle() {
+        return athenaTitle;
+    }
+
+    public void setAthenaTitle(String athenaTitle) {
+        this.athenaTitle = athenaTitle;
+    }
+
+    public List<Course> getEquivalentCourses() {
+        return equivalentCourses;
+    }
+
+    public void setEquivalentCourses(List<Course> equivelantCourses) {
+        this.equivalentCourses = equivelantCourses;
+    }
+
+    public List<Course> getPrerequisiteCourses() {
+        return prerequisiteCourses;
+    }
+
+    public void setPrerequisiteCourses(List<Course> prerequisiteCourses) {
+        this.prerequisiteCourses = prerequisiteCourses;
+    }
+
+    public List<String> getSemesters() {
+        return semesters;
+    }
+
+    public void setSemesters(List<String> semesters) {
+        this.semesters = semesters;
+    }
+
+    public String getGradingSystem() {
+        return gradingSystem;
+    }
+
+    public void setGradingSystem(String gradingSystem) {
+        this.gradingSystem = gradingSystem;
+    }
+ 
+    @Override
+    public String toString() {
+        return "Course {" +
+            "courseId=" + courseId + ", " +
+            "title='" + title + '\'' + ", " +
+            "subject='" + subject + '\'' + ", " +
+            "courseNumber='" + courseNumber + '\'' + ", " +
+            "department='" + department + '\'' + ", " +
+            "preRequisites=" + formatList(preRequisites) + ", " +
+            "coRequisites=" + formatList(coRequisites) +
+            '}';
+    }
+
+    private String formatList(List<CourseSection> list) {
+        if (list == null || list.isEmpty()) {
+            return "[]";
+        }
+        return list.stream()
+               .map(Object::toString)
+               .reduce((s1, s2) -> s1 + ", " + s2)
+               .map(result -> "[" + result + "]")
+               .orElse("[]");
+    }
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * @param classes    The array of classes associated with this section.
  */
 public record Section(String courseCode,
-                      String crn,
+                      int crn,
                       @SerializedName("professor_name") Professor professor,
                       List<Class> classes) {
 }

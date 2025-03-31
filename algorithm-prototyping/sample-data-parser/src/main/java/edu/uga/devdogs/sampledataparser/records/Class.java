@@ -12,10 +12,13 @@ import java.util.List;
  * @param startTime    The start time of the class.
  * @param endTime      The end time of the class.
  * @param buildingName The name of the building where the class is held.
+ * @param campus       The campus the course takes place at.
  */
-public record Class(String crn,
+public record Class(int crn,
                     List<DayOfWeek> days,
                     LocalTime startTime,
                     LocalTime endTime,
-                    String buildingName) {
+                    String buildingName,
+                    String campus,
+                    String buildingNumber) {
 }

@@ -1,12 +1,12 @@
-package edu.uga.devdogs.course_information.exception;
+// package edu.uga.devdogs.course_information.exception;
 
 
-public class CourseNotFoundException extends RuntimeException {
+// public class CourseNotFoundException extends RuntimeException {
 
+//     // Constructor for course not found
+//     public CourseNotFoundException(String message){
 
-    public CourseNotFoundException(String message){
+//         super(message); 
+//     }
 
-        super(message); 
-    }
-
-}
+// }
