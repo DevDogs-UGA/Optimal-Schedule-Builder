@@ -57,7 +57,7 @@ export function Navbar({ keyword = "default" }) {
               height={40}
               alt="white paw"
             />
-            <h1 className="text-3xl font-bold text-white">DogDays</h1>
+            <h1 className="text-3xl font-bold text-white">Bulldog Planner</h1>
           </Link>
           {/* Space filler div */}
           <div className="flex-1"></div>
