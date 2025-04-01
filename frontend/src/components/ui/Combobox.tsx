@@ -286,7 +286,7 @@ export default function Combobox({
           </label>
 
           <fieldset
-            className="relative flex flex-1 snap-y snap-mandatory flex-col gap-1 overflow-y-auto"
+            className="relative flex max-h-[140px] snap-y snap-mandatory flex-col gap-1 overflow-y-auto"
             ref={fieldset}
           >
             {filteredOptions.map(({ value, content }) => (
