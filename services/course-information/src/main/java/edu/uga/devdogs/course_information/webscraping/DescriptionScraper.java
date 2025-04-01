@@ -43,6 +43,7 @@ public class DescriptionScraper {
 
         Element courseResults = document.getElementById("lblCourseResultText");
         Elements resultsTables = courseResults.getElementsByClass("courseresultstable");
+        driver.quit();
         boolean isDescription = false;
         for (Element table : resultsTables) {
 
@@ -62,7 +63,10 @@ public class DescriptionScraper {
     }
 
     public static void main(String[] args) {
-        String description = getCourseDescription("fanr", "1100E");
-        System.out.println(description);
+        for (int i = 0; i < 10000; i++) {
+            String description = getCourseDescription("fanr", "1100E");
+            System.out.println(description);
+        }
+
     }
 }
