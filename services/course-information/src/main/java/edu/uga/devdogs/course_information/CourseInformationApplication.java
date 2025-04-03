@@ -294,7 +294,7 @@ public class CourseInformationApplication {
 
                     courseSections.add(courseSection);
                 }
-            } // <-- Add this missing closing bracket
+            } 
             
             System.out.println("Saving to database...");
             courseRepository.saveAll(courseEntities);
