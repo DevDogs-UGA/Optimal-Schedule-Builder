@@ -59,7 +59,7 @@ public class Course implements Serializable {
     }
 
     // Constructor that properly sets title parameter
-    public Course(String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {
+    public Course(String subject, String courseNumber, String title, String department, List<CourseSection> courseSections, String courseDescription) {
         this();  // Call default constructor for initialization
         this.subject = subject;
         this.courseNumber = courseNumber;
@@ -68,6 +68,8 @@ public class Course implements Serializable {
         if (courseSections != null) {
             this.courseSections = courseSections;
         }
+        this.courseDescription = courseDescription;
+
     }
 
     // Full constructor for all fields

@@ -21,7 +21,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     // Find courses by department
     List<Course> findByDepartment(String department);
 
-    // Find all courses by a certain credit hour
+    // Find all courses by their subject and course number
+    Course findBySubjectAndCourseNumber(String subject, String courseNumber);
     
 
     // Find all courses by the term they're offered in
