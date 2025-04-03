@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.uga.devdogs.course_information.Professor.Professor;
+import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
 import edu.uga.devdogs.course_information.Building.Building;
 import aj.org.objectweb.asm.TypeReference;
 import edu.uga.devdogs.course_information.Building.BuildingRepository;
@@ -28,8 +30,12 @@ import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
+import edu.uga.devdogs.course_information.service.ProfessorService;
 import edu.uga.devdogs.course_information.webscraping.Course2;
 import edu.uga.devdogs.course_information.webscraping.Pdf;
+// Ensure the correct package path for RateMyProfessorScraper
+//import edu.uga.devdogs.professor_rating.webscraping.RateMyProfessorScraper;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import edu.uga.devdogs.course_information.webscraping.Pdf;
@@ -43,12 +49,16 @@ public class CourseInformationApplication {
 
     private final BuildingRepository buildingRepository;
 
+    private final ProfessorRepository professorRepository;
+
     @Value("${update.buildings}")
     private boolean updateBuildings;
 
-    CourseInformationApplication(BuildingRepository buildingRepository) {
-        this.courseRepository = null;
+    CourseInformationApplication(BuildingRepository buildingRepository, CourseRepository courseRepository, ProfessorRepository professorRepository) {
+        this.courseRepository = courseRepository;
         this.buildingRepository = buildingRepository;
+        this.professorRepository = professorRepository;
+        // Removed incorrect initialization of professorService
     }
 
     public static void main(String[] args) {
@@ -93,6 +103,25 @@ public class CourseInformationApplication {
                         }
                     }
     
+                    // Scrape the professor information using RateMyProfessorScraper
+                    // String professorName = course.getProfessor();
+                    // if (professorName != null && !professorName.isEmpty()) {
+                    //     int professorId = RateMyProfessorScraper.getRateMyProfessorId(professorName);
+
+
+
+
+                    //     if (professorId != -1) { // Assuming -1 means no valid professor found
+                    //         Professor existingProfessor = professorRepository.findById(professorId).orElse(null);
+
+                    //         if (existingProfessor == null) {
+                    //             // Fetch and save the professor's details
+                    //             Professor professor = new Professor(professorId, professorName);
+                    //             professorRepository.save(professor);
+                    //         }
+                    //     }
+                    // }
+
                     // Check if the course already exists
                     Course existingCourse = courseRepository.findBySubjectAndCourseNumber(course.getSubject(), course.getCourseNumber());
                     Course courseEntity;
@@ -213,6 +242,35 @@ public class CourseInformationApplication {
                 // Add course key to the processed set to avoid further scraping
                 processedCourses.add(courseKey);
 
+
+                Professor existingProfessor = professorRepository.findByName(course.getProfessor());
+
+                String professorName = course.getProfessor();
+                if (professorName != null && !professorName.isEmpty() && !professorName.equalsIgnoreCase("TBA")) {
+
+                    // if (existingProfessor == null) {
+                    //     // Get additional professor data
+                    //     int professorId = RateMyProfessorScraper.getRateMyProfessorId(professorName);
+                    //     if (professorId != -1) {
+                    //         double rating = RateMyProfessorScraper.getRating(professorId);
+                    //         int difficulty = RateMyProfessorScraper.getDifficultyLevel(professorId);
+                    //         int wouldTakeAgain = RateMyProfessorScraper.getWouldTakeAgainPercentage(professorId);
+
+                    //         // Create and save the professor with detailed information
+                    //         Professor professor = new Professor(professorId, professorName);
+                    //         professor.setRating(rating);
+                    //         professor.setDifficulty(difficulty);
+                    //         professor.setWouldTakeAgainPercentage(wouldTakeAgain);
+                    //         professorRepository.save(professor);
+
+                    //         System.out.println("Added professor: " + professorName + " with ID: " + professorId);
+                    //     } else {
+                    //         System.out.println("Could not find RateMyProfessor ID for: " + professorName);
+                    //     }
+                    //}
+                } 
+        
+
                 // Check if a section with the same CRN already exists
                 CourseSection existingSection = courseSectionRepository.findByCrn(course.getCrn());
 
@@ -222,7 +280,7 @@ public class CourseInformationApplication {
                         course.getSec(), 
                         (course.getStat()).charAt(0), 
                         creditHours, 
-                        course.getProfessor(), 
+                        course.getProfessor(), //will be replaced with the professor object
                         course.getPartOfTerm(), 
                         course.getClassSize(), 
                         course.getAvailableSeats(), 
@@ -236,41 +294,12 @@ public class CourseInformationApplication {
 
                     courseSections.add(courseSection);
                 }
-            }
+            } // <-- Add this missing closing bracket
             
             System.out.println("Saving to database...");
             courseRepository.saveAll(courseEntities);
             courseSectionRepository.saveAll(courseSections);
             System.out.println("Saved to database");
-        };
-    }
-
-    @Bean
-    @Order(2)
-    CommandLineRunner professorCommandLineRunner(ProfessorService professorService) {
-        return args -> {
-            String filePath = "something.json"; // ADD PATH HERE
-            ClassPathResource resource = new ClassPathResource(filePath);
-
-            if (!resource.exists()) {
-                System.err.println("File not found: " + filePath);
-                return;
-            }
-
-            try (InputStream inputStream = resource.getInputStream()) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, Professor.class);
-                List<Professor> professors = objectMapper.readValue(inputStream, listType);
-
-                for (Professor professor : professors) {
-                    professorService.saveOrUpdateProfessor(professor);
-                }
-
-                System.out.println("RateMyProf data saved successfully.");
-
-            } catch (IOException e) {
-                System.err.println("Failed to read RateMyProf JSON: " + e.getMessage());
-            }
         };
     }
 }

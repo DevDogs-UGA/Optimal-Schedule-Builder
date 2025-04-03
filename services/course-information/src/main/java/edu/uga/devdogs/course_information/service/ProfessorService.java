@@ -32,12 +32,11 @@ public class ProfessorService {
         return professorRepository.findAll();
     }
 
-    public Professor getProfessorById(Long id) {
-        return professorRepository.findById(id)
-            .orElseThrow(() -> new ProfessorNotFoundException("Professor not found with ID: " + id));
+    public Professor getProfessorById(int id) {
+        return professorRepository.findById(id);
     }
 
-    public void deleteProfessor(Long id) {
+    public void deleteProfessor(int id) {
         professorRepository.deleteById(id);
     }
 
