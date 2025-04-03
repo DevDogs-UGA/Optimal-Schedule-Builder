@@ -189,7 +189,6 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
     // Assign background colors to each class
     currentPlan.data[day]?.forEach((classItem) => {
       classItem.bgColor = getBgColorForClass(classItem.classTitle);
-      console.log(classItem.bgColor);
     });
   });
 
@@ -228,7 +227,7 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
                 />
               </button>
             ) : (
-              <div></div>
+              <PiArrowLeft size={32} className="ml-5 fill-pebble-gray" />
             )}
             <h1 className="ml-auto mr-auto text-2xl font-bold">
               {currentPlan.title}
@@ -237,11 +236,11 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
               <button onClick={nextPlan}>
                 <PiArrowRight
                   size={32}
-                  className="ml-5 hover:fill-bulldog-red"
+                  className="mr-5 hover:fill-bulldog-red"
                 />
               </button>
             ) : (
-              <div></div>
+              <PiArrowRight size={32} className="mr-5 fill-pebble-gray" />
             )}
           </div>
           {/* Save/exit buttons: exit returns to saved plan list */}
