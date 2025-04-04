@@ -7,17 +7,39 @@ import { useState, useEffect } from "react";
 import { PiArrowLeft, PiArrowRight, PiX } from "react-icons/pi";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-export default function ScheduleDisplay({ bgColors, borderColors }: { bgColors: string[], borderColors: string[] } ) {
-  // Map colors to course (if the course includes a lab, drop the L from the string)
-  const colorMapping: Record<string, { bgColor: string | undefined, borderColor: string | undefined }> = {};
+export default function ScheduleDisplay({
+  bgColors,
+  borderColors,
+}: {
+  bgColors: string[];
+  borderColors: string[];
+}) {
+  // Map colors to course
+  const colorMapping: Record<
+    string,
+    { bgColor: string | undefined; borderColor: string | undefined }
+  > = {};
   const usedColors: Set<string> = new Set<string>();
 
   // Function to assign a different color to each course block on the schedule
-  function getCourseBlockColors(classTitle: string): {bgColor: string | undefined, borderColor: string | undefined} {
+  function getCourseBlockColors(classTitle: string): {
+    bgColor: string | undefined;
+    borderColor: string | undefined;
+  } {
+    // Check if the course is a lab (has an L at the end)
+    // If so, drop the L when comparing so it has the same color as the corresponding class
+    classTitle.trimEnd();
+    if (classTitle.endsWith("L")) {
+      classTitle = classTitle.substring(0, classTitle.length - 1);
+    }
+
     // Course block colors:
     // Check if color has already been used
     if (colorMapping[classTitle]) {
-      return colorMapping[classTitle];
+      return colorMapping[classTitle] as {
+        bgColor: string | undefined;
+        borderColor: string | undefined;
+      };
     }
 
     // Find an unused color
@@ -50,8 +72,14 @@ export default function ScheduleDisplay({ bgColors, borderColors }: { bgColors: 
     }
 
     // Store the assign color for classTitle
-    colorMapping[classTitle] = {bgColor: bgColorToAssign, borderColor: borderColorToAssign };
-    return colorMapping[classTitle];
+    colorMapping[classTitle] = {
+      bgColor: bgColorToAssign,
+      borderColor: borderColorToAssign,
+    };
+    return colorMapping[classTitle] as {
+      bgColor: string | undefined;
+      borderColor: string | undefined;
+    };
   }
 
   // Retrieve the current schedule data and title (from the SavedPlan component)
@@ -193,7 +221,7 @@ export default function ScheduleDisplay({ bgColors, borderColors }: { bgColors: 
     // Assign background and border colors to each class
     currentPlan.data[day]?.forEach((classItem) => {
       const courseBlockColors = getCourseBlockColors(classItem.classTitle);
-      if (courseBlockColors.bgColor && courseBlockColors.borderColor){
+      if (courseBlockColors.bgColor && courseBlockColors.borderColor) {
         classItem.bgColor = courseBlockColors.bgColor;
         classItem.borderColor = courseBlockColors.borderColor;
       }
