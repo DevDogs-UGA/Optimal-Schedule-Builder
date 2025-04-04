@@ -32,10 +32,10 @@ export default function Home() {
             <div className="flex w-full flex-col items-center pl-10 pr-10">
               <div className="flex w-full items-center justify-center gap-8">
                 <div className="flex translate-x-5 flex-col items-start">
-                  <div className="flex items-start">
+                  <div className="flex items-center">
                     <div className="mr-4 h-20 border-l-4 border-bulldog-red"></div>
                     <div className="flex h-20 flex-col justify-center text-nowrap">
-                      <span className="text-left text-2xl font-bold leading-tight text-bulldog-red sm:text-3xl xl:text-4xl">
+                      <span className="text-nowrap text-left text-2xl font-bold leading-tight text-bulldog-red sm:text-3xl xl:text-4xl">
                         An Optimized
                         <br />
                         Schedule Builder

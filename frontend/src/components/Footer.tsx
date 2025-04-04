@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <footer className="m-4 flex flex-row items-center justify-center gap-y-0 rounded-md border-2 border-neutral-500 bg-neutral-200 px-4 py-0 py-3 text-neutral-600 sm:gap-y-1 sm:py-2 md:gap-x-4 lg:gap-x-6 lg:px-6">
       <nav className="contents">
-        <div className="flex w-1/5 flex-col justify-start gap-x-4 gap-y-1 text-lg sm:flex-row sm:gap-y-0 sm:text-base">
+        <div className="flex w-1/5 flex-col justify-start gap-x-4 gap-y-4 text-xl sm:flex-row sm:gap-y-0 sm:text-base">
           <a
             rel="noopener"
             className="col-span-2 flex items-center justify-center text-nowrap text-center hover:text-slate-900"
