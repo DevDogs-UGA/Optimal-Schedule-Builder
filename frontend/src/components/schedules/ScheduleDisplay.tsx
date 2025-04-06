@@ -7,27 +7,51 @@ import { useState, useEffect } from "react";
 import { PiArrowLeft, PiArrowRight, PiX } from "react-icons/pi";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
-  // Map colors to course (if the course includes a lab, drop the L from the string)
-  const colorMapping: Record<string, string> = {};
+export default function ScheduleDisplay({
+  bgColors,
+  borderColors,
+}: {
+  bgColors: string[];
+  borderColors: string[];
+}) {
+  // Map colors to course
+  const colorMapping: Record<
+    string,
+    { bgColor: string | undefined; borderColor: string | undefined }
+  > = {};
   const usedColors: Set<string> = new Set<string>();
 
   // Function to assign a different color to each course block on the schedule
-  function getBgColorForClass(classTitle: string): string {
+  function getCourseBlockColors(classTitle: string): {
+    bgColor: string | undefined;
+    borderColor: string | undefined;
+  } {
+    // Check if the course is a lab (has an L at the end)
+    // If so, drop the L when comparing so it has the same color as the corresponding class
+    classTitle.trimEnd();
+    if (classTitle.endsWith("L")) {
+      classTitle = classTitle.substring(0, classTitle.length - 1);
+    }
+
     // Course block colors:
     // Check if color has already been used
     if (colorMapping[classTitle]) {
-      return colorMapping[classTitle];
+      return colorMapping[classTitle] as {
+        bgColor: string | undefined;
+        borderColor: string | undefined;
+      };
     }
 
     // Find an unused color
-    let colorToAssign: string | undefined;
+    let bgColorToAssign: string | undefined;
+    let borderColorToAssign: string | undefined;
 
     // Assign unused color
     if (usedColors.size < bgColors.length) {
       for (const color of bgColors) {
         if (!usedColors.has(color)) {
-          colorToAssign = color;
+          bgColorToAssign = color;
+          borderColorToAssign = borderColors[bgColors.indexOf(color)]; // Find the same color in the border colors list
           usedColors.add(color); // Mark color as used
           break;
         }
@@ -37,17 +61,25 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
       usedColors.clear();
 
       // Reassign the color to the first class that needs a color
-      colorToAssign = bgColors[usedColors.size % bgColors.length];
-      usedColors.add(colorToAssign!); // ! asserts variable to not be read as undefined
+      bgColorToAssign = bgColors[usedColors.size % bgColors.length];
+      borderColorToAssign = borderColors[usedColors.size % borderColors.length];
+      usedColors.add(bgColorToAssign!); // ! asserts variable to not be read as undefined
     }
     // If no color assigned
-    if (!colorToAssign) {
-      colorToAssign = "bg-gray-500";
+    if (!bgColorToAssign) {
+      bgColorToAssign = "bg-gray-500";
+      borderColorToAssign = "border-gray-500";
     }
 
     // Store the assign color for classTitle
-    colorMapping[classTitle] = colorToAssign;
-    return colorToAssign;
+    colorMapping[classTitle] = {
+      bgColor: bgColorToAssign,
+      borderColor: borderColorToAssign,
+    };
+    return colorMapping[classTitle] as {
+      bgColor: string | undefined;
+      borderColor: string | undefined;
+    };
   }
 
   // Retrieve the current schedule data and title (from the SavedPlan component)
@@ -186,30 +218,19 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
       return timeA.getTime() - timeB.getTime();
     });
 
-    // Assign background colors to each class
+    // Assign background and border colors to each class
     currentPlan.data[day]?.forEach((classItem) => {
-      classItem.bgColor = getBgColorForClass(classItem.classTitle);
-      console.log(classItem.bgColor);
+      const courseBlockColors = getCourseBlockColors(classItem.classTitle);
+      if (courseBlockColors.bgColor && courseBlockColors.borderColor) {
+        classItem.bgColor = courseBlockColors.bgColor;
+        classItem.borderColor = courseBlockColors.borderColor;
+      }
     });
   });
 
   // Variables to control if the next and back buttons should appear
-  let canCycleBack = true;
-  let canCycleNext = true;
-
-  // If we're looking at the first plan, don't display the back button
-  if (currentPlanIndex > 0) {
-    canCycleBack = true;
-  } else {
-    canCycleBack = false;
-  }
-
-  // If we're looking at the last plan, don't display the next button
-  if (currentPlanIndex < savedPlans.length - 1) {
-    canCycleNext = true;
-  } else {
-    canCycleNext = false;
-  }
+  const canCycleBack = currentPlanIndex > 0;
+  const canCycleNext = currentPlanIndex < savedPlans.length - 1;
 
   // Render the schedule
   return (
@@ -228,7 +249,7 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
                 />
               </button>
             ) : (
-              <div></div>
+              <PiArrowLeft size={32} className="ml-5 fill-pebble-gray" />
             )}
             <h1 className="ml-auto mr-auto text-2xl font-bold">
               {currentPlan.title}
@@ -237,11 +258,11 @@ export default function ScheduleDisplay({ bgColors }: { bgColors: string[] }) {
               <button onClick={nextPlan}>
                 <PiArrowRight
                   size={32}
-                  className="ml-5 hover:fill-bulldog-red"
+                  className="mr-5 hover:fill-bulldog-red"
                 />
               </button>
             ) : (
-              <div></div>
+              <PiArrowRight size={32} className="mr-5 fill-pebble-gray" />
             )}
           </div>
           {/* Save/exit buttons: exit returns to saved plan list */}

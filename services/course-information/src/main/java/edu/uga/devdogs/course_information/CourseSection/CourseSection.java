@@ -30,7 +30,6 @@ public class CourseSection implements Serializable {
 
     private char stat;
 
-    private String courseDescription;
     @Column(nullable = false) 
     private int creditHours = 3;
 
@@ -98,7 +97,6 @@ public class CourseSection implements Serializable {
     this.classes = classes;
     this.daysOfTheWeek = daysOfTheWeek;
     this.meetingTime = meetingTime;
-    this.courseDescription = courseDescription;
 }
 
     public long getId() {

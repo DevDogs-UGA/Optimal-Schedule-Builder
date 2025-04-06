@@ -16,7 +16,7 @@ import edu.uga.devdogs.course_information.Class.ClassEntity;
 public class Professor implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int professorId;
 
     private String firstName;
@@ -35,14 +35,13 @@ public class Professor implements Serializable {
     public Professor() {}
 
     // Constructor without ID
-    public Professor(String firstName, String lastName, int totalReviews, float averageRating, float difficultyRating, int wouldTakeAgainRating, List<ClassEntity> classes) {
+    public Professor(String firstName, String lastName, int totalReviews, float averageRating, float difficultyRating, int wouldTakeAgainRating) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.totalReviews = totalReviews;
         this.averageRating = averageRating;
         this.difficultyRating = difficultyRating;
         this.wouldTakeAgainRating = wouldTakeAgainRating;
-        this.classes = classes;
     }
 
     // Constructor with ID

@@ -14,7 +14,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
-      <Navbar keyword={"schedules"} />
+      <Navbar />
       {children}
     </>
   );
