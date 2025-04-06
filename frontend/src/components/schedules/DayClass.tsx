@@ -381,6 +381,9 @@ export default function DayClass({
     setcourseBlockClicked(!courseBlockClicked);
   };
 
+  timeStart = timeStart.toUpperCase();
+  timeEnd = timeEnd.toUpperCase();
+
   return (
     <div className={`relative ${className}`} onClick={courseBlockInfo}>
       <div
@@ -401,12 +404,13 @@ export default function DayClass({
         }}
       >
         <div>
-          <h2 className="font-bold text-white">{classTitle}</h2>
-          {locationShort && (
+          <h2 className="text-xl font-bold text-white">{classTitle}</h2>
+          {/* Uncomment following line to show location */}
+          {/* {locationShort && (
             <p className="text-sm text-white/90">{locationShort}</p>
-          )}
+          )} */}
         </div>
-        <div className="text-right text-sm text-white/90">
+        <div className="text-right text-xs text-white">
           <p>{timeStart}</p>
           <p>{timeEnd}</p>
         </div>
