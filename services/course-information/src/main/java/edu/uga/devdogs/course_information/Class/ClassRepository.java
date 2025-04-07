@@ -11,23 +11,24 @@ import java.util.List;
 public interface ClassRepository extends JpaRepository<ClassEntity, Integer> {
 
     // Find all classes held on specific days (e.g., "MWF" or "TR")
-    List<ClassEntity> findAllByDays(String days);
+    List<Class> findAllByDays(String days);
 
     // Find classes that start at a specific time
-    List<ClassEntity> findAllByStartTime(String startTime);
+    //List<Class> findAllByStartTime(java.sql.Time startTime);
+
+    // Find classes that end between two times
+    //List<Class> findAllByEndTimeBetween(java.sql.Time startTime, java.sql.Time endTime);
 
     // Find classes in a specific building
-    List<ClassEntity> findAllByBuilding(Building building);
+    List<Class> findAllByBuilding(Building building);
 
     // Find classes by campus
-    List<ClassEntity> findAllByCampus(String campus);
+    List<Class> findAllByCampus(String campus);
 
     // Find classes by building and room number
-    List<ClassEntity> findAllByBuildingAndRoom(Building building, String room);
+    List<Class> findAllByBuildingAndRoom(Building building, String room);
 
     // Find a class by its ID
-    List<ClassEntity> findAllByClassId(int classId);
+    List<Class> findAllByClassId(int classId);
     
-    // Find a class by its Course Section ID
-    List<ClassEntity> findByCourseSection_Id(int courseSectionId);
-} 
+}
