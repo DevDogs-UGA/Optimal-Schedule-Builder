@@ -14,21 +14,17 @@ export default function Home() {
     <>
       <Navbar />
       <div
-        className="relative -mt-[3.625rem] flex h-[calc(100vh-100px)] flex-1 flex-col items-center justify-center gap-16 overflow-hidden px-4 pt-24 text-center"
+        className="relative -mt-[3.625rem] flex h-[calc(100vh-100px)] flex-1 flex-col items-center justify-center gap-16 overflow-hidden px-4 pt-24 text-center bg-cover bg-bottom bg-no-repeat bg-fixed"
         style={{
           backgroundImage: `url(${background.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "bottom",
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed",
         }}
       >
         <div className="flex flex-col items-center px-6 py-8 min-[480px]:px-12 sm:px-16 md:max-w-[80%]">
           <div className="flex w-full flex-col items-center rounded-3xl bg-gradient-to-b from-white/50 to-transparent p-8 backdrop-blur-sm">
-            <div className="flex translate-y-5 justify-center text-nowrap text-6xl md:text-7xl xl:translate-y-3 xl:text-[5rem]">
+            <div className="flex translate-y-2 md:translate-y-5 justify-center text-nowrap text-5xl md:text-6xl lg:text-7xl">
               <h2 className="font-extrabold text-slate-800">Bulldog Planner</h2>
             </div>
-
+            {/* Hero Section */}
             <div className="flex w-full flex-col items-center pl-10 pr-10">
               <div className="flex w-full items-center justify-center gap-8">
                 <div className="flex translate-x-5 flex-col items-start">
@@ -50,16 +46,17 @@ export default function Home() {
                   alt="UGA Dev Dogs logo"
                   height={220}
                   width={220}
+                  className="translate-x-0 lg:-translate-x-1 h-[180px] w-[180px] sm:h-[200px] sm:w-[200px] md:h-[220px] md:w-[220px]"
                   src={devdogCobranded}
                 />
               </div>
-
-              <div className="flex w-full max-w-lg -translate-y-5 items-center justify-center text-xl font-bold xl:-translate-y-3 xl:text-2xl">
-                <p className="-mr-8 w-1/2 cursor-default rounded-l-full bg-[#F8E6EA] bg-dusty-pink px-6 py-5 text-left text-neutral-600/40">
+              {/* Ready and Start Now Button */}  
+              <div className="flex w-full max-w-lg min-w-[350px] -translate-y-0 md:-translate-y-5 items-center justify-center text-xl font-bold xl:-translate-y-3 xl:text-2xl">
+                <p className="-mr-8 w-1/2 cursor-default rounded-l-full bg-[#F8E6EA] bg-dusty-pink px-6 py-4 sm:py-5 text-left text-neutral-600/40">
                   Ready?
                 </p>
                 <Link
-                  className="flex w-3/5 items-center rounded-full bg-bulldog-red px-6 py-5 pl-8 pr-1.5 text-white shadow-md"
+                  className="flex w-3/5 items-center rounded-full bg-bulldog-red px-6 py-4 sm:py-5 pl-8 pr-1.5 text-white text-nowrap shadow-md"
                   href="/create"
                 >
                   Start Now!{" "}

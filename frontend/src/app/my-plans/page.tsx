@@ -6,6 +6,7 @@ import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import SavedPlan from "@/components/saved-plans/SavedPlan";
 import DeletePlan from "@/components/ui/DeletePlan";
 import { dummyData1, dummyData2 } from "@/components/schedules/dummySchedules";
+import background from "../../../public/images/background.png";
 
 // Remove these objects when we have generated schedules getting auto-saved to local storage
 const dummySchedule1 = {
@@ -150,7 +151,11 @@ export default function MyPlans() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-cover bg-bottom bg-no-repeat bg-fixed"
+        style={{
+          backgroundImage: `url(${background.src})`,
+        }
+      }>
       <Navbar />
 
       {savedPlans.length === 0 ? (

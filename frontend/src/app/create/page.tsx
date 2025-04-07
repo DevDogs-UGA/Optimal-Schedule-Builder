@@ -2,7 +2,7 @@ import { SearchFilter } from "@/components/Filters";
 import { Navbar } from "@/components/Navbar";
 import CourseDisplay from "@/components/courses/CourseDisplay";
 import Link from "next/link";
-
+import background from "../../../public/images/background.png";
 interface Props {
   /**
    *  The current URL search params.
@@ -12,7 +12,11 @@ interface Props {
 
 export default function Page({ searchParams }: Props) {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-cover bg-bottom bg-no-repeat bg-fixed"
+        style={{
+          backgroundImage: `url(${background.src})`,
+        }
+      }>
       <Navbar />
       <main className="flex flex-col gap-8 px-4 pb-4 pt-8 md:px-12 lg:px-24">
         <CourseDisplay searchParams={searchParams} />

@@ -2,7 +2,7 @@
 import { Suspense } from "react";
 import ScheduleDisplay from "@/components/schedules/ScheduleDisplay";
 import Link from "next/link";
-
+import background from "../../../public/images/background.png";
 // Page for viewing a generated schedule / saved plan
 export default function SchedulePage() {
   // Background colors for course blocks
@@ -24,7 +24,11 @@ export default function SchedulePage() {
 
   // Render the schedule
   return (
-    <div className="mx-auto min-h-screen w-[100%]">
+    <div className="absolute top-0 left-0 right-0 bottom-0 -z-10 bg-cover bg-bottom bg-no-repeat bg-fixed"
+        style={{
+          backgroundImage: `url(${background.src})`,
+        }
+      }>
       {/* Schedule display container */}
       <div className="mt-16 flex flex-grow flex-row overflow-y-auto">
         <Suspense fallback={<div>Loading...</div>}>
