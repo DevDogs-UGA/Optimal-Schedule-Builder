@@ -168,12 +168,10 @@ public class CourseInformationService {
         if (courses != null) {
             for (Course course : courses) {
                 //so we avoid duplicate subject names
-
-                /* getSubject() should work - JPA issue. Commenting for now
                 if (!subjects.contains(course.getSubject())) {
                     subjects.add(course.getSubject());
                 }
-                */
+
             }
             return subjects;
         } else {
