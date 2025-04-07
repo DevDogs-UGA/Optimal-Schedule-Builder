@@ -25,6 +25,7 @@ import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
 import edu.uga.devdogs.course_information.Building.Building;
 import aj.org.objectweb.asm.TypeReference;
 import edu.uga.devdogs.course_information.Building.BuildingRepository;
+import edu.uga.devdogs.course_information.Class.ClassEntity;
 import edu.uga.devdogs.course_information.Class.ClassRepository;
 import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
@@ -66,7 +67,7 @@ public class CourseInformationApplication {
     }
 
     @Bean
-    @Order(1)
+    @Order(2)
     CommandLineRunner courseSecCommandLineRunner(
         CourseSectionRepository courseSectionRepository,
         CourseRepository courseRepository,
@@ -74,9 +75,11 @@ public class CourseInformationApplication {
         BuildingRepository buildingRepository) {
         
             return args -> {
-                
+                // pdf info
                 List<Course2> courses = Pdf.parsePdf("spring", "C:\\kadestyron\\d\\Desktop"); 
+
                 List<Course> courseEntities = new ArrayList<>();
+                List<ClassEntity> classEntities = new ArrayList<>();
                 List<CourseSection> courseSections = new ArrayList<>();
                 Set<String> processedCourses = new HashSet<>(); // Track processed courses to avoid duplicates
                 
@@ -87,7 +90,7 @@ public class CourseInformationApplication {
                     if (processedCourses.contains(courseKey)) {
                         continue;
                     }
-    
+
                     String creditHoursStr = course.getCreditHours().trim();
                     creditHoursStr = creditHoursStr.replaceAll("[^0-9.-]", "").trim();
                     int creditHours = 3; 
@@ -128,8 +131,8 @@ public class CourseInformationApplication {
                     
                     if (existingCourse == null) {
                         // Scrape the course description if it doesn't exist in the database
-                        String courseDescription = DescriptionScraper.getCourseDescription(course.getSubject(), course.getCourseNumber());
-    
+                        //String courseDescription = DescriptionScraper.getCourseDescription(course.getSubject(), course.getCourseNumber());
+                        String courseDescription = "Description not found"; // Placeholder for actual scraping logic
                         // Save new course with the scraped description
                         courseEntity = new Course(
                             course.getSubject(), 
@@ -139,12 +142,11 @@ public class CourseInformationApplication {
                             courseSections, 
                             courseDescription // Store description in Course
                         );
-    
                         courseEntities.add(courseEntity);
                     } else {
                         courseEntity = existingCourse;
                     }
-    
+
                     // Add course key to the processed set to avoid further scraping
                     processedCourses.add(courseKey);
     
@@ -165,141 +167,75 @@ public class CourseInformationApplication {
                             courseEntity,
                             null,
                             course.getMeetingDays(),
-                            course.getMeetingTimes(), 
-                            creditHoursStr
+                            course.getMeetingTimes()
                         );
     
+                        existingSection = courseSection;
+
+                        ClassEntity classEntity = new ClassEntity(
+                            course.getMeetingDays(),
+                            course.getMeetingTimes(),
+                            buildingRepository.findByName(course.getBuilding()),
+                            course.getRoomNumber(),
+                            course.getCampus(), 
+                            existingSection
+                        );
+                        
+
                         courseSections.add(courseSection);
+                        classEntities.add(classEntity);
+
                     }
                 }
-                
                 System.out.println("Saving to database...");
                 courseRepository.saveAll(courseEntities);
+                System.out.println("Saved courses to database");
+                classRepository.saveAll(classEntities);
+                System.out.println("Saved classes to database");
                 courseSectionRepository.saveAll(courseSections);
+                System.out.println("Saved course sections to database");
+
                 System.out.println("Saved to database");
             };
     }
 
     
     @Bean
-    @Order(2)
-    CommandLineRunner buildingCommandLineRunner (BuildingRepository buildingRepository, CourseSectionRepository courseSectionRepository) {
+    @Order(1)
+    CommandLineRunner buildingCommandLineRunner (BuildingRepository buildingRepository) {
         return args -> {
-            
-            List<Course2> courses = Pdf.parsePdf("spring", "C:\\kadestyron\\d\\Desktop"); 
-            List<Course> courseEntities = new ArrayList<>();
-            List<CourseSection> courseSections = new ArrayList<>();
-            Set<String> processedCourses = new HashSet<>(); // Track processed courses to avoid duplicates
-            
-            
-            // Removed redundant declaration of courseSectionRepository
-            for (Course2 course : courses) {
-                String courseKey = course.getSubject() + "-" + course.getCourseNumber(); // Unique key for course
+            String buildingsJsonPath = "buildingData/AthensBuildingData.json";
+            ClassPathResource resource = new ClassPathResource(buildingsJsonPath);
 
-                // Skip if course has already been processed
-                if (processedCourses.contains(courseKey)) {
-                    continue;
-                }
+            if (!resource.exists()) {
+                System.err.println("File not found at path: " + buildingsJsonPath);
+                return;
+            }
 
-                String creditHoursStr = course.getCreditHours().trim();
-                creditHoursStr = creditHoursStr.replaceAll("[^0-9.-]", "").trim();
-                int creditHours = 3; 
+            try (InputStream inputStream = resource.getInputStream()) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, Building.class);
+                List<Building> buildings = objectMapper.readValue(inputStream, listType);
 
-                if (creditHoursStr.contains("-")) {
-                    String[] parts = creditHoursStr.split("-");
-                    try {
-                        double firstValue = Double.parseDouble(parts[0].trim());
-                        creditHours = (int) firstValue; 
-                    } catch (NumberFormatException e) {
-                        creditHours = 3; 
-                        System.err.println("Invalid credit hours range: " + course.getCreditHours() + ", defaulting to 3.");
+                System.out.println("Parsed JSON successfully.");
+
+                List<Building> buildingsToSave = new ArrayList<>();
+                for (Building building : buildings) {
+                    if (!buildingRepository.existsById(building.getBuildingCode())) {
+                        buildingsToSave.add(building);
                     }
                 }
 
-                // Check if the course already exists
-                Course existingCourse = courseRepository.findBySubjectAndCourseNumber(course.getSubject(), course.getCourseNumber());
-                Course courseEntity;
-                
-                if (existingCourse == null) {
-                    // Scrape the course description if it doesn't exist in the database
-                    String courseDescription = DescriptionScraper.getCourseDescription(course.getSubject(), course.getCourseNumber());
-
-                    // Save new course with the scraped description
-                    courseEntity = new Course(
-                        course.getSubject(), 
-                        course.getCourseNumber(), 
-                        course.getTitle(), 
-                        course.getDepartment(), 
-                        courseSections, 
-                        courseDescription // Store description in Course
-                    );
-
-                    courseEntities.add(courseEntity);
+                if (!buildingsToSave.isEmpty()) {
+                    buildingRepository.saveAll(buildingsToSave);
+                    System.out.println("Buildings saved successfully.");
                 } else {
-                    courseEntity = existingCourse;
+                    System.out.println("No new buildings to save.");
                 }
 
-                // Add course key to the processed set to avoid further scraping
-                processedCourses.add(courseKey);
-
-
-                Professor existingProfessor = professorRepository.findByName(course.getProfessor());
-
-                String professorName = course.getProfessor();
-                if (professorName != null && !professorName.isEmpty() && !professorName.equalsIgnoreCase("TBA")) {
-
-                    // if (existingProfessor == null) {
-                    //     // Get additional professor data
-                    //     int professorId = RateMyProfessorScraper.getRateMyProfessorId(professorName);
-                    //     if (professorId != -1) {
-                    //         double rating = RateMyProfessorScraper.getRating(professorId);
-                    //         int difficulty = RateMyProfessorScraper.getDifficultyLevel(professorId);
-                    //         int wouldTakeAgain = RateMyProfessorScraper.getWouldTakeAgainPercentage(professorId);
-
-                    //         // Create and save the professor with detailed information
-                    //         Professor professor = new Professor(professorId, professorName);
-                    //         professor.setRating(rating);
-                    //         professor.setDifficulty(difficulty);
-                    //         professor.setWouldTakeAgainPercentage(wouldTakeAgain);
-                    //         professorRepository.save(professor);
-
-                    //         System.out.println("Added professor: " + professorName + " with ID: " + professorId);
-                    //     } else {
-                    //         System.out.println("Could not find RateMyProfessor ID for: " + professorName);
-                    //     }
-                    //}
-                } 
-        
-
-                // Check if a section with the same CRN already exists
-                CourseSection existingSection = courseSectionRepository.findByCrn(course.getCrn());
-
-                if (existingSection == null || existingSection.getSeatsAvailable() != course.getAvailableSeats()) {
-                    CourseSection courseSection = new CourseSection(
-                        course.getCrn(),
-                        course.getSec(), 
-                        (course.getStat()).charAt(0), 
-                        creditHours, 
-                        course.getProfessor(), //will be replaced with the professor object
-                        course.getPartOfTerm(), 
-                        course.getClassSize(), 
-                        course.getAvailableSeats(), 
-                        0, 
-                        courseEntity,
-                        null,
-                        course.getMeetingDays(),
-                        course.getMeetingTimes(), 
-                        creditHoursStr
-                    );
-
-                    courseSections.add(courseSection);
-                }
-            } 
-            
-            System.out.println("Saving to database...");
-            courseRepository.saveAll(courseEntities);
-            courseSectionRepository.saveAll(courseSections);
-            System.out.println("Saved to database");
-        };
+            } catch (IOException e) {
+                System.err.println("Failed to read or parse buildings.json: " + e.getMessage());
+            }
+       };
     }
 }

@@ -10,5 +10,5 @@ public interface BuildingRepository extends JpaRepository<Building, Long>{
     Building findByBuildingCode(int buildingCode);
 
     //@Query("select u from Building where u.name = ?1")
-    //Building getByName(String name);
+    Building findByName(String name);
 }
