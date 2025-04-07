@@ -40,8 +40,12 @@ public class DescriptionScraper {
             Element courseResults = document.getElementById("lblCourseResultText");
             if (courseResults == null) return "Description not found";
 
+
+            Element courseResults = document.getElementById("lblCourseResultText");
             Elements resultsTables = courseResults.getElementsByClass("courseresultstable");
+            driver.quit();
             boolean isDescription = false;
+
 
             for (Element table : resultsTables) {
                 for (Element data : table.getElementsByTag("td")) {
@@ -65,6 +69,7 @@ public class DescriptionScraper {
     public static void main(String[] args) {
         String description = getCourseDescription("AAEC", "2580");
         System.out.println(description);
+
     }
 }
  
