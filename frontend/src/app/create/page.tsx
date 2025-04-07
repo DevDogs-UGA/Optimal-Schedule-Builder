@@ -12,11 +12,12 @@ interface Props {
 
 export default function Page({ searchParams }: Props) {
   return (
-    <div className="min-h-screen bg-cover bg-bottom bg-no-repeat bg-fixed"
-        style={{
-          backgroundImage: `url(${background.src})`,
-        }
-      }>
+    <div
+      className="min-h-screen bg-cover bg-fixed bg-bottom bg-no-repeat"
+      style={{
+        backgroundImage: `url(${background.src})`,
+      }}
+    >
       <Navbar />
       <main className="flex flex-col gap-8 px-4 pb-4 pt-8 md:px-12 lg:px-24">
         <CourseDisplay searchParams={searchParams} />

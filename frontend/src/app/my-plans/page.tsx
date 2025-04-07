@@ -151,11 +151,12 @@ export default function MyPlans() {
   };
 
   return (
-    <div className="min-h-screen bg-cover bg-bottom bg-no-repeat bg-fixed"
-        style={{
-          backgroundImage: `url(${background.src})`,
-        }
-      }>
+    <div
+      className="min-h-screen bg-cover bg-fixed bg-bottom bg-no-repeat"
+      style={{
+        backgroundImage: `url(${background.src})`,
+      }}
+    >
       <Navbar />
 
       {savedPlans.length === 0 ? (

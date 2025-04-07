@@ -12,7 +12,6 @@ export default function NotFound() {
       <Link href="/">
         <Button
           className="h-[4rem] w-[10rem] transition duration-300 ease-in-out hover:bg-black hover:text-white"
-          
           text="Home"
         />
       </Link>
