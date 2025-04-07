@@ -83,7 +83,7 @@ public class CourseSection implements Serializable {
     public CourseSection() {}
 
     public CourseSection(int crn, String sec, char stat, int creditHours, String instructor,
-        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, String meetingTime, String courseDescription) {
+        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, String meetingTime) {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
@@ -127,13 +127,6 @@ public class CourseSection implements Serializable {
         return stat;
     }
 
-    public String getCourseDescription() {
-        return courseDescription;
-    }
-
-    public void setCourseDescription(String courseDescription) {
-        this.courseDescription = courseDescription;
-    }
 
     public void setStat(char stat) {
         this.stat = stat;

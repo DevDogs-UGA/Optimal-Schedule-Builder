@@ -119,4 +119,9 @@ public void setProfessorId(int professorId) {
     public void setClasses(List<ClassEntity> classes) {
         this.classes = classes;
     }
+
+    public Professor orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
+    }
 }
