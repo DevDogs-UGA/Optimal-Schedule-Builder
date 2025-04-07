@@ -24,13 +24,14 @@ export default function SchedulePage() {
 
   // Render the schedule
   return (
-    <div className="relative min-h-screen -mt-[3.625rem] pt-2 -mb-[3.625rem] bg-cover bg-bottom bg-no-repeat bg-fixed"
-        style={{
-          backgroundImage: `url(${background.src})`,
-        }
-      }>
+    <div
+      className="relative -mb-[3.625rem] -mt-[3.625rem] min-h-screen bg-cover bg-fixed bg-bottom bg-no-repeat pt-2"
+      style={{
+        backgroundImage: `url(${background.src})`,
+      }}
+    >
       {/* Schedule display container */}
-      <div className="pt-32 flex flex-grow flex-row overflow-y-auto">
+      <div className="flex flex-grow flex-row overflow-y-auto pt-32">
         <Suspense fallback={<div>Loading...</div>}>
           <ScheduleDisplay bgColors={bgColors} borderColors={borderColors} />
         </Suspense>
