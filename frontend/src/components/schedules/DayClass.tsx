@@ -191,6 +191,8 @@ function CourseInfo({
   // To test with dummy data, replace "0" with a number of reviewings in the following line
   const numProfessorData: number | undefined = numProfessorQuery.data ?? 0;
   const isNumZero = numProfessorData === 0;
+  const defaultPrereq = prereq && prereq.trim() !== "" ? prereq : "None";
+  const defaultCorereq = coreq && coreq.trim() !== "" ? coreq : "None";
 
   return (
     <div
@@ -244,11 +246,11 @@ function CourseInfo({
             <br></br>
             <p>
               {" "}
-              <b>Prerequisites:</b> {prereq}{" "}
+              <b>Prerequisites:</b> {defaultPrereq}{" "}
             </p>
             <p>
               {" "}
-              <b>Corequisites:</b> {coreq}{" "}
+              <b>Corequisites:</b> {defaultCorereq}{" "}
             </p>{" "}
             <br></br>
             <p> {description} </p>
