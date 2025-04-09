@@ -6,7 +6,6 @@
 import { Navbar } from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
-import background from "../../public/images/background.png";
 import devdogCobranded from "../../public/images/devdogCobranded.png";
 
 export default function Home() {

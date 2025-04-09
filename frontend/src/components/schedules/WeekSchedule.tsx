@@ -1,19 +1,67 @@
 "use client";
 
+import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import { differenceInMinutes } from "date-fns";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PiCaretDoubleRightBold } from "react-icons/pi";
-import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
 import DayClass from "./DayClass";
 
 interface WeekScheduleProps {
   weekData: WeekScheduleType;
 }
 
+// Background colors for course blocks
+const bgColors = [
+  "bg-[#cc0128]",
+  "bg-[#bc8da7]",
+  "bg-[#0db1b1]",
+  "bg-[#53917e]",
+  "bg-[#202c59]",
+];
+
 export default function WeekSchedule({ weekData }: WeekScheduleProps) {
   const scrollportRef = useRef<HTMLElement>(null);
   const [next, setNext] = useState<string | undefined>(undefined);
   const [prev, setPrev] = useState<string | undefined>(undefined);
+  const colorMapping = useRef<Record<string,string>>({});
+  const usedColors = useRef<Set<string>>(new Set<string>());
+
+  const getBgColorForClass = useCallback((classTitle: string) => {
+// Course block colors:
+    // Check if color has already been used
+    if (colorMapping.current[classTitle]) {
+      return colorMapping.current[classTitle];
+    }
+
+    // Find an unused color
+    let colorToAssign: string | undefined;
+
+    // Assign unused color
+    if (usedColors.current.size < bgColors.length) {
+      for (const color of bgColors) {
+        if (!usedColors.current.has(color)) {
+          colorToAssign = color;
+          usedColors.current.add(color); // Mark color as used
+          break;
+        }
+      }
+    } else {
+      // All colors have been used, so reset colors to be reused
+      usedColors.current.clear();
+
+      // Reassign the color to the first class that needs a color
+      colorToAssign = bgColors[usedColors.current.size % bgColors.length];
+      usedColors.current.add(colorToAssign!); // ! asserts variable to not be read as undefined
+    }
+    // If no color assigned
+    if (!colorToAssign) {
+      colorToAssign = "bg-gray-500";
+    }
+
+    // Store the assign color for classTitle
+    colorMapping.current[classTitle] = colorToAssign;
+    return colorToAssign;
+  }, []);
 
   /**
    * Handler updating next/prev scroll buttons for scroll/resize events.
@@ -151,6 +199,7 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
                     <DayClass
                       key={`${day}-${classData.classTitle}-${index}`}
                       {...classData}
+                      bgColor={getBgColorForClass(classData.classTitle)}
                       timeDifference={startDiff}
                     />
                   );
