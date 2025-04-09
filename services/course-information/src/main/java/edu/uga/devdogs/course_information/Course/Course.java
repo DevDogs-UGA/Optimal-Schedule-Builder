@@ -18,7 +18,10 @@ public class Course implements Serializable {
     private String subject;
     private String courseNumber;
     private String department;
+
+    @Column(name = "course_description", columnDefinition = "TEXT")
     private String courseDescription;
+    
     private String athenaTitle;
     private String gradingSystem;
 
