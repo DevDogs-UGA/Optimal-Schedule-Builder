@@ -10,7 +10,7 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
-    "lib": ["dom", "dom.iterable", "ES2023"],
+    "lib": ["dom", "dom.iterable", "ES2024"],
     "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
