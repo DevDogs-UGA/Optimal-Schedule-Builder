@@ -32,18 +32,24 @@ export default function ScheduleDisplay({ id }: Props) {
     [savedPlans, id],
   );
 
+  const handleInputKeyUp = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      e.currentTarget.blur();
+    }
+  }, []);
+
   const handleChangeTitle = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
-    const title = e.currentTarget.value;
+    const title = e.currentTarget.value.trim();
 
     if (title.length < 1) {
       if (savedPlans[currentPlanIndex]) {
         e.currentTarget.value = savedPlans[currentPlanIndex].title;
       }
-
       return;
     }
 
-
+    e.currentTarget.value = title;
     setSavedPlans((plans) =>
       plans.map((plan) =>
         plan.id === id ? { ...plan, title } : plan,
@@ -94,6 +100,7 @@ export default function ScheduleDisplay({ id }: Props) {
               defaultValue={title}
               maxLength={32}
               onBlur={handleChangeTitle}
+              onKeyUp={handleInputKeyUp}
             />
 
             {savedPlans.length > 1 && (

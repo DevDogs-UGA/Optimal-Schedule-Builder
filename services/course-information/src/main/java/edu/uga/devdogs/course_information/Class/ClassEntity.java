@@ -28,9 +28,16 @@ public class ClassEntity implements Serializable{
 
     private String days;
 
-    private  String startTime;
+    private  String meetingTime;
 
-    private  String endTime;
+
+    public String getMeetingTime() {
+        return meetingTime;
+    }
+
+    public void setMeetingTime(String meetingTime) {
+        this.meetingTime = meetingTime;
+    }
 
     private String room;
 
@@ -61,27 +68,16 @@ public class ClassEntity implements Serializable{
      }
 
      // Constructor w/o classID
-     public ClassEntity(String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
+     public ClassEntity(String days, String meetingTime, Building building, String room, String campus, CourseSection courseSection) {
          this.days = days;
-         this.startTime = startTime;
-         this.endTime = endTime;
+         this.meetingTime = meetingTime;
          this.building = building;
          this.room = room;
          this.campus = campus;
          this.courseSection = courseSection;
-     }
+    }
 
-     // Constructor w/ classID
-     public ClassEntity(int classId, String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
-         this.classId = classId;
-         this.days = days;
-         this.startTime = startTime;
-         this.endTime = endTime;
-         this.building = building;
-         this.room = room;
-         this.campus = campus;
-         this.courseSection = courseSection;
-     }
+
 
     /*
     * Getters and Setters
@@ -102,22 +98,7 @@ public class ClassEntity implements Serializable{
     public void setDays(String days) {
         this.days = days;
     }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
+    
 
     public Building getBuilding() {
         return building;
@@ -158,8 +139,7 @@ public class ClassEntity implements Serializable{
     public String toString() {
         return "Class [classId=" + classId
             + ", days=" + days 
-            + ", startTime=" + startTime 
-            + ", endTime=" + endTime
+            + ", meetingTime=" + meetingTime
             + ", room=" + room
             + ", campus=" + campus + "]";
     }

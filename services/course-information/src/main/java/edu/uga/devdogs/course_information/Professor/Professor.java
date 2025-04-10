@@ -16,7 +16,7 @@ import edu.uga.devdogs.course_information.Class.ClassEntity;
 public class Professor implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int professorId;
 
     private String firstName;
@@ -25,6 +25,8 @@ public class Professor implements Serializable {
     private float averageRating = 0.0f;
     private float difficultyRating = 0.0f;
     private int wouldTakeAgainRating;
+    private String department;
+
 
     @OneToMany(mappedBy = "professor",
     fetch = FetchType.LAZY
@@ -32,17 +34,17 @@ public class Professor implements Serializable {
     private List<ClassEntity> classes;
 
     // Default constructor
-    public Professor() {}
+    public Professor(String string, String string2, double d, float i, int j) {}
 
     // Constructor without ID
-    public Professor(String firstName, String lastName, int totalReviews, float averageRating, float difficultyRating, int wouldTakeAgainRating, List<ClassEntity> classes) {
+    public Professor(String firstName, String lastName, int totalReviews, float averageRating, float difficultyRating, int wouldTakeAgainRating, String department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.totalReviews = totalReviews;
         this.averageRating = averageRating;
         this.difficultyRating = difficultyRating;
         this.wouldTakeAgainRating = wouldTakeAgainRating;
-        this.classes = classes;
+        this.department = department;
     }
 
     // Constructor with ID
@@ -63,6 +65,14 @@ public class Professor implements Serializable {
     }
 public void setProfessorId(int professorId) {
         this.professorId = professorId;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public String getFirstName() {
@@ -119,5 +129,10 @@ public void setProfessorId(int professorId) {
 
     public void setClasses(List<ClassEntity> classes) {
         this.classes = classes;
+    }
+
+    public Professor orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
     }
 }

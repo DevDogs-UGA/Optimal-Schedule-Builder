@@ -19,48 +19,68 @@ const bgColors = [
   "bg-[#202c59]",
 ];
 
+const borderColors = [
+  "border-[#cc0128]",
+  "border-[#bc8da7]",
+  "border-[#0db1b1]",
+  "border-[#53917e]",
+  "border-[#202c59]",
+];
+
 export default function WeekSchedule({ weekData }: WeekScheduleProps) {
   const scrollportRef = useRef<HTMLElement>(null);
   const [next, setNext] = useState<string | undefined>(undefined);
   const [prev, setPrev] = useState<string | undefined>(undefined);
-  const colorMapping = useRef<Record<string,string>>({});
+  const colorMapping = useRef<
+    Record<
+      string,
+      { bgColor: string; borderColor: string }
+    >
+  >({});
   const usedColors = useRef<Set<string>>(new Set<string>());
 
   const getBgColorForClass = useCallback((classTitle: string) => {
-// Course block colors:
+    // Check if the course is a lab (has an L at the end)
+    // If so, drop the L when comparing so it has the same color as the corresponding class
+    classTitle.trimEnd();
+    if (classTitle.endsWith("L")) {
+      classTitle = classTitle.substring(0, classTitle.length - 1);
+    }
+
+    // Course block colors:
     // Check if color has already been used
     if (colorMapping.current[classTitle]) {
-      return colorMapping.current[classTitle];
+      return colorMapping.current[classTitle]!;
     }
 
     // Find an unused color
-    let colorToAssign: string | undefined;
+    let bgColorToAssign: string | undefined;
+    let borderColorToAssign: string | undefined;
 
     // Assign unused color
     if (usedColors.current.size < bgColors.length) {
       for (const color of bgColors) {
         if (!usedColors.current.has(color)) {
-          colorToAssign = color;
+          bgColorToAssign = color;
+          borderColorToAssign = borderColors[bgColors.indexOf(color)]; // Find the same color in the border colors list
           usedColors.current.add(color); // Mark color as used
           break;
         }
       }
-    } else {
-      // All colors have been used, so reset colors to be reused
-      usedColors.current.clear();
-
       // Reassign the color to the first class that needs a color
-      colorToAssign = bgColors[usedColors.current.size % bgColors.length];
-      usedColors.current.add(colorToAssign!); // ! asserts variable to not be read as undefined
-    }
-    // If no color assigned
-    if (!colorToAssign) {
-      colorToAssign = "bg-gray-500";
+      bgColorToAssign = bgColors[usedColors.current.size % bgColors.length];
+      borderColorToAssign =
+        borderColors[usedColors.current.size % borderColors.length];
+      usedColors.current.add(bgColorToAssign!); // ! asserts variable to not be read as undefined
     }
 
     // Store the assign color for classTitle
-    colorMapping.current[classTitle] = colorToAssign;
-    return colorToAssign;
+    colorMapping.current[classTitle] = {
+      bgColor: bgColorToAssign ?? "bg-gray-500",
+      borderColor: borderColorToAssign ?? "border-gray-500",
+    };
+
+    return colorMapping.current[classTitle]!;
   }, []);
 
   /**
@@ -133,12 +153,13 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
   /*
    * Create lines for each hour under each day. (8AM to 10PM)
    */
-  const createHourlySections = () => {
+  const createHourlySections = useCallback(() => {
     const sections = [];
     const startHour = 8; // 8AM
     const endHour = 22; // 10PM
     const totalHours = endHour - startHour + 1;
     const sectionHeight = 50 / totalHours;
+    
     for (let hour = startHour; hour <= endHour; hour++) {
       // convert 24-hour to am/pm
       const ampm = hour > 12 ? hour - 12 : hour;
@@ -160,8 +181,9 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
         </div>,
       );
     }
+
     return sections;
-  };
+  }, []);
 
   return (
     <div className="relative z-0 mx-auto w-screen max-w-[1800px] overflow-x-hidden px-8">
@@ -191,15 +213,18 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
               <div className="relative h-full">
                 {createHourlySections()}
                 {classes.map((classData, index) => {
+                  const colors = getBgColorForClass(classData.classTitle);
                   const startDiff = differenceInMinutes(
                     new Date(`1970/01/01 ${classData.timeStart}`),
                     new Date("1970/01/01 3:06 pm"), // This time is not correct it should be 8:00 AM, but it positions the course blocks correctly
                   );
+                
                   return (
                     <DayClass
                       key={`${day}-${classData.classTitle}-${index}`}
                       {...classData}
-                      bgColor={getBgColorForClass(classData.classTitle)}
+                      bgColor={colors.bgColor}
+                      borderColor={colors.borderColor}
                       timeDifference={startDiff}
                     />
                   );

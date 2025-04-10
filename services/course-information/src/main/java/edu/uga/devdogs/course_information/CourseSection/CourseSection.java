@@ -29,7 +29,7 @@ public class CourseSection implements Serializable {
     private String sec;
 
     private char stat;
-  
+
     @Column(nullable = false) 
     private int creditHours = 3;
 
@@ -126,6 +126,7 @@ public class CourseSection implements Serializable {
     public char getStat() {
         return stat;
     }
+
 
     public void setStat(char stat) {
         this.stat = stat;

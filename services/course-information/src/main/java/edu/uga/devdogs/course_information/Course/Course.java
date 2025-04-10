@@ -18,7 +18,10 @@ public class Course implements Serializable {
     private String subject;
     private String courseNumber;
     private String department;
+
+    @Column(name = "course_description", columnDefinition = "TEXT")
     private String courseDescription;
+    
     private String athenaTitle;
     private String gradingSystem;
 
@@ -59,7 +62,7 @@ public class Course implements Serializable {
     }
 
     // Constructor that properly sets title parameter
-    public Course(String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {
+    public Course(String subject, String courseNumber, String title, String department, List<CourseSection> courseSections, String courseDescription) {
         this();  // Call default constructor for initialization
         this.subject = subject;
         this.courseNumber = courseNumber;
@@ -68,6 +71,8 @@ public class Course implements Serializable {
         if (courseSections != null) {
             this.courseSections = courseSections;
         }
+        this.courseDescription = courseDescription;
+
     }
 
     // Full constructor for all fields

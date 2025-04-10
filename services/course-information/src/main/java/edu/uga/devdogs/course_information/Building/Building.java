@@ -24,7 +24,7 @@ public class Building implements Serializable {
 
     @Id
     @JsonProperty("Building Code")
-    private long buildingCode;  // Building Code
+    private String buildingCode;  // Building Code
 
     @JsonProperty("Name")
     private String name;         // Name of the building
@@ -52,7 +52,7 @@ public class Building implements Serializable {
     public Building() {}
 
     // Constructor with parameters
-    public Building(long buildingCode, String name, String address, double latitude, double longitude) {
+    public Building(String buildingCode, String name, String address, double latitude, double longitude) {
         this.buildingCode = buildingCode;
         this.name = name;
         this.address = address;
@@ -63,11 +63,11 @@ public class Building implements Serializable {
     /*
      * Getters and Setters
      */
-    public long getBuildingCode() {
+    public String getBuildingCode() {
         return buildingCode;
     }
 
-    public void setBuildingCode(long buildingCode) {
+    public void setBuildingCode(String buildingCode) {
         this.buildingCode = buildingCode;
     }
 

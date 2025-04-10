@@ -48,7 +48,7 @@ export function Navbar({ keyword = "default" }) {
           {/* Logo and Title */}
           <Link
             href="/"
-            className="tems-center flex gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
+            className="items-center flex gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
           >
             <Image
               className="block fill-current invert"
@@ -112,7 +112,7 @@ export function Navbar({ keyword = "default" }) {
           {/* Logo and Title */}
           <Link
             href="/"
-            className="tems-center flex gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
+            className="items-center flex gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
           >
             <Image
               className="block fill-current invert"

@@ -69,7 +69,7 @@ export default function MyPlans() {
               key={plan.id}
               transition={{
                 type: "spring",
-                damping: 25,
+                damping: 20,
                 stiffness: 120,
                 duration: 100,
               }}
