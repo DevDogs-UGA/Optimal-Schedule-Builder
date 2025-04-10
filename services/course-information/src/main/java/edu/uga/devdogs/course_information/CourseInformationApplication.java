@@ -46,6 +46,10 @@ import edu.uga.devdogs.course_information.webscraping.RateMyProfessorScraper;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import edu.uga.devdogs.course_information.webscraping.Pdf;
 
 @SpringBootApplication
@@ -79,192 +83,163 @@ public class CourseInformationApplication {
         CourseSectionRepository courseSectionRepository,
         CourseRepository courseRepository,
         ClassRepository classRepository,
-        BuildingRepository buildingRepository) {
-        
-            return args -> {
-
-
-                // Set up WebDriver for Firefox
-                FirefoxOptions options = new FirefoxOptions();
-                options.addArguments("--headless");
-                WebDriver driver = new FirefoxDriver(options);
-
-                DescriptionScraper scraper = new DescriptionScraper(driver);
-
-
-                // pdf info
-                List<Course2> courses = Pdf.parsePdf("spring", "C:\\kadestyron\\d\\Desktop"); 
-
-                List<Course> courseEntities = new ArrayList<>();
-                List<ClassEntity> classEntities = new ArrayList<>();
-                List<CourseSection> courseSections = new ArrayList<>();
-                Set<String> processedCourses = new HashSet<>(); // Track processed courses to avoid duplicates
-                Map<String, Integer> professorIdCache = new HashMap<>();
-
-                
-
-
-                for (Course2 course : courses) {
-                    String courseKey = course.getSubject() + "-" + course.getCourseNumber(); // Unique key for course
-
+        BuildingRepository buildingRepository,
+        ProfessorRepository professorRepository) {
     
-                    // Skip if course has already been processed
-                    if (processedCourses.contains(courseKey)) {
-                        continue;
-                    }
-
-                    String creditHoursStr = course.getCreditHours().trim();
-                    creditHoursStr = creditHoursStr.replaceAll("[^0-9.-]", "").trim();
-                    int creditHours = 3; 
+        return args -> {
+            FirefoxOptions options = new FirefoxOptions();
+            options.addArguments("--headless");
+            WebDriver driver = new FirefoxDriver(options);
+            DescriptionScraper scraper = new DescriptionScraper(driver);
     
-                    if (creditHoursStr.contains("-")) {
-                        String[] parts = creditHoursStr.split("-");
-                        try {
-                            double firstValue = Double.parseDouble(parts[0].trim());
-                            creditHours = (int) firstValue; 
-                        } catch (NumberFormatException e) {
-                            creditHours = 3; 
-                            System.err.println("Invalid credit hours range: " + course.getCreditHours() + ", defaulting to 3.");
-                        }
-                    }
+            List<Course2> courses = Pdf.parsePdf("spring", "C:\\kadestyron\\d\\Desktop");
     
-                    //Scrape the professor information using RateMyProfessorScraper
-
-                    
-                    String professorLastName = course.getProfessor();
-
-                    Professor existingProfessor = null;
-                    if (professorIdCache.containsKey(professorLastName)) {
-                        Integer professorId = professorIdCache.get(professorLastName);
-                        existingProfessor = professorRepository.findById(professorId).orElse(null);
-                    }
-
-                    if (professorLastName != null && !professorLastName.trim().isEmpty()) {
-
-                        professorLastName = professorLastName.trim();
-
-                        // Only call RMP scraper if this professor doesn't already exist in DB
-                        existingProfessor = professorRepository.findByLastName(professorLastName);
-                        
-                        if (existingProfessor == null) {
-
-                            int professorId = RateMyProfessorScraper.getRateMyProfessorId(professorLastName);
-
-                            Professor professor;
-                            if (professorId != -1) {
-                                professor = new Professor(
-                                    professorLastName,
-                                    "", // First name unknown
-                                    RateMyProfessorScraper.getRating(professorId),
-                                    RateMyProfessorScraper.getDifficultyLevel(professorId),
-                                    RateMyProfessorScraper.getWouldTakeAgainPercentage(professorId)
-                                );
-                            } else {
-                                System.out.println("RMP ID not found for: " + professorLastName);
-                                professor = new Professor(
-                                    professorLastName,
-                                    "", // First name unknown
-                                    0,
-                                    0.0f,
-                                    0
-                                );
-                            }
-
-                            professorRepository.save(professor);
-                        }
-
-                    // Check if the course already exists
-                    Course existingCourse = courseRepository.findBySubjectAndCourseNumber(course.getSubject(), course.getCourseNumber());
-                    Course courseEntity;
-                    
-                    if (existingCourse == null) {
-                        // Scrape the course description if it doesn't exist in the database
-                        String courseDescription = "Description not found";
-                        try {
-                            courseDescription = scraper.getCourseDescription(course.getSubject(), course.getCourseNumber());
-                        } catch (Exception e) {
-                            System.err.println("Error fetching course description (" + course.getSubject() + " " + course.getCourseNumber() + "): ");
-                            driver.quit();
-                            return;
-                        }
-                        // Save new course with the scraped description
-                        courseEntity = new Course(
-                            course.getSubject(), 
-                            course.getCourseNumber(), 
-                            course.getTitle(), 
-                            course.getDepartment(), 
-                            courseSections, 
-                            courseDescription // Store description in Course
-                        );
-                        courseEntities.add(courseEntity);
-                    } else {
-                        courseEntity = existingCourse;
-                    }
-
-                    // Add course key to the processed set to avoid further scraping
-                    processedCourses.add(courseKey);
+            List<Course> courseEntities = new ArrayList<>();
+            List<ClassEntity> classEntities = new ArrayList<>();
+            List<CourseSection> courseSections = new ArrayList<>();
+            Set<String> processedCourses = new HashSet<>();
+            Map<String, Integer> professorIdCache = new HashMap<>();
     
-                    // Check if a section with the same CRN already exists
-                    CourseSection existingSection = courseSectionRepository.findByCrn(course.getCrn());
+            for (Course2 course : courses) {
+                String courseKey = course.getSubject() + "-" + course.getCourseNumber();
+                if (processedCourses.contains(courseKey)) continue;
     
-                    if (existingSection == null || existingSection.getSeatsAvailable() != course.getAvailableSeats() || existingSection.getInstructor() != course.getProfessor()) {
-
-                        if (existingSection != null) {
-                            courseSectionRepository.delete(existingSection);
-                        }
-
-                        
-                        CourseSection courseSection = new CourseSection(
-                            course.getCrn(),
-                            course.getSec(), 
-                            (course.getStat()).charAt(0), 
-                            creditHours, 
-                            course.getProfessor(), 
-                            course.getPartOfTerm(), 
-                            course.getClassSize(), 
-                            course.getAvailableSeats(), 
-                            0, 
-                            courseEntity,
-                            null,
-                            course.getMeetingDays(),
-                            course.getMeetingTimes()
-                        );
-    
-                        existingSection = courseSection;
-
-                        Building building = buildingRepository.findByBuildingCode(course.getBuilding());
-                        if (building == null) {
-                            System.err.println("Building not found: " + course.getBuilding());
-                            continue; // Skip this course if the building is not found
-                        }
-                        ClassEntity classEntity = new ClassEntity(
-                            course.getMeetingDays(),
-                            course.getMeetingTimes(),
-                            building,
-                            course.getRoomNumber(),
-                            course.getCampus(), 
-                            existingSection
-                        );
-                        
-
-                        courseSections.add(courseSection);
-                        classEntities.add(classEntity);
+                String creditHoursStr = course.getCreditHours().replaceAll("[^0-9.-]", "").trim();
+                int creditHours = 3;
+                if (creditHoursStr.contains("-")) {
+                    try {
+                        creditHours = (int) Float.parseFloat(creditHoursStr.split("-")[0].trim());
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid credit hours: " + course.getCreditHours());
                     }
                 }
+    
+                String professorLastName = course.getProfessor();
+                Professor existingProfessor = null;
+                
+                if (professorLastName != null && !professorLastName.trim().isEmpty()) {
+                    professorLastName = professorLastName.trim();
+                
+                    // Use cache if available
+                    if (professorIdCache.containsKey(professorLastName)) {
+                        Integer cachedId = professorIdCache.get(professorLastName);
+                        existingProfessor = professorRepository.findById(cachedId).orElse(null);
+                    } else {
+                        // Fetch RMP data using the scraper
+                        RateMyProfessorScraper.RMPData profData = RateMyProfessorScraper.getRateMyProfessorInfoFromLastName(professorLastName);
+                        Professor newProfessor;
+                
+                        if (profData != null) {
+                            float rating = 3.0f;
+                            float difficulty = 3.0f;
+                            int wouldTakeAgain = 50;
+                            
+                            try {
+                                rating = RateMyProfessorScraper.getRating(profData.id);
+                                difficulty = RateMyProfessorScraper.getDifficultyLevel(profData.id);
+                                wouldTakeAgain = RateMyProfessorScraper.getWouldTakeAgainPercentage(profData.id);
+                            } catch (Exception e) {
+                                System.err.println("Failed to fetch complete RMP data for " + professorLastName + ". Using default metrics.");
+                            }
+                            
+                            int totalReviews = RateMyProfessorScraper.getTotalReviews(profData.id);
+                            newProfessor = new Professor(profData.firstName, profData.lastName, totalReviews,
+                                                         rating, difficulty, wouldTakeAgain, course.getDepartment());
+                        } else {
+                            newProfessor = new Professor("", professorLastName, 10, 3.0f, 3.0f, 50, course.getDepartment());
+                            System.out.println("RMP data not found for: " + professorLastName);
+                        }
+                
+                        professorRepository.save(newProfessor);
+                        professorIdCache.put(professorLastName, newProfessor.getProfessorId());
+                        existingProfessor = newProfessor;
+                    }
+                }
+    
+
+
+                
+                Course existingCourse = courseRepository.findBySubjectAndCourseNumber(course.getSubject(), course.getCourseNumber());
+                Course courseEntity;
+                
+                if (existingCourse == null) {
+                    String description = "Description not found";
+                    try {
+                        description = scraper.getCourseDescription(course.getSubject(), course.getCourseNumber());
+                    } catch (Exception e) {
+                        System.err.println("Error fetching description for " + course.getSubject() + " " + course.getCourseNumber());
+                        driver.quit();
+                        return;
+                    }
+
+                    courseEntity = new Course(course.getSubject(), course.getCourseNumber(), course.getTitle(), course.getDepartment(), courseSections, description);
+                    courseRepository.save(courseEntity);
+                } else {
+                    courseEntity = existingCourse;
+                }
+
+    
+                processedCourses.add(courseKey);
+    
+                CourseSection existingSection = courseSectionRepository.findByCrn(course.getCrn());
+                if (existingSection == null || existingSection.getSeatsAvailable() != course.getAvailableSeats() || !existingSection.getInstructor().equals(course.getProfessor())) {
+                    if (existingSection != null) courseSectionRepository.delete(existingSection);
+    
+                    String[] times = course.getMeetingTimes().split("-");
+                    String startTime = times.length > 0 ? times[0].trim() : "";
+                    String endTime = times.length > 1 ? times[1].trim() : "";
+
+                    LocalTime startLocalTime = parseTime(startTime);
+                    LocalTime endLocalTime = parseTime(endTime);
+
+                    CourseSection courseSection = new CourseSection(
+                        course.getCrn(),
+                        course.getSec(),
+                        course.getStat().charAt(0),
+                        creditHours,
+                        course.getProfessor(),
+                        course.getPartOfTerm(),
+                        course.getClassSize(),
+                        course.getAvailableSeats(),
+                        0,
+                        courseEntity,
+                        null,
+                        course.getMeetingDays(),
+                        course.getMeetingTimes()
+                    );
+    
+                    existingSection = courseSection;
+    
+                    Building building = buildingRepository.findByBuildingCode(course.getBuilding());
+                    if (building == null) {
+                        System.err.println("Building not found: " + course.getBuilding());
+                        continue;
+                    }
+    
+                    ClassEntity classEntity = new ClassEntity(
+                        course.getMeetingDays(),
+                        startLocalTime,
+                        endLocalTime,
+                        building,
+                        course.getRoomNumber(),
+                        course.getCampus(),
+                        existingSection
+                    );
+    
+                    courseSections.add(courseSection);
+                    classEntities.add(classEntity);
+                }
             }
+    
             System.out.println("Saving to database...");
             courseRepository.saveAll(courseEntities);
-
             System.out.println("Saved courses to database");
+    
             courseSectionRepository.saveAll(courseSections);
-
             System.out.println("Saved course sections to database");
-            
+    
             classRepository.saveAll(classEntities);
             System.out.println("Saved classes to database");
-
-            
-            System.out.println("Saved to database");
         };
     }
 
@@ -307,4 +282,18 @@ public class CourseInformationApplication {
             }
        };
     }
+    private LocalTime parseTime(String time) {
+        try {
+            if (time == null || time.isEmpty() || time.trim().equals("TBA")) {
+                return null;
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mma");
+            return LocalTime.parse(time.toUpperCase(), formatter);
+        } catch (DateTimeParseException e) {
+            System.err.println("Invalid time format: " + time);
+            return null;
+        }
+    }
 }
+
+
