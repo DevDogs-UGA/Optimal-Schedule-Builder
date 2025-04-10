@@ -101,6 +101,7 @@ public class CourseInformationApplication {
             Map<String, Integer> professorIdCache = new HashMap<>();
     
             for (Course2 course : courses) {
+                if (course.getClassSize() == 0) continue; 
                 String courseKey = course.getSubject() + "-" + course.getCourseNumber();
                 if (processedCourses.contains(courseKey)) continue;
     
@@ -241,6 +242,7 @@ public class CourseInformationApplication {
             classRepository.saveAll(classEntities);
             System.out.println("Saved classes to database");
         };
+    
     }
 
     
