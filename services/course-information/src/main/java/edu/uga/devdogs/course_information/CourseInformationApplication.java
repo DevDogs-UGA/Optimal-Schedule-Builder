@@ -46,6 +46,10 @@ import edu.uga.devdogs.course_information.webscraping.RateMyProfessorScraper;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import edu.uga.devdogs.course_information.webscraping.Pdf;
 
 @SpringBootApplication
@@ -112,40 +116,52 @@ public class CourseInformationApplication {
     
                 String professorLastName = course.getProfessor();
                 Professor existingProfessor = null;
-    
+                
                 if (professorLastName != null && !professorLastName.trim().isEmpty()) {
                     professorLastName = professorLastName.trim();
-    
+                
+                    // Use cache if available
                     if (professorIdCache.containsKey(professorLastName)) {
-                        Integer id = professorIdCache.get(professorLastName);
-                        existingProfessor = professorRepository.findById(id).orElse(null);
+                        Integer cachedId = professorIdCache.get(professorLastName);
+                        existingProfessor = professorRepository.findById(cachedId).orElse(null);
                     } else {
+                        // Fetch RMP data using the scraper
                         RateMyProfessorScraper.RMPData profData = RateMyProfessorScraper.getRateMyProfessorInfoFromLastName(professorLastName);
                         Professor newProfessor;
+                
                         if (profData != null) {
                             float rating = 3.0f;
                             float difficulty = 3.0f;
                             int wouldTakeAgain = 50;
+                            
                             try {
                                 rating = RateMyProfessorScraper.getRating(profData.id);
                                 difficulty = RateMyProfessorScraper.getDifficultyLevel(profData.id);
                                 wouldTakeAgain = RateMyProfessorScraper.getWouldTakeAgainPercentage(profData.id);
                             } catch (Exception e) {
-                                System.err.println("Failed to fetch RMP data for " + professorLastName);
+                                System.err.println("Failed to fetch complete RMP data for " + professorLastName + ". Using default metrics.");
                             }
-                            newProfessor = new Professor(profData.firstName, profData.lastName, RateMyProfessorScraper.getTotalReviews(profData.id), rating, difficulty, wouldTakeAgain, course.getDepartment());
+                            
+                            int totalReviews = RateMyProfessorScraper.getTotalReviews(profData.id);
+                            newProfessor = new Professor(profData.firstName, profData.lastName, totalReviews,
+                                                         rating, difficulty, wouldTakeAgain, course.getDepartment());
                         } else {
-                            newProfessor = new Professor("", course.getProfessor(), 10, 3.0f, 3.0f, 50, course.getDepartment());
-                            System.out.println("RMP ID not found for: " + professorLastName);
+                            newProfessor = new Professor("", professorLastName, 10, 3.0f, 3.0f, 50, course.getDepartment());
+                            System.out.println("RMP data not found for: " + professorLastName);
                         }
+                
                         professorRepository.save(newProfessor);
                         professorIdCache.put(professorLastName, newProfessor.getProfessorId());
                         existingProfessor = newProfessor;
                     }
                 }
     
+
+
+                
                 Course existingCourse = courseRepository.findBySubjectAndCourseNumber(course.getSubject(), course.getCourseNumber());
                 Course courseEntity;
+                
                 if (existingCourse == null) {
                     String description = "Description not found";
                     try {
@@ -155,11 +171,13 @@ public class CourseInformationApplication {
                         driver.quit();
                         return;
                     }
+
                     courseEntity = new Course(course.getSubject(), course.getCourseNumber(), course.getTitle(), course.getDepartment(), courseSections, description);
-                    courseEntities.add(courseEntity);
+                    courseRepository.save(courseEntity);
                 } else {
                     courseEntity = existingCourse;
                 }
+
     
                 processedCourses.add(courseKey);
     
@@ -171,6 +189,9 @@ public class CourseInformationApplication {
                     String startTime = times.length > 0 ? times[0].trim() : "";
                     String endTime = times.length > 1 ? times[1].trim() : "";
     
+                    LocalTime startLocalTime = LocalTime.parse(startTime);
+                    LocalTime endLocalTime = LocalTime.parse(endTime);
+
                     CourseSection courseSection = new CourseSection(
                         course.getCrn(),
                         course.getSec(),
@@ -197,8 +218,8 @@ public class CourseInformationApplication {
     
                     ClassEntity classEntity = new ClassEntity(
                         course.getMeetingDays(),
-                        startTime,
-                        endTime,
+                        startLocalTime,
+                        endLocalTime,
                         building,
                         course.getRoomNumber(),
                         course.getCampus(),
@@ -261,4 +282,15 @@ public class CourseInformationApplication {
             }
        };
     }
+    private LocalTime parseTime(String time) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+            return LocalTime.parse(time.toUpperCase(), formatter);
+        } catch (DateTimeParseException e) {
+            System.err.println("Invalid time format: " + time);
+            return null;
+        }
+    }
 }
+
+
