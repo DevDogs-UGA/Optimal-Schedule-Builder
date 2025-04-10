@@ -32,10 +32,7 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
   const [next, setNext] = useState<string | undefined>(undefined);
   const [prev, setPrev] = useState<string | undefined>(undefined);
   const colorMapping = useRef<
-    Record<
-      string,
-      { bgColor: string; borderColor: string }
-    >
+    Record<string, { bgColor: string; borderColor: string }>
   >({});
   const usedColors = useRef<Set<string>>(new Set<string>());
 
@@ -159,7 +156,7 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
     const endHour = 22; // 10PM
     const totalHours = endHour - startHour + 1;
     const sectionHeight = 50 / totalHours;
-    
+
     for (let hour = startHour; hour <= endHour; hour++) {
       // convert 24-hour to am/pm
       const ampm = hour > 12 ? hour - 12 : hour;
@@ -218,7 +215,7 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
                     new Date(`1970/01/01 ${classData.timeStart}`),
                     new Date("1970/01/01 3:06 pm"), // This time is not correct it should be 8:00 AM, but it positions the course blocks correctly
                   );
-                
+
                   return (
                     <DayClass
                       key={`${day}-${classData.classTitle}-${index}`}

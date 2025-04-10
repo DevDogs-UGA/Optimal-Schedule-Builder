@@ -52,29 +52,32 @@ const WeekSchedule = z.record(z.string(), ClassData.array());
 const DaySchedule = z.record(z.string(), ClassData.array());
 
 const localStorage = {
-  schedules: z.object({
-    id: z.string().uuid(),
-    title: z.string(),
-    data: WeekSchedule,
-    pinned: z.boolean(),
-  }).array().catch([
-    // Remove these objects when we have generated schedules getting auto-saved to local storage
-    {
-      id: crypto.randomUUID(),
-      title: "Schedule 1",
-      data: dummyData1,
-      pinned: false,
-    },
-    {
-      id: crypto.randomUUID(),
-      title: "Schedule 2",
-      data: dummyData2,
-      pinned: false,
-    }
-  ])
+  schedules: z
+    .object({
+      id: z.string().uuid(),
+      title: z.string(),
+      data: WeekSchedule,
+      pinned: z.boolean(),
+    })
+    .array()
+    .catch([
+      // Remove these objects when we have generated schedules getting auto-saved to local storage
+      {
+        id: crypto.randomUUID(),
+        title: "Schedule 1",
+        data: dummyData1,
+        pinned: false,
+      },
+      {
+        id: crypto.randomUUID(),
+        title: "Schedule 2",
+        data: dummyData2,
+        pinned: false,
+      },
+    ]),
 };
 
-export type SavedPlan = z.infer<typeof localStorage["schedules"]>[number];
+export type SavedPlan = z.infer<(typeof localStorage)["schedules"]>[number];
 export type ClassData = z.infer<typeof ClassData>;
 export type DaySchedule = z.infer<typeof DaySchedule>;
 export type WeekSchedule = z.infer<typeof WeekSchedule>;

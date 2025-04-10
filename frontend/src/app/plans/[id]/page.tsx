@@ -7,12 +7,12 @@ import background from "../../../../public/images/background.png";
 interface Props {
   params: {
     id: string;
-  }
+  };
 }
 
 // Page for viewing a generated schedule / saved plan
 export default function SchedulePage({ params }: Props) {
-// Render the schedule
+  // Render the schedule
   return (
     <div
       className="relative -mb-[3.625rem] -mt-[3.625rem] min-h-screen bg-cover bg-fixed bg-bottom bg-no-repeat pt-2"

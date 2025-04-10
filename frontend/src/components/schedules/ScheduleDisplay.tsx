@@ -18,7 +18,7 @@ interface Props {
 
 export default function ScheduleDisplay({ id }: Props) {
   const [savedPlans, setSavedPlans] = useLocalStorage("schedules");
-  
+
   const pinPlan = useCallback(() => {
     setSavedPlans((plans) =>
       plans.map((plan) =>
@@ -32,30 +32,34 @@ export default function ScheduleDisplay({ id }: Props) {
     [savedPlans, id],
   );
 
-  const handleInputKeyUp = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      e.currentTarget.blur();
-    }
-  }, []);
-
-  const handleChangeTitle = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
-    const title = e.currentTarget.value.trim();
-
-    if (title.length < 1) {
-      if (savedPlans[currentPlanIndex]) {
-        e.currentTarget.value = savedPlans[currentPlanIndex].title;
+  const handleInputKeyUp = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        e.currentTarget.blur();
       }
-      return;
-    }
+    },
+    [],
+  );
 
-    e.currentTarget.value = title;
-    setSavedPlans((plans) =>
-      plans.map((plan) =>
-        plan.id === id ? { ...plan, title } : plan,
-      ),
-    );
-  }, [currentPlanIndex, id, savedPlans, setSavedPlans]);
+  const handleChangeTitle = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      const title = e.currentTarget.value.trim();
+
+      if (title.length < 1) {
+        if (savedPlans[currentPlanIndex]) {
+          e.currentTarget.value = savedPlans[currentPlanIndex].title;
+        }
+        return;
+      }
+
+      e.currentTarget.value = title;
+      setSavedPlans((plans) =>
+        plans.map((plan) => (plan.id === id ? { ...plan, title } : plan)),
+      );
+    },
+    [currentPlanIndex, id, savedPlans, setSavedPlans],
+  );
 
   if (currentPlanIndex === -1) {
     return null;
