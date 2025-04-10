@@ -188,9 +188,9 @@ public class CourseInformationApplication {
                     String[] times = course.getMeetingTimes().split("-");
                     String startTime = times.length > 0 ? times[0].trim() : "";
                     String endTime = times.length > 1 ? times[1].trim() : "";
-    
-                    LocalTime startLocalTime = LocalTime.parse(startTime);
-                    LocalTime endLocalTime = LocalTime.parse(endTime);
+
+                    LocalTime startLocalTime = parseTime(startTime);
+                    LocalTime endLocalTime = parseTime(endTime);
 
                     CourseSection courseSection = new CourseSection(
                         course.getCrn(),
@@ -284,7 +284,10 @@ public class CourseInformationApplication {
     }
     private LocalTime parseTime(String time) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+            if (time == null || time.isEmpty() || time.trim().equals("TBA")) {
+                return null;
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mma");
             return LocalTime.parse(time.toUpperCase(), formatter);
         } catch (DateTimeParseException e) {
             System.err.println("Invalid time format: " + time);
