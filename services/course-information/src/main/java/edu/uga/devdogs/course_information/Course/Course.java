@@ -7,6 +7,9 @@ import java.util.List;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 
 @Entity
+@Table(name = "course", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"subject", "courseNumber"})
+})
 public class Course implements Serializable {
     // Variables
     @Id

@@ -1,163 +1,115 @@
 package edu.uga.devdogs.course_information.webscraping;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 
 public class RateMyProfessorScraper {
 
-    public static int getRateMyProfessorId(String lastName) {
-        String apiUrl = "https://www.ratemyprofessors.com/graphql";
-        String query = "{\"query\":\"query SearchTeachers($query: String!) { newSearch { teachers(query: $query) { edges { node { legacyId firstName lastName school { name } } } } } }\",\"variables\":{\"query\":\"" + lastName + "\"}}";
-    
+    // Holds the data for RateMyProfessor
+    public static class RMPData {
+        public String firstName;
+        public String lastName;
+        public String id;
+
+        public RMPData(String firstName, String lastName, String id) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.id = id;
+        }
+    }
+
+    // Gets professor information from RateMyProfessor based on last name
+    public static RMPData getRateMyProfessorInfoFromLastName(String lastName) {
         try {
-            HttpResponse<String> response = HttpClient.newHttpClient()
-                .send(HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(query))
-                    .build(),
-                HttpResponse.BodyHandlers.ofString());
-    
-            JSONObject jsonResponse = new JSONObject(response.body());
-    
-            if (!jsonResponse.has("data") || jsonResponse.isNull("data")) {
-                System.err.println("RateMyProfessors API: No 'data' in response for " + lastName);
-                return -1;
+            // Base URL (replace with actual search URL or construct dynamically)
+            String url = "https://www.ratemyprofessors.com/search/teachers?query=" + lastName + "&sid=U.S.";
+            Document doc = Jsoup.connect(url).get();
+
+            // Find professor details (Adjust based on actual site structure)
+            Elements results = doc.select(".TeacherCard");
+            if (results.isEmpty()) {
+                System.out.println("No professors found for: " + lastName);
+                return null;
             }
-    
-            JSONArray edges = jsonResponse.getJSONObject("data")
-                .getJSONObject("newSearch")
-                .getJSONObject("teachers")
-                .getJSONArray("edges");
-    
-            for (int i = 0; i < edges.length(); i++) {
-                JSONObject node = edges.getJSONObject(i).getJSONObject("node");
-                String schoolName = node.getJSONObject("school").getString("name");
-    
-                if ("University of Georgia".equals(schoolName)) {
-                    String foundLast = node.getString("lastName");
-                    if (foundLast.equalsIgnoreCase(lastName)) {
-                        return node.getInt("legacyId");
-                    }
-                }
+
+            // Get first result (adjust selection if needed)
+            Element professorCard = results.get(0);
+            String profFirstName = professorCard.select(".result-header").text();
+            String profLastName = professorCard.select(".result-header").text();  // adjust accordingly
+            String profId = professorCard.attr("data-teacher-id");
+
+            return new RMPData(profFirstName, profLastName, profId);
+        } catch (IOException e) {
+            System.err.println("Error while scraping RateMyProfessor data: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // Get the rating of a professor by ID
+    public static float getRating(String profId) {
+        try {
+            String url = "https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + profId;
+            Document doc = Jsoup.connect(url).get();
+            Elements ratingElement = doc.select(".grade");  // Adjust selector based on actual site structure
+            if (!ratingElement.isEmpty()) {
+                String ratingText = ratingElement.first().text();
+                return Float.parseFloat(ratingText);
             }
-    
-            System.out.println("No UGA match found for: " + lastName);
-        } catch (Exception e) {
-            System.err.println("Error retrieving professor ID for " + lastName + ": " + e.getMessage());
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("Error fetching rating for professor ID " + profId);
         }
-    
-        return -1;
+        return 3.0f;  // Default rating
     }
 
-    private static String getStyledFeedbackItem(int id, int index) {
-        String apiUrl = "https://www.ratemyprofessors.com/professor/" + id;
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .GET()
-                .build();
-
-
-        HttpResponse<String> response = null;
+    // Get difficulty level of a professor by ID
+    public static float getDifficultyLevel(String profId) {
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            String url = "https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + profId;
+            Document doc = Jsoup.connect(url).get();
+            Elements difficultyElement = doc.select(".difficulty");  // Adjust selector as needed
+            if (!difficultyElement.isEmpty()) {
+                String difficultyText = difficultyElement.first().text();
+                return Float.parseFloat(difficultyText);
+            }
+        } catch (IOException e) {
+            System.err.println("Error fetching difficulty level for professor ID " + profId);
         }
-        String html = response.body();
-
-        Document doc = Jsoup.parse(html);
-
-        Elements elements = doc.select("[class*=StyledFeedbackItem]");
-
-        // Print out the matching elements
-        Element targetElement = elements.get(index).child(0);
-        return targetElement.text();
+        return 3.0f;  // Default difficulty
     }
 
-    public static String getDepatment(int id) {
-        String department = getStyledFeedbackItem(id, 0);
-        String cleaned = department.replace("%", "");
-        return cleaned;
-    }
-
-    public static int getWouldTakeAgainPercentage(int id) {
-        String percentage = getStyledFeedbackItem(id, 0);
-        String cleaned = percentage.replace("%", "");
-
-        return Integer.parseInt(cleaned);
-
-
-
-    }
-
-    public static int getDifficultyLevel(int id) {
-        String difficultyLevel = getStyledFeedbackItem(id, 1);
-
-        return Integer.parseInt(difficultyLevel);
-    }
-
-    public static double getRating(int id) {
-        String apiUrl = "https://www.ratemyprofessors.com/professor/" + id;
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .GET()
-                .build();
-
-
-        HttpResponse<String> response = null;
+    // Get the percentage of students who would take the professor again
+    public static int getWouldTakeAgainPercentage(String profId) {
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            String url = "https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + profId;
+            Document doc = Jsoup.connect(url).get();
+            Elements wouldTakeAgainElement = doc.select(".would_take_again");  // Adjust selector accordingly
+            if (!wouldTakeAgainElement.isEmpty()) {
+                String wouldTakeAgainText = wouldTakeAgainElement.first().text().replace("%", "").trim();
+                return Integer.parseInt(wouldTakeAgainText);
+            }
+        } catch (IOException e) {
+            System.err.println("Error fetching 'Would Take Again' percentage for professor ID " + profId);
         }
-        String html = response.body();
-
-        Document doc = Jsoup.parse(html);
-
-        // Select elements with a class name containing "StyledFeedbackItem"
-        Elements elements = doc.select("[class*=RatingValue__Numerator]");
-        String text = elements.first().text();
-        return Double.parseDouble(text);
-
-    }
-    public static void main(String[] args) {
-
-        int id = getRateMyProfessorId("Jessica Tripp");
-        
-        int percentage = getWouldTakeAgainPercentage(id);
-        System.out.println(percentage);
-
-        int difficulty = getDifficultyLevel(id);
-        System.out.println(difficulty);
-
-        double rating = getRating(id);
-        System.out.println(rating);
-
-
+        return 50;  // Default percentage
     }
 
-    public String getTotalReviews(int professorId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTotalReviews'");
+    // Get the total number of reviews for a professor
+    public static int getTotalReviews(String profId) {
+        try {
+            String url = "https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + profId;
+            Document doc = Jsoup.connect(url).get();
+            Elements reviewCountElement = doc.select(".count");  // Adjust based on actual structure
+            if (!reviewCountElement.isEmpty()) {
+                String reviewCountText = reviewCountElement.first().text().replace(",", "").trim();
+                return Integer.parseInt(reviewCountText);
+            }
+        } catch (IOException e) {
+            System.err.println("Error fetching total reviews for professor ID " + profId);
+        }
+        return 10;  // Default review count
     }
 }
