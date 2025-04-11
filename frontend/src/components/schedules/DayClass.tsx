@@ -387,7 +387,10 @@ export default function DayClass({
   timeEnd = timeEnd.toUpperCase();
 
   return (
-    <div className={`relative ${className} flex justify-end`} onClick={courseBlockInfo}>
+    <div
+      className={`relative ${className} flex justify-end`}
+      onClick={courseBlockInfo}
+    >
       <div
         className="absolute inset-0 border-r-2 bg-gray-100"
         style={{
