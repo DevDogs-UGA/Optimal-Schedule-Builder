@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 interface searchFilterProps {
+  labelText?: string;
   name?: string;
   items?: string[];
   type?: string;
@@ -23,6 +24,7 @@ export const DropdownSearchInput = ({
   clearState,
   selectedItem,
   onSelect,
+  labelText
 }: searchFilterProps) => {
   const dropdownRef = useRef<HTMLUListElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -92,6 +94,8 @@ export const DropdownSearchInput = ({
 
   return (
     <div className={`relative w-full min-w-32`}>
+      <label className="flex flex-col gap-0.5">
+        {labelText && <span className="font-bold">{labelText}</span>}
       <input
         name={name}
         value={query}
@@ -104,6 +108,7 @@ export const DropdownSearchInput = ({
         autoComplete="off"
         onKeyDown={handleKeyPress}
       />
+      </label>
       {/* DROPDOWN MENU */}
       {isOpen && filteredData.length !== 0 && (
         <ul
