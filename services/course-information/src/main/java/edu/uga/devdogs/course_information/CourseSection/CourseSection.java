@@ -6,6 +6,8 @@ import java.util.List;
 
 import edu.uga.devdogs.course_information.Class.ClassEntity;
 import edu.uga.devdogs.course_information.Course.Course;
+import edu.uga.devdogs.course_information.Professor.Professor;
+import edu.uga.devdogs.course_information.webscraping.Course2;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 import java.time.LocalTime;
 
@@ -36,7 +39,6 @@ public class CourseSection implements Serializable {
     @Column(nullable = false) 
     private int creditHours = 3;
 
-    private String instructor;
 
     private String term;
 
@@ -53,7 +55,20 @@ public class CourseSection implements Serializable {
     
     private LocalTime endTime;
 
+    // instructor is the name
+    private String instructor;
     
+
+    
+
+
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
+    }
+
+    public String getInstructor() {
+        return instructor;
+    }
 
 
     public LocalTime getStartTime() {
@@ -94,18 +109,22 @@ public class CourseSection implements Serializable {
     @JoinColumn(name = "class_id")
     private ClassEntity classEntity;
 
+    @OneToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;
+
 
 
     // Constructors, getters, setters, and toString 
     public CourseSection() {}
 
-    public CourseSection(int crn, String sec, char stat, int creditHours, String instructor,
-        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, String meetingTime) {
+    public CourseSection(int crn, String sec, char stat, int creditHours, Professor professor,
+        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, LocalTime startTime, LocalTime endTime) {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
     this.creditHours = creditHours;
-    this.instructor = instructor;
+    this.professor = professor;
     this.term = term;
     this.classSize = classSize;
     this.seatsAvailable = seatsAvailable;
@@ -158,12 +177,12 @@ public class CourseSection implements Serializable {
         this.creditHours = creditHours;
     }
 
-    public String getInstructor() {
-        return instructor;
+    public Professor getProfessor() {
+        return professor;
     }
 
-    public void setInstructor(String instructor) {
-        this.instructor = instructor;
+    public void setInstructor(Professor professor) {
+        this.professor = professor;
     }
 
     public String getTerm() {
@@ -218,10 +237,18 @@ public class CourseSection implements Serializable {
     public String toString() {
         return "CourseSection [courseSectionId=" + courseSectionId + ", crn=" + crn + ", sec=" + sec + ", stat="
                 + stat + ", creditHoursLow=" + creditHours + ", instructor="
-                + instructor + ", term=" + term + ", classSize=" + classSize + ", seatsAvailable=" + seatsAvailable
+                + professor.getLastName() + ", term=" + term + ", classSize=" + classSize + ", seatsAvailable=" + seatsAvailable
                 + ", year=" + year + "]";
     }
 
+    public void updateFrom(Course2 course, Professor professor, LocalTime start, LocalTime end) {
+        this.professor = professor;
+        this.startTime = start;
+        this.endTime = end;
+        this.daysOfTheWeek = course.getMeetingDays();
+    }
+
+    
 
 }
 

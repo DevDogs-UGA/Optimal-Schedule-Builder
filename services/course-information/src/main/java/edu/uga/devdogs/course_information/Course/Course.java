@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
+import edu.uga.devdogs.course_information.webscraping.Course2;
 
 @Entity
 @Table(name = "course", uniqueConstraints = {
@@ -29,7 +30,7 @@ public class Course implements Serializable {
     private String gradingSystem;
 
     // Relationships
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CourseSection> courseSections = new ArrayList<>();
     
     private List<CourseSection> preRequisites;
@@ -274,5 +275,13 @@ public class Course implements Serializable {
                .reduce((s1, s2) -> s1 + ", " + s2)
                .map(result -> "[" + result + "]")
                .orElse("[]");
+    }
+
+    public void updateFrom(Course2 course) {
+        this.subject = course.getSubject();
+        this.title = course.getTitle();
+        this.title = course.getTitle();
+        this.department = course.getDepartment();
+
     }
 }

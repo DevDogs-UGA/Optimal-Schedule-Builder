@@ -29,9 +29,10 @@ public class Professor implements Serializable {
 
 
     @OneToMany(mappedBy = "professor",
-    fetch = FetchType.LAZY
-    )
+    fetch = FetchType.LAZY)
     private List<ClassEntity> classes;
+
+    
 
     // Default constructor
     public Professor() {

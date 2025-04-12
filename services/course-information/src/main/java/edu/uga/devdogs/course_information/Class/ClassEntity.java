@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.Professor.Professor;
+import edu.uga.devdogs.course_information.webscraping.Course2;
 
 /*
  * Java JPA entity represention for Class
@@ -156,5 +157,13 @@ public class ClassEntity implements Serializable{
             + ", endTime=" + endTime
             + ", room=" + room
             + ", campus=" + campus + "]";
+    }
+
+    public void updateFrom (Course2 course, LocalTime startTime, LocalTime endTime, Building building) {
+        this.days = course.getMeetingDays();
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.building = building;
+        this.campus = course.getCampus();
     }
 }
