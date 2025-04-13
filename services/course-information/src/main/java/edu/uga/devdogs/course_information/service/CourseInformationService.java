@@ -288,11 +288,10 @@ public class CourseInformationService {
      * @return a double representing the latitude
      */
     public double getLatitude(String buildingCode) {
-        long buildingCodeLong = Long.parseLong(buildingCode);
         List<Building> buildings = buildingRepository.findAll();
 
         for (Building building : buildings) {
-            if (building.getBuildingCode() == buildingCodeLong) {
+            if (building.getBuildingCode().equals(buildingCode)) {
                 return building.getLatitude();
             }
         }
@@ -307,11 +306,10 @@ public class CourseInformationService {
      * @return a double representing the longitude
      */
     public double getLongitude(String buildingCode) {
-        long buildingCodeLong = Long.parseLong(buildingCode);
         List<Building> buildings = buildingRepository.findAll();
 
         for (Building building : buildings) {
-            if (building.getBuildingCode() == buildingCodeLong) {
+            if (building.getBuildingCode().equals(buildingCode)) {
                 return building.getLongitude();
             }
         }
@@ -357,8 +355,8 @@ public class CourseInformationService {
                     for (int i = 0; i < daysString.length(); i++) {
                         daysList.add(BruteForceUtil.daySwitch(daysString.substring(i, i + 1)));
                     }
-                    LocalTime startTime = LocalTime.parse(classEntity.getStartTime());
-                    LocalTime endTime = LocalTime.parse(classEntity.getEndTime());
+                    LocalTime startTime = classEntity.getStartTime();
+                    LocalTime endTime = classEntity.getEndTime();
                     String buildingName = classEntity.getBuilding().getName();
                     String campus = classEntity.getCampus();
                     String buildingNumber = String.valueOf(classEntity.getBuilding().getBuildingCode());
@@ -389,8 +387,8 @@ public class CourseInformationService {
                 for (int i = 0; i < daysString.length(); i++) {
                     daysList.add(BruteForceUtil.daySwitch(daysString.substring(i, i + 1)));
                 }
-                LocalTime startTime = LocalTime.parse(classEntity.getStartTime());
-                LocalTime endTime = LocalTime.parse(classEntity.getEndTime());
+                LocalTime startTime = classEntity.getStartTime();
+                LocalTime endTime = classEntity.getEndTime();
                 String buildingName = classEntity.getBuilding().getName();
                 String campus = classEntity.getCampus();
                 String buildingNumber = String.valueOf(classEntity.getBuilding().getBuildingCode());

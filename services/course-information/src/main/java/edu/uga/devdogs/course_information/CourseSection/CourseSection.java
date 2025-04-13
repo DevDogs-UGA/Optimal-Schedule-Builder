@@ -1,6 +1,7 @@
 package edu.uga.devdogs.course_information.CourseSection;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.List;
 
 import edu.uga.devdogs.course_information.Class.ClassEntity;
@@ -15,6 +16,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
+import java.time.LocalTime;
 
 @Entity
 public class CourseSection implements Serializable {
@@ -45,17 +48,31 @@ public class CourseSection implements Serializable {
 
     private String daysOfTheWeek;
 
-    private String meetingTime;
+    private LocalTime startTime;
+
+    
+    private LocalTime endTime;
+
     
 
 
-    public String getMeetingTime() {
-        return meetingTime;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setMeetingTime(String meetingTime) {
-        this.meetingTime = meetingTime;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
+
+    public LocalTime getEndTime() {
+        return startTime;
+    }
+
+    public void setEndTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    
 
     public String getDaysOfTheWeek() {
         return daysOfTheWeek;
@@ -96,7 +113,8 @@ public class CourseSection implements Serializable {
     this.course = course;
     this.classes = classes;
     this.daysOfTheWeek = daysOfTheWeek;
-    this.meetingTime = meetingTime;
+    this.startTime = startTime;
+    this.endTime = endTime;
 }
 
     public long getId() {

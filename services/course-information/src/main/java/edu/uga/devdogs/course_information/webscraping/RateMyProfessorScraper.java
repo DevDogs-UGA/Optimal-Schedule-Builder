@@ -1,163 +1,110 @@
 package edu.uga.devdogs.course_information.webscraping;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 
 public class RateMyProfessorScraper {
 
-    public static int getRateMyProfessorId(String lastName) {
-        String apiUrl = "https://www.ratemyprofessors.com/graphql";
-        String query = "{\"query\":\"query SearchTeachers($query: String!) { newSearch { teachers(query: $query) { edges { node { legacyId firstName lastName school { name } } } } } }\",\"variables\":{\"query\":\"" + lastName + "\"}}";
-    
+    private static final String GRAPHQL_URL = "https://www.ratemyprofessors.com/graphql";
+    private static final String TARGET_SCHOOL_NAME = "University of Georgia";
+    private static final OkHttpClient client = new OkHttpClient();
+
+    public static Double getRatingForProfessor(String lastName) {
         try {
-            HttpResponse<String> response = HttpClient.newHttpClient()
-                .send(HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(query))
-                    .build(),
-                HttpResponse.BodyHandlers.ofString());
-    
-            JSONObject jsonResponse = new JSONObject(response.body());
-    
-            if (!jsonResponse.has("data") || jsonResponse.isNull("data")) {
-                System.err.println("RateMyProfessors API: No 'data' in response for " + lastName);
-                return -1;
-            }
-    
-            JSONArray edges = jsonResponse.getJSONObject("data")
-                .getJSONObject("newSearch")
-                .getJSONObject("teachers")
-                .getJSONArray("edges");
-    
-            for (int i = 0; i < edges.length(); i++) {
-                JSONObject node = edges.getJSONObject(i).getJSONObject("node");
-                String schoolName = node.getJSONObject("school").getString("name");
-    
-                if ("University of Georgia".equals(schoolName)) {
-                    String foundLast = node.getString("lastName");
-                    if (foundLast.equalsIgnoreCase(lastName)) {
-                        return node.getInt("legacyId");
+            String query = """
+                {
+                  searchTeachers(query: "%s") {
+                    edges {
+                      node {
+                        id
+                        firstName
+                        lastName
+                        school {
+                          name
+                        }
+                        avgRating
+                      }
                     }
+                  }
+                }
+                """.formatted(lastName);
+
+            RequestBody body = RequestBody.create(
+                    new ObjectMapper().writeValueAsString(new GraphQLQuery(query)),
+                    MediaType.parse("application/json")
+            );
+
+            Request request = new Request.Builder()
+                    .url(GRAPHQL_URL)
+                    .post(body)
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (!response.isSuccessful()) {
+                System.err.println("HTTP error fetching RMP data: " + response.code() + ", URL=" + GRAPHQL_URL);
+                return null;
+            }
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(response.body().string());
+
+            JsonNode edges = root.at("/data/searchTeachers/edges");
+
+            if (!edges.isArray() || edges.size() == 0) {
+                System.out.println("No RMP results found for: " + lastName);
+                return null;
+            }
+
+            for (JsonNode edge : edges) {
+                JsonNode node = edge.get("node");
+                String schoolName = node.get("school").get("name").asText();
+                String firstName = node.get("firstName").asText();
+                String matchedLastName = node.get("lastName").asText();
+
+                System.out.println("Found: " + firstName + " " + matchedLastName + " at " + schoolName);
+
+                if (schoolName.equalsIgnoreCase(TARGET_SCHOOL_NAME)) {
+                    double rating = node.get("avgRating").asDouble();
+                    System.out.println("Matched " + firstName + " " + matchedLastName + " (UGA) with rating: " + rating);
+                    return rating;
                 }
             }
-    
-            System.out.println("No UGA match found for: " + lastName);
-        } catch (Exception e) {
-            System.err.println("Error retrieving professor ID for " + lastName + ": " + e.getMessage());
-            e.printStackTrace();
+
+            System.out.println("No matching UGA professor found for: " + lastName);
+            return null;
+
+        } catch (IOException e) {
+            System.err.println("Error while scraping RateMyProfessor data: " + e.getMessage());
+            return null;
         }
-    
-        return -1;
     }
 
-    private static String getStyledFeedbackItem(int id, int index) {
-        String apiUrl = "https://www.ratemyprofessors.com/professor/" + id;
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .GET()
-                .build();
+    // Helper class to wrap GraphQL query
+    static class GraphQLQuery {
+        public String query;
 
-
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        public GraphQLQuery(String query) {
+            this.query = query;
         }
-        String html = response.body();
-
-        Document doc = Jsoup.parse(html);
-
-        Elements elements = doc.select("[class*=StyledFeedbackItem]");
-
-        // Print out the matching elements
-        Element targetElement = elements.get(index).child(0);
-        return targetElement.text();
     }
 
-    public static String getDepatment(int id) {
-        String department = getStyledFeedbackItem(id, 0);
-        String cleaned = department.replace("%", "");
-        return cleaned;
-    }
-
-    public static int getWouldTakeAgainPercentage(int id) {
-        String percentage = getStyledFeedbackItem(id, 0);
-        String cleaned = percentage.replace("%", "");
-
-        return Integer.parseInt(cleaned);
-
-
-
-    }
-
-    public static int getDifficultyLevel(int id) {
-        String difficultyLevel = getStyledFeedbackItem(id, 1);
-
-        return Integer.parseInt(difficultyLevel);
-    }
-
-    public static double getRating(int id) {
-        String apiUrl = "https://www.ratemyprofessors.com/professor/" + id;
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .GET()
-                .build();
-
-
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        String html = response.body();
-
-        Document doc = Jsoup.parse(html);
-
-        // Select elements with a class name containing "StyledFeedbackItem"
-        Elements elements = doc.select("[class*=RatingValue__Numerator]");
-        String text = elements.first().text();
-        return Double.parseDouble(text);
-
-    }
     public static void main(String[] args) {
+        // Test a few example professors
+        String[] lastNames = {"Shonkwiler", "Colson", "Yuan", "Nath", "Beveridge", "Kraemer"};
 
-        int id = getRateMyProfessorId("Jessica Tripp");
-        
-        int percentage = getWouldTakeAgainPercentage(id);
-        System.out.println(percentage);
-
-        int difficulty = getDifficultyLevel(id);
-        System.out.println(difficulty);
-
-        double rating = getRating(id);
-        System.out.println(rating);
-
-
-    }
-
-    public String getTotalReviews(int professorId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTotalReviews'");
+        for (String lastName : lastNames) {
+            System.out.println("\n--- Searching for: " + lastName + " ---");
+            Double rating = RateMyProfessorScraper.getRatingForProfessor(lastName);
+            if (rating != null) {
+                System.out.printf("RMP Rating for %s: %.2f%n", lastName, rating);
+            } else {
+                System.out.println("No rating found for " + lastName);
+            }
+        }
     }
 }

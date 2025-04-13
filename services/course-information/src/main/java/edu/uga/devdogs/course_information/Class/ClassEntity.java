@@ -7,6 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 
 import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
@@ -28,15 +29,26 @@ public class ClassEntity implements Serializable{
 
     private String days;
 
-    private  String meetingTime;
+    private  LocalTime endTime;
 
+    private  LocalTime startTime;
 
-    public String getMeetingTime() {
-        return meetingTime;
+    
+
+    public LocalTime getEndTime() {
+        return endTime;
     }
 
-    public void setMeetingTime(String meetingTime) {
-        this.meetingTime = meetingTime;
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
     private String room;
@@ -68,9 +80,10 @@ public class ClassEntity implements Serializable{
      }
 
      // Constructor w/o classID
-     public ClassEntity(String days, String meetingTime, Building building, String room, String campus, CourseSection courseSection) {
+     public ClassEntity(String days, LocalTime startTime, LocalTime endTime, Building building, String room, String campus, CourseSection courseSection) {
          this.days = days;
-         this.meetingTime = meetingTime;
+         this.startTime = startTime;
+         this.endTime = endTime;
          this.building = building;
          this.room = room;
          this.campus = campus;
@@ -139,7 +152,8 @@ public class ClassEntity implements Serializable{
     public String toString() {
         return "Class [classId=" + classId
             + ", days=" + days 
-            + ", meetingTime=" + meetingTime
+            + ", startTime=" + startTime
+            + ", endTime=" + endTime
             + ", room=" + room
             + ", campus=" + campus + "]";
     }

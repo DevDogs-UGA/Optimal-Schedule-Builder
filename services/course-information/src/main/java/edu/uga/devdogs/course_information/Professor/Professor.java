@@ -34,14 +34,16 @@ public class Professor implements Serializable {
     private List<ClassEntity> classes;
 
     // Default constructor
-    public Professor(String string, String string2, double d, float i, int j) {}
+    public Professor() {
+
+    }
 
     // Constructor without ID
-    public Professor(String firstName, String lastName, int totalReviews, float averageRating, float difficultyRating, int wouldTakeAgainRating, String department) {
+    public Professor(String firstName, String lastName, int totalReviews, float rating, float difficultyRating, int wouldTakeAgainRating, String department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.totalReviews = totalReviews;
-        this.averageRating = averageRating;
+        this.averageRating = rating;
         this.difficultyRating = difficultyRating;
         this.wouldTakeAgainRating = wouldTakeAgainRating;
         this.department = department;
