@@ -1,5 +1,6 @@
 package edu.uga.devdogs.course_information.Class;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -9,6 +10,10 @@ import jakarta.persistence.ManyToOne;
 import java.io.Serializable;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.Professor.Professor;
@@ -17,6 +22,7 @@ import edu.uga.devdogs.course_information.webscraping.Course2;
 /*
  * Java JPA entity represention for Class
  */
+
 @Entity
 public class ClassEntity implements Serializable{
     
@@ -26,7 +32,8 @@ public class ClassEntity implements Serializable{
 
     @Id
     @GeneratedValue
-    private int classId;
+    @Column(name = "class_id")
+    private long classId;
 
     private String days;
 
@@ -61,15 +68,18 @@ public class ClassEntity implements Serializable{
      */
 
     @ManyToOne
-    @JoinColumn(name = "course_section_id")
+    @JoinColumn(name = "course_section_id", referencedColumnName = "course_section_id")
+    @JsonBackReference("coursesection-classes")
     private CourseSection courseSection;
 
     @ManyToOne
-    @JoinColumn(name = "buildingNumber")
+    @JoinColumn(name = "building_code", referencedColumnName = "buildingCode")
+    @JsonBackReference("building-classes")
     private Building building;
 
     @ManyToOne
     @JoinColumn(name = "professor_id")
+    @JsonBackReference("professor-classes")
     private Professor professor;  
 
      /*
@@ -97,7 +107,7 @@ public class ClassEntity implements Serializable{
     * Getters and Setters
     */
 
-    public int getClassId() {
+    public long getClassId() {
         return classId;
     }
 
@@ -159,11 +169,12 @@ public class ClassEntity implements Serializable{
             + ", campus=" + campus + "]";
     }
 
-    public void updateFrom (Course2 course, LocalTime startTime, LocalTime endTime, Building building) {
+    public void updateFrom (Course2 course, LocalTime startTime, LocalTime endTime, Building building, Professor professor) {
         this.days = course.getMeetingDays();
         this.startTime = startTime;
         this.endTime = endTime;
         this.building = building;
         this.campus = course.getCampus();
+        this.professor = professor;
     }
 }

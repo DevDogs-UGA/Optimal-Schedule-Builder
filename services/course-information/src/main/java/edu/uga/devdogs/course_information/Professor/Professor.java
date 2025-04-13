@@ -6,11 +6,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import edu.uga.devdogs.course_information.Class.ClassEntity;
+
+
 
 @Entity
 public class Professor implements Serializable {
@@ -28,11 +35,10 @@ public class Professor implements Serializable {
     private String department;
 
 
-    @OneToMany(mappedBy = "professor",
-    fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "professor", fetch = FetchType.LAZY)
+    @JsonManagedReference("professor-classes")
     private List<ClassEntity> classes;
 
-    
 
     // Default constructor
     public Professor() {

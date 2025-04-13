@@ -4,9 +4,13 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import edu.uga.devdogs.course_information.Class.ClassEntity;
 import edu.uga.devdogs.course_information.Course.Course;
-import edu.uga.devdogs.course_information.Professor.Professor;
 import edu.uga.devdogs.course_information.webscraping.Course2;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,7 +24,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
-import java.time.LocalTime;
+
+
+
 
 @Entity
 public class CourseSection implements Serializable {
@@ -28,8 +34,9 @@ public class CourseSection implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_section_id")
-    private long courseSectionId;
+    private Long courseSectionId;
 
+    @Column(nullable = false, unique = true)
     private int crn;
 
     private String sec;
@@ -57,10 +64,6 @@ public class CourseSection implements Serializable {
 
     // instructor is the name
     private String instructor;
-    
-
-    
-
 
     public void setInstructor(String instructor) {
         this.instructor = instructor;
@@ -80,11 +83,11 @@ public class CourseSection implements Serializable {
     }
 
     public LocalTime getEndTime() {
-        return startTime;
+        return endTime;
     }
 
-    public void setEndTime(LocalTime startTime) {
-        this.startTime = startTime;
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
     
@@ -98,39 +101,44 @@ public class CourseSection implements Serializable {
     }
 
     // Relationships
+    @JsonBackReference("course-sections")
     @ManyToOne
-    @JoinColumn(name = "course_Id", nullable = false)
+    @JoinColumn(name = "course_id", referencedColumnName = "course_id")
     private Course course;
 
     @OneToMany(mappedBy = "courseSection", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("coursesection-classes")
     private List<ClassEntity> classes;
 
-    @ManyToOne
-    @JoinColumn(name = "class_id")
-    private ClassEntity classEntity;
 
-    @OneToOne
-    @JoinColumn(name = "professor_id")
-    private Professor professor;
+
+    
+    public List<ClassEntity> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<ClassEntity> classes) {
+        this.classes = classes;
+    }
+
 
 
 
     // Constructors, getters, setters, and toString 
     public CourseSection() {}
 
-    public CourseSection(int crn, String sec, char stat, int creditHours, Professor professor,
+    public CourseSection(int crn, String sec, char stat, int creditHours, String instructor,
         String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, LocalTime startTime, LocalTime endTime) {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
     this.creditHours = creditHours;
-    this.professor = professor;
+    this.instructor = instructor;
     this.term = term;
     this.classSize = classSize;
     this.seatsAvailable = seatsAvailable;
     this.year = year;
     this.course = course;
-    this.classes = classes;
     this.daysOfTheWeek = daysOfTheWeek;
     this.startTime = startTime;
     this.endTime = endTime;
@@ -177,13 +185,9 @@ public class CourseSection implements Serializable {
         this.creditHours = creditHours;
     }
 
-    public Professor getProfessor() {
-        return professor;
-    }
 
-    public void setInstructor(Professor professor) {
-        this.professor = professor;
-    }
+
+
 
     public String getTerm() {
         return term;
@@ -221,28 +225,26 @@ public class CourseSection implements Serializable {
         return course;
     }
 
+    public Long getCourseSectionId() {
+        return courseSectionId;
+    }
+
     public void setCourse(Course course) {
         this.course = course;
     }
 
-    public List<ClassEntity> getClasses() {
-        return classes;
-    }
-
-    public void setClasses(List<ClassEntity> classes) {
-        this.classes = classes;
-    }
 
     @Override
     public String toString() {
         return "CourseSection [courseSectionId=" + courseSectionId + ", crn=" + crn + ", sec=" + sec + ", stat="
                 + stat + ", creditHoursLow=" + creditHours + ", instructor="
-                + professor.getLastName() + ", term=" + term + ", classSize=" + classSize + ", seatsAvailable=" + seatsAvailable
+                + instructor + ", term=" + term + ", classSize=" + classSize + ", seatsAvailable=" + seatsAvailable
                 + ", year=" + year + "]";
     }
 
-    public void updateFrom(Course2 course, Professor professor, LocalTime start, LocalTime end) {
-        this.professor = professor;
+    public void updateFrom(Course2 course, LocalTime start, LocalTime end) {
+        this.instructor = course.getProfessor();
+        this.sec = course.getSec();
         this.startTime = start;
         this.endTime = end;
         this.daysOfTheWeek = course.getMeetingDays();
