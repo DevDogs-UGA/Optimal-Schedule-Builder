@@ -57,10 +57,7 @@ import edu.uga.devdogs.course_information.webscraping.Pdf;
 public class CourseInformationApplication {
 
     private final CourseRepository courseRepository;
-
-
     private final BuildingRepository buildingRepository;
-
     private final ProfessorRepository professorRepository;
 
     @Value("${update.buildings}")
@@ -70,7 +67,6 @@ public class CourseInformationApplication {
         this.courseRepository = courseRepository;
         this.buildingRepository = buildingRepository;
         this.professorRepository = professorRepository;
-        // Removed incorrect initialization of professorService
     }
 
     public static void main(String[] args) {
@@ -101,6 +97,7 @@ public class CourseInformationApplication {
             Map<String, Integer> professorIdCache = new HashMap<>();
     
             for (Course2 course : courses) {
+                if (course.getClassSize() == 0) continue; 
                 String courseKey = course.getSubject() + "-" + course.getCourseNumber();
                 if (processedCourses.contains(courseKey)) continue;
     
@@ -125,40 +122,25 @@ public class CourseInformationApplication {
                         Integer cachedId = professorIdCache.get(professorLastName);
                         existingProfessor = professorRepository.findById(cachedId).orElse(null);
                     } else {
-                        // Fetch RMP data using the scraper
-                        RateMyProfessorScraper.RMPData profData = RateMyProfessorScraper.getRateMyProfessorInfoFromLastName(professorLastName);
+                        // COMMENTING OUT RMP DATA SCRAPING
+                        // RateMyProfessorScraper.RMPData profData = RateMyProfessorScraper.getRateMyProfessorInfoFromLastName(professorLastName);
                         Professor newProfessor;
-                
-                        if (profData != null) {
-                            float rating = 3.0f;
-                            float difficulty = 3.0f;
-                            int wouldTakeAgain = 50;
-                            
-                            try {
-                                rating = RateMyProfessorScraper.getRating(profData.id);
-                                difficulty = RateMyProfessorScraper.getDifficultyLevel(profData.id);
-                                wouldTakeAgain = RateMyProfessorScraper.getWouldTakeAgainPercentage(profData.id);
-                            } catch (Exception e) {
-                                System.err.println("Failed to fetch complete RMP data for " + professorLastName + ". Using default metrics.");
-                            }
-                            
-                            int totalReviews = RateMyProfessorScraper.getTotalReviews(profData.id);
-                            newProfessor = new Professor(profData.firstName, profData.lastName, totalReviews,
-                                                         rating, difficulty, wouldTakeAgain, course.getDepartment());
-                        } else {
-                            newProfessor = new Professor("", professorLastName, 10, 3.0f, 3.0f, 50, course.getDepartment());
-                            System.out.println("RMP data not found for: " + professorLastName);
-                        }
-                
+
+                        // Provide default values for professor data
+                        float rating = 3.0f;
+                        float difficulty = 3.0f;
+                        int wouldTakeAgain = 50;
+                        int totalReviews = 10;
+
+                        newProfessor = new Professor("", professorLastName, totalReviews, 
+                                                      rating, difficulty, wouldTakeAgain, course.getDepartment());
+                        
                         professorRepository.save(newProfessor);
                         professorIdCache.put(professorLastName, newProfessor.getProfessorId());
                         existingProfessor = newProfessor;
                     }
                 }
     
-
-
-                
                 Course existingCourse = courseRepository.findBySubjectAndCourseNumber(course.getSubject(), course.getCourseNumber());
                 Course courseEntity;
                 
@@ -178,7 +160,6 @@ public class CourseInformationApplication {
                     courseEntity = existingCourse;
                 }
 
-    
                 processedCourses.add(courseKey);
     
                 CourseSection existingSection = courseSectionRepository.findByCrn(course.getCrn());
@@ -241,9 +222,9 @@ public class CourseInformationApplication {
             classRepository.saveAll(classEntities);
             System.out.println("Saved classes to database");
         };
+    
     }
 
-    
     @Bean
     @Order(1)
     CommandLineRunner buildingCommandLineRunner (BuildingRepository buildingRepository) {
@@ -282,6 +263,7 @@ public class CourseInformationApplication {
             }
        };
     }
+
     private LocalTime parseTime(String time) {
         try {
             if (time == null || time.isEmpty() || time.trim().equals("TBA")) {
@@ -295,5 +277,3 @@ public class CourseInformationApplication {
         }
     }
 }
-
-
