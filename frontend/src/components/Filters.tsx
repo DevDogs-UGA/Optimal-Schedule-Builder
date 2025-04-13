@@ -1,238 +1,184 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { DropdownSearchInput } from "./ui/DropdownSearchInput";
-import { DropdownTagInput } from "./ui/DropdownTagInput";
-import { TimeDistanceFilter } from "./courses/TimeDistanceFilter";
+import { useMemo, useState } from "react";
 import Combobox from "./ui/Combobox";
 
-interface props {
-  text?: string;
+function options<T extends string>(items: T[]) {
+  return items.map((item) => ({ value: item, content: item }));
 }
 
-//TODO: replace dummy data placeholders with respective items for dropdowns
-const termList = [
+const timeOptions = options([
+  "8 AM",
+  "9 AM",
+  "10 AM",
+  "11 AM",
+  "12 PM",
+  "1 PM",
+  "2 PM",
+  "3 PM",
+  "4 PM",
+  "5 PM",
+  "6 PM",
+  "8 PM",
+  "9 PM",
+  "10 PM",
+]);
+
+const termOptions = options([
+  `Spring ${new Date().getFullYear()}`,
+  `Summer ${new Date().getFullYear()}`,
   `Fall ${new Date().getFullYear()}`,
-  `Spring ${new Date().getFullYear() + 1}`,
-  `Summer ${new Date().getFullYear() + 1}`,
-];
-const instructionlist = [
-  "Lecture",
-  "Seminar",
-  "Lab",
-  "Online",
-  "Hybrid",
-  "Workshops",
-  "Recitations",
-  "Studio",
-  "Independent Study",
-  "Fieldwork",
-];
-const campusList = [
+]);
+
+const campusOptions = options([
   "Athens",
   "Buckhead",
   "Griffin",
   "Gwinnett",
   "Online",
   "Tifton",
-];
-const educationLevelList = ["Undergraduate", "Graduate"];
-// Uncomment to use data (currently unused)
-// let minmHourList: string[];
-// let maxmHourList: string[];
-const hours = [
-  "1 hour",
-  "2 hours",
-  "3 hours",
-  "4 hours",
-  "5 hours",
-  "6 hours",
-  "7 hours",
-  "8 hours",
-  "9 hours",
-  "10 hours",
-  "11 hours",
-  "12 hours",
-  "13 hours",
-  "14 hours",
-  "15 hours",
-  "16 hours",
-  "17 hours",
-  "18 hours",
-  "19 hours",
-  "20 hours",
-  "21 hours",
-  "22 hours",
-  "23 hours",
-  "24 hours",
-];
+]);
 
 export default function Filters() {
-  const [minmHours, setSelectedMinmHours] = useState<string | null>();
-  const [maxmHours, setSelectedMaxmHours] = useState<string | null>();
+  const [startTime, setStartTime] = useState<string | undefined>(
+    timeOptions[0]?.value,
+  );
 
-  // State for filtered dropdown lists
-  const [minmHourList, setMinmHourList] = useState<string[]>(hours);
-  const [maxmHourList, setMaxmHourList] = useState<string[]>(hours);
+  const [endTime, setEndTime] = useState<string | undefined>(
+    timeOptions[timeOptions.length - 1]?.value,
+  );
 
-  // Update dropdown lists when minmHours changes
-  useEffect(() => {
-    if (minmHours !== null) {
-      setMaxmHourList(() => [...hours.slice(Number(minmHours?.split(" ")[0]))]);
-    } else {
-      setMaxmHourList(hours);
-    }
-  }, [minmHours]);
+  const startTimeOptions = useMemo(
+    () =>
+      timeOptions.slice(
+        0,
+        timeOptions.findIndex((time) => time?.value === endTime),
+      ),
+    [endTime],
+  );
 
-  // Update dropdown lists when maxmHours changes
-  useEffect(() => {
-    if (maxmHours !== null) {
-      setMinmHourList([...hours.slice(0, Number(maxmHours?.split(" ")[0]))]);
-    } else {
-      setMinmHourList(hours);
-    }
-  }, [maxmHours]);
+  const endTimeOptions = useMemo(
+    () =>
+      timeOptions.slice(
+        timeOptions.findIndex((time) => time?.value === startTime) + 1,
+      ),
+    [startTime],
+  );
 
-  console.log(new Array<null>(16).fill(null).map((_, i) => ({
-    content: `${((i + 7) % 12) + 1} ${i > 4 ? "AM" : "PM"}`,
-    value: `${((i + 7) % 12) + 1} ${i > 4 ? "AM" : "PM"}`,
-  })))
+  const [minCreditHours, setMinCreditHours] = useState<number>(12);
+  const [maxCreditHours, setMaxCreditHours] = useState<number>(18);
 
   return (
-    <section className="flex flex-col border-4 border-dusty-pink bg-barely-pink p-2">
-      <h1 className="m-4 text-center text-lg font-extrabold sm:m-2 sm:ml-8 sm:mt-8 sm:w-full sm:text-left sm:text-2xl sm:font-extrabold">
+    <section className="flex flex-col gap-6 border-4 border-dusty-pink bg-barely-pink px-4 py-6 sm:gap-9 sm:px-8 sm:py-9">
+      <h1 className="w-full text-center text-xl font-bold sm:text-2xl lg:text-left">
         Filters
-      </h1>{" "}
-      <fieldset className="sm:flex sm:flex-row sm:justify-around sm:px-8 sm:py-4">
-        {" "}
-        {/* Div for filters */}
-        <div className="grid grid-cols-3 grid-rows-3">
-          <label>
-            <span className="font-bold">Start Time</span>
-            <Combobox
-              options={new Array<null>(16).fill(null).map((_, i) => ({
-                content: `${((i + 7) % 12) + 1} ${i > 4 ? "AM" : "PM"}`,
-                value: `${((i + 7) % 12) + 1} ${i > 4 ? "AM" : "PM"}`,
-              }))}
-            />
-          </label>
+      </h1>
 
-          {/* Walking Distance Checkbox */}
-          <div className="flex items-center">
+      <fieldset className="grid grid-cols-[1fr_2fr] gap-x-3 gap-y-4 text-right text-sm sm:grid-cols-[repeat(2,1fr_2fr)] sm:gap-y-6 md:text-base lg:grid-flow-col lg:grid-cols-[repeat(3,1fr_2fr)] lg:grid-rows-3">
+        <label className="col-span-2 grid grid-cols-subgrid items-center">
+          <span className="pl-3 text-right font-bold">Start Time</span>
+          <Combobox
+            defaultValue={startTime}
+            name="prefStartTime"
+            onChange={setStartTime}
+            options={startTimeOptions}
+            preserveOrdering
+            required
+            searchPlaceholder="Search Start Times"
+            selectPlaceholder="Select a Start Time"
+          />
+        </label>
+
+        <label className="col-span-2 grid grid-cols-subgrid items-center">
+          <span className="pl-3 text-right font-bold">End Time</span>
+          <Combobox
+            defaultValue={endTime}
+            name="prefEndTime"
+            onChange={setEndTime}
+            options={endTimeOptions}
+            preserveOrdering
+            required
+            searchPlaceholder="Search End Times"
+            selectPlaceholder="Select an End Time"
+          />
+        </label>
+
+        <div className="contents grid-cols-subgrid items-center lg:col-span-2 lg:grid">
+          <label className="col-span-full flex items-center justify-center gap-4 border-b-2 border-pebble-gray/40 pb-4 text-neutral-700 hover:text-black sm:pb-6 lg:col-start-2 lg:justify-start lg:border-none lg:pb-0">
             <input
+              className="form-checkbox size-6 rounded-md border-2 border-limestone text-bulldog-red hover:border-pebble-gray focus:ring-bulldog-red"
+              name="walking"
               type="checkbox"
-              name="walkingDistance"
-              className="h-5 w-5 rounded-full accent-red-700"
             />
-          </div>
-          <div className="text-right">
-            {" "}
-            {/* Course Status Label */}
-            <label htmlFor="open" className="text-right font-extrabold">
-              Course Status:
-            </label>
-          </div>
-          <div className="flex flex-col space-y-5">
-            <div className="font-bold sm:flex sm:items-center sm:space-x-3">
-              <input
-                title="open"
-                type="checkbox"
-                id="open"
-                name="open"
-                className="h-5 w-5 cursor-pointer rounded-full accent-red-700 peer-checked:opacity-100"
-              ></input>
-              <label htmlFor="open" className="text-black-700 m-1">
-                Open
-              </label>
-            </div>
+            <span className="text-balance text-left leading-tight">
+              Walking Distance Between Classes
+            </span>
+          </label>
+        </div>
 
-            <div className="font-bold sm:flex sm:items-center sm:space-x-3">
-              <input
-                title="waitlist"
-                type="checkbox"
-                id="waitlist"
-                name="waitlist"
-                className="h-5 w-5 cursor-pointer rounded-full accent-red-700 peer-checked:opacity-100"
-              ></input>
-              <label htmlFor="sm:waitlist" className="sm:text-black-700 m-1">
-                Waitlist
-              </label>
-            </div>
+        <label className="col-span-2 grid grid-cols-subgrid items-center">
+          <span className="pl-3 text-right font-bold">Term</span>
+          <Combobox
+            name="term"
+            options={termOptions}
+            preserveOrdering
+            required
+            searchPlaceholder="Search Open Terms"
+            selectPlaceholder="Select a Term"
+          />
+        </label>
 
-            <div className="font-bold sm:flex sm:items-center sm:space-x-3">
-              <input
-                title="closed"
-                type="checkbox"
-                id="closed"
-                name="closed"
-                className="h-5 w-5 cursor-pointer rounded-full accent-red-700 peer-checked:opacity-100"
-              ></input>
-              <label htmlFor="closed" className="sm:text-black-700 m-1">
-                Closed
-              </label>
-            </div>
-          </div>
+        <label className="col-span-2 grid grid-cols-subgrid items-center">
+          <span className="pl-3 text-right font-bold">Campus</span>
+          <Combobox
+            name="inputCampus"
+            options={campusOptions}
+            required
+            searchPlaceholder="Search Campuses"
+            selectPlaceholder="Select a Campus"
+          />
+        </label>
+
+        <div className="contents grid-cols-subgrid items-center lg:col-span-2 lg:grid">
+          <label className="col-span-full flex items-center justify-center gap-4 border-b-2 border-pebble-gray/40 pb-4 text-neutral-700 hover:text-black sm:pb-6 lg:col-start-2 lg:justify-start lg:border-none lg:pb-0">
+            <input
+              className="form-checkbox size-6 rounded-md border-2 border-limestone text-bulldog-red hover:border-pebble-gray focus:ring-bulldog-red"
+              name="showFilledClasses"
+              type="checkbox"
+            />
+            <span className="text-balance text-left leading-tight">
+              Include Waitlisted Course Sections
+            </span>
+          </label>
         </div>
-        <div className="m-4 grid grid-cols-2 gap-4 sm:flex">
-          {" "}
-          {/* Div For Column 3 */}
-          <div className="grid grid-rows-3 gap-4">
-            {" "}
-            {/* Div For Labels */}
-            <label className="text-right font-extrabold">Term:</label>
-            <label className="text-right font-extrabold">Instruction:</label>
-            <label className="text-right font-extrabold">Campus:</label>
-          </div>
-          <div className="grid max-w-56 grid-rows-3 gap-4">
-            {" "}
-            {/* Div For Dropdowns */}
-            <DropdownSearchInput items={termList} placeholder="Enter Term" />
-            <DropdownTagInput
-              items={instructionlist}
-              placeholder="Enter Instruction"
-            />
-            <DropdownSearchInput
-              items={campusList}
-              placeholder="Enter Campus"
-            />
-          </div>
-        </div>
-        <div className="m-4 grid grid-cols-2 gap-4 sm:flex">
-          {" "}
-          {/* Div For Column 4 in Filters*/}
-          <div className="grid grid-rows-3 gap-4">
-            {" "}
-            {/* Div For Labels */}
-            <label className="text-right font-extrabold">Levels:</label>
-            <label className="text-right font-extrabold">
-              Min Credit Hours:
-            </label>
-            <label className="text-right font-extrabold">
-              Max Credit Hours:
-            </label>
-          </div>
-          <div className="grid max-w-56 grid-rows-3 gap-4">
-            {" "}
-            {/* Div For Dropdowns */}
-            <DropdownSearchInput
-              items={educationLevelList}
-              placeholder="Enter Level"
-            />
-            <DropdownSearchInput
-              items={minmHourList}
-              placeholder="Enter Min Credit Hours"
-              selectedItem={minmHours ?? undefined}
-              onSelect={(value) => setSelectedMinmHours(value)}
-            />
-            <DropdownSearchInput
-              key={maxmHourList.length}
-              items={maxmHourList}
-              placeholder="Enter Max Credit Hours"
-              selectedItem={maxmHours ?? undefined}
-              onSelect={(value) => setSelectedMaxmHours(value)}
-            />
-          </div>
-        </div>
+
+        <label className="col-span-2 grid grid-cols-subgrid items-center">
+          <span className="pl-3 text-right font-bold">Min Credit Hours</span>
+          <input
+            className="flex w-full items-center gap-6 rounded-md border-2 border-limestone bg-white px-3 py-1.5 transition-[box-shadow,border-color] disabled:cursor-not-allowed disabled:opacity-60 [&:not(:disabled):hover]:border-pebble-gray [&:not(:disabled):hover]:shadow-sm"
+            min={1}
+            max={maxCreditHours - 1}
+            name="minCreditHours"
+            onChange={(e) => setMinCreditHours(parseInt(e.currentTarget.value))}
+            required
+            type="number"
+            value={minCreditHours}
+          />
+        </label>
+
+        <label className="col-span-2 grid grid-cols-subgrid items-center">
+          <span className="pl-3 text-right font-bold">Max Credit Hours</span>
+          <input
+            className="flex w-full items-center gap-6 rounded-md border-2 border-limestone bg-white px-3 py-1.5 transition-[box-shadow,border-color] disabled:cursor-not-allowed disabled:opacity-60 [&:not(:disabled):hover]:border-pebble-gray [&:not(:disabled):hover]:shadow-sm"
+            min={minCreditHours + 1}
+            max={18}
+            name="maxCreditHours"
+            onChange={(e) => setMaxCreditHours(parseInt(e.currentTarget.value))}
+            required
+            type="number"
+            value={maxCreditHours}
+          />
+        </label>
       </fieldset>
     </section>
   );

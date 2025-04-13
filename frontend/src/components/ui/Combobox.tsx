@@ -53,6 +53,10 @@ interface Props {
    */
   required?: boolean;
   /**
+   * Disable automatic lexicographic sorting of options
+   */
+  preserveOrdering?: boolean;
+  /**
    * The placeholder text displayed when no item is selected.
    */
   selectPlaceholder?: string;
@@ -79,6 +83,7 @@ export default function Combobox({
   name,
   onChange,
   options,
+  preserveOrdering,
   required,
   searchPlaceholder,
   selectPlaceholder,
@@ -109,8 +114,16 @@ export default function Combobox({
   );
 
   const filteredOptions = useMemo(
-    () => (options ? matchSorter(options, filter, { keys: ["content"] }) : []),
-    [options, filter],
+    () =>
+      options
+        ? matchSorter(options, filter, {
+            ...(preserveOrdering
+              ? { baseSort: (a, b) => (a.index < b.index ? -1 : 1) }
+              : {}),
+            keys: ["content"],
+          })
+        : [],
+    [options, filter, preserveOrdering],
   );
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
