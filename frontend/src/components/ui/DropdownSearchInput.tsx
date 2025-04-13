@@ -24,7 +24,7 @@ export const DropdownSearchInput = ({
   clearState,
   selectedItem,
   onSelect,
-  labelText
+  labelText,
 }: searchFilterProps) => {
   const dropdownRef = useRef<HTMLUListElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -96,18 +96,18 @@ export const DropdownSearchInput = ({
     <div className={`relative w-full min-w-32`}>
       <label className="flex flex-col gap-0.5">
         {labelText && <span className="font-bold">{labelText}</span>}
-      <input
-        name={name}
-        value={query}
-        type={type}
-        min={0}
-        onChange={handleQuery}
-        onClick={() => setIsOpen((prev) => !prev)}
-        placeholder={placeholder}
-        className={`w-full rounded-md border-2 p-2 outline-none hover:border-pebble-gray ${className}`}
-        autoComplete="off"
-        onKeyDown={handleKeyPress}
-      />
+        <input
+          name={name}
+          value={query}
+          type={type}
+          min={0}
+          onChange={handleQuery}
+          onClick={() => setIsOpen((prev) => !prev)}
+          placeholder={placeholder}
+          className={`w-full rounded-md border-2 p-2 outline-none hover:border-pebble-gray ${className}`}
+          autoComplete="off"
+          onKeyDown={handleKeyPress}
+        />
       </label>
       {/* DROPDOWN MENU */}
       {isOpen && filteredData.length !== 0 && (

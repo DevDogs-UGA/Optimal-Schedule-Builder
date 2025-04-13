@@ -24,7 +24,7 @@ export default function Page({ searchParams }: Props) {
         <CourseDisplay searchParams={searchParams} />
         <Filters />
         <section className="flex justify-center">
-          <button className="flex items-center gap-2 sm:gap-3 self-end rounded-md border-2 border-red-800 bg-bulldog-red px-6 sm:px-8 py-2 sm:py-2.5 font-medium text-white transition-[background-color,border-color,box-shadow] disabled:cursor-not-allowed disabled:opacity-60 [&:not(:disabled)]:hover:border-red-950 [&:not(:disabled)]:hover:bg-red-800 [&:not(:disabled)]:hover:shadow-md sm:text-lg">
+          <button className="flex items-center gap-2 self-end rounded-md border-2 border-red-800 bg-bulldog-red px-6 py-2 font-medium text-white transition-[background-color,border-color,box-shadow] disabled:cursor-not-allowed disabled:opacity-60 sm:gap-3 sm:px-8 sm:py-2.5 sm:text-lg [&:not(:disabled)]:hover:border-red-950 [&:not(:disabled)]:hover:bg-red-800 [&:not(:disabled)]:hover:shadow-md">
             <PiSparkleBold />
             Generate Schedule
           </button>
