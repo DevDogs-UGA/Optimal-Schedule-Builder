@@ -161,7 +161,8 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
       // convert 24-hour to am/pm
       const ampm = hour > 12 ? hour - 12 : hour;
       const period = hour >= 12 ? "PM" : "AM";
-      const timeString = `${ampm}:00 ${period}`;
+      const ampmString = `${ampm}`;
+      const periodString = `${period}`;
       sections.push(
         <div
           key={hour}
@@ -173,7 +174,9 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
           }}
         >
           <span className="absolute left-0 px-4 text-sm text-gray-500">
-            {timeString}
+            <div>
+              <span className="font-bold">{ampm}</span> {period}
+            </div>
           </span>
         </div>,
       );
