@@ -21,8 +21,6 @@ export function TimeDistanceFilter() {
   const [endTime, setEndTime] = useState<string>("");
   // Stores the valid end times based on selected start time
   const [availableEndTimes, setAvailableEndTimes] = useState<string[]>([]);
-  // Tracks walking distance checkbox state
-  const [isWalkingDistance, setIsWalkingDistance] = useState(false);
 
   const allTimeSlots = createTimeSlots();
 
@@ -47,50 +45,27 @@ export function TimeDistanceFilter() {
   };
 
   return (
-    // Main container with 2 columns
-    <div className="grid max-w-80 grid-cols-2 gap-4">
-      {/* Left column: Labels */}
-      <div className="grid grid-rows-3 gap-4">
-        <label className="text-right font-extrabold">Start Time:</label>
-        <label className="text-right font-extrabold">End Time:</label>
-        <label className="text-right font-extrabold">
-          Walking Distance Between Classes:
-        </label>
-      </div>
+    <div className="contents">
+      {/* Start Time Dropdown */}
+      <DropdownSearchInput
+        labelText="Start Time"
+        items={allTimeSlots} // All possible time slots
+        placeholder="Start Time"
+        className="border-pebble-gray"
+        onSelect={handleStartTimeSelect}
+        selectedItem={startTime}
+      />
 
-      {/* Right column: Input fields */}
-      <div className="grid grid-rows-3 gap-4">
-        {/* Start Time Dropdown */}
-        <DropdownSearchInput
-          items={allTimeSlots} // All possible time slots
-          placeholder="Start Time"
-          className="border-pebble-gray"
-          onSelect={handleStartTimeSelect}
-          selectedItem={startTime}
-        />
-
-        {/* End Time Dropdown */}
-        <DropdownSearchInput
-          key={startTime} // Forces component refresh when start time changes
-          items={availableEndTimes} // Only shows valid end times
-          placeholder={startTime ? "End Time" : "Select Start Time"}
-          className="border-pebble-gray"
-          onSelect={(value) => setEndTime(value)}
-          selectedItem={endTime}
-        />
-
-        {/* Walking Distance Checkbox */}
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="walkingDistance"
-            title="Walking Distance Between Classes"
-            checked={isWalkingDistance}
-            onChange={(e) => setIsWalkingDistance(e.target.checked)}
-            className="h-5 w-5 cursor-pointer rounded-full accent-red-700"
-          />
-        </div>
-      </div>
+      {/* End Time Dropdown */}
+      <DropdownSearchInput
+        labelText="End Time"
+        key={startTime} // Forces component refresh when start time changes
+        items={availableEndTimes} // Only shows valid end times
+        placeholder={startTime ? "End Time" : "Select Start Time"}
+        className="border-pebble-gray"
+        onSelect={(value) => setEndTime(value)}
+        selectedItem={endTime}
+      />
     </div>
   );
 }
