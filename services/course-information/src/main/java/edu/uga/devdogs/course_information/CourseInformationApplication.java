@@ -138,7 +138,7 @@ public class CourseInformationApplication {
             Set<Integer> processedCrns = new HashSet<>();
 
             for (Course2 course : courses) {
-                if (course.getClassSize() == 0 || course.getCrn() == 0 || processedCrns.contains(course.getCrn())) {
+                if (course.getCrn() == 0 || processedCrns.contains(course.getCrn())) {
                     continue; // Skip invalid or duplicate CRNs
                 }
 

@@ -248,6 +248,8 @@ public class CourseSection implements Serializable {
         this.startTime = start;
         this.endTime = end;
         this.daysOfTheWeek = course.getMeetingDays();
+        this.seatsAvailable = course.getAvailableSeats();
+        this.classSize = course.getClassSize();
     }
 
     
