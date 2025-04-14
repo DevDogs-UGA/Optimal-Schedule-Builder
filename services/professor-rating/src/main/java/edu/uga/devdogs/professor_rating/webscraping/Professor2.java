@@ -4,7 +4,7 @@ package edu.uga.devdogs.professor_rating.webscraping;
  * @author Yuval Deshe
  * Represents an entry for a professor on the RateMyProfessors website.
  */
-public class Professor {
+public class Professor2 {
     private String name; // The name of the professor.
     private double quality; // The overall quality of the professor.
     private double wouldTakeAgainPercent; // The percentage of students who would take 
@@ -24,7 +24,7 @@ public class Professor {
     /**
      * Constructs a {@code Professor} object.
      */
-    public Professor() {
+    public Professor2() {
         name = "";
         quality = 0;
         wouldTakeAgainPercent = 0;
@@ -58,7 +58,7 @@ public class Professor {
      * @param tags The tags associated with the professor.
      * @param department The department this professor works in.
      */
-    public Professor(String name, double quality, double wouldTakeAgainPercent, double difficultyRating,
+    public Professor2(String name, double quality, double wouldTakeAgainPercent, double difficultyRating,
                      int numOneStar, int numTwoStar, int numThreeStar, int numFourStar, 
                      int numFiveStar, int numRatings, String[] tags, String department) {
         this.name = name;
@@ -94,7 +94,7 @@ public class Professor {
      * @param tags The tags associated with the professor.
      * @param department The department this professor works in.
      */
-    public Professor(String name, double quality, double wouldTakeAgainPercent, double difficultyRating,
+    public Professor2(String name, double quality, double wouldTakeAgainPercent, double difficultyRating,
                      int numOneStar, int numTwoStar, int numThreeStar, int numFourStar, 
                      int numFiveStar, int[] ratingDistribution, int numRatings, String[] tags, 
                      String department) {

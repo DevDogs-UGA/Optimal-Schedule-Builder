@@ -48,7 +48,7 @@ export function Navbar({ keyword = "default" }) {
           {/* Logo and Title */}
           <Link
             href="/"
-            className="tems-center flex gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
+            className="flex items-center gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
           >
             <Image
               className="block fill-current invert"
@@ -67,7 +67,7 @@ export function Navbar({ keyword = "default" }) {
             <li className="contents">
               <Link
                 className="px-6 py-3 text-center text-white transition hover:text-[#e4212b] sm:rounded-lg sm:py-1 md:px-4"
-                href="/my-plans"
+                href="/plans"
               >
                 My Plans
               </Link>
@@ -96,7 +96,7 @@ export function Navbar({ keyword = "default" }) {
 
             <Link
               className="px-2 py-3 text-center text-white transition hover:text-[#e4212b] sm:hidden sm:rounded-lg sm:py-1 md:px-4"
-              href="/my-plans"
+              href="/plans"
             >
               My Plans
             </Link>
@@ -112,7 +112,7 @@ export function Navbar({ keyword = "default" }) {
           {/* Logo and Title */}
           <Link
             href="/"
-            className="tems-center flex gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
+            className="flex items-center gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
           >
             <Image
               className="block fill-current invert"

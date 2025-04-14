@@ -1,24 +1,32 @@
 package edu.uga.devdogs.course_information.webscraping;
 
+
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+// Removed incorrect import for jakarta.xml.bind.Element
+
 import java.time.Duration;
 
-public class DescriptionScraper {
-    public static String getCourseDescription(String coursePrefix, String courseSuffix) {
-        FirefoxOptions options = new FirefoxOptions();
-        options.addArguments("--headless");
-        WebDriver driver = new FirefoxDriver(options);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+public class DescriptionScraper {
+    private final WebDriver driver;
+    private final WebDriverWait wait;
+
+    public DescriptionScraper(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(12));
+    }
+
+    public String getCourseDescription(String coursePrefix, String courseSuffix) {
         try {
             driver.get("https://bulletin.uga.edu/coursesHome");
 
@@ -28,12 +36,9 @@ public class DescriptionScraper {
 
             prefixEntry.sendKeys(coursePrefix);
             suffixEntry.sendKeys(courseSuffix);
-            System.out.println("Entered Prefix: " + coursePrefix);
-            System.out.println("Entered Suffix: " + courseSuffix);
 
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
 
-            // Wait for course results instead of relying on URL change
             wait.until(ExpectedConditions.presenceOfElementLocated(By.id("lblCourseResultText")));
             Document document = Jsoup.parse(driver.getPageSource());
 
@@ -55,16 +60,8 @@ public class DescriptionScraper {
             }
             return "Description not found";
         } catch (Exception e) {
-            System.err.println("Error fetching course description: " + e.getMessage());
+            System.err.println("Error fetching course description (" + coursePrefix + " " + courseSuffix + "): " + e.getMessage());
             return "Error retrieving description";
-        } finally {
-            driver.quit();
         }
     }
-
-    public static void main(String[] args) {
-        String description = getCourseDescription("AAEC", "2580");
-        System.out.println(description);
-    }
 }
- 

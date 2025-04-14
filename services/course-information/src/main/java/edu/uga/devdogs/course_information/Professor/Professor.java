@@ -6,11 +6,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import edu.uga.devdogs.course_information.Class.ClassEntity;
+
+
 
 @Entity
 public class Professor implements Serializable {
@@ -25,23 +32,28 @@ public class Professor implements Serializable {
     private float averageRating = 0.0f;
     private float difficultyRating = 0.0f;
     private int wouldTakeAgainRating;
+    private String department;
 
-    @OneToMany(mappedBy = "professor",
-    fetch = FetchType.LAZY
-    )
+
+    @OneToMany(mappedBy = "professor", fetch = FetchType.LAZY)
+    @JsonManagedReference("professor-classes")
     private List<ClassEntity> classes;
 
+
     // Default constructor
-    public Professor() {}
+    public Professor() {
+
+    }
 
     // Constructor without ID
-    public Professor(String firstName, String lastName, int totalReviews, float averageRating, float difficultyRating, int wouldTakeAgainRating) {
+    public Professor(String firstName, String lastName, int totalReviews, float rating, float difficultyRating, int wouldTakeAgainRating, String department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.totalReviews = totalReviews;
-        this.averageRating = averageRating;
+        this.averageRating = rating;
         this.difficultyRating = difficultyRating;
         this.wouldTakeAgainRating = wouldTakeAgainRating;
+        this.department = department;
     }
 
     // Constructor with ID
@@ -62,6 +74,14 @@ public class Professor implements Serializable {
     }
 public void setProfessorId(int professorId) {
         this.professorId = professorId;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public String getFirstName() {

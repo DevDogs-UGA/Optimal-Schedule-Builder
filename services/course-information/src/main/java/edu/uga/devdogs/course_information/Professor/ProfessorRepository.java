@@ -13,4 +13,7 @@ public interface ProfessorRepository extends JpaRepository<Professor, Integer> {
     Professor findByLastName(String lastName);
 
     Professor findByLastNameAndFirstNameIgnoreCase(String lastName, String firstName);
+
+    Professor findByLastNameAndDepartment(String lastName, String department);
+    
 }

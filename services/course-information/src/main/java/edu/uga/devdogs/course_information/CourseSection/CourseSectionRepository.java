@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public interface CourseSectionRepository extends JpaRepository<CourseSection, Long> {
@@ -17,11 +18,12 @@ public interface CourseSectionRepository extends JpaRepository<CourseSection, Lo
     List<CourseSection> findAllByInstructor(String instructor);
 
     // Get a list of course sections that match the time range
-    //@Query("SELECT cs FROM CourseSection cs JOIN cs.classEntity c WHERE c.startTime <= :time AND c.endTime >= :time")
-    //List<CourseSection> findAllCourseSectionsByTime(@Param("time") String time);
+    //@Query("SELECT cs FROM CourseSection cs JOIN cs.classEntity c WHERE c.startTime >= :startTime AND c.endTime <= :endTime")
+    List<CourseSection> findByStartTimeGreaterThanEqualAndEndTimeLessThanEqual(LocalTime start, LocalTime end);
 
     List<Course> findAllCourseSectionsByCreditHours(int creditHours);
 
     // Find a course section by its CRN
     CourseSection findByCrn(Integer crn);
+
 }

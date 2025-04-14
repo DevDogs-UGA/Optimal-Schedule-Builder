@@ -191,6 +191,8 @@ function CourseInfo({
   // To test with dummy data, replace "0" with a number of reviewings in the following line
   const numProfessorData: number | undefined = numProfessorQuery.data ?? 0;
   const isNumZero = numProfessorData === 0;
+  const defaultPrereq = prereq && prereq.trim() !== "" ? prereq : "None";
+  const defaultCorereq = coreq && coreq.trim() !== "" ? coreq : "None";
 
   return (
     <div
@@ -244,11 +246,11 @@ function CourseInfo({
             <br></br>
             <p>
               {" "}
-              <b>Prerequisites:</b> {prereq}{" "}
+              <b>Prerequisites:</b> {defaultPrereq}{" "}
             </p>
             <p>
               {" "}
-              <b>Corequisites:</b> {coreq}{" "}
+              <b>Corequisites:</b> {defaultCorereq}{" "}
             </p>{" "}
             <br></br>
             <p> {description} </p>
@@ -385,7 +387,10 @@ export default function DayClass({
   timeEnd = timeEnd.toUpperCase();
 
   return (
-    <div className={`relative ${className}`} onClick={courseBlockInfo}>
+    <div
+      className={`relative ${className} flex justify-end`}
+      onClick={courseBlockInfo}
+    >
       <div
         className="absolute inset-0 border-r-2 bg-gray-100"
         style={{
@@ -396,7 +401,7 @@ export default function DayClass({
       ></div>
 
       <div
-        className={`w-full rounded-lg p-4 transition duration-150 ease-in-out hover:bg-black ${bgColor} flex items-center justify-between`}
+        className={`w-4/6 rounded-lg p-4 transition duration-150 ease-in-out hover:bg-black ${bgColor} flex items-center justify-between`}
         style={{
           position: "absolute",
           top: startPosition, //timeDifference ? `${timeDifference * 0.9}px` : "0px",
@@ -404,7 +409,7 @@ export default function DayClass({
         }}
       >
         <div>
-          <h2 className="text-xl font-bold text-white">{classTitle}</h2>
+          <h2 className="font-bold text-white">{classTitle}</h2>
           {/* Uncomment following line to show location */}
           {/* {locationShort && (
             <p className="text-sm text-white/90">{locationShort}</p>

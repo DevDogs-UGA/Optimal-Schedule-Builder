@@ -10,11 +10,16 @@ import jakarta.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /*
  * Java JPA entity representation for Building
  */
+
 @Entity
 public class Building implements Serializable {
     
@@ -23,24 +28,25 @@ public class Building implements Serializable {
      */
 
     @Id
-    @JsonProperty("Building Code")
-    private long buildingCode;  // Building Code
+    @JsonAlias("Building Code")
+    private String buildingCode;  // Building Code
 
-    @JsonProperty("Name")
-    private String name;         // Name of the building
-
-    @JsonProperty("Address")
-    private String address;      // Address of the building
+    @JsonAlias("Name")
+    private String name;
     
-    @JsonProperty("Latitude")
-    private double latitude;     // Latitude coordinate
+    @JsonAlias("Address")
+    private String address;
     
-    @JsonProperty("Longitude")
-    private double longitude;    // Longitude coordinate
+    @JsonAlias("Latitude")
+    private double latitude;
+    
+    @JsonAlias("Longitude")
+    private double longitude;
 
     /*
      * Relationships
      */
+    @JsonManagedReference("building-classes")
     @OneToMany(mappedBy = "building")
     private List<ClassEntity> classes;
 
@@ -52,7 +58,7 @@ public class Building implements Serializable {
     public Building() {}
 
     // Constructor with parameters
-    public Building(long buildingCode, String name, String address, double latitude, double longitude) {
+    public Building(String buildingCode, String name, String address, double latitude, double longitude) {
         this.buildingCode = buildingCode;
         this.name = name;
         this.address = address;
@@ -63,11 +69,11 @@ public class Building implements Serializable {
     /*
      * Getters and Setters
      */
-    public long getBuildingCode() {
+    public String getBuildingCode() {
         return buildingCode;
     }
 
-    public void setBuildingCode(long buildingCode) {
+    public void setBuildingCode(String buildingCode) {
         this.buildingCode = buildingCode;
     }
 

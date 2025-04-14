@@ -1,77 +1,78 @@
 "use client";
-import { type WeekSchedule as WeekScheduleType } from "@/types/scheduleTypes";
-import { /*PiNotePencil,*/ PiArrowsOut, PiTrash } from "react-icons/pi";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+
+import { type SavedPlan } from "@/schemas/localStorage";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
+import { PiHeartBold, PiHeartFill, PiTrashBold } from "react-icons/pi";
 
 interface PlanDisplayProps {
-  index?: number;
-  plan: WeekScheduleType;
-  planTitle: string;
-  pinned: boolean;
+  plan: SavedPlan;
   onPin: () => void;
   onDelete: () => void;
 }
 
 // Saved Plan Component.
 // Contains each "banner" and action buttons for each of the user's saved plans.
-export default function SavedPlan({
-  plan,
-  planTitle,
-  pinned,
-  onPin,
-  onDelete,
-}: PlanDisplayProps) {
+export default function SavedPlan({ plan, onPin, onDelete }: PlanDisplayProps) {
+  const router = useRouter();
+
+  const goToPlan = useCallback(() => {
+    router.push(`/plans/${plan.id}`);
+  }, [router, plan]);
+
+  const handlePin = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onPin();
+    },
+    [onPin],
+  );
+
+  const handleDelete = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onDelete();
+    },
+    [onDelete],
+  );
+
   return (
-    <div className="relative">
-      <div className="m-5 flex h-24 w-[70vw] flex-row items-center rounded-xl bg-glory-glory-red"></div>
-      {/* Saved plan container */}
-      <div className="absolute top-0 z-10 m-5 flex h-20 w-[70vw] flex-row items-center rounded-xl border-2 border-black bg-white">
-        {/* Paw icon */}
-        <Image
-          src="/images/blackpaw.svg"
-          width={50}
-          height={50}
-          className="m-4"
-          alt="black paw"
+    <div
+      className="relative z-10 flex w-[70vw] cursor-pointer flex-row items-center gap-4 rounded-xl border-b-8 border-neutral-400 bg-white px-7 py-4 ring-2 ring-black hover:mt-1 hover:border-b-4 hover:border-neutral-500 hover:bg-neutral-100 [&:active:not(:has(input:hover,button:hover))]:border-b-0 [&:active:not(:has(input:hover,button:hover))]:border-t-4"
+      onClick={goToPlan}
+      role="link"
+    >
+      {/* Paw icon */}
+      <Image
+        src="/images/blackpaw.svg"
+        width={64}
+        height={64}
+        className="size-8"
+        alt="black paw"
+      />
+
+      {/* Plan title */}
+      <h2 className="flex-1 text-2xl font-bold text-black">{plan.title}</h2>
+
+      {/* Pin button (gives a saved plan priority over others*/}
+      <button type="button" className="cursor-default" onClick={handlePin}>
+        {plan.pinned ? (
+          <PiHeartFill className="size-8 text-glory-glory-red transition" />
+        ) : (
+          <PiHeartBold className="m-0.5 size-7 transition-[color,width,height,margin] hover:m-0 hover:size-8 hover:text-glory-glory-red" />
+        )}
+      </button>
+
+      <button
+        type="button"
+        className="cursor-default rounded-md p-0.5 transition-colors hover:bg-glory-glory-red/15"
+      >
+        <PiTrashBold
+          className="size-7 text-glory-glory-red"
+          onClick={handleDelete}
         />
-        {/* Plan title */}
-        <h1 className="text-4xl">{planTitle}</h1>
-        {/* Buttons container */}
-        <div className="ml-auto flex items-center justify-end">
-          {/* Pin button (gives a saved plan priority over others*/}
-          <div onClick={onPin}>
-            {pinned ? (
-              <FaHeart
-                size={50}
-                className="m-2 fill-glory-glory-red transition"
-              />
-            ) : (
-              <FaRegHeart
-                size={50}
-                className="m-2 transition hover:fill-glory-glory-red"
-              />
-            )}
-          </div>
-          {/* Open button (redirects to the schedules page with the schedule data)*/}
-          <Link
-            href={`/schedules?title=${encodeURIComponent(planTitle)}
-            &pinned=${encodeURIComponent(JSON.stringify(pinned))}
-            &data=${encodeURIComponent(JSON.stringify(plan))}`}
-          >
-            <PiArrowsOut
-              size={60}
-              className="m-2 fill-black transition hover:fill-glory-glory-red"
-            />
-          </Link>
-          <PiTrash
-            size={60}
-            className="m-2 hover:fill-glory-glory-red"
-            onClick={onDelete}
-          />
-        </div>
-      </div>
+      </button>
     </div>
   );
 }
