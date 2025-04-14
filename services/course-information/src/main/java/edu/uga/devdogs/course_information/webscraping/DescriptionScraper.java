@@ -23,7 +23,7 @@ public class DescriptionScraper {
 
     public DescriptionScraper(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(12));
     }
 
     public String getCourseDescription(String coursePrefix, String courseSuffix) {
