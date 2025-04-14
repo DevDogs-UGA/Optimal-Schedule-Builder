@@ -43,13 +43,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class CourseInformationApplication {
 
     private final CourseRepository courseRepository;
-
     private final BuildingRepository buildingRepository;
-
     private final ProfessorRepository professorRepository;
 
     @Value("${update.buildings}")
     private boolean updateBuildings;
+
+    @Value("${pdf.input.dir}")
+    private String inputDirectory;
 
     CourseInformationApplication(BuildingRepository buildingRepository, CourseRepository courseRepository, ProfessorRepository professorRepository) {
         this.courseRepository = courseRepository;
@@ -61,23 +62,34 @@ public class CourseInformationApplication {
         SpringApplication.run(CourseInformationApplication.class, args);
     }
 
+    // Helper function to check if the application is running from a JAR
+    private boolean isRunningFromJar() {
+        String classPath = System.getProperty("java.class.path");
+        return classPath.contains(".jar");
+    }
+
     @Bean
     @Order(1)
     CommandLineRunner buildingCommandLineRunner(BuildingRepository buildingRepository) {
         return args -> {
-
-
             if (!updateBuildings) {
                 System.out.println("Skipping building data update as per configuration.");
                 return;
             }
-            
-            String buildingsJsonPath = "buildingData/AthensBuildingData.json";
+
+            String buildingsJsonPath;
+            if (isRunningFromJar()) {
+                buildingsJsonPath = "BOOT-INF/classes/buildingData/AthensBuildingData.json";
+            } else {
+                buildingsJsonPath = "buildingData/AthensBuildingData.json"; // Update this path to the local one
+            }
+
             ClassPathResource resource = new ClassPathResource(buildingsJsonPath);
             if (!resource.exists()) {
                 System.err.println("File not found at path: " + buildingsJsonPath);
                 return;
             }
+
             try (InputStream inputStream = resource.getInputStream()) {
                 System.out.println("Reading buildings.json...");
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -117,34 +129,26 @@ public class CourseInformationApplication {
             WebDriver driver = new FirefoxDriver(options);
             DescriptionScraper scraper = new DescriptionScraper(driver);
 
-            List<Course2> courses = Pdf.parsePdf("spring", "C:\\kadestyron\\d\\Desktop");
+            List<Course2> courses = Pdf.parsePdf("spring", inputDirectory);
 
             List<Course> courseEntities = new ArrayList<>();
             List<ClassEntity> classEntities = new ArrayList<>();
-            // We'll use cascading from Course to CourseSection,
-            // so we won't call courseSectionRepository.saveAll() separately.
             Set<String> processedCourses = new HashSet<>();
             Map<String, Integer> professorIdCache = new HashMap<>();
             Set<Integer> processedCrns = new HashSet<>();
 
-
-            for (Course2 course : courses) {                
-    
+            for (Course2 course : courses) {
                 if (course.getClassSize() == 0 || course.getCrn() == 0 || processedCrns.contains(course.getCrn())) {
                     continue; // Skip invalid or duplicate CRNs
                 }
 
                 int crn = course.getCrn();
-                if (crn < 10000 || crn > 99999) 
-                {
+                if (crn < 10000 || crn > 99999) {
                     System.out.println("Skipping invalid CRN: " + crn);
                     continue;
                 }
 
                 processedCrns.add(crn);
-            
-
-
 
                 String courseKey = course.getSubject() + "-" + course.getCourseNumber();
                 if (processedCourses.contains(courseKey)) continue;
@@ -167,7 +171,7 @@ public class CourseInformationApplication {
                 LocalTime start = parseTime(startTime);
                 LocalTime end = parseTime(endTime);
 
-                // Look up or create Professor using cached value
+                // Lookup or create Professor using cached value
                 String professorLastName = course.getProfessor();
                 Professor existingProfessor = null;
                 if (professorLastName != null && !professorLastName.trim().isEmpty()) {
@@ -183,7 +187,7 @@ public class CourseInformationApplication {
                     }
                 }
 
-                // Lookup Course entity (use saveAndFlush to get a managed entity)
+                // Lookup Course entity
                 Course existingCourse = courseRepository.findBySubjectAndCourseNumber(course.getSubject(), course.getCourseNumber());
                 Course courseEntity;
                 if (existingCourse == null) {
@@ -207,14 +211,13 @@ public class CourseInformationApplication {
                 CourseSection courseSection = courseSectionRepository.findByCrn(course.getCrn());
                 if (courseSection == null) {
                     courseSection = new CourseSection();
-                    courseSection.setCrn(course.getCrn()); 
+                    courseSection.setCrn(course.getCrn());
                     courseEntity.getCourseSections().add(courseSection); // only add if new
                 }
                 
                 courseSection.updateFrom(course, start, end);
                 courseSection.setCreditHours(creditHours);
                 courseSection.setCourse(courseEntity);
-
                 courseSection = courseSectionRepository.saveAndFlush(courseSection);
 
                 // Lookup Building
@@ -233,18 +236,22 @@ public class CourseInformationApplication {
                 classEntities.add(classEntity);
             }
 
-            
-
             System.out.println("Saving to database...");
             // Now, because Course already cascades to CourseSections, we only need to save/update Courses and ClassEntities.
             courseRepository.saveAll(courseEntities);
+
+            courseRepository.flush();
+            courseSectionRepository.flush();
+
+
             System.out.println("Saved courses and course sections successfully.");
             classRepository.saveAll(classEntities);
+            classRepository.flush();
+
             driver.quit();
             System.out.println("Database updated successfully.");
         };
     }
-
 
     private LocalTime parseTime(String time) {
         try {
