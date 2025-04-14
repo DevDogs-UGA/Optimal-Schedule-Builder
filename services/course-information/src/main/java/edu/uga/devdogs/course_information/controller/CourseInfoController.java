@@ -372,12 +372,12 @@ public class CourseInfoController {
      * @param walking Whether to consider walking time between classes
      * @return returns a list of lists of integers representing recommended CRNs
      */
-    @Operation(summary = "get section by crn", description = "Returns a list of recommended CRNS based on input parameters.")
+    @Operation(summary = "get recommended schedules", description = "Returns a list of recommended CRNS based on input parameters.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sections found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/section-by-crn")
+    @GetMapping("/get-recommended-schedules")
     @Tag(name="course-information")
     public ResponseEntity<List<List<Integer>>> getRecommendedSchedules(List<Integer> inputCourseCrns, String gapDay, int prefStartTime, int prefEndTime, boolean showFilledClasses,
     List<Integer> excludedCourseCrns, List<Integer> excludedSectionCrns, String inputCampus, int minCreditHours, int maxCreditHours, boolean walking) {
