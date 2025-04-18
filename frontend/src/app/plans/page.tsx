@@ -78,7 +78,7 @@ export default function MyPlans() {
               <SavedPlan
                 plan={plan}
                 onPin={() => pinPlan(plan.id)}
-                onDelete={() => confirmDeletePlan(plan.id)}
+                onDelete={() => confirmDeletePlan(plan.title)}
               />
             </motion.div>
           ))}
