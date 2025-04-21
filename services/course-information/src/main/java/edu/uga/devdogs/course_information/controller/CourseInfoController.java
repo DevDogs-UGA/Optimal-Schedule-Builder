@@ -380,11 +380,11 @@ public class CourseInfoController {
     @GetMapping("/get-recommended-schedules")
     @Tag(name="course-information")
     public ResponseEntity<List<List<Integer>>> getRecommendedSchedules(List<String> inputCourseNumbers, String gapDay, int prefStartTime, int prefEndTime, boolean showFilledClasses,
-    List<Integer> excludedCourseCrns, List<Integer> excludedSectionCrns, String inputCampus, int minCreditHours, int maxCreditHours, boolean walking) {
+    List<String> excludedCourseIDs, List<Integer> excludedSectionCrns, String inputCampus, int minCreditHours, int maxCreditHours, boolean walking) {
         try {
             // Returns a list of recommended schedules based on input parameters
             List<List<Integer>> recommendedSchedules = courseInformationService.getRecommendedSchedules(inputCourseNumbers, gapDay, prefStartTime, prefEndTime, showFilledClasses,
-                    excludedCourseCrns, excludedSectionCrns, inputCampus, minCreditHours, maxCreditHours, walking);
+                    excludedCourseIDs, excludedSectionCrns, inputCampus, minCreditHours, maxCreditHours, walking);
 
             // Return the section if found
             return ResponseEntity.ok(recommendedSchedules);
