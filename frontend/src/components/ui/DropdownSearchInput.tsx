@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 interface searchFilterProps {
+  labelText?: string;
   name?: string;
   items?: string[];
   type?: string;
@@ -23,6 +24,7 @@ export const DropdownSearchInput = ({
   clearState,
   selectedItem,
   onSelect,
+  labelText,
 }: searchFilterProps) => {
   const dropdownRef = useRef<HTMLUListElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +46,8 @@ export const DropdownSearchInput = ({
   };
 
   //Handles clicking on a dropdown item
-  const handleClick = (e: React.MouseEvent, index: number) => {
+  //"index: number" parameter never used
+  const handleClick = (e: React.MouseEvent) => {
     const selectedValue = e.currentTarget.textContent ?? "";
     setQuery(selectedValue);
     setIsOpen((prev) => !prev);
@@ -91,18 +94,21 @@ export const DropdownSearchInput = ({
 
   return (
     <div className={`relative w-full min-w-32`}>
-      <input
-        name={name}
-        value={query}
-        type={type}
-        min={0}
-        onChange={handleQuery}
-        onClick={() => setIsOpen((prev) => !prev)}
-        placeholder={placeholder}
-        className={`w-full rounded-md border-2 p-2 outline-none hover:border-pebble-gray ${className}`}
-        autoComplete="off"
-        onKeyDown={handleKeyPress}
-      />
+      <label className="flex flex-col gap-0.5">
+        {labelText && <span className="font-bold">{labelText}</span>}
+        <input
+          name={name}
+          value={query}
+          type={type}
+          min={0}
+          onChange={handleQuery}
+          onClick={() => setIsOpen((prev) => !prev)}
+          placeholder={placeholder}
+          className={`w-full rounded-md border-2 p-2 outline-none hover:border-pebble-gray ${className}`}
+          autoComplete="off"
+          onKeyDown={handleKeyPress}
+        />
+      </label>
       {/* DROPDOWN MENU */}
       {isOpen && filteredData.length !== 0 && (
         <ul
@@ -113,7 +119,7 @@ export const DropdownSearchInput = ({
           {filteredData.map((item, index) => (
             <li
               key={index}
-              onClick={(e) => handleClick(e, index)}
+              onClick={(e) => handleClick(e)}
               className="bg-inherit px-2 py-1 hover:brightness-75"
               tabIndex={0}
               onKeyDown={handleKeyPress}

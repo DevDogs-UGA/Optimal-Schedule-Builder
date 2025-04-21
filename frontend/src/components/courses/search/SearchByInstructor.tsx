@@ -51,14 +51,7 @@ export default function SearchByInstructor({
     "getAllInstructors",
     {},
     {
-      // TODO: Remove dummy data once a connection can be made to the course information service
-      initialData: [
-        "Brad Barnes",
-        "Michael Cotterell",
-        "Salvatore Lamarca",
-        "Sachin Meena",
-        "Bill Hollingsworth",
-      ],
+      initialData: [],
     },
   );
 
@@ -67,25 +60,7 @@ export default function SearchByInstructor({
     { professor: instructor ?? "" },
     {
       enabled: instructor !== undefined,
-      // TODO: Remove dummy data once a connection can be made to the course information service
-      //@ts-expect-error Dummy data
-      initialData:
-        instructor === "Sachin Meena"
-          ? [
-              {
-                athenaTitle: "Data Structures",
-                courseNumber: "2720",
-                courseId: 2720,
-                subject: "CSCI",
-              },
-              {
-                athenaTitle: "Algorithms",
-                courseNumber: "4470",
-                courseId: 4300,
-                subject: "CSCI",
-              },
-            ]
-          : [],
+      initialData: [],
     },
   );
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import edu.uga.devdogs.course_information.Class.ClassEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,20 @@ import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
 import edu.uga.devdogs.course_information.exceptions.BuildingNotFoundException;
 import edu.uga.devdogs.course_information.exceptions.CourseNotFoundException;
 import edu.uga.devdogs.course_information.exceptions.ProfessorNotFoundException;
+
+import edu.uga.devdogs.course_information.Algorithm.records.SConstraints;
+import edu.uga.devdogs.course_information.Algorithm.records.HConstraints;
+import edu.uga.devdogs.course_information.Algorithm.BruteForcePrototype;
+import edu.uga.devdogs.course_information.Algorithm.BruteForceUtil;
+import edu.uga.devdogs.course_information.Algorithm.records.Section;
+import edu.uga.devdogs.course_information.Algorithm.records.Class;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+
+import java.util.Set;
+import java.util.HashSet;
+
 
 /**
  * Service class that handles business logic for managing course information.
@@ -64,12 +79,8 @@ public class CourseInformationService {
         this.professorRepository = professorRepository;
     }
 
-    // The rest of your methods follow...
-
-
     /**
-     * Method to get a list of section details (tiemslot) matching the given CRN. The method
-     * it calls in the JPA layer will be implemented later.
+     * Method to get section details matching the given CRN.
      *
      * @param crn the given course reference number for which to retrieve section details
      * @return A list of Section Details objects matching the given time slot and CRN
@@ -86,8 +97,31 @@ public class CourseInformationService {
     }
 
     /**
-     * Method to get a list of Course objects matching the given major. The method
-     * it calls in the JPA layer will be implemented later.
+     * Service method for retrieving course details for a given CRN.
+     *
+     * @param crn the course reference number for which to retrieve course details
+     * @return the Course object associated with the CRN
+     * @throws CourseNotFoundException if no course section is found with the specified CRN
+     */
+    public Course getCourseDetailsByCrn(String crn) {
+        int intCrn = Integer.parseInt(crn);
+        CourseSection courseSection = courseSectionRepository.findByCrn(intCrn);
+
+        if (courseSection != null) {
+            Course course = courseSection.getCourse();
+
+            if (course != null) {
+                return course;
+            } else {
+                throw new CourseNotFoundException("Course details not found for CRN: " + crn);
+            }
+        } else {
+            throw new CourseNotFoundException("No course section found with CRN: " + crn);
+        }
+    }
+
+    /**
+     * Method to get a list of Course objects matching the given major.
      * 
      * @param major the given major for which to retrieve courses
      * @return a list of Course objects matching the given major
@@ -132,21 +166,6 @@ public class CourseInformationService {
         return new Time(parsedDate.getTime());
     }
 
-     /**
-     * Retreives a list of all buildings
-     *
-     *  @return List of all building bojects
-     * @throws BuildingNotFoundException if no buildigns are found
-     */
-    public List<Building> getAllBuildings() {
-        List<Building> buildings = buildingRepository.findAll();
-        if (buildings != null) {
-            return buildings;
-        } else {
-            throw new BuildingNotFoundException("No Buildings Found");
-        }
-    }
-
     /**
      *  Retreives a list of all academic subjects at UGA.
      * 
@@ -159,12 +178,10 @@ public class CourseInformationService {
         if (courses != null) {
             for (Course course : courses) {
                 //so we avoid duplicate subject names
-
-                /* getSubject() should work - JPA issue. Commenting for now
                 if (!subjects.contains(course.getSubject())) {
                     subjects.add(course.getSubject());
                 }
-                */
+
             }
             return subjects;
         } else {
@@ -197,104 +214,15 @@ public class CourseInformationService {
     }
 
     /**
-     * Retrieves a course's type (e.g., Honors, Lab, Online) based on the given course ID.
-     * Not in use as of 3/10/25.
-     *
-     * <p>
-     * This method queries the repository for a {@link Course} object with the specified ID
-     * and returns its type. If the course does not exist, it throws a {@link CourseNotFoundException}.
-     * </p>
-     *
-     * @param courseId the unique identifier for the course
-     * @return the type of the course as a string
-     * @throws CourseNotFoundException if no course with the specified ID is found
-     */
-    public String getCourseTypeById(String courseId) {
-        Long courseIdLong = Long.parseLong(courseId);
-        List<Course> courseList = courseRepository.getCourseInfoByCourseId(courseIdLong);
-        if (courseList == null) {
-            return null;
-        }
-
-        String courseNumber = courseList.get(0).getCourseNumber();
-        if (courseNumber.length() == 9) {
-            char type = courseNumber.charAt(8);
-            switch (type) {
-                case 'E':
-                    return "Online Learning";
-                case 'S':
-                    return "Service-Learning";
-                case 'H':
-                    return "Honors";
-                case 'I':
-                    return "Integrated Language";
-                case 'W':
-                    return "Writing Intensive";
-                case 'D':
-                    return "Non-Credit Discussion Group";
-                case 'L':
-                    return "Lab (Non-Credit and Credit)";
-            }
-        }
-        return "No Special Designation";
-    }
-
-    /**
-     * Service method for getting pre-requisites for a given course ID or CRN.
-     * Not in use as of 3/10/25.
-     *
-     * @param courseID The ID of the course to retrieve pre-requisites for.
-     * @return A list of course objects that are pre-requisites for the given course.
-     */
-    public List<Course> getPreReqCourses(String courseID, String crn) {
-        Long courseIdLong = Long.parseLong(courseID);
-        return courseRepository.findPrerequisitesByCourseId(courseIdLong);
-    }
-
-    /**
-     * Service method for getting co-requisites for a given course ID or CRN.
-     *
-     * @param courseID The ID of the course to retrieve co-requisites for.
-     * @return A list of course objects that are co-requisites for the given course.
-     */
-    public List<Course> getCoReqCourses(String courseID) {
-        Long courseIdLong = Long.parseLong(courseID);
-        return courseRepository.findCorequisitesByCourseId(courseIdLong);
-    }
-
-    /**
-     * Retrieves a list of courses offered in a specified term (e.g., Fall, Spring, Summer).
-     *
-     * <p>
-     * The term parameter determines the academic term for which to retrieve courses.
-     * If no courses are found for the specified term, a {@link CourseNotFoundException} is thrown.
-     * </p>
-     *
-     * @param term the academic term to retrieve courses for
-     * @return a list of {@link Course} objects offered in the specified term
-     * @throws CourseNotFoundException if no courses are found for the specified term
-     */
-    public List<Course> getCoursesByTerm(String term) {
-        List<Course> courses = courseRepository.findAllBySemester(term);
-
-        if (courses != null && !courses.isEmpty()) {
-            return courses;
-        } else {
-            throw new CourseNotFoundException("No courses found for term: " + term);
-        }
-    }
-
-    /**
      * Method to get the coordinates of a building based on the building number
      *
-     * @param number The number of specified building
+     * @param code The number of specified building
      * @return A string coordinate of the building
      */
-    public String getCoordinatesByBuildingNumber(String number){
-        //String coordinate = buildingRepository.getCoordinatesByBuildingNumber(number); //not implemented in database, commenting for now
-        String coordinate = null; //returning null until JPA implementation is added
-        if (coordinate != null) {
-            return coordinate;
+    public String getCoordinatesByBuildingCode(String code){
+        String coordinates = "(" + getLatitude(code) + ", " + getLongitude(code);
+        if (coordinates != null) {
+            return coordinates;
         } else {
             throw new BuildingNotFoundException("Building Not Found");
         }
@@ -354,7 +282,142 @@ public class CourseInformationService {
         return professor.getTotalReviews(); // Assuming totalReviews is an int field in Professor entity
     }
 
+    /**
+     * Retrieves the latitude for a given building code.
+     * @param buildingCode the building code for which to retrieve the latitude
+     * @return a double representing the latitude
+     */
+    public double getLatitude(String buildingCode) {
+        List<Building> buildings = buildingRepository.findAll();
 
+        for (Building building : buildings) {
+            if (building.getBuildingCode().equals(buildingCode)) {
+                return building.getLatitude();
+            }
+        }
+
+        //if matching building not found, throw an exception
+        throw new BuildingNotFoundException();
+    }
+
+    /**
+     * Retrieves the longitude for a given building code.
+     * @param buildingCode the building code for which to retrieve the longitude
+     * @return a double representing the longitude
+     */
+    public double getLongitude(String buildingCode) {
+        List<Building> buildings = buildingRepository.findAll();
+
+        for (Building building : buildings) {
+            if (building.getBuildingCode().equals(buildingCode)) {
+                return building.getLongitude();
+            }
+        }
+
+        //if matching building not found, throw an exception
+        throw new BuildingNotFoundException();
+    }
+
+    public List<List<Integer>> getRecommendedSchedules(List<Integer> inputCourseCrns, String gapDay, int prefStartTime, int prefEndTime, boolean showFilledClasses,
+                                                       List<Integer> excludedCourseCrns, List<Integer> excludedSectionCrns, String inputCampus, int minCreditHours, int maxCreditHours, boolean walking) {
+        Set<edu.uga.devdogs.course_information.Algorithm.records.Course> inputCourses = new HashSet<>();
+
+        DayOfWeek dayOfWeekGapDay = BruteForceUtil.daySwitch(gapDay);
+        String prefStartTimeString = prefStartTime + ":00";
+        LocalTime localTimePrefStartTime = LocalTime.parse(prefStartTimeString);
+        String prefEndTimeString = prefEndTime + ":00";
+        LocalTime localTimePrefEndTime = LocalTime.parse(prefEndTimeString);
+
+        SConstraints softConstraints = new SConstraints(dayOfWeekGapDay, localTimePrefStartTime, localTimePrefEndTime, showFilledClasses);
+
+        List<edu.uga.devdogs.course_information.Algorithm.records.Course> excludedCourses = new ArrayList<>();
+
+        //building excluded courses list from given crns
+
+        for (Integer crn : excludedCourseCrns) {
+            CourseSection section = courseSectionRepository.findByCrn(crn);
+            Course course = section.getCourse();
+            String courseNumber = course.getCourseNumber();
+
+            List<Section> sections = new ArrayList<>();
+
+            for (CourseSection courseSection : course.getCourseSections()) {
+                //we get the professor
+                String profLastName = courseSection.getInstructor();
+                float rating = professorRepository.findByLastName(profLastName).getAverageRating();
+                edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(profLastName,rating);
+
+                List<Class> classes = new ArrayList<>();
+
+                for (ClassEntity classEntity : courseSection.getClasses()) {
+                    String daysString = classEntity.getDays();
+                    List<DayOfWeek> daysList = new ArrayList<>();
+                    for (int i = 0; i < daysString.length(); i++) {
+                        daysList.add(BruteForceUtil.daySwitch(daysString.substring(i, i + 1)));
+                    }
+                    LocalTime startTime = classEntity.getStartTime();
+                    LocalTime endTime = classEntity.getEndTime();
+                    String buildingName = classEntity.getBuilding().getName();
+                    String campus = classEntity.getCampus();
+                    String buildingNumber = String.valueOf(classEntity.getBuilding().getBuildingCode());
+                    classes.add(new Class(crn, daysList, startTime, endTime, buildingName, campus, buildingNumber));
+                }
+                sections.add(new Section(courseNumber, crn, professor, classes));
+            }
+
+            excludedCourses.add(new edu.uga.devdogs.course_information.Algorithm.records.Course(courseNumber, sections));
+        }
+
+        //building excluded sections list from given crns
+
+        List<Section> excludedSections = new ArrayList<>();
+
+        for (Integer crn : excludedSectionCrns) {
+            CourseSection courseSection = courseSectionRepository.findByCrn(crn);
+            String courseNumber = courseSection.getCourse().getCourseNumber();
+            String profLastName = courseSection.getInstructor();
+            float rating = professorRepository.findByLastName(profLastName).getAverageRating();
+            edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(profLastName,rating);
+
+            List<Class> classes = new ArrayList<>();
+
+            for (ClassEntity classEntity : courseSection.getClasses()) {
+                String daysString = classEntity.getDays();
+                List<DayOfWeek> daysList = new ArrayList<>();
+                for (int i = 0; i < daysString.length(); i++) {
+                    daysList.add(BruteForceUtil.daySwitch(daysString.substring(i, i + 1)));
+                }
+                LocalTime startTime = classEntity.getStartTime();
+                LocalTime endTime = classEntity.getEndTime();
+                String buildingName = classEntity.getBuilding().getName();
+                String campus = classEntity.getCampus();
+                String buildingNumber = String.valueOf(classEntity.getBuilding().getBuildingCode());
+                classes.add(new Class(crn, daysList, startTime, endTime, buildingName, campus, buildingNumber));
+            }
+
+            excludedSections.add(new Section(courseNumber, crn, professor, classes));
+
+        }
+
+        HConstraints hardConstraints = new HConstraints(excludedCourses, excludedSections, inputCampus, minCreditHours, maxCreditHours, walking);
+
+        //retrieving recommended schedules from algorithm
+        int[][] schedulesArray = BruteForcePrototype.algorithmDriver(inputCourses, softConstraints, hardConstraints);
+
+        //copying from 2D array to nested List
+
+        List<List<Integer>> outputSchedulesList = new ArrayList<>();
+
+        for (int[] schedule : schedulesArray) {
+            List<Integer> outputSchedule = new ArrayList<>();
+            for (int crn : schedule) {
+                outputSchedule.add(Integer.valueOf(crn));
+            }
+            outputSchedulesList.add(outputSchedule);
+        }
+
+        return outputSchedulesList;
+    }
 
 
 }

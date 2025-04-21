@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
+import formsPlugin from "@tailwindcss/forms";
 
 export default {
   content: ["./src/**/*.tsx", "./src/**/*.ts"],
@@ -24,6 +25,7 @@ export default {
         peach: "hsl(var(--peach))",
         wave: "hsl(var(--wave))",
       },
+
       keyframes: {
         fadeInOverlay: {
           from: { backgroundColor: "transparent" },
@@ -55,5 +57,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [formsPlugin({ strategy: "class" })],
 } satisfies Config;

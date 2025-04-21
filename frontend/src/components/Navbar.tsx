@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Notifications from "./Notifications";
-import { PiGear, PiGearFill } from "react-icons/pi";
+import { PiGear } from "react-icons/pi";
 
 // Custom hook for scroll direction
 function useScrollDirection() {
@@ -49,7 +48,7 @@ export function Navbar({ keyword = "default" }) {
           {/* Logo and Title */}
           <Link
             href="/"
-            className="tems-center flex gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
+            className="flex items-center gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
           >
             <Image
               className="block fill-current invert"
@@ -58,7 +57,7 @@ export function Navbar({ keyword = "default" }) {
               height={40}
               alt="white paw"
             />
-            <h1 className="text-3xl font-bold text-white">DogDays</h1>
+            <h1 className="text-3xl font-bold text-white">Bulldog Planner</h1>
           </Link>
           {/* Space filler div */}
           <div className="flex-1"></div>
@@ -68,7 +67,7 @@ export function Navbar({ keyword = "default" }) {
             <li className="contents">
               <Link
                 className="px-6 py-3 text-center text-white transition hover:text-[#e4212b] sm:rounded-lg sm:py-1 md:px-4"
-                href="/saved-plans"
+                href="/plans"
               >
                 My Plans
               </Link>
@@ -97,7 +96,7 @@ export function Navbar({ keyword = "default" }) {
 
             <Link
               className="px-2 py-3 text-center text-white transition hover:text-[#e4212b] sm:hidden sm:rounded-lg sm:py-1 md:px-4"
-              href="/saved-plans"
+              href="/plans"
             >
               My Plans
             </Link>
@@ -113,7 +112,7 @@ export function Navbar({ keyword = "default" }) {
           {/* Logo and Title */}
           <Link
             href="/"
-            className="tems-center flex gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
+            className="flex items-center gap-2 bg-inherit py-4 sm:gap-4 sm:py-0"
           >
             <Image
               className="block fill-current invert"

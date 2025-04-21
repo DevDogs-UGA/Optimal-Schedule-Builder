@@ -10,9 +10,16 @@ import jakarta.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 /*
- * Java JPA entity represention for Building
+ * Java JPA entity representation for Building
  */
+
 @Entity
 public class Building implements Serializable {
     
@@ -20,24 +27,26 @@ public class Building implements Serializable {
      * Variables
      */
 
-    // serves as the id.
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long buildingId;
+    @JsonAlias("Building Code")
+    private String buildingCode;  // Building Code
 
-    /* This can't serve as the id, because many 
-    classes show the building number as NCRR or TBA/
-    */
-    private String buildingNumber;
-
+    @JsonAlias("Name")
     private String name;
-
-    private String grid;
+    
+    @JsonAlias("Address")
+    private String address;
+    
+    @JsonAlias("Latitude")
+    private double latitude;
+    
+    @JsonAlias("Longitude")
+    private double longitude;
 
     /*
      * Relationships
-     * To-Do: add relationships (one-to-one, one-to-many, many-to-one, many-to-many) here
      */
+    @JsonManagedReference("building-classes")
     @OneToMany(mappedBy = "building")
     private List<ClassEntity> classes;
 
@@ -46,37 +55,26 @@ public class Building implements Serializable {
      */
 
     // Default constructor
-    public Building() {
-    }
+    public Building() {}
 
-    // Constructor w/o buildingNumber
-    public Building(String name, String grid) {
+    // Constructor with parameters
+    public Building(String buildingCode, String name, String address, double latitude, double longitude) {
+        this.buildingCode = buildingCode;
         this.name = name;
-        this.grid = grid;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    // Constructor w/ buildingNumber
-    public Building(String buildingNumber, String name, String grid) {
-        this.buildingNumber = buildingNumber;
-        this.name = name;
-        this.grid = grid;
-    }
-
-    
     /*
      * Getters and Setters
      */
-
-    public String getBuildingNumber() {
-        return buildingNumber;
+    public String getBuildingCode() {
+        return buildingCode;
     }
 
-    public long getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber;
+    public void setBuildingCode(String buildingCode) {
+        this.buildingCode = buildingCode;
     }
 
     public String getName() {
@@ -87,12 +85,28 @@ public class Building implements Serializable {
         this.name = name;
     }
 
-    public String getGrid() {
-        return grid;
+    public String getAddress() {
+        return address;
     }
 
-    public void setGrid(String grid) {
-        this.grid = grid;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public List<ClassEntity> getClasses() {
@@ -104,15 +118,16 @@ public class Building implements Serializable {
     }
 
     /*
-     * toString
+     * toString Method
      */
     @Override
     public String toString() {
-        return "Building [ buildingNumber=" + buildingNumber 
-                + ", name='" + name 
-                + ", grid='" + grid 
-                + ']';
+        return "Building{" +
+                "buildingCode=" + buildingCode +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
-
-    
 }

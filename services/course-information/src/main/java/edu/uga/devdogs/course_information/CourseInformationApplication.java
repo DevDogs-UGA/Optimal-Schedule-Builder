@@ -1,14 +1,17 @@
 package edu.uga.devdogs.course_information;
 
-import java.sql.Time;
-import java.util.List;
-import java.util.stream.Stream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 
+import edu.uga.devdogs.course_information.Professor.Professor;
+import edu.uga.devdogs.course_information.Professor.ProfessorRepository;
 import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.Building.BuildingRepository;
 import edu.uga.devdogs.course_information.Class.ClassEntity;
@@ -17,96 +20,251 @@ import edu.uga.devdogs.course_information.Course.Course;
 import edu.uga.devdogs.course_information.Course.CourseRepository;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.CourseSection.CourseSectionRepository;
+import edu.uga.devdogs.course_information.webscraping.DescriptionScraper;
+import edu.uga.devdogs.course_information.webscraping.Course2;
+import edu.uga.devdogs.course_information.webscraping.Pdf;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
+@EnableTransactionManagement
 public class CourseInformationApplication {
+
+    private final CourseRepository courseRepository;
+    private final BuildingRepository buildingRepository;
+    private final ProfessorRepository professorRepository;
+
+    @Value("${update.buildings}")
+    private boolean updateBuildings;
+
+    @Value("${pdf.input.dir}")
+    private String inputDirectory;
+
+    CourseInformationApplication(BuildingRepository buildingRepository, CourseRepository courseRepository, ProfessorRepository professorRepository) {
+        this.courseRepository = courseRepository;
+        this.buildingRepository = buildingRepository;
+        this.professorRepository = professorRepository;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(CourseInformationApplication.class, args);
     }
 
+    // Helper function to check if the application is running from a JAR
+    private boolean isRunningFromJar() {
+        String classPath = System.getProperty("java.class.path");
+        return classPath.contains(".jar");
+    }
+
     @Bean
-    CommandLineRunner courseSecCommandLineRunner(
-        CourseSectionRepository courseSectionRepository,
-        CourseRepository courseRepository,
-        ClassRepository classRepository,
-        BuildingRepository buildingRepository) {
-        
+    @Order(1)
+    CommandLineRunner buildingCommandLineRunner(BuildingRepository buildingRepository) {
         return args -> {
-            // Create Buildings
-            Building building1 = new Building("2438", "CAGTECH", "F - 6");
-            Building building2 = new Building("46", "Caldwell Hall", "C - 1");
-            Building building3 = new Building("2118", "Campus Mail/Environmental Safety", "E - 6");
-            Building building4 = new Building("1637", "Campus Transit Facility", "D - 8");
-            Building building5 = new Building("31", "Candler Hall", "C - 1");
-            Building building6 = new Building("1110", "Carlton Street Deck", "B - 4");
-            Building building7 = new Building("2419", "CCRC", "E - 7");
-            Building building8 = new Building("2127", "Center for Applied Isotope Study", "E - 6");
-            Building building9 = new Building("2395", "Center for Molecular Medicine", "E - 7");
-            Building building10 = new Building("178", "Central Campus Mech. Building", "C - 2");
+            if (!updateBuildings) {
+                System.out.println("Skipping building data update as per configuration.");
+                return;
+            }
 
-            buildingRepository.saveAll(List.of(building1, building2, building3, building4, building5, 
-                                               building6, building7, building8, building9, building10));
+            String buildingsJsonPath;
+            if (isRunningFromJar()) {
+                buildingsJsonPath = "BOOT-INF/classes/buildingData/AthensBuildingData.json";
+            } else {
+                buildingsJsonPath = "buildingData/AthensBuildingData.json"; // Update this path to the local one
+            }
 
-            // Create Courses
-            Course course1 = new Course("physiology", "420", "pain", "Mary Francis early education", null);
-            Course course2 = new Course("math", "1101", "intro", "Department of Mathematics", null);
+            ClassPathResource resource = new ClassPathResource(buildingsJsonPath);
+            if (!resource.exists()) {
+                System.err.println("File not found at path: " + buildingsJsonPath);
+                return;
+            }
 
-            course1.setCourseDescription("pain");
-            course1.setSemesters(Stream.of("Spring", "Summer").toList());
-
-            course2.setCourseDescription("intro");
-            course2.setSemesters(Stream.of("Fall", "Spring").toList());
-
-            courseRepository.saveAll(List.of(course1, course2));
-
-            // Create Course Sections
-            CourseSection section1 = new CourseSection(
-                123456, 4, 'A', 1.0, 4.0, "Barnes", 2, 40, 40, 2024, course1, null
-            );
-
-            CourseSection section2 = new CourseSection(
-                654321, 3, 'B', 2.0, 3.5, "Smith", 1, 30, 30, 2024, course2, null
-            );
-
-            courseSectionRepository.saveAll(List.of(section1, section2));
-
-            // Create ClassEntities
-            ClassEntity class1 = new ClassEntity(
-                "MWF", "08:00:00", "09:15:00", building10, "101", "Main Campus", section1
-            );
-
-            ClassEntity class2 = new ClassEntity(
-                "TR", "13:00:00", "14:15:00", building6, "205", "North Campus", section1
-            );
-
-            ClassEntity class3 = new ClassEntity(
-                "MWF", "10:00:00", "11:15:00", building2, "301", "Main Campus", section2
-            );
-
-            ClassEntity class4 = new ClassEntity(
-                "TR", "15:00:00", "16:15:00", building5, "102", "North Campus", section2
-            );
-
-            classRepository.saveAll(List.of(class1, class2, class3, class4));
-
-            // Link classes to sections
-            section1.setClasses(List.of(class1, class2));
-            section2.setClasses(List.of(class3, class4));
-            courseSectionRepository.saveAll(List.of(section1, section2));
-
-            // Print Test Data
-            System.out.println("\n\n\n\n\n\nAll CourseSections for Instructor Barnes:");
-            System.out.println(courseSectionRepository.findAllByInstructor("Barnes"));
-
-            System.out.println("\nAll Courses with Subject 'physiology':");
-            System.out.println(courseRepository.findAllBySubject("physiology"));
-
-            System.out.println("\nBuilding with ID '178':");
-            System.out.println(buildingRepository.findById("178"));
-
-            System.out.println("\nAll Courses with Spring Semester:");
-            System.out.println(courseRepository.findAllBySemester("Spring"));
+            try (InputStream inputStream = resource.getInputStream()) {
+                System.out.println("Reading buildings.json...");
+                ObjectMapper objectMapper = new ObjectMapper();
+                CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, Building.class);
+                List<Building> buildings = objectMapper.readValue(inputStream, listType);
+                List<Building> buildingsToSave = new ArrayList<>();
+                for (Building building : buildings) {
+                    if (!buildingRepository.existsById(building.getBuildingCode())) {
+                        buildingsToSave.add(building);
+                    }
+                }
+                if (!buildingsToSave.isEmpty()) {
+                    buildingRepository.saveAll(buildingsToSave);
+                    System.out.println("Buildings saved successfully.");
+                } else {
+                    System.out.println("No new buildings to save.");
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to read or parse buildings.json: " + e.getMessage());
+            }
         };
+    }
+
+    @Bean
+    @Order(2)
+    @Transactional
+    @Scheduled(cron = "0 0 4 * * *", zone = "America/New_York") // 4:00 AM EST
+    CommandLineRunner courseSecCommandLineRunner(
+            CourseSectionRepository courseSectionRepository,
+            CourseRepository courseRepository,
+            ClassRepository classRepository,
+            BuildingRepository buildingRepository,
+            ProfessorRepository professorRepository) {
+        return args -> {
+            FirefoxOptions options = new FirefoxOptions();
+            options.addArguments("--headless");
+            WebDriver driver = new FirefoxDriver(options);
+            DescriptionScraper scraper = new DescriptionScraper(driver);
+
+            List<Course2> courses = Pdf.parsePdf("spring", inputDirectory);
+
+            List<Course> courseEntities = new ArrayList<>();
+            List<ClassEntity> classEntities = new ArrayList<>();
+            Set<String> processedCourses = new HashSet<>();
+            Map<String, Integer> professorIdCache = new HashMap<>();
+            Set<Integer> processedCrns = new HashSet<>();
+
+            for (Course2 course : courses) {
+                if (course.getCrn() == 0 || processedCrns.contains(course.getCrn())) {
+                    continue; // Skip invalid or duplicate CRNs
+                }
+
+                int crn = course.getCrn();
+                if (crn < 10000 || crn > 99999) {
+                    System.out.println("Skipping invalid CRN: " + crn);
+                    continue;
+                }
+
+                processedCrns.add(crn);
+
+                String courseKey = course.getSubject() + "-" + course.getCourseNumber();
+                if (processedCourses.contains(courseKey)) continue;
+
+                // Parse credit hours (default to 3 if not parseable)
+                String creditHoursStr = course.getCreditHours().replaceAll("[^0-9.-]", "").trim();
+                int creditHours = 3;
+                if (creditHoursStr.contains("-")) {
+                    try {
+                        creditHours = (int) Float.parseFloat(creditHoursStr.split("-")[0].trim());
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid credit hours: " + course.getCreditHours());
+                    }
+                }
+
+                // Parse meeting times
+                String[] times = course.getMeetingTimes().split("-");
+                String startTime = times.length > 0 ? times[0].trim() : "";
+                String endTime = times.length > 1 ? times[1].trim() : "";
+                LocalTime start = parseTime(startTime);
+                LocalTime end = parseTime(endTime);
+
+                // Lookup or create Professor using cached value
+                String professorLastName = course.getProfessor();
+                Professor existingProfessor = null;
+                if (professorLastName != null && !professorLastName.trim().isEmpty()) {
+                    professorLastName = professorLastName.trim();
+                    if (professorIdCache.containsKey(professorLastName)) {
+                        Integer cachedId = professorIdCache.get(professorLastName);
+                        existingProfessor = professorRepository.findById(cachedId).orElse(null);
+                    } else {
+                        Professor newProfessor = new Professor("", professorLastName, 10, 3.0f, 3.0f, 50, course.getDepartment());
+                        professorRepository.saveAndFlush(newProfessor);
+                        professorIdCache.put(professorLastName, newProfessor.getProfessorId());
+                        existingProfessor = newProfessor;
+                    }
+                }
+
+                // Lookup Course entity
+                Course existingCourse = courseRepository.findBySubjectAndCourseNumber(course.getSubject(), course.getCourseNumber());
+                Course courseEntity;
+                if (existingCourse == null) {
+                    String description = "Description not found";
+                    try {
+                        description = scraper.getCourseDescription(course.getSubject(), course.getCourseNumber());
+                    } catch (Exception e) {
+                        System.err.println("Error fetching description for " + course.getSubject() + " " + course.getCourseNumber());
+                        description = "Description not found"; // fallback
+                    }
+                    courseEntity = new Course(course.getSubject(), course.getCourseNumber(), course.getTitle(), course.getDepartment(), new ArrayList<>(), description);
+                    courseEntity = courseRepository.saveAndFlush(courseEntity);
+                    courseEntities.add(courseEntity);
+                } else {
+                    existingCourse.updateFrom(course);
+                    courseEntity = courseRepository.saveAndFlush(existingCourse);
+                }
+                processedCourses.add(courseKey);
+
+                // Create or update CourseSection
+                CourseSection courseSection = courseSectionRepository.findByCrn(course.getCrn());
+                if (courseSection == null) {
+                    courseSection = new CourseSection();
+                    courseSection.setCrn(course.getCrn());
+                    courseEntity.getCourseSections().add(courseSection); // only add if new
+                }
+                
+                courseSection.updateFrom(course, start, end);
+                courseSection.setCreditHours(creditHours);
+                courseSection.setCourse(courseEntity);
+                courseSection = courseSectionRepository.saveAndFlush(courseSection);
+
+                // Lookup Building
+                Building building = buildingRepository.findByBuildingCode(course.getBuilding());
+                if (building == null) {
+                    System.err.println("Building not found: " + course.getBuilding());
+                    continue;
+                }
+
+                // Create new ClassEntity for this section
+                ClassEntity classEntity = new ClassEntity();
+                classEntity.updateFrom(course, start, end, building, existingProfessor);
+                classEntity.setCourseSection(courseSection);
+
+                // Collect the new section and class for later saving
+                classEntities.add(classEntity);
+            }
+
+            System.out.println("Saving to database...");
+            // Now, because Course already cascades to CourseSections, we only need to save/update Courses and ClassEntities.
+            courseRepository.saveAll(courseEntities);
+
+            courseRepository.flush();
+            courseSectionRepository.flush();
+
+
+            System.out.println("Saved courses and course sections successfully.");
+            classRepository.saveAll(classEntities);
+            classRepository.flush();
+
+            driver.quit();
+            System.out.println("Database updated successfully.");
+        };
+    }
+
+    private LocalTime parseTime(String time) {
+        try {
+            if (time == null || time.isEmpty() || time.trim().equalsIgnoreCase("TBA")) {
+                return null;
+            }
+            // Normalize by removing spaces
+            String normalized = time.toUpperCase().replaceAll("\\s+", "");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mma");
+            return LocalTime.parse(normalized, formatter);
+        } catch (DateTimeParseException e) {
+            System.err.println("Invalid time format: " + time);
+            return null;
+        }
     }
 }

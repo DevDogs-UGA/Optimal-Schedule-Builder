@@ -42,8 +42,7 @@ export default function useLocalStorage<K extends keyof LocalStorageSchema>(
   const id = useId();
 
   const schema = localStorageSchema[key];
-  type OutputSchema = z.output<typeof schema>;
-  type InputSchema = z.input<typeof schema>;
+  type Schema = z.infer<typeof schema>;
 
   const itemKey =
     key +
@@ -54,16 +53,11 @@ export default function useLocalStorage<K extends keyof LocalStorageSchema>(
         : "");
 
   const [state, setState] = useReducer<
-    Reducer<
-      OutputSchema,
-      InputSchema | ((prevState: OutputSchema) => InputSchema)
-    >
+    Reducer<Schema, Schema | ((prevState: Schema) => Schema)>
   >((prevState, action) => {
     const newState = schema.parse(
       action instanceof Function ? action(prevState) : action,
     );
-    console.log({ newState });
-
     window.localStorage.setItem(itemKey, JSON.stringify(newState));
 
     return newState;
@@ -78,6 +72,7 @@ export default function useLocalStorage<K extends keyof LocalStorageSchema>(
       try {
         setState(schema.parse(JSON.parse(e.newValue ?? "")));
       } catch {
+        //@ts-expect-error weirdly specific type narrowing
         setState(null);
       }
     },
@@ -92,6 +87,7 @@ export default function useLocalStorage<K extends keyof LocalStorageSchema>(
         schema.parse(JSON.parse(window.localStorage.getItem(key) ?? "")),
       );
     } catch {
+      //@ts-expect-error weirdly specific type narrowing
       setState(null);
     }
 

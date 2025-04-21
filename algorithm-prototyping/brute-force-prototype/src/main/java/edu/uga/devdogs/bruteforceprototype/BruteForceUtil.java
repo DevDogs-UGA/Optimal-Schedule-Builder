@@ -2,6 +2,7 @@ package edu.uga.devdogs.bruteforceprototype;
 
 import edu.uga.devdogs.sampledataparser.records.*;
 import edu.uga.devdogs.sampledataparser.records.Class;
+import edu.uga.devdogs.bruteforceprototype.schedule.Schedule;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -157,8 +158,9 @@ public class BruteForceUtil {
      *
      * @param inputCourses user inputted courses.
      * @param validSchedules a set of valid generated schedules
+     * @throws Exception if {@code courseInSchedule} if true
      */
-    public static void ensureInitialCourses(Set<Course> inputCourses, Set<Schedules> validSchedules) {
+    public static void ensureInitialCourses(Set<Course> inputCourses, Set<Schedule> validSchedules) throws Exception {
         boolean courseInSchedule = false;
         // for every user inputted course
         for (Course c : inputCourses) {
@@ -167,12 +169,12 @@ public class BruteForceUtil {
                 // for every section in said schedule
                 for (Section sect : s.sections()) {
                     // if the course the user inputted, c, is in the schedule, s
-                    if (c.courseCode == sect.courseCode) {
+                    if (c.courseCode().equals(sect.courseCode())) {
                         courseInSchedule = true;
                     } // if
                 } // for
                 if (!courseInSchedule) {
-                    throw new Exception("Schedule does not contain specified course.")
+                    throw new Exception("Schedule does not contain specified course.");
                 } // if
             } // for
         } // for

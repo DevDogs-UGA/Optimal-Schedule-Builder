@@ -1,10 +1,17 @@
 package edu.uga.devdogs.course_information.CourseSection;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.List;
 
-import edu.uga.devdogs.course_information.Course.Course;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import edu.uga.devdogs.course_information.Class.ClassEntity;
+import edu.uga.devdogs.course_information.Course.Course;
+import edu.uga.devdogs.course_information.webscraping.Course2;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +22,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+
+
+
+
 
 @Entity
 public class CourseSection implements Serializable {
@@ -22,21 +34,20 @@ public class CourseSection implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_section_id")
-    private long courseSectionId;
+    private Long courseSectionId;
 
+    @Column(nullable = false, unique = true)
     private int crn;
 
-    private int sec;
+    private String sec;
 
     private char stat;
 
-    private double creditHoursLow;
+    @Column(nullable = false) 
+    private int creditHours = 3;
 
-    private double creditHoursHigh;
 
-    private String instructor;
-
-    private int term;
+    private String term;
 
     private int classSize;
 
@@ -45,6 +56,41 @@ public class CourseSection implements Serializable {
     private int year;
 
     private String daysOfTheWeek;
+
+    private LocalTime startTime;
+
+    
+    private LocalTime endTime;
+
+    // instructor is the name
+    private String instructor;
+
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
+    }
+
+    public String getInstructor() {
+        return instructor;
+    }
+
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    
 
     public String getDaysOfTheWeek() {
         return daysOfTheWeek;
@@ -55,36 +101,47 @@ public class CourseSection implements Serializable {
     }
 
     // Relationships
+    @JsonBackReference("course-sections")
     @ManyToOne
-    @JoinColumn(name = "course_Id", nullable = false)
+    @JoinColumn(name = "course_id", referencedColumnName = "course_id")
     private Course course;
 
     @OneToMany(mappedBy = "courseSection", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("coursesection-classes")
     private List<ClassEntity> classes;
 
-    @ManyToOne
-    @JoinColumn(name = "class_id")
-    private ClassEntity classEntity;
+
+
+    
+    public List<ClassEntity> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<ClassEntity> classes) {
+        this.classes = classes;
+    }
+
 
 
 
     // Constructors, getters, setters, and toString 
     public CourseSection() {}
 
-    public CourseSection(int crn, int sec, char stat, double creditHoursLow, double creditHoursHigh, String instructor,
-        int term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes) {
+    public CourseSection(int crn, String sec, char stat, int creditHours, String instructor,
+        String term, int classSize, int seatsAvailable, int year, Course course, List<ClassEntity> classes, String daysOfTheWeek, LocalTime startTime, LocalTime endTime) {
     this.crn = crn;
     this.sec = sec;
     this.stat = stat;
-    this.creditHoursLow = creditHoursLow;
-    this.creditHoursHigh = creditHoursHigh;
+    this.creditHours = creditHours;
     this.instructor = instructor;
     this.term = term;
     this.classSize = classSize;
     this.seatsAvailable = seatsAvailable;
     this.year = year;
     this.course = course;
-    this.classes = classes;
+    this.daysOfTheWeek = daysOfTheWeek;
+    this.startTime = startTime;
+    this.endTime = endTime;
 }
 
     public long getId() {
@@ -103,11 +160,11 @@ public class CourseSection implements Serializable {
         this.crn = crn;
     }
 
-    public int getSec() {
+    public String getSec() {
         return sec;
     }
 
-    public void setSec(int sec) {
+    public void setSec(String sec) {
         this.sec = sec;
     }
 
@@ -115,39 +172,28 @@ public class CourseSection implements Serializable {
         return stat;
     }
 
+
     public void setStat(char stat) {
         this.stat = stat;
     }
 
-    public double getCreditHoursLow() {
-        return creditHoursLow;
+    public int getCreditHours() {
+        return creditHours;
     }
 
-    public void setCreditHoursLow(double creditHoursLow) {
-        this.creditHoursLow = creditHoursLow;
+    public void setCreditHours(int creditHours) {
+        this.creditHours = creditHours;
     }
 
-    public double getCreditHoursHigh() {
-        return creditHoursHigh;
-    }
 
-    public void setCreditHoursHigh(double creditHoursHigh) {
-        this.creditHoursHigh = creditHoursHigh;
-    }
 
-    public String getInstructor() {
-        return instructor;
-    }
 
-    public void setInstructor(String instructor) {
-        this.instructor = instructor;
-    }
 
-    public int getTerm() {
+    public String getTerm() {
         return term;
     }
 
-    public void setTerm(int term) {
+    public void setTerm(String term) {
         this.term = term;
     }
 
@@ -179,26 +225,34 @@ public class CourseSection implements Serializable {
         return course;
     }
 
+    public Long getCourseSectionId() {
+        return courseSectionId;
+    }
+
     public void setCourse(Course course) {
         this.course = course;
     }
 
-    public List<ClassEntity> getClasses() {
-        return classes;
-    }
-
-    public void setClasses(List<ClassEntity> classes) {
-        this.classes = classes;
-    }
 
     @Override
     public String toString() {
         return "CourseSection [courseSectionId=" + courseSectionId + ", crn=" + crn + ", sec=" + sec + ", stat="
-                + stat + ", creditHoursLow=" + creditHoursLow + ", creditHoursHigh=" + creditHoursHigh + ", instructor="
+                + stat + ", creditHoursLow=" + creditHours + ", instructor="
                 + instructor + ", term=" + term + ", classSize=" + classSize + ", seatsAvailable=" + seatsAvailable
                 + ", year=" + year + "]";
     }
 
+    public void updateFrom(Course2 course, LocalTime start, LocalTime end) {
+        this.instructor = course.getProfessor();
+        this.sec = course.getSec();
+        this.startTime = start;
+        this.endTime = end;
+        this.daysOfTheWeek = course.getMeetingDays();
+        this.seatsAvailable = course.getAvailableSeats();
+        this.classSize = course.getClassSize();
+    }
+
+    
 
 }
 

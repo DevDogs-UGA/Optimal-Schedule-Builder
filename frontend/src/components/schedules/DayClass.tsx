@@ -1,8 +1,31 @@
 "use client";
 import { type ClassData } from "@/types/scheduleTypes";
 import { useState, useEffect } from "react";
+import useQuery from "@/hooks/useQuery";
+import { FaStar } from "react-icons/fa";
 
 type DayClassProps = ClassData;
+
+// Convert 12-hours to 24-hours
+function convertToMinutes(time: string): number {
+  const [hour, minute] = time.split(":").map((val) => parseInt(val, 10));
+  const suffix = time.slice(-2).toLowerCase();
+  let convertedTime = hour! * 60 + minute!; // The ! assers the tyoe of hour and minute as number since they could be undefined. If there's an error it means one of these is undefined.
+  if (suffix === "pm" && hour !== 12) {
+    convertedTime += 12 * 60;
+  }
+  if (suffix === "am" && hour === 12) {
+    convertedTime -= 12 * 60;
+  }
+  return convertedTime;
+}
+
+// Duration of course for the day
+function getDuration(timeStart: string, timeEnd: string): number {
+  const startMinutes = convertToMinutes(timeStart);
+  const endMinutes = convertToMinutes(timeEnd);
+  return endMinutes - startMinutes;
+}
 
 // Allows course block info window to resize itself relative to the screen size
 function useResize() {
@@ -102,6 +125,18 @@ function getWeekLayout(
   return weekInfo;
 }
 
+interface ProfessorStarsProps {
+  rating: number;
+}
+const ProfessorStars = ({ rating }: ProfessorStarsProps) => {
+  const renderSVGs = () => {
+    return Array.from({ length: rating }, () => (
+      <FaStar key={rating} className="inline -translate-y-0.5" />
+    ));
+  };
+  return <div className="inline">{renderSVGs()}</div>;
+};
+
 function CourseInfo({
   classTitle,
   className,
@@ -114,9 +149,10 @@ function CourseInfo({
   semester,
   credits,
   crn,
-  openSeats,
-  maxSeats,
-  waitlist,
+  // Uncomment to use parameters, currently unused
+  // openSeats,
+  // maxSeats,
+  // waitlist,
   bgColor,
   borderColor,
   timeStart,
@@ -137,6 +173,26 @@ function CourseInfo({
     timeEnd,
     locationShort,
   );
+
+  const professorName: string[] = professor.split(" ");
+  const firstName: string = professorName[0] ?? "";
+  const lastName: string = professorName.slice(1).join(" ") ?? "";
+  const avgProfessorQuery = useQuery("getAvgProfessorRating", {
+    lname: lastName,
+    fname: firstName,
+  });
+  // To test with dummy data, replace "0" with a professor rating of choice in the following line
+  const avgProfessorData: number | undefined = avgProfessorQuery.data ?? 0;
+  const isAvgZero = avgProfessorData === 0;
+  const numProfessorQuery = useQuery("getNumProfessorRatings", {
+    lname: lastName,
+    fname: firstName,
+  });
+  // To test with dummy data, replace "0" with a number of reviewings in the following line
+  const numProfessorData: number | undefined = numProfessorQuery.data ?? 0;
+  const isNumZero = numProfessorData === 0;
+  const defaultPrereq = prereq && prereq.trim() !== "" ? prereq : "None";
+  const defaultCorereq = coreq && coreq.trim() !== "" ? coreq : "None";
 
   return (
     <div
@@ -172,7 +228,11 @@ function CourseInfo({
             </p>
             <p>
               {" "}
-              <b>Professor:</b> {professor}{" "}
+              <b>Professor:</b> {professor}
+              {!(isAvgZero && isNumZero) && " | "}
+              <ProfessorStars rating={avgProfessorData} />
+              {!isAvgZero && !isNumZero && " | "}
+              {!isNumZero && numProfessorData + " reviews"}{" "}
             </p>{" "}
             <br></br>
             <p>
@@ -186,11 +246,11 @@ function CourseInfo({
             <br></br>
             <p>
               {" "}
-              <b>Prerequisites:</b> {prereq}{" "}
+              <b>Prerequisites:</b> {defaultPrereq}{" "}
             </p>
             <p>
               {" "}
-              <b>Corequisites:</b> {coreq}{" "}
+              <b>Corequisites:</b> {defaultCorereq}{" "}
             </p>{" "}
             <br></br>
             <p> {description} </p>
@@ -308,28 +368,54 @@ export default function DayClass({
   currentDay,
   otherTimes,
 }: DayClassProps) {
+  // Find course duartion
+  const duration = getDuration(timeStart, timeEnd);
+
+  // Position of class block based on start time
+  const startPosition = `${timeDifference ? `${timeDifference * 0.8}px` : "0px"}`;
+
+  // Height of class block based on duration
+  const classHeight = `${duration * 0.9}px`;
+
   // Open course block info popup
   const [courseBlockClicked, setcourseBlockClicked] = useState(false);
   const courseBlockInfo = () => {
     setcourseBlockClicked(!courseBlockClicked);
   };
 
+  timeStart = timeStart.toUpperCase();
+  timeEnd = timeEnd.toUpperCase();
+
   return (
-    <div className={`relative ${className}`} onClick={courseBlockInfo}>
+    <div
+      className={`relative ${className} flex justify-end`}
+      onClick={courseBlockInfo}
+    >
       <div
-        className={`w-full rounded-lg p-4 transition duration-150 ease-in-out hover:bg-black ${bgColor} flex justify-between`}
+        className="absolute inset-0 border-r-2 bg-gray-100"
+        style={{
+          height: "100%",
+          width: "100%",
+          backgroundSize: "100% 60px",
+        }}
+      ></div>
+
+      <div
+        className={`w-4/6 rounded-lg p-4 transition duration-150 ease-in-out hover:bg-black ${bgColor} flex items-center justify-between`}
         style={{
           position: "absolute",
-          top: timeDifference ? `${timeDifference * 0.9}px` : "0px",
+          top: startPosition, //timeDifference ? `${timeDifference * 0.9}px` : "0px",
+          height: classHeight,
         }}
       >
-        <div className="">
+        <div>
           <h2 className="font-bold text-white">{classTitle}</h2>
-          {locationShort && (
+          {/* Uncomment following line to show location */}
+          {/* {locationShort && (
             <p className="text-sm text-white/90">{locationShort}</p>
-          )}
+          )} */}
         </div>
-        <div className="text-right text-sm text-white/90">
+        <div className="text-right text-xs text-white">
           <p>{timeStart}</p>
           <p>{timeEnd}</p>
         </div>

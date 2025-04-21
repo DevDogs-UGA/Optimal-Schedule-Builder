@@ -1,5 +1,4 @@
 import { Navbar } from "@/components/Navbar";
-import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
 export default function GenerateSchedules() {
@@ -19,7 +18,7 @@ export default function GenerateSchedules() {
             </div>
             <div>
               <button className="rounded-lg bg-bulldog-red px-4 py-2 font-semibold text-white">
-                <Link href={"/saved-plans"}>Saved Plans</Link>
+                <Link href={"/plans"}>My Plans</Link>
               </button>
             </div>
           </div>

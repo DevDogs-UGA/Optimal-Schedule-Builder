@@ -1,5 +1,6 @@
 package edu.uga.devdogs.course_information.Class;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -7,14 +8,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
+import java.time.LocalTime;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import edu.uga.devdogs.course_information.Building.Building;
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
 import edu.uga.devdogs.course_information.Professor.Professor;
+import edu.uga.devdogs.course_information.webscraping.Course2;
 
 /*
  * Java JPA entity represention for Class
  */
+
 @Entity
 public class ClassEntity implements Serializable{
     
@@ -24,13 +32,32 @@ public class ClassEntity implements Serializable{
 
     @Id
     @GeneratedValue
-    private int classId;
+    @Column(name = "class_id")
+    private long classId;
 
     private String days;
 
-    private  String startTime;
+    private  LocalTime endTime;
 
-    private  String endTime;
+    private  LocalTime startTime;
+
+    
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
 
     private String room;
 
@@ -41,15 +68,18 @@ public class ClassEntity implements Serializable{
      */
 
     @ManyToOne
-    @JoinColumn(name = "course_section_id")
+    @JoinColumn(name = "course_section_id", referencedColumnName = "course_section_id")
+    @JsonBackReference("coursesection-classes")
     private CourseSection courseSection;
 
     @ManyToOne
-    @JoinColumn(name = "buildingNumber")
+    @JoinColumn(name = "building_code", referencedColumnName = "buildingCode")
+    @JsonBackReference("building-classes")
     private Building building;
 
     @ManyToOne
     @JoinColumn(name = "professor_id")
+    @JsonBackReference("professor-classes")
     private Professor professor;  
 
      /*
@@ -61,7 +91,7 @@ public class ClassEntity implements Serializable{
      }
 
      // Constructor w/o classID
-     public ClassEntity(String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
+     public ClassEntity(String days, LocalTime startTime, LocalTime endTime, Building building, String room, String campus, CourseSection courseSection) {
          this.days = days;
          this.startTime = startTime;
          this.endTime = endTime;
@@ -69,25 +99,15 @@ public class ClassEntity implements Serializable{
          this.room = room;
          this.campus = campus;
          this.courseSection = courseSection;
-     }
+    }
 
-     // Constructor w/ classID
-     public ClassEntity(int classId, String days, String startTime, String endTime, Building building, String room, String campus, CourseSection courseSection) {
-         this.classId = classId;
-         this.days = days;
-         this.startTime = startTime;
-         this.endTime = endTime;
-         this.building = building;
-         this.room = room;
-         this.campus = campus;
-         this.courseSection = courseSection;
-     }
+
 
     /*
     * Getters and Setters
     */
 
-    public int getClassId() {
+    public long getClassId() {
         return classId;
     }
 
@@ -102,22 +122,7 @@ public class ClassEntity implements Serializable{
     public void setDays(String days) {
         this.days = days;
     }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
+    
 
     public Building getBuilding() {
         return building;
@@ -158,9 +163,18 @@ public class ClassEntity implements Serializable{
     public String toString() {
         return "Class [classId=" + classId
             + ", days=" + days 
-            + ", startTime=" + startTime 
+            + ", startTime=" + startTime
             + ", endTime=" + endTime
             + ", room=" + room
             + ", campus=" + campus + "]";
+    }
+
+    public void updateFrom (Course2 course, LocalTime startTime, LocalTime endTime, Building building, Professor professor) {
+        this.days = course.getMeetingDays();
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.building = building;
+        this.campus = course.getCampus();
+        this.professor = professor;
     }
 }

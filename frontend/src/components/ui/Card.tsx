@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "./Button";
+import Image from "next/image";
 
 interface props {
   image?: string;
@@ -17,7 +18,7 @@ export function Card({ image, heading, text, handleClick }: props) {
         {/* Image */}
         {image && (
           <div className="p-4 pt-0 sm:p-8">
-            <img className="min-h-24 sm:min-h-36" src={image} alt="Image" />
+            <Image src={image} alt="Image" height={100} width={100} />
           </div>
         )}
         {/* Heading */}

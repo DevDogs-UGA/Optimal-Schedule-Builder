@@ -4,9 +4,19 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import edu.uga.devdogs.course_information.CourseSection.CourseSection;
+import edu.uga.devdogs.course_information.webscraping.Course2;
+
 
 @Entity
+@Table(name = "course", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"subject", "courseNumber"})
+})
 public class Course implements Serializable {
     // Variables
     @Id
@@ -18,62 +28,60 @@ public class Course implements Serializable {
     private String subject;
     private String courseNumber;
     private String department;
+
+    @Column(name = "course_description", columnDefinition = "TEXT")
     private String courseDescription;
+    
     private String athenaTitle;
     private String gradingSystem;
 
     // Relationships
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference("course-sections")
     private List<CourseSection> courseSections = new ArrayList<>();
     
-    private List<CourseSection> preRequisites;
-    private List<CourseSection> coRequisites;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "equiv_courses_junction", 
-        joinColumns = @JoinColumn(name = "course_id"), 
-        inverseJoinColumns = @JoinColumn(name = "equiv_course_id")
-    )
-    List<Course> equivalentCourses = new ArrayList<>();
-
-    @ManyToMany
     @JoinTable(
         name = "pre_req_junction", 
         joinColumns = @JoinColumn(name = "course_id"), 
         inverseJoinColumns = @JoinColumn(name = "prereq_course_id")
     )
-    List<Course> prerequisiteCourses = new ArrayList<>();
+    private List<Course> preRequisites = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "co_req_junction", 
+        joinColumns = @JoinColumn(name = "course_id"), 
+        inverseJoinColumns = @JoinColumn(name = "coreq_course_id")
+    )
+    private List<Course> coRequisites = new ArrayList<>();
 
     @ElementCollection
     private List<String> semesters = new ArrayList<>();
 
-    // Default constructor with proper initialization
+    // Default constructor
     public Course() {
         this.courseSections = new ArrayList<>();
         this.preRequisites = new ArrayList<>();
         this.coRequisites = new ArrayList<>();
-        this.equivalentCourses = new ArrayList<>();
-        this.prerequisiteCourses = new ArrayList<>();
         this.semesters = new ArrayList<>();
     }
 
-    // Constructor that properly sets title parameter
-    public Course(String subject, String courseNumber, String title, String department, List<CourseSection> courseSections) {
-        this();  // Call default constructor for initialization
+    public Course(String subject, String courseNumber, String title, String department, List<CourseSection> courseSections, String courseDescription) {
+        this();
         this.subject = subject;
         this.courseNumber = courseNumber;
-        this.title = title;  // Fixed: now setting the title
+        this.title = title;
         this.department = department;
         if (courseSections != null) {
             this.courseSections = courseSections;
         }
+        this.courseDescription = courseDescription;
     }
 
-    // Full constructor for all fields
     public Course(String subject, String courseNumber, String title, String department, 
                  String courseDescription, String athenaTitle, String gradingSystem) {
-        this(); // Call default constructor for initialization
+        this();
         this.subject = subject;
         this.courseNumber = courseNumber;
         this.title = title;
@@ -83,11 +91,10 @@ public class Course implements Serializable {
         this.gradingSystem = gradingSystem;
     }
 
-    // Original constructor with fixes
     public Course(String subject, String courseNumber, String title, String department, 
-                 List<CourseSection> courseSections, List<CourseSection> preRequisites, 
-                 List<CourseSection> coRequisites) {    
-        this(); // Call default constructor for initialization
+                 List<CourseSection> courseSections, List<Course> preRequisites, 
+                 List<Course> coRequisites) {    
+        this();
         this.title = title;
         this.subject = subject;
         this.courseNumber = courseNumber;
@@ -103,12 +110,10 @@ public class Course implements Serializable {
         }
     }
 
-    // Full constructor with ID
     public Course(long courseId, String subject, String courseNumber, String title, String department,
             List<CourseSection> courseSections, String courseDescription, String athenaTitle,
-            List<Course> equivalentCourses, List<Course> prerequisiteCourses, List<String> semesters,
-            String gradingSystem) {
-        this(); // Call default constructor for initialization
+            List<String> semesters, String gradingSystem) {
+        this();
         this.courseId = courseId;
         this.subject = subject;
         this.courseNumber = courseNumber;
@@ -119,19 +124,13 @@ public class Course implements Serializable {
         }
         this.courseDescription = courseDescription;
         this.athenaTitle = athenaTitle;
-        if (equivalentCourses != null) {
-            this.equivalentCourses = equivalentCourses;
-        }
-        if (prerequisiteCourses != null) {
-            this.prerequisiteCourses = prerequisiteCourses;
-        }
         if (semesters != null) {
             this.semesters = semesters;
         }
         this.gradingSystem = gradingSystem;
     }
 
-    // Getters and setters...
+    // Getters and setters
     public long getCourseId() {
         return courseId;
     }
@@ -180,19 +179,19 @@ public class Course implements Serializable {
         this.courseSections = courseSections;
     }
 
-    public List<CourseSection> getPrerequisets(long id) {
+    public List<Course> getPreRequisites() {
         return preRequisites;
     }
 
-    public void setPrerequisites(List<CourseSection> preRequisites) {
+    public void setPreRequisites(List<Course> preRequisites) {
         this.preRequisites = preRequisites;
     }
 
-    public List<CourseSection> getCorequisites(long id) {
+    public List<Course> getCoRequisites() {
         return coRequisites;
     }
 
-    public void setCorequisites(List<CourseSection> coRequisites) {
+    public void setCoRequisites(List<Course> coRequisites) {
         this.coRequisites = coRequisites;
     }
 
@@ -212,22 +211,6 @@ public class Course implements Serializable {
         this.athenaTitle = athenaTitle;
     }
 
-    public List<Course> getEquivalentCourses() {
-        return equivalentCourses;
-    }
-
-    public void setEquivalentCourses(List<Course> equivelantCourses) {
-        this.equivalentCourses = equivelantCourses;
-    }
-
-    public List<Course> getPrerequisiteCourses() {
-        return prerequisiteCourses;
-    }
-
-    public void setPrerequisiteCourses(List<Course> prerequisiteCourses) {
-        this.prerequisiteCourses = prerequisiteCourses;
-    }
-
     public List<String> getSemesters() {
         return semesters;
     }
@@ -243,7 +226,7 @@ public class Course implements Serializable {
     public void setGradingSystem(String gradingSystem) {
         this.gradingSystem = gradingSystem;
     }
- 
+
     @Override
     public String toString() {
         return "Course {" +
@@ -252,19 +235,25 @@ public class Course implements Serializable {
             "subject='" + subject + '\'' + ", " +
             "courseNumber='" + courseNumber + '\'' + ", " +
             "department='" + department + '\'' + ", " +
-            "preRequisites=" + formatList(preRequisites) + ", " +
-            "coRequisites=" + formatList(coRequisites) +
+            "preRequisites=" + formatCourseList(preRequisites) + ", " +
+            "coRequisites=" + formatCourseList(coRequisites) +
             '}';
     }
 
-    private String formatList(List<CourseSection> list) {
+    private String formatCourseList(List<Course> list) {
         if (list == null || list.isEmpty()) {
             return "[]";
         }
         return list.stream()
-               .map(Object::toString)
+               .map(c -> c.getSubject() + " " + c.getCourseNumber())
                .reduce((s1, s2) -> s1 + ", " + s2)
                .map(result -> "[" + result + "]")
                .orElse("[]");
+    }
+
+    public void updateFrom(Course2 course) {
+        this.subject = course.getSubject();
+        this.title = course.getTitle();
+        this.department = course.getDepartment();
     }
 }
