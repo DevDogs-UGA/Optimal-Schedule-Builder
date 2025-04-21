@@ -69,7 +69,7 @@ export default function Filters() {
   const [maxCreditHours, setMaxCreditHours] = useState<number>(18);
 
   return (
-    <section className="flex flex-col gap-6 border-2 rounded-lg border-[#cc97a3] bg-barely-pink px-4 py-6 sm:gap-9 sm:px-8 sm:py-9">
+    <section className="flex flex-col gap-6 rounded-lg border-2 border-[#A79A9D] bg-barely-pink px-4 py-6 sm:gap-9 sm:px-8 sm:py-9">
       <h1 className="w-full text-center text-xl font-bold sm:text-2xl lg:text-left">
         Filters
       </h1>

@@ -157,7 +157,7 @@ export function AddCourses({ onAddCourse, searchParams }: Props) {
       </nav>
 
       <form
-        className="flex flex-col gap-16 rounded-bl-lg rounded-br-lg border-2 border-t-0 border-[#cc97a3] bg-barely-pink px-8 py-10"
+        className="flex flex-col gap-16 rounded-bl-lg rounded-br-lg border-2 border-t-0 border-[#A79A9D] bg-barely-pink px-8 py-10"
         onSubmit={handleSubmit}
       >
         {state.view === "subject" && <SearchBySubject {...subjectView} />}
