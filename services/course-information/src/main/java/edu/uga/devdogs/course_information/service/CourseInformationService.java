@@ -343,9 +343,9 @@ public class CourseInformationService {
 
             for (CourseSection courseSection : course.getCourseSections()) {
                 int crn = courseSection.getCrn();
-                String instructor = courseSection.getInstructor();
-                float rating = professorRepository.findByLastName(instructor).getAverageRating();
-                edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(instructor, rating);
+                String profLastName = courseSection.getInstructor();
+                float rating = professorRepository.findByLastName(profLastName).getAverageRating();
+                edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(profLastName, rating);
 
                 List<Class> classes = new ArrayList<>();
 
@@ -378,9 +378,9 @@ public class CourseInformationService {
 
             for (CourseSection courseSection : course.getCourseSections()) {
                 //we get the professor
-                String instructor = courseSection.getInstructor();
-                float rating = professorRepository.findByLastName(instructor).getAverageRating();
-                edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(instructor,rating);
+                String profLastName = courseSection.getInstructor();
+                float rating = professorRepository.findByLastName(profLastName).getAverageRating();
+                edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(profLastName,rating);
 
                 List<Class> classes = new ArrayList<>();
 
@@ -410,9 +410,9 @@ public class CourseInformationService {
         for (Integer crn : excludedSectionCrns) {
             CourseSection courseSection = courseSectionRepository.findByCrn(crn);
             String courseNumber = courseSection.getCourse().getCourseNumber();
-            String instructor = courseSection.getInstructor();
-            float rating = professorRepository.findByLastName(instructor).getAverageRating();
-            edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(instructor,rating);
+            String profLastName = courseSection.getInstructor();
+            float rating = professorRepository.findByLastName(profLastName).getAverageRating();
+            edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(profLastName,rating);
 
             List<Class> classes = new ArrayList<>();
 
