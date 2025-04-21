@@ -318,7 +318,7 @@ public class CourseInformationService {
         throw new BuildingNotFoundException();
     }
 
-    public List<List<Integer>> getRecommendedSchedules(List<Integer> inputCourseCrns, String gapDay, int prefStartTime, int prefEndTime, boolean showFilledClasses,
+    public List<List<Integer>> getRecommendedSchedules(List<String> inputCourseNumbers, String gapDay, int prefStartTime, int prefEndTime, boolean showFilledClasses,
                                                        List<Integer> excludedCourseCrns, List<Integer> excludedSectionCrns, String inputCampus, int minCreditHours, int maxCreditHours, boolean walking) {
         Set<edu.uga.devdogs.course_information.Algorithm.records.Course> inputCourses = new HashSet<>();
 
@@ -332,6 +332,41 @@ public class CourseInformationService {
 
         List<edu.uga.devdogs.course_information.Algorithm.records.Course> excludedCourses = new ArrayList<>();
 
+        // Building input courses list from given course numbers
+
+        for (String fullCourseNumber : inputCourseNumbers) {
+            String subject = fullCourseNumber.substring(0, 4);
+            String courseNumber = fullCourseNumber.substring(4);
+            Course course = courseRepository.findBySubjectAndCourseNumber(subject, courseNumber);
+
+            List<Section> sections = new ArrayList<>();
+
+            for (CourseSection courseSection : course.getCourseSections()) {
+                int crn = courseSection.getCrn();
+                String instructor = courseSection.getInstructor();
+                float rating = professorRepository.findByLastName(instructor).getAverageRating();
+                edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(instructor, rating);
+
+                List<Class> classes = new ArrayList<>();
+
+                for (ClassEntity classEntity : courseSection.getClasses()) {
+                    String daysString = classEntity.getDays();
+                    List<DayOfWeek> daysList = new ArrayList<>();
+                    for (int i = 0; i < daysString.length(); i++) {
+                        daysList.add(BruteForceUtil.daySwitch(daysString.substring(i, i + 1)));
+                    }
+                    LocalTime startTime = classEntity.getStartTime();
+                    LocalTime endTime = classEntity.getEndTime();
+                    String buildingName = classEntity.getBuilding().getName();
+                    String campus = classEntity.getCampus();
+                    String buildingNumber = String.valueOf(classEntity.getBuilding().getBuildingCode());
+                    classes.add(new Class(crn, daysList, startTime, endTime, buildingName, campus, buildingNumber));
+                }
+                sections.add(new Section(courseNumber, crn, professor, classes));
+            }
+            inputCourses.add(new edu.uga.devdogs.course_information.Algorithm.records.Course(courseNumber, sections));
+        }
+
         //building excluded courses list from given crns
 
         for (Integer crn : excludedCourseCrns) {
@@ -343,9 +378,9 @@ public class CourseInformationService {
 
             for (CourseSection courseSection : course.getCourseSections()) {
                 //we get the professor
-                String profLastName = courseSection.getInstructor();
-                float rating = professorRepository.findByLastName(profLastName).getAverageRating();
-                edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(profLastName,rating);
+                String instructor = courseSection.getInstructor();
+                float rating = professorRepository.findByLastName(instructor).getAverageRating();
+                edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(instructor,rating);
 
                 List<Class> classes = new ArrayList<>();
 
@@ -375,9 +410,9 @@ public class CourseInformationService {
         for (Integer crn : excludedSectionCrns) {
             CourseSection courseSection = courseSectionRepository.findByCrn(crn);
             String courseNumber = courseSection.getCourse().getCourseNumber();
-            String profLastName = courseSection.getInstructor();
-            float rating = professorRepository.findByLastName(profLastName).getAverageRating();
-            edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(profLastName,rating);
+            String instructor = courseSection.getInstructor();
+            float rating = professorRepository.findByLastName(instructor).getAverageRating();
+            edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(instructor,rating);
 
             List<Class> classes = new ArrayList<>();
 
