@@ -136,28 +136,28 @@ export function AddCourses({ onAddCourse, searchParams }: Props) {
         <Link
           href={subjectView.href}
           data-active={state.view === "subject"}
-          className="w-1/3 rounded-bl-none rounded-br-none rounded-tl-lg rounded-tr-lg bg-dusty-pink px-4 py-2 text-left font-bold capitalize text-[#CFBEBE] duration-150 data-[active=true]:bg-bulldog-red data-[active=true]:text-white"
+          className="w-1/3 rounded-bl-none rounded-br-none rounded-tl-lg rounded-tr-lg bg-dusty-pink px-4 py-2 text-left font-bold capitalize text-[#c9b1b9] duration-150 data-[active=true]:bg-bulldog-red data-[active=true]:text-white"
         >
           By Subject
         </Link>
         <Link
           href={instructorView.href}
           data-active={state.view === "instructor"}
-          className="w-1/3 rounded-bl-none rounded-br-none rounded-tl-lg rounded-tr-lg bg-dusty-pink px-4 py-2 text-left font-bold capitalize text-[#CFBEBE] duration-150 data-[active=true]:bg-bulldog-red data-[active=true]:text-white"
+          className="w-1/3 rounded-bl-none rounded-br-none rounded-tl-lg rounded-tr-lg bg-dusty-pink px-4 py-2 text-left font-bold capitalize text-[#c9b1b9] duration-150 data-[active=true]:bg-bulldog-red data-[active=true]:text-white"
         >
           By Instructor
         </Link>
         <Link
           href={crnView.href}
           data-active={state.view === "crn"}
-          className="w-1/3 rounded-bl-none rounded-br-none rounded-tl-lg rounded-tr-lg bg-dusty-pink px-4 py-2 text-left font-bold capitalize text-[#CFBEBE] duration-150 data-[active=true]:bg-bulldog-red data-[active=true]:text-white"
+          className="w-1/3 rounded-bl-none rounded-br-none rounded-tl-lg rounded-tr-lg bg-dusty-pink px-4 py-2 text-left font-bold capitalize text-[#c9b1b9] duration-150 data-[active=true]:bg-bulldog-red data-[active=true]:text-white"
         >
           By CRN
         </Link>
       </nav>
 
       <form
-        className="flex flex-col gap-16 border-4 border-dusty-pink bg-barely-pink px-8 py-10"
+        className="flex flex-col gap-16 rounded-bl-lg rounded-br-lg border-2 border-t-0 border-[#cc97a3] bg-barely-pink px-8 py-10"
         onSubmit={handleSubmit}
       >
         {state.view === "subject" && <SearchBySubject {...subjectView} />}
