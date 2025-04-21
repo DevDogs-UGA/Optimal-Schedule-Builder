@@ -359,7 +359,7 @@ public class CourseInfoController {
     /**
      * Returns a list of recommended CRNS given paramters.
      *
-     * @param inputCourseCrns Potentials CRNs for a schedule
+     * @param inputCourseNumbers Potential course numbers for a schedule
      * @param gapDay Day of the week to leave open
      * @param prefStartTime Preferred start time for the schedule
      * @param prefEndTime Preferred end time for the schedule
@@ -379,11 +379,11 @@ public class CourseInfoController {
     })
     @GetMapping("/get-recommended-schedules")
     @Tag(name="course-information")
-    public ResponseEntity<List<List<Integer>>> getRecommendedSchedules(List<Integer> inputCourseCrns, String gapDay, int prefStartTime, int prefEndTime, boolean showFilledClasses,
+    public ResponseEntity<List<List<Integer>>> getRecommendedSchedules(List<String> inputCourseNumbers, String gapDay, int prefStartTime, int prefEndTime, boolean showFilledClasses,
     List<Integer> excludedCourseCrns, List<Integer> excludedSectionCrns, String inputCampus, int minCreditHours, int maxCreditHours, boolean walking) {
         try {
             // Returns a list of recommended schedules based on input parameters
-            List<List<Integer>> recommendedSchedules = courseInformationService.getRecommendedSchedules(inputCourseCrns, gapDay, prefStartTime, prefEndTime, showFilledClasses,
+            List<List<Integer>> recommendedSchedules = courseInformationService.getRecommendedSchedules(inputCourseNumbers, gapDay, prefStartTime, prefEndTime, showFilledClasses,
                     excludedCourseCrns, excludedSectionCrns, inputCampus, minCreditHours, maxCreditHours, walking);
 
             // Return the section if found
