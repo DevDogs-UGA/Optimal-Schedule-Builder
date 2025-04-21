@@ -318,8 +318,8 @@ public class CourseInformationService {
         throw new BuildingNotFoundException();
     }
 
-    public List<List<Integer>> getRecommendedSchedules(List<String> inputCourseNumbers, String gapDay, int prefStartTime, int prefEndTime, boolean showFilledClasses,
-                                                       List<Integer> excludedCourseCrns, List<Integer> excludedSectionCrns, String inputCampus, int minCreditHours, int maxCreditHours, boolean walking) {
+    public List<List<Integer>> getRecommendedSchedules(List<String> inputCourseIDs, String gapDay, int prefStartTime, int prefEndTime, boolean showFilledClasses,
+                                                       List<String> excludedCourseIDs, List<Integer> excludedSectionCrns, String inputCampus, int minCreditHours, int maxCreditHours, boolean walking) {
         Set<edu.uga.devdogs.course_information.Algorithm.records.Course> inputCourses = new HashSet<>();
 
         DayOfWeek dayOfWeekGapDay = BruteForceUtil.daySwitch(gapDay);
@@ -332,11 +332,11 @@ public class CourseInformationService {
 
         List<edu.uga.devdogs.course_information.Algorithm.records.Course> excludedCourses = new ArrayList<>();
 
-        // Building input courses list from given course numbers
+        // Building input courses list from given course IDs
 
-        for (String fullCourseNumber : inputCourseNumbers) {
-            String subject = fullCourseNumber.substring(0, 4);
-            String courseNumber = fullCourseNumber.substring(4);
+        for (String courseID : inputCourseIDs) {
+            String subject = courseID.substring(0, 4);
+            String courseNumber = courseID.substring(4);
             Course course = courseRepository.findBySubjectAndCourseNumber(subject, courseNumber);
 
             List<Section> sections = new ArrayList<>();
@@ -367,12 +367,12 @@ public class CourseInformationService {
             inputCourses.add(new edu.uga.devdogs.course_information.Algorithm.records.Course(courseNumber, sections));
         }
 
-        //building excluded courses list from given crns
+        //building excluded courses list from given course IDs
 
-        for (Integer crn : excludedCourseCrns) {
-            CourseSection section = courseSectionRepository.findByCrn(crn);
-            Course course = section.getCourse();
-            String courseNumber = course.getCourseNumber();
+        for (String courseID : excludedCourseIDs) {
+            String subject = courseID.substring(0, 4);
+            String courseNumber = courseID.substring(4);
+            Course course = courseRepository.findBySubjectAndCourseNumber(subject, courseNumber);
 
             List<Section> sections = new ArrayList<>();
 
@@ -381,6 +381,8 @@ public class CourseInformationService {
                 String profLastName = courseSection.getInstructor();
                 float rating = professorRepository.findByLastName(profLastName).getAverageRating();
                 edu.uga.devdogs.course_information.Algorithm.records.Professor professor = new edu.uga.devdogs.course_information.Algorithm.records.Professor(profLastName,rating);
+
+                int crn = courseSection.getCrn();
 
                 List<Class> classes = new ArrayList<>();
 
