@@ -43,9 +43,11 @@ export default function MyPlans() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      
-      <div className = "z-1 mb-0 ml-[10%] mr-auto mt-20 flex h-[10vh] w-1/5 overflow-y-auto rounded-t-lg border-t-2 border-l-2 border-r-2 border-black bg-red-700">
-            <h1 className="text-3xl font-bold text-white mt-auto mb-auto mr-auto ml-auto">My Plans</h1>
+
+      <div className="z-1 mb-0 ml-[10%] mr-auto mt-20 flex h-[10vh] w-1/5 overflow-y-auto rounded-t-lg border-l-2 border-r-2 border-t-2 border-black bg-red-700">
+        <h1 className="mb-auto ml-auto mr-auto mt-auto text-3xl font-bold text-white">
+          My Plans
+        </h1>
       </div>
 
       {savedPlans.length === 0 && (
@@ -65,8 +67,6 @@ export default function MyPlans() {
       )}
 
       <div className="z-1 mb-10 ml-auto mr-auto mt-0 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center gap-6 overflow-y-auto rounded-xl rounded-tl-none border-2 border-black bg-barely-pink py-10">
-       
-
         {savedPlans
           .toSorted((a, b) => (a.pinned !== b.pinned ? (a.pinned ? -1 : 1) : 0))
           .map((plan) => (
