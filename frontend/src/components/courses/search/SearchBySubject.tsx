@@ -50,8 +50,7 @@ export default function SearchBySubject({
     "getAllSubjects",
     {},
     {
-      // TODO: Remove dummy data once a connection can be made to the course information service
-      initialData: ["CSCI", "MATH", "ARTI", "PHYS", "PHIL", "ENGR", "STAT"],
+      initialData: [],
     },
   );
 
@@ -60,37 +59,7 @@ export default function SearchBySubject({
     { major: subject ?? "" },
     {
       enabled: subject !== undefined,
-      // TODO: Remove dummy data once a connection can be made to the course information service
-      //@ts-expect-error Dummy data
-      initialData:
-        subject === "CSCI"
-          ? [
-              {
-                athenaTitle: "Software Development",
-                courseNumber: "1302",
-                courseId: 1302,
-                subject: "CSCI",
-              },
-              {
-                athenaTitle: "Systems Programming",
-                courseNumber: "1730",
-                courseId: 1730,
-                subject: "CSCI",
-              },
-              {
-                athenaTitle: "Data Structures",
-                courseNumber: "2720",
-                courseId: 2720,
-                subject: "CSCI",
-              },
-              {
-                athenaTitle: "Web Programming",
-                courseNumber: "4300",
-                courseId: 4300,
-                subject: "CSCI",
-              },
-            ]
-          : [],
+      initialData: [],
     },
   );
 

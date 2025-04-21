@@ -46,8 +46,7 @@ export default function SearchByCRN({
     "getAllCRNs",
     {},
     {
-      // TODO: Remove dummy data once a connection can be made to the course information service
-      initialData: [123456],
+      initialData: [],
     },
   );
 
