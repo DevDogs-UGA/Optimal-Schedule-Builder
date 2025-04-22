@@ -39,7 +39,7 @@ export default function SavedPlan({ plan, onPin, onDelete }: PlanDisplayProps) {
 
   return (
     <div
-      className="relative z-10 flex w-[70vw] cursor-pointer flex-row items-center gap-4 rounded-xl border-b-8 border-neutral-400 bg-white px-7 py-4 ring-2 ring-black hover:mt-1 hover:border-b-4 hover:border-neutral-500 hover:bg-neutral-100 [&:active:not(:has(input:hover,button:hover))]:border-b-0 [&:active:not(:has(input:hover,button:hover))]:border-t-4"
+      className="relative z-10 flex w-[70vw] cursor-pointer flex-row items-center gap-4 rounded-xl border-b-8 border-red-700 bg-white px-7 py-4 ring-2 ring-black hover:mt-1 hover:border-b-4 hover:border-red-700 hover:bg-neutral-100 [&:active:not(:has(input:hover,button:hover))]:border-b-0 [&:active:not(:has(input:hover,button:hover))]:border-t-4"
       onClick={goToPlan}
       role="link"
     >

@@ -41,18 +41,18 @@ export default function MyPlans() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-barely-pink">
       <Navbar />
 
-      <div className="z-1 mb-0 ml-[10%] mr-auto mt-20 flex h-[10vh] w-1/5 overflow-y-auto rounded-t-lg border-l-2 border-r-2 border-t-2 border-black bg-red-700">
-        <h1 className="mb-auto ml-auto mr-auto mt-auto text-3xl font-bold text-white">
+      <div className="z-1 mb-0 ml-[10%] mr-auto mt-20 flex h-[8vh] w-[25%] overflow-y-auto rounded-t-lg border-l-2 border-r-2 border-t-2 border-black bg-red-700">
+        <h1 className="mb-auto ml-auto mr-auto mt-auto text-4xl font-bold text-white">
           My Plans
         </h1>
       </div>
 
       {savedPlans.length === 0 && (
         // if savedPlans array is empty: direct user to the schedule builder
-        <div className="z-1 mb-10 ml-auto mr-auto mt-0 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl rounded-tl-none border-2 border-black bg-barely-pink">
+        <div className="z-1 mb-10 ml-auto mr-auto mt-0 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl rounded-tl-none border-2 border-black bg-white">
           <div className="m-auto flex flex-col items-center justify-center">
             <h1 className="text-3xl font-bold">
               You don&apos;t have any saved plans yet.{" "}
@@ -66,7 +66,7 @@ export default function MyPlans() {
         </div>
       )}
 
-      <div className="z-1 mb-10 ml-auto mr-auto mt-0 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center gap-6 overflow-y-auto rounded-xl rounded-tl-none border-2 border-black bg-barely-pink py-10">
+      <div className="z-1 mb-10 ml-auto mr-auto mt-0 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center gap-6 overflow-y-auto rounded-xl rounded-tl-none border-2 border-black bg-white py-10">
         {savedPlans
           .toSorted((a, b) => (a.pinned !== b.pinned ? (a.pinned ? -1 : 1) : 0))
           .map((plan) => (
