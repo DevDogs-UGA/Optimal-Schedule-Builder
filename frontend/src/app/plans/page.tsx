@@ -41,7 +41,7 @@ export default function MyPlans() {
   };
 
   return (
-    <div className="min-h-screen bg-barely-pink">
+    <div className="min-h-screen">
       <Navbar />
 
       <div className="z-1 mb-0 ml-[10%] mr-auto mt-20 flex h-[8vh] w-[25%] overflow-y-auto rounded-t-lg border-l-2 border-r-2 border-t-2 border-black bg-red-700">
@@ -52,7 +52,7 @@ export default function MyPlans() {
 
       {savedPlans.length === 0 && (
         // if savedPlans array is empty: direct user to the schedule builder
-        <div className="z-1 mb-10 ml-auto mr-auto mt-0 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl rounded-tl-none border-2 border-black bg-white">
+        <div className="z-1 mb-10 ml-auto mr-auto mt-0 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center overflow-y-auto rounded-xl rounded-tl-none border-2 border-black bg-white dark:bg-dm-mid-gray">
           <div className="m-auto flex flex-col items-center justify-center">
             <h1 className="text-3xl font-bold">
               You don&apos;t have any saved plans yet.{" "}
@@ -66,29 +66,33 @@ export default function MyPlans() {
         </div>
       )}
 
-      <div className="z-1 mb-10 ml-auto mr-auto mt-0 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center gap-6 overflow-y-auto rounded-xl rounded-tl-none border-2 border-black bg-white py-10">
-        {savedPlans
-          .toSorted((a, b) => (a.pinned !== b.pinned ? (a.pinned ? -1 : 1) : 0))
-          .map((plan) => (
-            <motion.div
-              layout
-              key={plan.id}
-              transition={{
-                type: "spring",
-                damping: 20,
-                stiffness: 120,
-                duration: 100,
-              }}
-              className="relative"
-            >
-              <SavedPlan
-                plan={plan}
-                onPin={() => pinPlan(plan.id)}
-                onDelete={() => confirmDeletePlan(plan.title)}
-              />
-            </motion.div>
-          ))}
-      </div>
+      {savedPlans.length !== 0 && (
+        <div className="z-1 mb-10 ml-auto mr-auto mt-0 flex h-[85vh] w-4/5 flex-col flex-nowrap items-center gap-6 overflow-y-auto rounded-xl rounded-tl-none border-2 border-black bg-white py-10 dark:bg-dm-mid-gray">
+          {savedPlans
+            .toSorted((a, b) =>
+              a.pinned !== b.pinned ? (a.pinned ? -1 : 1) : 0,
+            )
+            .map((plan) => (
+              <motion.div
+                layout
+                key={plan.id}
+                transition={{
+                  type: "spring",
+                  damping: 20,
+                  stiffness: 120,
+                  duration: 100,
+                }}
+                className="relative"
+              >
+                <SavedPlan
+                  plan={plan}
+                  onPin={() => pinPlan(plan.id)}
+                  onDelete={() => confirmDeletePlan(plan.title)}
+                />
+              </motion.div>
+            ))}
+        </div>
+      )}
 
       {planToDelete && (
         <DeletePlan

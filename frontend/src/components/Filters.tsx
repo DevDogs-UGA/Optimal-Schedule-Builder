@@ -69,7 +69,7 @@ export default function Filters() {
   const [maxCreditHours, setMaxCreditHours] = useState<number>(18);
 
   return (
-    <section className="flex flex-col gap-6 border-4 border-dusty-pink bg-barely-pink px-4 py-6 sm:gap-9 sm:px-8 sm:py-9">
+    <section className="flex flex-col gap-6 border-4 border-dusty-pink bg-white px-4 py-6 dark:border-dm-light-gray dark:bg-[#525252] sm:gap-9 sm:px-8 sm:py-9">
       <h1 className="w-full text-center text-xl font-bold sm:text-2xl lg:text-left">
         Filters
       </h1>
@@ -104,9 +104,9 @@ export default function Filters() {
         </label>
 
         <div className="contents grid-cols-subgrid items-center lg:col-span-2 lg:grid">
-          <label className="col-span-full flex items-center justify-center gap-4 border-b-2 border-pebble-gray/40 pb-4 text-neutral-700 hover:text-black sm:pb-6 lg:col-start-2 lg:justify-start lg:border-none lg:pb-0">
+          <label className="col-span-full flex items-center justify-center gap-4 border-b-2 border-pebble-gray/40 pb-4 text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white sm:pb-6 lg:col-start-2 lg:justify-start lg:border-none lg:pb-0">
             <input
-              className="form-checkbox size-6 rounded-md border-2 border-limestone text-bulldog-red hover:border-pebble-gray focus:ring-bulldog-red"
+              className="form-checkbox size-6 rounded-md border-2 border-limestone text-bulldog-red dark:form-checkbox hover:border-pebble-gray focus:ring-bulldog-red dark:size-6 dark:rounded-md dark:border-2 dark:border-[#a9999c] dark:bg-[#c7c7c7] dark:text-bulldog-red dark:hover:border-white dark:focus:ring-bulldog-red"
               name="walking"
               type="checkbox"
             />
@@ -140,9 +140,9 @@ export default function Filters() {
         </label>
 
         <div className="contents grid-cols-subgrid items-center lg:col-span-2 lg:grid">
-          <label className="col-span-full flex items-center justify-center gap-4 border-b-2 border-pebble-gray/40 pb-4 text-neutral-700 hover:text-black sm:pb-6 lg:col-start-2 lg:justify-start lg:border-none lg:pb-0">
+          <label className="col-span-full flex items-center justify-center gap-4 border-b-2 border-pebble-gray/40 pb-4 text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white sm:pb-6 lg:col-start-2 lg:justify-start lg:border-none lg:pb-0">
             <input
-              className="form-checkbox size-6 rounded-md border-2 border-limestone text-bulldog-red hover:border-pebble-gray focus:ring-bulldog-red"
+              className="form-checkbox size-6 rounded-md border-2 border-limestone text-bulldog-red dark:form-checkbox hover:border-pebble-gray focus:ring-bulldog-red dark:size-6 dark:rounded-md dark:border-2 dark:border-[#a9999c] dark:bg-[#c7c7c7] dark:text-bulldog-red dark:hover:border-white dark:focus:ring-bulldog-red"
               name="showFilledClasses"
               type="checkbox"
             />
@@ -155,7 +155,7 @@ export default function Filters() {
         <label className="col-span-2 grid grid-cols-subgrid items-center">
           <span className="pl-3 text-right font-bold">Min Credit Hours</span>
           <input
-            className="flex w-full items-center gap-6 rounded-md border-2 border-limestone bg-white px-3 py-1.5 transition-[box-shadow,border-color] disabled:cursor-not-allowed disabled:opacity-60 [&:not(:disabled):hover]:border-pebble-gray [&:not(:disabled):hover]:shadow-sm"
+            className="flex w-full items-center gap-6 rounded-md border-2 border-limestone bg-white px-3 py-1.5 transition-[box-shadow,border-color] disabled:cursor-not-allowed disabled:opacity-60 dark:border-[#a9999c] dark:bg-[#c7c7c7] dark:text-[#525252] [&:not(:disabled):hover]:border-pebble-gray [&:not(:disabled):hover]:shadow-sm dark:[&:not(:disabled):hover]:border-white dark:[&:not(:disabled):hover]:shadow-sm"
             min={1}
             max={maxCreditHours - 1}
             name="minCreditHours"
@@ -169,7 +169,7 @@ export default function Filters() {
         <label className="col-span-2 grid grid-cols-subgrid items-center">
           <span className="pl-3 text-right font-bold">Max Credit Hours</span>
           <input
-            className="flex w-full items-center gap-6 rounded-md border-2 border-limestone bg-white px-3 py-1.5 transition-[box-shadow,border-color] disabled:cursor-not-allowed disabled:opacity-60 [&:not(:disabled):hover]:border-pebble-gray [&:not(:disabled):hover]:shadow-sm"
+            className="flex w-full items-center gap-6 rounded-md border-2 border-limestone bg-white px-3 py-1.5 transition-[box-shadow,border-color] disabled:cursor-not-allowed disabled:opacity-60 dark:border-[#a9999c] dark:bg-[#c7c7c7] dark:text-[#525252] [&:not(:disabled):hover]:border-pebble-gray [&:not(:disabled):hover]:shadow-sm dark:[&:not(:disabled):hover]:border-white dark:[&:not(:disabled):hover]:shadow-sm"
             min={minCreditHours + 1}
             max={18}
             name="maxCreditHours"

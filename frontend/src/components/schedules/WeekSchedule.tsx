@@ -186,9 +186,9 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
   }, []);
 
   return (
-    <div className="relative z-0 mx-auto w-screen max-w-[1800px] overflow-x-hidden px-4">
+    <div className="relative z-0 mx-auto w-screen max-w-[1800px] px-4">
       <button
-        className="absolute left-0 top-0 z-10 flex h-full w-8 rotate-180 items-center justify-between rounded-r-lg border-l-2 border-pink-900 bg-pink-50 py-4 text-center font-bold text-pink-900 transition-[left] [writing-mode:vertical-lr] 2xl:hidden [&:not([data-scroll-target])]:-left-8"
+        className="absolute left-0 top-0 z-10 flex h-full w-8 rotate-180 items-center justify-between rounded-r-lg border-l-2 border-pink-900 bg-pink-50 py-4 text-center font-bold text-pink-900 transition-[left] [writing-mode:vertical-lr] dark:border-white dark:bg-[#969696] dark:text-white 2xl:hidden [&:not([data-scroll-target])]:-left-8"
         data-scroll-target={prev}
         onClick={scrollLeft}
         type="button"
@@ -200,7 +200,7 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
 
       {/* Viewport of schedule display */}
       <section
-        className="grid h-[750px] w-full snap-x snap-mandatory grid-cols-[1rem_repeat(5,calc((100%-1rem)/var(--cols)))] overflow-x-auto scroll-smooth rounded-lg bg-pink-200/50 py-4 [--cols:1] sm:[--cols:2] md:overflow-hidden lg:[--cols:3] xl:[--cols:4] 2xl:[--cols:5]"
+        className="grid h-[750px] w-full snap-x snap-mandatory grid-cols-[1rem_repeat(5,calc((100%-1rem)/var(--cols)))] overflow-x-auto scroll-smooth rounded-lg bg-pink-200/50 py-4 [--cols:1] dark:bg-dm-mid-gray sm:[--cols:2] md:overflow-hidden lg:[--cols:3] xl:[--cols:4] 2xl:[--cols:5]"
         ref={scrollportRef}
       >
         <div />
@@ -208,9 +208,9 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
         {Object.entries(weekData).map(([day, classes]) => (
           <div className="snap-end snap-always pr-4" data-title={day} key={day}>
             {/* One day's schedule */}
-            <article className="flex h-full w-full flex-col gap-4 rounded-xl bg-white px-0 py-0">
+            <article className="flex h-full w-full flex-col gap-4 rounded-xl bg-white px-0 py-0 dark:bg-[#343434]">
               {/* Day label */}
-              <h2 className="text rounded-lg bg-[#222233] px-4 py-3 text-center text-xl font-bold text-white">
+              <h2 className="text rounded-lg bg-[#222233] px-4 py-3 text-center text-xl font-bold text-white dark:bg-black">
                 {day}
               </h2>
               {/* Class list */}
@@ -240,7 +240,7 @@ export default function WeekSchedule({ weekData }: WeekScheduleProps) {
       </section>
 
       <button
-        className="absolute right-0 top-0 z-10 flex h-full w-8 items-center justify-between rounded-r-lg border-l-2 border-pink-900 bg-pink-50 py-4 text-center font-bold text-pink-900 transition-[right] [writing-mode:vertical-rl] 2xl:hidden [&:not([data-scroll-target])]:-right-8"
+        className="absolute right-0 top-0 z-10 flex h-full w-8 items-center justify-between rounded-r-lg border-l-2 border-pink-900 bg-pink-50 py-4 text-center font-bold text-pink-900 transition-[right] [writing-mode:vertical-rl] dark:border-white dark:bg-[#969696] dark:text-white 2xl:hidden [&:not([data-scroll-target])]:-right-8"
         data-scroll-target={next}
         onClick={scrollRight}
         type="button"

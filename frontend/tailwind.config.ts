@@ -20,6 +20,7 @@ export default {
         "pebble-gray": "hsl(var(--pebble-gray))",
         "dm-light-gray": "#6b6b6b",
         "dm-dark-gray": "#282828",
+        "dm-mid-gray": "#434343",
         limestone: "hsl(var(--limestone))",
         "baby-blue": "hsl(var(--baby-blue))",
         "lake-herrick": "hsl(var(--lake-herrick))",

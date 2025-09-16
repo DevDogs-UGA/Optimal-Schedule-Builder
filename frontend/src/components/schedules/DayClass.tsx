@@ -196,10 +196,10 @@ function CourseInfo({
 
   return (
     <div
-      className={`fixed inset-0 z-40 flex items-center justify-center bg-white bg-opacity-50`}
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-white bg-opacity-50 dark:bg-black dark:bg-opacity-50`}
     >
       <div
-        className={`relative flex flex-col rounded-lg bg-white ${outerBorder}`}
+        className={`relative flex flex-col rounded-lg bg-white dark:bg-dm-dark-gray ${outerBorder}`}
         style={{
           width,
           height,
@@ -208,7 +208,7 @@ function CourseInfo({
         }}
       >
         {/* Header: Course name and CRN */}
-        <div className={`relative z-50 ${bgColor} rounded-lg p-8`}>
+        <div className={`relative z-[100] ${bgColor} rounded-lg p-8`}>
           <div className="text-right font-bold text-white/90">
             <p>CRN: {crn}</p>
           </div>
@@ -265,73 +265,73 @@ function CourseInfo({
             </p>
             <br></br>
             <div className="items-center overflow-x-auto">
-              <table className="w-full table-auto border border-black">
+              <table className="w-full table-auto border border-black dark:border-white">
                 <thead>
                   <tr>
-                    <th className="border border-black p-2 text-center underline">
+                    <th className="border border-black p-2 text-center underline dark:border-white">
                       Day
                     </th>
-                    <th className="border border-black p-2 text-center underline">
+                    <th className="border border-black p-2 text-center underline dark:border-white">
                       Time
                     </th>
-                    <th className="border border-black p-2 text-center underline">
+                    <th className="border border-black p-2 text-center underline dark:border-white">
                       Location
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="border border-black p-2 text-center font-bold">
+                    <td className="border border-black p-2 text-center font-bold dark:border-white">
                       Monday
                     </td>
-                    <td className="border border-black p-2 text-center">
+                    <td className="border border-black p-2 text-center dark:border-white">
                       {weekInfo[0]}
                     </td>
-                    <td className="border border-black p-2 text-center">
+                    <td className="border border-black p-2 text-center dark:border-white">
                       {weekInfo[1]}
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-black p-2 text-center font-bold">
+                    <td className="border border-black p-2 text-center font-bold dark:border-white">
                       Tuesday
                     </td>
-                    <td className="border border-black p-2 text-center">
+                    <td className="border border-black p-2 text-center dark:border-white">
                       {weekInfo[2]}
                     </td>
-                    <td className="border border-black p-2 text-center">
+                    <td className="border border-black p-2 text-center dark:border-white">
                       {weekInfo[3]}
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-black p-2 text-center font-bold">
+                    <td className="border border-black p-2 text-center font-bold dark:border-white">
                       Wednesday
                     </td>
-                    <td className="border border-black p-2 text-center">
+                    <td className="border border-black p-2 text-center dark:border-white">
                       {weekInfo[4]}
                     </td>
-                    <td className="border border-black p-2 text-center">
+                    <td className="border border-black p-2 text-center dark:border-white">
                       {weekInfo[5]}
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-black p-2 text-center font-bold">
+                    <td className="border border-black p-2 text-center font-bold dark:border-white">
                       Thursday
                     </td>
-                    <td className="border border-black p-2 text-center">
+                    <td className="border border-black p-2 text-center dark:border-white">
                       {weekInfo[6]}
                     </td>
-                    <td className="border border-black p-2 text-center">
+                    <td className="border border-black p-2 text-center dark:border-white">
                       {weekInfo[7]}
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-black p-2 text-center font-bold">
+                    <td className="border border-black p-2 text-center font-bold dark:border-white">
                       Friday
                     </td>
-                    <td className="border border-black p-2 text-center">
+                    <td className="border border-black p-2 text-center dark:border-white">
                       {weekInfo[8]}
                     </td>
-                    <td className="border border-black p-2 text-center">
+                    <td className="border border-black p-2 text-center dark:border-white">
                       {weekInfo[9]}
                     </td>
                   </tr>

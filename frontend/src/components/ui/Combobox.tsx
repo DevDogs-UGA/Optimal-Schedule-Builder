@@ -262,7 +262,7 @@ export default function Combobox({
         data-loading={disabled !== true && options === undefined}
         asChild
       >
-        <button className="flex w-full cursor-default items-center gap-6 rounded-md border-2 border-limestone bg-white px-3 py-1.5 transition-[box-shadow,border-color] disabled:cursor-not-allowed disabled:opacity-60 data-[state=open]:pointer-events-none data-[loading=true]:cursor-wait [&:not(:disabled):hover]:border-pebble-gray [&:not(:disabled):hover]:shadow-sm">
+        <button className="flex w-full cursor-default items-center gap-6 rounded-md border-2 border-limestone bg-white px-3 py-1.5 transition-[box-shadow,border-color] disabled:cursor-not-allowed disabled:opacity-60 data-[state=open]:pointer-events-none data-[loading=true]:cursor-wait dark:border-[#a9999c] dark:bg-[#c7c7c7] dark:text-[#525252] [&:not(:disabled):hover]:border-pebble-gray [&:not(:disabled):hover]:shadow-sm dark:[&:not(:disabled):hover]:border-white dark:[&:not(:disabled):hover]:shadow-sm">
           <select
             className="peer pointer-events-none hidden flex-1 appearance-none bg-transparent has-[option:checked]:block"
             tabIndex={-1}
@@ -286,7 +286,7 @@ export default function Combobox({
       </Popover.Trigger>
 
       <Popover.Portal>
-        <Popover.Content className="-mt-[var(--radix-popover-trigger-height)] flex max-h-56 w-[var(--radix-popover-trigger-width)] max-w-[calc(100dvw-1rem)] flex-col gap-1 rounded-md border-2 border-pebble-gray bg-white px-1 py-1 shadow-lg">
+        <Popover.Content className="-mt-[var(--radix-popover-trigger-height)] flex max-h-56 w-[var(--radix-popover-trigger-width)] max-w-[calc(100dvw-1rem)] flex-col gap-1 rounded-md border-2 border-pebble-gray bg-white px-1 py-1 shadow-lg dark:bg-[#c7c7c7]">
           <label className="peer flex w-full items-center gap-2 rounded-sm bg-neutral-100 px-2 py-1">
             <PiMagnifyingGlass className="text-neutral-700" />
             <input
@@ -299,12 +299,12 @@ export default function Combobox({
           </label>
 
           <fieldset
-            className="relative flex max-h-[140px] snap-y snap-mandatory flex-col gap-1 overflow-y-auto"
+            className="relative flex max-h-[140px] snap-y snap-mandatory flex-col gap-1 overflow-y-auto dark:text-[#525252]"
             ref={fieldset}
           >
             {filteredOptions.map(({ value, content }) => (
               <label
-                className="flex snap-start items-center gap-2 rounded-sm py-1 pr-2 has-[:checked]:font-medium data-[active=true]:bg-limestone"
+                className="flex snap-start items-center gap-2 rounded-sm py-1 pr-2 has-[:checked]:font-medium data-[active=true]:bg-limestone dark:data-[active=true]:bg-neutral-200"
                 data-active={highlighted === value}
                 key={value}
                 onMouseEnter={() => setHighlighted(value)}

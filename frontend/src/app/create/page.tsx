@@ -15,9 +15,9 @@ export default function Page({ searchParams }: Props) {
   return (
     <div
       className="min-h-screen bg-cover bg-fixed bg-bottom bg-no-repeat"
-      style={{
-        backgroundImage: `url(${background.src})`,
-      }}
+      // style={{
+      //   backgroundImage: `url(${background.src})`,
+      // }}
     >
       <Navbar />
       <main className="flex flex-col gap-8 px-4 pb-4 pt-8 xl:px-24">

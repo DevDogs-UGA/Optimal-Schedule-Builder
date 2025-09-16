@@ -54,7 +54,7 @@ export default function Home() {
               </div>
               {/* Ready and Start Now Button */}
               <div className="flex w-full min-w-[350px] max-w-lg -translate-y-0 items-center justify-center text-xl font-bold md:-translate-y-5 xl:-translate-y-3 xl:text-2xl 2xl:text-3xl">
-                <p className="-mr-8 w-1/2 cursor-default rounded-l-full bg-[#F8E6EA] bg-dusty-pink px-6 py-4 text-left text-neutral-600/40 sm:py-5">
+                <p className="-mr-8 w-1/2 cursor-default rounded-l-full bg-[#F8E6EA] bg-dusty-pink px-6 py-4 text-left text-neutral-600/40 dark:bg-[#969696] dark:text-white sm:py-5">
                   Ready?
                 </p>
                 <Link

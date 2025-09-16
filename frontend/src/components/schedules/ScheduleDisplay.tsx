@@ -71,7 +71,7 @@ export default function ScheduleDisplay({ id }: Props) {
   return (
     <div className="mx-auto min-h-screen w-[100%]">
       {/* Container for schedule display, schedule cycling, and save/exit buttons */}
-      <div className="z-1 ml-auto mr-auto flex h-[85vh] w-[90vw] flex-col rounded-lg border-2 border-black bg-barely-pink pt-2">
+      <div className="z-1 ml-auto mr-auto flex h-[85vh] w-[90vw] flex-col overflow-hidden rounded-lg border-2 border-black bg-barely-pink pt-2 dark:bg-dm-mid-gray">
         {/* Properly positions the cycling bar and the save/exit buttons */}
         <div className="flex flex-row items-center justify-between px-12 py-2">
           <button type="button" className="cursor-default" onClick={pinPlan}>
@@ -83,10 +83,10 @@ export default function ScheduleDisplay({ id }: Props) {
           </button>
 
           {/* Cycling bar; changes the displayed schedule when arrows are clicked */}
-          <div className="flex flex-row items-center justify-center gap-0.5 rounded-lg bg-white">
+          <div className="flex flex-row items-center justify-center gap-0.5 rounded-lg bg-white dark:bg-black">
             {savedPlans.length > 1 && (
               <Link
-                className="rounded-l-lg border-2 border-white bg-white px-2 py-1 text-2xl transition-colors hover:border-gray-400 hover:bg-gray-100"
+                className="rounded-l-lg border-2 border-white bg-white px-2 py-1 text-2xl transition-colors hover:border-gray-400 hover:bg-gray-100 dark:border-black dark:bg-black dark:hover:border-gray-600 dark:hover:bg-gray-900"
                 href={`/plans/${savedPlans[(currentPlanIndex + savedPlans.length - 1) % savedPlans.length]!.id}`}
                 title={
                   savedPlans[
@@ -100,7 +100,7 @@ export default function ScheduleDisplay({ id }: Props) {
             )}
 
             <input
-              className="rounded-sm border-2 border-white pb-px pt-0.5 text-center text-xl font-semibold hover:border-gray-500 focus:border-gray-300"
+              className="rounded-sm border-2 border-white pb-px pt-0.5 text-center text-xl font-semibold hover:border-gray-500 focus:border-gray-300 dark:border-black dark:bg-black dark:hover:border-gray-500"
               defaultValue={title}
               maxLength={32}
               onBlur={handleChangeTitle}
@@ -109,7 +109,7 @@ export default function ScheduleDisplay({ id }: Props) {
 
             {savedPlans.length > 1 && (
               <Link
-                className="rounded-r-lg border-2 border-white bg-white px-2 py-1 text-2xl transition-colors hover:border-gray-400 hover:bg-gray-100"
+                className="rounded-r-lg border-2 border-white bg-white px-2 py-1 text-2xl transition-colors hover:border-gray-400 hover:bg-gray-100 dark:border-black dark:bg-black dark:hover:border-gray-600 dark:hover:bg-gray-900"
                 href={`/plans/${savedPlans[(currentPlanIndex + 1) % savedPlans.length]!.id}`}
                 title={
                   savedPlans[(currentPlanIndex + 1) % savedPlans.length]!.title

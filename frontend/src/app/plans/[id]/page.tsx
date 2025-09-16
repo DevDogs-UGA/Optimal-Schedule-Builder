@@ -16,9 +16,9 @@ export default function SchedulePage({ params }: Props) {
   return (
     <div
       className="relative -mb-[3.625rem] -mt-[3.625rem] min-h-screen bg-cover bg-fixed bg-bottom bg-no-repeat pt-2"
-      style={{
-        backgroundImage: `url(${background.src})`,
-      }}
+      // style={{
+      //   backgroundImage: `url(${background.src})`,
+      // }}
     >
       {/* Schedule display container */}
       <div className="flex flex-grow flex-row overflow-y-auto pt-32">

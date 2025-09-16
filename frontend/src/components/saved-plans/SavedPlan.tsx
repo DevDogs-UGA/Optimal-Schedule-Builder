@@ -39,7 +39,7 @@ export default function SavedPlan({ plan, onPin, onDelete }: PlanDisplayProps) {
 
   return (
     <div
-      className="relative z-10 flex w-[70vw] cursor-pointer flex-row items-center gap-4 rounded-xl border-b-8 border-red-700 bg-white px-7 py-4 ring-2 ring-black hover:mt-1 hover:border-b-4 hover:border-red-700 hover:bg-neutral-100 [&:active:not(:has(input:hover,button:hover))]:border-b-0 [&:active:not(:has(input:hover,button:hover))]:border-t-4"
+      className="relative z-10 flex w-[70vw] cursor-pointer flex-row items-center gap-4 rounded-xl border-b-8 border-red-700 bg-white px-7 py-4 ring-2 ring-black hover:mt-1 hover:border-b-4 hover:border-red-700 hover:bg-neutral-100 dark:bg-[#262525] [&:active:not(:has(input:hover,button:hover))]:border-b-0 [&:active:not(:has(input:hover,button:hover))]:border-t-4"
       onClick={goToPlan}
       role="link"
     >
@@ -48,12 +48,14 @@ export default function SavedPlan({ plan, onPin, onDelete }: PlanDisplayProps) {
         src="/images/blackpaw.svg"
         width={64}
         height={64}
-        className="size-8"
+        className="size-8 dark:invert"
         alt="black paw"
       />
 
       {/* Plan title */}
-      <h2 className="flex-1 text-2xl font-bold text-black">{plan.title}</h2>
+      <h2 className="flex-1 text-2xl font-bold text-black dark:text-white">
+        {plan.title}
+      </h2>
 
       {/* Pin button (gives a saved plan priority over others*/}
       <button type="button" className="cursor-default" onClick={handlePin}>
